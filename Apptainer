@@ -8,7 +8,7 @@ From: debian:11
 %post
     apt -y update
     apt -y upgrade
-    apt -y install python3-venv python3-pip
+    apt -y install python3-venv python3-pip gringo
     python3 -m venv /gnn/env
     . /gnn/env/bin/activate
     pip3 install --upgrade pip
@@ -16,6 +16,8 @@ From: debian:11
     pip3 install torch
     pip3 install pytorch_lightning
     pip3 install tarski
+
+    sed -i 's;../DerivedPredicates;/gnn/DerivedPredicates;' /gnn/network/generators/plan.py
 
 %runscript
     . /gnn/env/bin/activate
