@@ -1,0 +1,22 @@
+(define (problem swapping-3)
+    (:domain swapping)
+    (:objects e0 p0 e1 p1 e2 p2)
+    (:init
+        (element e0)
+        (position p0)
+        (element e1)
+        (position p1)
+        (element e2)
+        (position p2)
+        (at e0 p0)
+        (at e1 p1)
+        (at e2 p2)
+    )
+    (:goal
+        (and
+            (at e0 p0)
+            (at e1 p1)
+            (at e2 p2)
+        )
+    )
+)

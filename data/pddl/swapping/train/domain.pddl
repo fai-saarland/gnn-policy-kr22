@@ -1,0 +1,18 @@
+(define (domain swapping)
+    (:requirements :strips)
+    (:predicates (element ?e)
+                 (position ?p)
+                 (at ?e ?p))
+
+    (:action swap
+        :parameters (?p1 ?e1 ?p2 ?e2)
+        :precondition (and (position ?p1)
+                           (position ?p2)
+                           (element ?e1)
+                           (element ?e2)
+                           (at ?e1 ?p1)
+                           (at ?e2 ?p2))
+        :effect (and (not (at ?e1 ?p1))
+                     (not (at ?e2 ?p2))
+                     (at ?e1 ?p2)
+                     (at ?e2 ?p1))))

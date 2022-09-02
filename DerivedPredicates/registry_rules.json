@@ -1,0 +1,61 @@
+{ "blocks": {
+      "notes": "above/2 is transitive closure of on/2",
+      "rules": {
+          "above/2": [
+              ["above(X,Y)", ["on(X,Y)"]],
+              ["above(X,Y)", ["on(X,Z)", "above(Z,Y)"]]
+          ]
+      }
+  },
+  "blocks-traces": { "defer-to": "blocks" },
+  "blocks-statespaces": { "defer-to": "blocks" },
+  "blocks-statespaces-2": { "defer-to": "blocks" },
+  "debug": { },
+  "delivery": { },
+  "gripper": { },
+  "logistics": {
+      "notes": "4 different role compositions; comp_atG_incity/2 is compositon of at@ with in-city",
+      "rules": {
+          "comp_atG_incity/2": [
+              ["comp_atG_incity(X,Y)", ["at@(X,Z)", "in-city(Z,Y)"]]
+          ],
+          "comp_at_incity/2": [
+              ["comp_at_incity(X,Y)", ["at(X,Z)", "in-city(Z,Y)"]]
+          ],
+          "comp_in_at_incity/2": [
+              ["comp_in_at_incity(X,Y)", ["in(X,Z)", "comp_at_incity(Z,Y)"]]
+          ],
+          "comp_in_at/2": [
+              ["comp_in_at(X,Y)", ["in(X,Z)", "at(Z,Y)"]]
+          ]
+      }
+  },
+  "miconic": { },
+  "reward": { },
+  "reward-more": { "defer-to": "reward" },
+  "reward-generated": { "defer-to": "reward" },
+  "spanner": {
+      "notes": "link+/2 is transitive closure of link/2",
+      "rules": {
+          "link+/2": [
+              ["link+(X,Y)", ["link(X,Y)"]],
+              ["link+(X,Y)", ["link(X,Z)", "link+(Z,Y)"]]
+          ]
+      }
+  },
+  "spanner2": { "defer-to": "spanner" },
+  "spanner-bidirectional": {
+      "rules": {
+          "link-fwd-tc/2": [
+              ["link-fwd-tc(X,Y)", ["link-forward(X,Y)"]],
+              ["link-fwd-tc(X,Y)", ["link-forward(X,Z)", "link-fwd-tc(Z,Y)"]]
+          ]
+      }
+  },
+  "spanner-bidirectional-simple": { "defer-to": "spanner-bidirectional" },
+  "transport-statespaces": { },
+  "transport-statespaces-small": { "defer-to": "transport-statespaces" },
+  "transport-statespaces-large": { "defer-to": "transport-statespaces" },
+  "visitall": { }
+}
+
