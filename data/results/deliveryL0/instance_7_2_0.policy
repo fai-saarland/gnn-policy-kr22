@@ -1,0 +1,30 @@
+2022-02-06 16:18:50,831 [INFO] [<module>:120] Call: plan.py --model lightning_logs/selfsupervised_optimal/delivery/best/checkpoints/epoch=45-step=21343-validation_loss=0.017960047349333763.ckpt --cpu --ignore_unsolvable --domain ../Data/pddl/delivery/test/domain.pddl --print_trace --problem ../Data/pddl/delivery/test/instance_7_2_0.pddl
+2022-02-06 16:18:50,883 [INFO] [_main:79] Model 'lightning_logs/selfsupervised_optimal/delivery/best/checkpoints/epoch=45-step=21343-validation_loss=0.017960047349333763.ckpt' loaded in 0.052 second(s)
+2022-02-06 16:18:50,884 [INFO] [_main:81] Loading PDDL files: domain='../Data/pddl/delivery/test/domain.pddl', problem='../Data/pddl/delivery/test/instance_7_2_0.pddl'
+2022-02-06 16:18:51,206 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'cell', 'adjacent', 'package', 'truck', 'locatable'}, dynamic={'carrying', 'at', 'empty'}
+2022-02-06 16:18:51,207 [INFO] [_main:86] Executing policy (max_length=500)
+2022-02-06 16:18:51,207 [INFO] [compute_traces_with_augmented_states:425] 52 object(s), obj_encoding={'c_0_0': 0, 'c_0_1': 1, 'c_0_2': 2, 'c_0_3': 3, 'c_0_4': 4, 'c_0_5': 5, 'c_0_6': 6, 'c_1_0': 7, 'c_1_1': 8, 'c_1_2': 9, 'c_1_3': 10, 'c_1_4': 11, 'c_1_5': 12, 'c_1_6': 13, 'c_2_0': 14, 'c_2_1': 15, 'c_2_2': 16, 'c_2_3': 17, 'c_2_4': 18, 'c_2_5': 19, 'c_2_6': 20, 'c_3_0': 21, 'c_3_1': 22, 'c_3_2': 23, 'c_3_3': 24, 'c_3_4': 25, 'c_3_5': 26, 'c_3_6': 27, 'c_4_0': 28, 'c_4_1': 29, 'c_4_2': 30, 'c_4_3': 31, 'c_4_4': 32, 'c_4_5': 33, 'c_4_6': 34, 'c_5_0': 35, 'c_5_1': 36, 'c_5_2': 37, 'c_5_3': 38, 'c_5_4': 39, 'c_5_5': 40, 'c_5_6': 41, 'c_6_0': 42, 'c_6_1': 43, 'c_6_2': 44, 'c_6_3': 45, 'c_6_4': 46, 'c_6_5': 47, 'c_6_6': 48, 'p1': 49, 'p2': 50, 't1': 51, 0: 'c_0_0', 1: 'c_0_1', 2: 'c_0_2', 3: 'c_0_3', 4: 'c_0_4', 5: 'c_0_5', 6: 'c_0_6', 7: 'c_1_0', 8: 'c_1_1', 9: 'c_1_2', 10: 'c_1_3', 11: 'c_1_4', 12: 'c_1_5', 13: 'c_1_6', 14: 'c_2_0', 15: 'c_2_1', 16: 'c_2_2', 17: 'c_2_3', 18: 'c_2_4', 19: 'c_2_5', 20: 'c_2_6', 21: 'c_3_0', 22: 'c_3_1', 23: 'c_3_2', 24: 'c_3_3', 25: 'c_3_4', 26: 'c_3_5', 27: 'c_3_6', 28: 'c_4_0', 29: 'c_4_1', 30: 'c_4_2', 31: 'c_4_3', 32: 'c_4_4', 33: 'c_4_5', 34: 'c_4_6', 35: 'c_5_0', 36: 'c_5_1', 37: 'c_5_2', 38: 'c_5_3', 39: 'c_5_4', 40: 'c_5_5', 41: 'c_5_6', 42: 'c_6_0', 43: 'c_6_1', 44: 'c_6_2', 45: 'c_6_3', 46: 'c_6_4', 47: 'c_6_5', 48: 'c_6_6', 49: 'p1', 50: 'p2', 51: 't1'}
+2022-02-06 16:18:51,208 [INFO] [policy_search_with_augmented_states:361] goals=(at(p1,c_3_3) and at(p2,c_3_3))
+2022-02-06 16:18:52,787 [INFO] [_main:92] 20 executed action(s) and 67 state evaluations(s) in 1.580 second(s)
+2022-02-06 16:18:52,788 [INFO] [_main:95] [1m[32mFound valid plan for ../Data/pddl/delivery/test/instance_7_2_0.pddl[0m
+2022-02-06 16:18:52,788 [INFO] [_main:103] 1: move(t1, c_0_2, c_0_3) (value change: 25.76 -> 24.70 D)
+2022-02-06 16:18:52,789 [INFO] [_main:103] 2: move(t1, c_0_3, c_0_4) (value change: 24.70 -> 23.62 D)
+2022-02-06 16:18:52,789 [INFO] [_main:103] 3: pick-package(t1, p2, c_0_4) (value change: 23.62 -> 22.39 D)
+2022-02-06 16:18:52,789 [INFO] [_main:103] 4: move(t1, c_0_4, c_0_3) (value change: 22.39 -> 21.31 D)
+2022-02-06 16:18:52,790 [INFO] [_main:103] 5: move(t1, c_0_3, c_1_3) (value change: 21.31 -> 20.21 D)
+2022-02-06 16:18:52,790 [INFO] [_main:103] 6: move(t1, c_1_3, c_2_3) (value change: 20.21 -> 19.10 D)
+2022-02-06 16:18:52,790 [INFO] [_main:103] 7: move(t1, c_2_3, c_3_3) (value change: 19.10 -> 18.07 D)
+2022-02-06 16:18:52,790 [INFO] [_main:103] 8: drop-package(t1, p2, c_3_3) (value change: 18.07 -> 16.91 D)
+2022-02-06 16:18:52,791 [INFO] [_main:103] 9: move(t1, c_3_3, c_3_4) (value change: 16.91 -> 15.88 D)
+2022-02-06 16:18:52,791 [INFO] [_main:103] 10: move(t1, c_3_4, c_3_5) (value change: 15.88 -> 14.83 D)
+2022-02-06 16:18:52,791 [INFO] [_main:103] 11: move(t1, c_3_5, c_3_6) (value change: 14.83 -> 13.76 D)
+2022-02-06 16:18:52,791 [INFO] [_main:103] 12: move(t1, c_3_6, c_2_6) (value change: 13.76 -> 12.73 D)
+2022-02-06 16:18:52,792 [INFO] [_main:103] 13: move(t1, c_2_6, c_1_6) (value change: 12.73 -> 11.63 D)
+2022-02-06 16:18:52,792 [INFO] [_main:103] 14: pick-package(t1, p1, c_1_6) (value change: 11.63 -> 10.31 D)
+2022-02-06 16:18:52,792 [INFO] [_main:103] 15: move(t1, c_1_6, c_1_5) (value change: 10.31 -> 9.05 D)
+2022-02-06 16:18:52,792 [INFO] [_main:103] 16: move(t1, c_1_5, c_1_4) (value change: 9.05 -> 8.18 D)
+2022-02-06 16:18:52,793 [INFO] [_main:103] 17: move(t1, c_1_4, c_1_3) (value change: 8.18 -> 7.08 D)
+2022-02-06 16:18:52,793 [INFO] [_main:103] 18: move(t1, c_1_3, c_2_3) (value change: 7.08 -> 5.92 D)
+2022-02-06 16:18:52,793 [INFO] [_main:103] 19: move(t1, c_2_3, c_3_3) (value change: 5.92 -> 4.33 D)
+2022-02-06 16:18:52,793 [INFO] [_main:103] 20: drop-package(t1, p1, c_3_3) (value change: 4.33 -> 0.13 D)
+2022-02-06 16:18:52,794 [INFO] [<module>:127] All tasks completed in 1.965 second(s)

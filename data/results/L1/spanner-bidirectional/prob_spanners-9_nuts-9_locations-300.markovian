@@ -1,0 +1,11 @@
+2022-02-02 19:42:43,800 [INFO] [<module>:113] Call: plan.py --cpu --model ../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt --domain ../Data/pddl/spanner-bidirectional/test/domain.pddl --problem ../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-300.pddl --ignore_unsolvable --print_trace
+2022-02-02 19:42:43,872 [INFO] [_main:74] Model '../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt' loaded in 0.072 second(s)
+2022-02-02 19:42:43,873 [INFO] [_main:76] Loading PDDL files: domain='../Data/pddl/spanner-bidirectional/test/domain.pddl', problem='../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-300.pddl'
+2022-02-02 19:42:44,340 [INFO] [_main:80] Executing policy (max_length=500)
+2022-02-02 19:42:44,341 [INFO] [compute_traces:391] #objects=321
+2022-02-02 19:42:44,775 [INFO] [_main:85] 3 executed action(s) and 6 state evaluations(s) in 0.433 second(s)
+2022-02-02 19:42:44,775 [INFO] [_main:90] [1m[31mFailed to find a plan for ../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-300.pddl[0m
+2022-02-02 19:42:44,775 [INFO] [_main:96] 1: walk-forward(shed, location1, bob) (value change: 490.62 -> 486.25)
+2022-02-02 19:42:44,776 [INFO] [_main:96] 2: walk-forward(location1, location2, bob) (value change: 486.25 -> 489.50)
+2022-02-02 19:42:44,776 [INFO] [_main:96] 3: walk-backward(location2, location1, bob) (value change: 489.50 -> 482.58)
+2022-02-02 19:42:44,778 [INFO] [<module>:120] All tasks completed in 0.981 second(s)

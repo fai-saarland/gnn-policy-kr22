@@ -1,0 +1,31 @@
+2022-02-07 13:33:09,898 [INFO] [<module>:122] Call: plan.py --cpu --ignore_unsolvable --print_trace --cycles detect --domain ../Data/pddl/blocks/test/domain.pddl --problem ../Data/pddl/blocks/test/probBLOCKS-14-1.pddl --model lightning_logs/selfsupervised_optimal/blocks/best/checkpoints/epoch=1-step=655-validation_loss=6.484408378601074.ckpt
+2022-02-07 13:33:09,935 [INFO] [_main:81] Model 'lightning_logs/selfsupervised_optimal/blocks/best/checkpoints/epoch=1-step=655-validation_loss=6.484408378601074.ckpt' loaded in 0.037 second(s)
+2022-02-07 13:33:09,936 [INFO] [_main:83] Loading PDDL files: domain='../Data/pddl/blocks/test/domain.pddl', problem='../Data/pddl/blocks/test/probBLOCKS-14-1.pddl'
+2022-02-07 13:33:10,236 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static=set(), dynamic={'handempty', 'holding', 'clear', 'on', 'ontable'}
+2022-02-07 13:33:10,236 [INFO] [_main:88] Executing policy (max_length=500)
+2022-02-07 13:33:10,237 [INFO] [compute_traces_with_augmented_states:444] 14 object(s), obj_encoding={'k': 0, 'a': 1, 'f': 2, 'l': 3, 'd': 4, 'b': 5, 'm': 6, 'e': 7, 'j': 8, 'n': 9, 'h': 10, 'i': 11, 'c': 12, 'g': 13, 0: 'k', 1: 'a', 2: 'f', 3: 'l', 4: 'd', 5: 'b', 6: 'm', 7: 'e', 8: 'j', 9: 'n', 10: 'h', 11: 'i', 12: 'c', 13: 'g'}
+2022-02-07 13:33:10,237 [INFO] [policy_search_with_augmented_states:369] goals=(on(j,d) and on(d,b) and on(b,h) and on(h,m) and on(m,k) and on(k,f) and on(f,g) and on(g,a) and on(a,i) and on(i,e) and on(e,l) and on(l,n) and on(n,c))
+2022-02-07 13:33:11,078 [INFO] [policy_search_with_augmented_states:385] [35mCycle detected after last action 'put-down(c)'[0m
+2022-02-07 13:33:11,079 [INFO] [_main:94] 20 executed action(s) and 200 state evaluations(s) in 0.842 second(s)
+2022-02-07 13:33:11,079 [INFO] [_main:99] [1m[31mFailed to find a plan for ../Data/pddl/blocks/test/probBLOCKS-14-1.pddl[0m
+2022-02-07 13:33:11,079 [INFO] [_main:105] 1: unstack(g, j) (value change: 43.12 -> 42.11 D)
+2022-02-07 13:33:11,080 [INFO] [_main:105] 2: put-down(g) (value change: 42.11 -> 40.83 D)
+2022-02-07 13:33:11,080 [INFO] [_main:105] 3: unstack(c, e) (value change: 40.83 -> 40.19 D)
+2022-02-07 13:33:11,080 [INFO] [_main:105] 4: put-down(c) (value change: 40.19 -> 39.41 D)
+2022-02-07 13:33:11,081 [INFO] [_main:105] 5: unstack(i, d) (value change: 39.41 -> 38.34 D)
+2022-02-07 13:33:11,081 [INFO] [_main:105] 6: put-down(i) (value change: 38.34 -> 37.48 D)
+2022-02-07 13:33:11,082 [INFO] [_main:105] 7: unstack(h, f) (value change: 37.48 -> 36.54 D)
+2022-02-07 13:33:11,082 [INFO] [_main:105] 8: put-down(h) (value change: 36.54 -> 35.88 D)
+2022-02-07 13:33:11,082 [INFO] [_main:105] 9: unstack(f, a) (value change: 35.88 -> 35.37 D)
+2022-02-07 13:33:11,083 [INFO] [_main:105] 10: put-down(f) (value change: 35.37 -> 34.42 D)
+2022-02-07 13:33:11,083 [INFO] [_main:105] 11: unstack(a, k) (value change: 34.42 -> 33.43 D)
+2022-02-07 13:33:11,083 [INFO] [_main:105] 12: put-down(a) (value change: 33.43 -> 32.45 D)
+2022-02-07 13:33:11,083 [INFO] [_main:105] 13: unstack(d, l) (value change: 32.45 -> 31.28 D)
+2022-02-07 13:33:11,084 [INFO] [_main:105] 14: put-down(d) (value change: 31.28 -> 30.17 D)
+2022-02-07 13:33:11,084 [INFO] [_main:105] 15: unstack(l, m) (value change: 30.17 -> 29.02 D)
+2022-02-07 13:33:11,084 [INFO] [_main:105] 16: put-down(l) (value change: 29.02 -> 27.94 D)
+2022-02-07 13:33:11,084 [INFO] [_main:105] 17: unstack(k, b) (value change: 27.94 -> 26.88 D)
+2022-02-07 13:33:11,085 [INFO] [_main:105] 18: put-down(k) (value change: 26.88 -> 25.80 D)
+2022-02-07 13:33:11,085 [INFO] [_main:105] 19: pick-up(c) (value change: 25.80 -> 26.76 I)
+2022-02-07 13:33:11,085 [INFO] [_main:105] 20: put-down(c) (value change: 26.76 -> 25.80 D)
+2022-02-07 13:33:11,087 [INFO] [<module>:129] All tasks completed in 1.190 second(s)

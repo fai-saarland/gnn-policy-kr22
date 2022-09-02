@@ -1,0 +1,28 @@
+2022-02-02 19:42:10,513 [INFO] [<module>:113] Call: plan.py --cpu --model ../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt --domain ../Data/pddl/spanner-bidirectional/test/domain.pddl --problem ../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-1.pddl --ignore_unsolvable --print_trace
+2022-02-02 19:42:10,588 [INFO] [_main:74] Model '../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt' loaded in 0.074 second(s)
+2022-02-02 19:42:10,588 [INFO] [_main:76] Loading PDDL files: domain='../Data/pddl/spanner-bidirectional/test/domain.pddl', problem='../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-1.pddl'
+2022-02-02 19:42:10,732 [INFO] [_main:80] Executing policy (max_length=500)
+2022-02-02 19:42:10,733 [INFO] [compute_traces:391] #objects=22
+2022-02-02 19:42:12,591 [INFO] [_main:85] 20 executed action(s) and 361 state evaluations(s) in 1.858 second(s)
+2022-02-02 19:42:12,592 [INFO] [_main:88] [1m[32mFound valid plan for ../Data/pddl/spanner-bidirectional/test/prob_spanners-9_nuts-9_locations-1.pddl[0m
+2022-02-02 19:42:12,592 [INFO] [_main:96] 1: walk-forward(shed, location1, bob) (value change: 35.65 -> 32.14)
+2022-02-02 19:42:12,592 [INFO] [_main:96] 2: pickup_spanner(location1, spanner5, bob) (value change: 32.14 -> 24.97)
+2022-02-02 19:42:12,593 [INFO] [_main:96] 3: pickup_spanner(location1, spanner1, bob) (value change: 24.97 -> 23.56)
+2022-02-02 19:42:12,593 [INFO] [_main:96] 4: pickup_spanner(location1, spanner7, bob) (value change: 23.56 -> 22.13)
+2022-02-02 19:42:12,594 [INFO] [_main:96] 5: pickup_spanner(location1, spanner6, bob) (value change: 22.13 -> 20.71)
+2022-02-02 19:42:12,594 [INFO] [_main:96] 6: pickup_spanner(location1, spanner9, bob) (value change: 20.71 -> 19.28)
+2022-02-02 19:42:12,594 [INFO] [_main:96] 7: pickup_spanner(location1, spanner2, bob) (value change: 19.28 -> 17.85)
+2022-02-02 19:42:12,595 [INFO] [_main:96] 8: pickup_spanner(location1, spanner3, bob) (value change: 17.85 -> 16.41)
+2022-02-02 19:42:12,595 [INFO] [_main:96] 9: pickup_spanner(location1, spanner4, bob) (value change: 16.41 -> 14.97)
+2022-02-02 19:42:12,595 [INFO] [_main:96] 10: pickup_spanner(location1, spanner8, bob) (value change: 14.97 -> 13.41)
+2022-02-02 19:42:12,596 [INFO] [_main:96] 11: walk-forward(location1, gate, bob) (value change: 13.41 -> 13.00)
+2022-02-02 19:42:12,596 [INFO] [_main:96] 12: tighten_nut(gate, spanner4, bob, nut1) (value change: 13.00 -> 12.22)
+2022-02-02 19:42:12,596 [INFO] [_main:96] 13: tighten_nut(gate, spanner8, bob, nut2) (value change: 12.22 -> 10.36)
+2022-02-02 19:42:12,597 [INFO] [_main:96] 14: tighten_nut(gate, spanner5, bob, nut7) (value change: 10.36 -> 8.81)
+2022-02-02 19:42:12,597 [INFO] [_main:96] 15: tighten_nut(gate, spanner1, bob, nut6) (value change: 8.81 -> 7.26)
+2022-02-02 19:42:12,597 [INFO] [_main:96] 16: tighten_nut(gate, spanner9, bob, nut5) (value change: 7.26 -> 5.69)
+2022-02-02 19:42:12,598 [INFO] [_main:96] 17: tighten_nut(gate, spanner7, bob, nut8) (value change: 5.69 -> 4.11)
+2022-02-02 19:42:12,598 [INFO] [_main:96] 18: tighten_nut(gate, spanner3, bob, nut4) (value change: 4.11 -> 2.56)
+2022-02-02 19:42:12,598 [INFO] [_main:96] 19: tighten_nut(gate, spanner2, bob, nut9) (value change: 2.56 -> 1.00)
+2022-02-02 19:42:12,598 [INFO] [_main:96] 20: tighten_nut(gate, spanner6, bob, nut3) (value change: 1.00 -> 0.09)
+2022-02-02 19:42:12,599 [INFO] [<module>:120] All tasks completed in 2.089 second(s)

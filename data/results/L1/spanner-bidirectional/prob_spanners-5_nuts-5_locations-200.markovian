@@ -1,0 +1,18 @@
+2022-02-02 19:41:06,896 [INFO] [<module>:113] Call: plan.py --cpu --model ../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt --domain ../Data/pddl/spanner-bidirectional/test/domain.pddl --problem ../Data/pddl/spanner-bidirectional/test/prob_spanners-5_nuts-5_locations-200.pddl --ignore_unsolvable --print_trace
+2022-02-02 19:41:06,975 [INFO] [_main:74] Model '../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt' loaded in 0.078 second(s)
+2022-02-02 19:41:06,975 [INFO] [_main:76] Loading PDDL files: domain='../Data/pddl/spanner-bidirectional/test/domain.pddl', problem='../Data/pddl/spanner-bidirectional/test/prob_spanners-5_nuts-5_locations-200.pddl'
+2022-02-02 19:41:07,320 [INFO] [_main:80] Executing policy (max_length=500)
+2022-02-02 19:41:07,321 [INFO] [compute_traces:391] #objects=213
+2022-02-02 19:41:08,383 [INFO] [_main:85] 10 executed action(s) and 21 state evaluations(s) in 1.063 second(s)
+2022-02-02 19:41:08,384 [INFO] [_main:90] [1m[31mFailed to find a plan for ../Data/pddl/spanner-bidirectional/test/prob_spanners-5_nuts-5_locations-200.pddl[0m
+2022-02-02 19:41:08,384 [INFO] [_main:96] 1: walk-forward(shed, location1, bob) (value change: 278.71 -> 275.87)
+2022-02-02 19:41:08,384 [INFO] [_main:96] 2: walk-forward(location1, location2, bob) (value change: 275.87 -> 272.77)
+2022-02-02 19:41:08,385 [INFO] [_main:96] 3: walk-forward(location2, location3, bob) (value change: 272.77 -> 269.32)
+2022-02-02 19:41:08,385 [INFO] [_main:96] 4: walk-forward(location3, location4, bob) (value change: 269.32 -> 266.20)
+2022-02-02 19:41:08,385 [INFO] [_main:96] 5: pickup_spanner(location4, spanner1, bob) (value change: 266.20 -> 246.57)
+2022-02-02 19:41:08,386 [INFO] [_main:96] 6: walk-forward(location4, location5, bob) (value change: 246.57 -> 255.87)
+2022-02-02 19:41:08,386 [INFO] [_main:96] 7: walk-forward(location5, location6, bob) (value change: 255.87 -> 255.98)
+2022-02-02 19:41:08,386 [INFO] [_main:96] 8: walk-forward(location6, location7, bob) (value change: 255.98 -> 257.46)
+2022-02-02 19:41:08,387 [INFO] [_main:96] 9: walk-forward(location7, location8, bob) (value change: 257.46 -> 255.04)
+2022-02-02 19:41:08,387 [INFO] [_main:96] 10: walk-backward(location8, location7, bob) (value change: 255.04 -> 261.21)
+2022-02-02 19:41:08,388 [INFO] [<module>:120] All tasks completed in 1.495 second(s)
