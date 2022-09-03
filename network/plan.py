@@ -8,7 +8,7 @@ import torch
 from generators import compute_traces_with_augmented_states, load_pddl_problem_with_augmented_states
 from architecture import g_model_classes
 
-def _get_logger(name : str, logfile : Path, level = logging.INFO):
+def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True):
     logger = logging.getLogger(name)
     logger.propagate = False
     logger.setLevel(level)
@@ -16,9 +16,10 @@ def _get_logger(name : str, logfile : Path, level = logging.INFO):
     # add stdout handler
     formatter = logging.Formatter('[%(levelname)s] %(message)s')
     formatter = logging.Formatter('%(asctime)s [%(levelname)s] [%(funcName)s:%(lineno)d] %(message)s')
-    console = logging.StreamHandler(stdout)
-    console.setFormatter(formatter)
-    logger.addHandler(console)
+    if console:
+        console = logging.StreamHandler(stdout)
+        console.setFormatter(formatter)
+        logger.addHandler(console)
 
     # add file handler
     if logfile != '':
@@ -51,6 +52,7 @@ def _parse_arguments(exec_path : Path):
     parser.add_argument('--debug_level', dest='debug_level', type=int, default=default_debug_level, help=f'set debug level (default={default_debug_level})')
     parser.add_argument('--ignore_unsolvable', action='store_true', help='ignore unsolvable states in policy controller')
     parser.add_argument('--logfile', type=Path, default=default_logfile, help=f'log file (default={default_logfile})')
+    parser.add_argument('--log-no-console', action='store_true', help='Disable logging to console')
     parser.add_argument('--max_length', type=int, default=default_max_length, help=f'max trace length (default={default_max_length})')
     parser.add_argument('--print_trace', action='store_true', help='print trace')
     parser.add_argument('--readout', action='store_true', help='use global readout')
@@ -118,7 +120,8 @@ if __name__ == "__main__":
     log_path = exec_path
     logfile = log_path / args.logfile
     log_level = logging.INFO if args.debug_level == 0 else logging.DEBUG
-    logger = _get_logger(exec_name, logfile, log_level)
+    log_to_console = not args.log_no_console
+    logger = _get_logger(exec_name, logfile, log_level, log_to_console)
     logger.info(f'Call: {" ".join(argv)}')
 
     # do jobs
