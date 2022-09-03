@@ -38,10 +38,6 @@ def load_pddl_problem_with_augmented_states(domain: Path, problem: Path, registr
     from tarski.errors import UndefinedPredicate
     from tarski.io import PDDLReader
 
-    from sys import path as sys_path
-    sys_path.append('../DerivedPredicates')
-    from augmentation import load_registry, get_registry_record, update_registry_record, construct_augmentation_function_simple
-
     parser = PDDLReader(raise_on_error=True)
     parser.parse_domain(str(domain))
     problem = parser.parse_instance(str(problem))
@@ -71,6 +67,11 @@ def load_pddl_problem_with_augmented_states(domain: Path, problem: Path, registr
 
         # get augmentation function
         if registry_key:
+            from sys import path as sys_path
+            import os
+            sys_path.append(os.path.dirname(os.path.abspath(registry_filename)))
+            from augmentation import load_registry, get_registry_record, update_registry_record, construct_augmentation_function_simple
+
             if logger: logger.info(f"Using '{registry_key}' as registry key into '{registry_filename}'")
             registry = load_registry(registry_filename)
             registry_record = get_registry_record(registry_key, registry, registry_filename)

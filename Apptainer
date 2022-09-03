@@ -3,7 +3,7 @@ From: debian:11
 
 %setup
     mkdir ${APPTAINER_ROOTFS}/gnn
-    cp -r DerivedPredicates network ${APPTAINER_ROOTFS}/gnn/ 
+    cp -r network ${APPTAINER_ROOTFS}/gnn/
 
 %post
     apt -y update
@@ -16,8 +16,6 @@ From: debian:11
     pip3 install torch
     pip3 install pytorch_lightning
     pip3 install tarski
-
-    sed -i 's;../DerivedPredicates;/gnn/DerivedPredicates;' /gnn/network/generators/plan.py
 
 %runscript
     . /gnn/env/bin/activate
