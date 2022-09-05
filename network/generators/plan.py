@@ -1,3 +1,4 @@
+import sys
 from copy import deepcopy as deepcopy
 from pathlib import Path
 from termcolor import colored
@@ -446,4 +447,151 @@ def compute_traces_with_augmented_states(actions, initial, goal, language, model
 
     with torch.no_grad():
         return policy_search_with_augmented_states(actions, initial, goal, obj_encoding, language, model, augment_fn=augment_fn, cycles=cycles, max_state_trace_length=max_trace_length, unsolvable_weight=unsolvable_weight, logger=logger, is_spanner=is_spanner)
+
+
+def _variableMapping(language):
+    try:
+        line = next(sys.stdin)
+        num_vars = int(line.strip())
+        var_map = []
+        facts = []
+        for i in range(num_vars):
+            line = next(sys.stdin)
+            num_vals = int(line.strip())
+            vals = []
+            for j in range(num_vals):
+                line = next(sys.stdin)
+                line = line.strip()
+                if not line.startswith('Atom'):
+                    vals += [None]
+                    continue
+                atom_name = line.split(' ', 1)[1]
+                atom_name = atom_name.replace('(', ' ')
+                atom_name = atom_name.replace(', ', ' ')
+                atom_name = atom_name.rstrip(')')
+                els = atom_name.split()
+                predicate = language.get_predicate(els[0])
+                args = [language.get_constant(x) for x in els[1:]]
+                atom = predicate(*args)
+                vals += [atom]
+                facts += [atom]
+            var_map += [vals]
+        return var_map, set(facts)
+
+    except Exception as e:
+        sys.stdout.write('ERR\n')
+        sys.stdout.flush()
+        raise e
+
+def _actionMapping(actions):
+    try:
+        name_to_action = { a.ident() : a for a in actions }
+        line = next(sys.stdin)
+        num_actions = int(line.strip())
+        action_map = {}
+        for i in range(num_actions):
+            line = next(sys.stdin)
+            line = line.strip()
+            els = line.split()
+            name = els[0] + '(' + ', '.join(els[1:]) + ')'
+            if name in action_map:
+                raise Exception('Duplicate action names!')
+            action_map[name_to_action[name]] = i
+        return action_map, set(action_map.keys())
+
+    except Exception as e:
+        sys.stdout.write('ERR\n')
+        sys.stdout.flush()
+        raise e
+
+def _collectStaticFacts(initial, available_facts, actions, language, logger):
+    static_facts = deepcopy(initial)
+    for fact in available_facts:
+        static_facts.discard(fact.predicate, *fact.subterms)
+
+    for a in actions:
+        for e in a.effects:
+            if isinstance(e, AddEffect):
+                if e.atom not in available_facts:
+                    if logger: logger.info(f'Add effect {e.atom} not in input -- considering it static')
+            elif isinstance(e, DelEffect):
+                if e.atom not in available_facts:
+                    if logger: logger.info(f'Del effect {e.atom} not in input -- considering it static')
+    return static_facts
+
+def _serve_policy(actions, initial, goals, obj_encoding, language,
+                  static_facts, var_map, action_map, available_actions,
+                  model: pl.LightningModule,
+                  augment_fn = None, unsolvable_weight: float = 100000.0,
+                  logger = None, is_spanner = False):
+    device = model.device
+    # calculate denotation of goal atoms that is equal for every state
+    if logger: logger.info(f'goals={goals}')
+    goal_denotation = _get_goal_denotation(goals, obj_encoding)
+
+    for line in sys.stdin:
+        line = line.strip()
+        fdr_state = [int(x) for x in line.split()]
+        if logger: logger.info(f'STATE {fdr_state}')
+        current_state = deepcopy(static_facts)
+        for i in range(len(var_map)):
+            atom = var_map[i][fdr_state[i]]
+            current_state.add(atom.predicate, *atom.subterms)
+        if logger: logger.info(f'Strips state {current_state}')
+        if logger: logger.info(f'Init state {initial}')
+
+        successor_candidates = [ transition for transition in _get_successor_states(current_state, actions) ]
+        successor_candidates = sorted(successor_candidates, key = lambda x: x[0].ident())
+        successor_actions = []
+        successor_states = []
+        for candidate in successor_candidates:
+            if candidate[0] in available_actions:
+                successor_actions += [candidate[0]]
+                successor_states += [candidate[1]]
+            else:
+                if logger: logger.info(f'Skipping action {candidate[0]}')
+
+        if logger: logger.info(f'#actions={len(successor_actions)}, actions={successor_actions}')
+        collated_input, encoded_states = _to_input(successor_states, goal_denotation, obj_encoding, augment_fn, language, device, logger)
+        output_values, output_solvables = model(collated_input)
+        output_solvables = torch.round(torch.sigmoid(output_solvables))
+        #output_values += (1.0 - torch.round(torch.sigmoid(output_solvables))) * unsolvable_weight
+        output_values += (1.0 - output_solvables) * unsolvable_weight
+        if logger: logger.info(f'Output values: {output_values}')
+        out = ['{0} {1:.4f}'.format(action_map[successor_actions[idx]], output_values[idx][0])
+                for idx in torch.argsort(output_values.flatten())]
+        out = ' '.join(out)
+        sys.stdout.write(f'{out}\n')
+        sys.stdout.flush()
+
+        best_successor_index = torch.argmin(output_values)
+        best_action = successor_actions[best_successor_index]
+        if logger: logger.info(f'Best action: {best_action}')
+        #best_action_id = action_map[best_action]
+        #sys.stdout.write(f'{best_action_id}\n')
+        #sys.stdout.flush()
+
+    return 0
+
+def serve_policy(actions, initial, goal, language, model: pl.LightningModule,
+                 augment_fn = None, unsolvable_weight: float = 100000.0,
+                 logger = None, is_spanner = False):
+    objects = language.constants()
+    obj_encoding = create_object_encoding(objects)
+    if logger: logger.info(f'{len(objects)} object(s), obj_encoding={obj_encoding}')
+
+    # read mapping from variables to facts
+    var_map, available_facts = _variableMapping(language)
+    # read mapping from operator id to operator name
+    action_map, available_actions = _actionMapping(actions)
+    sys.stdout.write('OK\n')
+    sys.stdout.flush()
+
+    static_facts = _collectStaticFacts(initial, available_facts, actions, language, logger)
+    if logger: logger.info(f'Static facts collected: {static_facts}')
+
+    with torch.no_grad():
+        return _serve_policy(actions, initial, goal, obj_encoding, language,
+                             static_facts, var_map, action_map, available_actions,
+                             model, augment_fn, unsolvable_weight, logger, is_spanner)
 
