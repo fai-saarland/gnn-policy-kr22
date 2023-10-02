@@ -360,7 +360,7 @@ def compute_traces(actions, initial, goal, language, model: pl.LightningModule, 
     if logger: logger.info(f'{len(objects)} object(s), obj_encoding={obj_encoding}')
 
     with torch.no_grad():
-        return policy_search(actions, initial, goal, obj_encoding, model, cycles=cycles, max_trace_length=max_state_trace_length, unsolvable_weight=unsolvable_weight, logger=logger)
+        return policy_search(actions, initial, goal, obj_encoding, model, cycles=cycles, max_trace_length=max_trace_length, unsolvable_weight=unsolvable_weight, logger=logger)
 
 def policy_search_with_augmented_states(actions, initial, goals, obj_encoding: Dict[str, int], language, model: pl.LightningModule, augment_fn = None, cycles: str = 'avoid', max_state_trace_length: int = 500, unsolvable_weight: float = 100000.0, logger = None, is_spanner = False):
     device = model.device
@@ -594,4 +594,189 @@ def serve_policy(actions, initial, goal, language, model: pl.LightningModule,
         return _serve_policy(actions, initial, goal, obj_encoding, language,
                              static_facts, var_map, action_map, available_actions,
                              model, augment_fn, unsolvable_weight, logger, is_spanner)
+
+
+########################################################################################################################
+
+class StaticServerData:
+    static_facts = None
+    actions = None
+    initial = None
+    goal = None
+    language = None
+    model: pl.LightningModule = None
+    augment_fn = None
+    unsolvable_weight: float = 100000.0
+    var_map = None
+    available_facts = None
+    action_map = None
+    available_actions = None
+    obj_encoding = None
+    device = None
+    goal_denotation = None
+    torch_context_handler = None
+    num_vars = None
+
+
+def expect_line(f, content, alternative_content=None):
+    line = f.readline().rstrip()
+    if alternative_content:
+        assert line == content or line == alternative_content
+    else:
+        assert line == content
+
+
+def parse_header(f):
+    expect_line(f, "begin_version")
+    expect_line(f, "3")
+    expect_line(f, "end_version")
+    expect_line(f, "begin_metric")
+    expect_line(f, "0", "1")
+    expect_line(f, "end_metric")
+
+
+def parse_variables(f, language):
+    # read mapping from variables to facts
+    num_vars = int(f.readline().rstrip())
+    var_map = []
+    facts = []
+    for i in range(num_vars):
+        expect_line(f, "begin_variable")
+        f.readline()  # skip variable name
+        f.readline()  # skip axiom layer
+        num_vals = int(f.readline().rstrip())
+        vals = []
+        for j in range(num_vals):
+            line = f.readline().rstrip()
+            if not line.startswith('Atom'):
+                vals += [None]
+                continue
+            atom_name = line.split(' ', 1)[1]
+            atom_name = atom_name.replace('(', ' ')
+            atom_name = atom_name.replace(', ', ' ')
+            atom_name = atom_name.rstrip(')')
+            els = atom_name.split()
+            predicate = language.get_predicate(els[0])
+            args = [language.get_constant(x) for x in els[1:]]
+            atom = predicate(*args)
+            vals += [atom]
+            facts += [atom]
+        var_map += [vals]
+        expect_line(f, "end_variable")
+    return var_map, set(facts), num_vars
+
+
+def parse_mutex_groups(f):
+    num_mutex_groups = int(f.readline().rstrip())
+    for _ in range(num_mutex_groups):
+        expect_line(f, "begin_mutex_group")
+        while line := f.readline().rstrip():
+            if line == "end_mutex_group":
+                break
+
+
+def parse_initial_state(f):
+    expect_line(f, "begin_state")
+    while line := f.readline().rstrip():
+        if line == "end_state":
+            break
+
+
+def parse_goals(f):
+    expect_line(f, "begin_goal")
+    num_goals = int(f.readline().rstrip())
+    for _ in range(num_goals):
+        f.readline()
+    expect_line(f, "end_goal")
+
+
+def parse_operators(f, actions):
+    # read mapping from operator id to operator name
+    name_to_action = {a.ident(): a for a in actions}
+    num_actions = int(f.readline().rstrip())
+    action_map = {}
+    for i in range(num_actions):
+        expect_line(f, "begin_operator")
+        line = f.readline().strip()
+        els = line.split()
+        name = els[0] + '(' + ', '.join(els[1:]) + ')'
+        if name in action_map:
+            raise Exception('Duplicate action names!')
+        action_map[name_to_action[name]] = i
+        # skip over operator details
+        while line := f.readline().rstrip():
+            if line == "end_operator":
+                break
+    return action_map, set(action_map.keys())
+
+
+def parse_sas_file(sas_file, language, actions):
+    with open(sas_file) as f:
+        try:
+            parse_header(f)
+            StaticServerData.var_map, StaticServerData.available_facts, StaticServerData.num_vars = parse_variables(f, language)
+            parse_mutex_groups(f)
+            parse_initial_state(f)
+            parse_goals(f)
+            StaticServerData.action_map, StaticServerData.available_actions = parse_operators(f, actions)
+        except Exception as e:
+            print('ERROR: Cannot determine mappings\n')
+            raise e
+
+
+def apply_policy_to_state(fdr_state):
+    current_state = deepcopy(StaticServerData.static_facts)
+    for i in range(len(StaticServerData.var_map)):
+        atom = StaticServerData.var_map[i][fdr_state[i]]
+        # TODO check this
+        if atom:
+            current_state.add(atom.predicate, *atom.subterms)
+
+    successor_candidates = [transition for transition in _get_successor_states(current_state, StaticServerData.actions)]
+    successor_candidates = sorted(successor_candidates, key=lambda x: x[0].ident())
+    successor_actions = []
+    successor_states = []
+    for candidate in successor_candidates:
+        if candidate[0] in StaticServerData.available_actions:
+            successor_actions += [candidate[0]]
+            successor_states += [candidate[1]]
+
+    collated_input, encoded_states = _to_input(successor_states, StaticServerData.goal_denotation, StaticServerData.obj_encoding, StaticServerData.augment_fn, StaticServerData.language, StaticServerData.device, None)
+    output_values, output_solvables = StaticServerData.model(collated_input)
+    output_solvables = torch.round(torch.sigmoid(output_solvables))
+    output_values += (1.0 - output_solvables) * StaticServerData.unsolvable_weight
+    # out = ['{0} {1:.4f}'.format(StaticServerData.action_map[successor_actions[idx]], output_values[idx][0])
+    #        for idx in torch.argsort(output_values.flatten())]
+    # out = ' '.join(out)
+    best_successor_index = torch.argmin(output_values)
+    best_action = successor_actions[best_successor_index]
+    best_action_id = StaticServerData.action_map[best_action]
+    return best_action_id
+
+
+def setup_policy_server(actions, initial, goal, language, model: pl.LightningModule, sas_file,
+                        augment_fn=None, unsolvable_weight: float = 100000.0):
+    StaticServerData.actions = actions
+    StaticServerData.initial = initial
+    StaticServerData.goal = goal
+    StaticServerData.language = language
+    StaticServerData.model = model
+    StaticServerData.augment_fn = augment_fn
+    StaticServerData.unsolvable_weight = unsolvable_weight
+    print("Setting up GNN policy server")
+    objects = language.constants()
+    StaticServerData.obj_encoding = create_object_encoding(objects)
+    parse_sas_file(sas_file, StaticServerData.language, StaticServerData.actions)
+    print("Read variable and action mappings")
+    StaticServerData.static_facts = _collectStaticFacts(StaticServerData.initial, StaticServerData.available_facts, StaticServerData.actions, StaticServerData.language, None)
+    StaticServerData.torch_context_handler = torch.no_grad()
+    StaticServerData.torch_context_handler.__enter__()
+    # TODO shut this down again
+    StaticServerData.device = StaticServerData.model.device
+    # calculate denotation of goal atoms that is equal for every state
+    StaticServerData.goal_denotation = _get_goal_denotation(StaticServerData.goal, StaticServerData.obj_encoding)
+
+
+def get_num_vars():
+    return StaticServerData.num_vars
 

@@ -1,3 +1,5 @@
+import sys
+import os.path
 from sys import argv, stdout
 from pathlib import Path
 from termcolor import colored
@@ -5,7 +7,9 @@ from timeit import default_timer as timer
 import argparse, logging
 import torch
 
-from generators import compute_traces_with_augmented_states, load_pddl_problem_with_augmented_states, serve_policy
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from generators import (compute_traces_with_augmented_states, load_pddl_problem_with_augmented_states, serve_policy,
+                        setup_policy_server, apply_policy_to_state, get_num_vars)
 from architecture import g_model_classes
 
 def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True):
@@ -30,7 +34,8 @@ def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True
 
     return logger
 
-def _parse_arguments(exec_path : Path):
+
+def _parse_arguments(arg_list_override=None):
     default_aggregation = 'max'
     default_debug_level = 0
     default_cycles = 'avoid'
@@ -60,7 +65,8 @@ def _parse_arguments(exec_path : Path):
     parser.add_argument('--registry_key', type=str, default=None, help=f'key into registry (if missing, calculated from domain path)')
     parser.add_argument('--spanner', action='store_true', help='special handling for Spanner problems')
     parser.add_argument('--serve-policy', action='store_true', help='Run as a server')
-    args = parser.parse_args()
+    parser.add_argument('--sas', type=Path, help='sas file')
+    args = parser.parse_args() if arg_list_override is None else parser.parse_args(arg_list_override)
     return args
 
 def _load_model(args):
@@ -95,6 +101,8 @@ def _main(args):
 
     if args.serve_policy:
         return serve_policy(model=model, unsolvable_weight=unsolvable_weight, logger=logger, is_spanner=is_spanner, **pddl_problem)
+    if args.sas:
+        return setup_policy_server(sas_file=args.sas, model=model, unsolvable_weight=unsolvable_weight, **pddl_problem)
 
     action_trace, state_trace, value_trace, is_solution, num_evaluations = compute_traces_with_augmented_states(model=model, cycles=args.cycles, max_trace_length=args.max_length, unsolvable_weight=unsolvable_weight, logger=logger, is_spanner=is_spanner, **pddl_problem)
     elapsed_time = timer() - start_time
@@ -112,6 +120,33 @@ def _main(args):
             logger.info('{}: {} (value change: {:.2f} -> {:.2f} {})'.format(index + 1, action.name, float(value_from), float(value_to), 'D' if float(value_from) > float(value_to) else 'I'))
 
 
+def setup(args_string):
+    arg_list = args_string.split()
+    if '--sas' not in arg_list:
+        print("You need to provide a sas file in order to run the pheromone server")
+        sys.exit(1)
+    args = _parse_arguments(arg_list)
+    # load model
+    use_cpu = args.cpu  # hasattr(args, 'cpu') and args.cpu
+    use_gpu = not use_cpu and torch.cuda.is_available()
+    device = torch.cuda.current_device() if use_gpu else None
+    Model = _load_model(args)
+    model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False).to(device)
+    registry_filename = args.registry_filename if args.augment else None
+    pddl_problem = load_pddl_problem_with_augmented_states(args.domain, args.problem, registry_filename, args.registry_key)
+    del pddl_problem['predicates']  # Why?
+    unsolvable_weight = 0.0 if args.ignore_unsolvable else 100000.0
+    return setup_policy_server(sas_file=args.sas, model=model, unsolvable_weight=unsolvable_weight, **pddl_problem)
+
+
+def get_state_size():
+    return get_num_vars()
+
+
+def apply_policy(state):
+    return apply_policy_to_state(state)
+
+
 if __name__ == "__main__":
     # setup timer and exec name
     entry_time = timer()
@@ -119,7 +154,7 @@ if __name__ == "__main__":
     exec_name = Path(argv[0]).stem
 
     # parse arguments
-    args = _parse_arguments(exec_path)
+    args = _parse_arguments()
 
     # setup logger
     log_path = exec_path
