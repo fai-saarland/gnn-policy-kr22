@@ -129,9 +129,13 @@ def setup(args_string):
     # load model
     use_cpu = args.cpu  # hasattr(args, 'cpu') and args.cpu
     use_gpu = not use_cpu and torch.cuda.is_available()
-    device = torch.cuda.current_device() if use_gpu else None
     Model = _load_model(args)
-    model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False).to(device)
+    if use_gpu:
+        device = torch.cuda.current_device()
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False).to(device)
+    else:
+        device = torch.device('cpu')
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False, map_location=device).to(device)
     registry_filename = args.registry_filename if args.augment else None
     pddl_problem = load_pddl_problem_with_augmented_states(args.domain, args.problem, registry_filename, args.registry_key)
     del pddl_problem['predicates']  # Why?
