@@ -1,0 +1,208 @@
+2022-02-05 16:37:17,313 [INFO] [<module>:122] Call: plan.py --cpu --domain ../Data/pddl/logistics/train/domain.pddl --model lightning_logs/logistics-augmented.max/version_2/checkpoints/epoch=72-step=90154-validation_loss=0.0015222644433379173.ckpt --augment --aggregation max --ignore_unsolvable --debug_level 1 --print_trace --cycles avoid --logfile logistics-augmented-max-v2-90154/probLOGISTICS-4-1.policy --problem ../Data/pddl/logistics/train/probLOGISTICS-4-1.pddl --max_length 1000
+2022-02-05 16:37:17,525 [INFO] [_main:81] Model 'lightning_logs/logistics-augmented.max/version_2/checkpoints/epoch=72-step=90154-validation_loss=0.0015222644433379173.ckpt' loaded in 0.212 second(s)
+2022-02-05 16:37:17,525 [INFO] [_main:83] Loading PDDL files: domain='../Data/pddl/logistics/train/domain.pddl', problem='../Data/pddl/logistics/train/probLOGISTICS-4-1.pddl'
+2022-02-05 16:37:19,725 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'package', 'airport', 'in-city', 'city', 'truck', 'location', 'airplane'}, dynamic={'at', 'in'}
+2022-02-05 16:37:19,726 [INFO] [load_pddl_problem_with_augmented_states:74] Using 'logistics' as registry key into '../DerivedPredicates/registry_rules.json'
+2022-02-05 16:37:19,727 [INFO] [load_pddl_problem_with_augmented_states:105] Extending domain language with predicate 'comp_in_at_incity/2'
+2022-02-05 16:37:19,747 [INFO] [load_pddl_problem_with_augmented_states:102] Extending domain language with predicate 'at@/2'
+2022-02-05 16:37:19,747 [INFO] [load_pddl_problem_with_augmented_states:105] Extending domain language with predicate 'comp_at_incity/2'
+2022-02-05 16:37:19,747 [INFO] [load_pddl_problem_with_augmented_states:102] Extending domain language with predicate 'in@/2'
+2022-02-05 16:37:19,748 [INFO] [load_pddl_problem_with_augmented_states:105] Extending domain language with predicate 'comp_in_at/2'
+2022-02-05 16:37:19,748 [INFO] [load_pddl_problem_with_augmented_states:105] Extending domain language with predicate 'comp_atG_incity/2'
+2022-02-05 16:37:19,748 [INFO] [_main:88] Executing policy (max_length=1000)
+2022-02-05 16:37:19,748 [INFO] [compute_traces_with_augmented_states:444] 15 object(s), obj_encoding={'apn1': 0, 'apt2': 1, 'pos2': 2, 'apt1': 3, 'pos1': 4, 'cit2': 5, 'cit1': 6, 'tru2': 7, 'tru1': 8, 'obj23': 9, 'obj22': 10, 'obj21': 11, 'obj13': 12, 'obj12': 13, 'obj11': 14, 0: 'apn1', 1: 'apt2', 2: 'pos2', 3: 'apt1', 4: 'pos1', 5: 'cit2', 6: 'cit1', 7: 'tru2', 8: 'tru1', 9: 'obj23', 10: 'obj22', 11: 'obj21', 12: 'obj13', 13: 'obj12', 14: 'obj11'}
+2022-02-05 16:37:19,748 [INFO] [policy_search_with_augmented_states:369] goals=(at(obj12,apt2) and at(obj13,apt1) and at(obj21,apt2) and at(obj11,pos2))
+2022-02-05 16:37:20,820 [DEBUG] [policy_search_with_augmented_states:378] initial_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,pos1), at(obj12,pos1), at(obj13,pos1), at(obj21,pos2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,pos2), city(cit1), city(cit2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:20,821 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 2
+2022-02-05 16:37:21,105 [DEBUG] [policy_search_with_augmented_states:412] #actions=9, actions=[load-truck(obj22, tru2, pos2), load-truck(obj21, tru2, pos2), load-truck(obj12, tru1, pos1), load-truck(obj23, tru2, pos2), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, pos2, apt2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:37:23,114 [DEBUG] [policy_search_with_augmented_states:423]      values=[39.627, 39.615, 40.477, 39.625, 40.703, 40.647, 44.701, 40.289, 40.305]
+2022-02-05 16:37:23,114 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:23,114 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj21, tru2, pos2) (index=1)
+
+2022-02-05 16:37:23,115 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,pos1), at(obj12,pos1), at(obj13,pos1), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,pos2), city(cit1), city(cit2), in(obj21,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:23,115 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:23,116 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 3
+2022-02-05 16:37:23,341 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj22, tru2, pos2), load-truck(obj12, tru1, pos1), load-truck(obj23, tru2, pos2), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, pos2, apt2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:37:25,753 [DEBUG] [policy_search_with_augmented_states:423]      values=[35.881, 36.051, 35.880, 36.008, 35.642, 39.883, 35.425, 35.792]
+2022-02-05 16:37:25,754 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:25,754 [DEBUG] [policy_search_with_augmented_states:425] best_action=drive-truck(tru2, pos2, apt2, cit2) (index=6)
+
+2022-02-05 16:37:25,754 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,pos1), at(obj12,pos1), at(obj13,pos1), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in(obj21,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:25,755 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:25,755 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 4
+2022-02-05 16:37:26,117 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj12, tru1, pos1), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), unload-truck(obj21, tru2, apt2), drive-truck(tru1, pos1, apt1, cit1), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:37:28,588 [DEBUG] [policy_search_with_augmented_states:423]      values=[33.662, 33.582, 33.757, 32.872, 36.977, 33.322]
+2022-02-05 16:37:28,589 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:28,589 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-truck(obj21, tru2, apt2) (index=3)
+
+2022-02-05 16:37:28,589 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,pos1), at(obj12,pos1), at(obj13,pos1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:28,589 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:28,590 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 5
+2022-02-05 16:37:28,818 [DEBUG] [policy_search_with_augmented_states:412] #actions=7, actions=[load-truck(obj12, tru1, pos1), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), load-airplane(obj21, apn1, apt2), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:37:30,879 [DEBUG] [policy_search_with_augmented_states:423]      values=[35.442, 35.736, 35.474, 38.585, 39.402, 38.553, 35.123]
+2022-02-05 16:37:30,880 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:30,880 [DEBUG] [policy_search_with_augmented_states:425] best_action=fly-airplane(apn1, apt2, apt1) (index=6)
+
+2022-02-05 16:37:30,880 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,pos1), at(obj12,pos1), at(obj13,pos1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:30,881 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:30,881 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 6
+2022-02-05 16:37:31,193 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj12, tru1, pos1), load-truck(obj21, tru2, apt2), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, apt2, pos2, cit2)]
+2022-02-05 16:37:33,706 [DEBUG] [policy_search_with_augmented_states:423]      values=[32.135, 36.422, 32.153, 32.450, 36.496, 35.862]
+2022-02-05 16:37:33,706 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:33,706 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj12, tru1, pos1) (index=0)
+
+2022-02-05 16:37:33,707 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,pos1), at(obj13,pos1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in(obj12,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:33,707 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:33,708 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 7
+2022-02-05 16:37:33,909 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj21, tru2, apt2), load-truck(obj11, tru1, pos1), load-truck(obj13, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:35,005 [DEBUG] [policy_search_with_augmented_states:423]      values=[35.758, 32.775, 32.554, 36.789, 35.818, 36.278]
+2022-02-05 16:37:35,005 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:35,005 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj13, tru1, pos1) (index=2)
+
+2022-02-05 16:37:35,005 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,pos1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in(obj12,tru1), in(obj13,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:35,006 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:35,006 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 8
+2022-02-05 16:37:35,308 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj21, tru2, apt2), load-truck(obj11, tru1, pos1), unload-truck(obj12, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:37,090 [DEBUG] [policy_search_with_augmented_states:423]      values=[27.702, 24.603, 27.835, 29.405, 27.537, 28.627]
+2022-02-05 16:37:37,090 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:37,090 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj11, tru1, pos1) (index=1)
+
+2022-02-05 16:37:37,091 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,pos1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,tru1), in(obj12,tru1), in(obj13,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:37,091 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:37,092 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 9
+2022-02-05 16:37:37,294 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj21, tru2, apt2), unload-truck(obj12, tru1, pos1), unload-truck(obj13, tru1, pos1), drive-truck(tru1, pos1, apt1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:39,532 [DEBUG] [policy_search_with_augmented_states:423]      values=[28.025, 27.463, 27.777, 23.845, 28.093, 28.660]
+2022-02-05 16:37:39,532 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:39,532 [DEBUG] [policy_search_with_augmented_states:425] best_action=drive-truck(tru1, pos1, apt1, cit1) (index=3)
+
+2022-02-05 16:37:39,533 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,tru1), in(obj12,tru1), in(obj13,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:39,533 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:39,533 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 10
+2022-02-05 16:37:39,846 [DEBUG] [policy_search_with_augmented_states:412] #actions=6, actions=[load-truck(obj21, tru2, apt2), unload-truck(obj11, tru1, apt1), unload-truck(obj12, tru1, apt1), unload-truck(obj13, tru1, apt1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:41,661 [DEBUG] [policy_search_with_augmented_states:423]      values=[28.957, 24.800, 24.771, 24.156, 28.416, 29.314]
+2022-02-05 16:37:41,661 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:41,662 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-truck(obj13, tru1, apt1) (index=3)
+
+2022-02-05 16:37:41,662 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,tru1), in(obj12,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:41,662 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:41,681 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 11
+2022-02-05 16:37:41,899 [DEBUG] [policy_search_with_augmented_states:412] #actions=7, actions=[load-truck(obj21, tru2, apt2), load-airplane(obj13, apn1, apt1), unload-truck(obj11, tru1, apt1), unload-truck(obj12, tru1, apt1), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:44,086 [DEBUG] [policy_search_with_augmented_states:423]      values=[24.871, 25.120, 20.882, 21.221, 25.634, 24.860, 25.690]
+2022-02-05 16:37:44,086 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:44,086 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-truck(obj11, tru1, apt1) (index=2)
+
+2022-02-05 16:37:44,087 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,apt1), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj12,tru1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:44,087 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:44,087 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 12
+2022-02-05 16:37:44,470 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj11, apn1, apt1), load-airplane(obj13, apn1, apt1), unload-truck(obj12, tru1, apt1), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:46,722 [DEBUG] [policy_search_with_augmented_states:423]      values=[21.842, 22.399, 18.712, 21.551, 18.322, 22.393, 21.785, 22.678]
+2022-02-05 16:37:46,722 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:46,722 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-truck(obj12, tru1, apt1) (index=4)
+
+2022-02-05 16:37:46,723 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,apt1), at(obj12,apt1), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:46,723 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:46,723 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 13
+2022-02-05 16:37:47,018 [DEBUG] [policy_search_with_augmented_states:412] #actions=9, actions=[load-truck(obj11, tru1, apt1), load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj12, apn1, apt1), load-airplane(obj11, apn1, apt1), load-airplane(obj13, apn1, apt1), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:48,685 [DEBUG] [policy_search_with_augmented_states:423]      values=[16.600, 16.470, 17.319, 13.212, 13.363, 16.640, 15.704, 15.970, 17.469]
+2022-02-05 16:37:48,685 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:48,685 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-airplane(obj12, apn1, apt1) (index=3)
+
+2022-02-05 16:37:48,686 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj11,apt1), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj12,apn1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:48,686 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:48,686 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 14
+2022-02-05 16:37:48,957 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj11, tru1, apt1), load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj11, apn1, apt1), load-airplane(obj13, apn1, apt1), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:50,987 [DEBUG] [policy_search_with_augmented_states:423]      values=[19.223, 18.285, 19.161, 15.689, 18.436, 18.145, 18.146, 18.262]
+2022-02-05 16:37:50,987 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:50,988 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-airplane(obj11, apn1, apt1) (index=3)
+
+2022-02-05 16:37:50,988 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt1), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,apn1), in(obj12,apn1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:50,988 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:50,989 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 15
+2022-02-05 16:37:51,245 [DEBUG] [policy_search_with_augmented_states:412] #actions=7, actions=[load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj13, apn1, apt1), unload-airplane(obj12, apn1, apt1), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt1, apt2)]
+2022-02-05 16:37:53,278 [DEBUG] [policy_search_with_augmented_states:423]      values=[16.058, 16.928, 16.521, 15.711, 15.536, 15.742, 11.325]
+2022-02-05 16:37:53,278 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:53,278 [DEBUG] [policy_search_with_augmented_states:425] best_action=fly-airplane(apn1, apt1, apt2) (index=6)
+
+2022-02-05 16:37:53,279 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,apn1), in(obj12,apn1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:53,279 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:53,280 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 16
+2022-02-05 16:37:53,556 [DEBUG] [policy_search_with_augmented_states:412] #actions=7, actions=[load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), unload-airplane(obj11, apn1, apt2), unload-airplane(obj12, apn1, apt2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2)]
+2022-02-05 16:37:55,611 [DEBUG] [policy_search_with_augmented_states:423]      values=[15.994, 17.376, 15.851, 12.409, 12.330, 15.976, 15.835]
+2022-02-05 16:37:55,611 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:55,611 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-airplane(obj12, apn1, apt2) (index=4)
+
+2022-02-05 16:37:55,611 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,apn1), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:55,612 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:55,612 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 17
+2022-02-05 16:37:55,958 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj12, tru2, apt2), load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), unload-airplane(obj11, apn1, apt2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:37:58,150 [DEBUG] [policy_search_with_augmented_states:423]      values=[13.717, 13.717, 15.043, 13.741, 9.635, 13.539, 13.689, 14.069]
+2022-02-05 16:37:58,150 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:37:58,150 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-airplane(obj11, apn1, apt2) (index=4)
+
+2022-02-05 16:37:58,150 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:37:58,151 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:37:58,151 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 18
+2022-02-05 16:37:58,504 [DEBUG] [policy_search_with_augmented_states:412] #actions=9, actions=[load-truck(obj12, tru2, apt2), load-truck(obj21, tru2, apt2), load-truck(obj11, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), load-airplane(obj12, apn1, apt2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:38:00,618 [DEBUG] [policy_search_with_augmented_states:423]      values=[8.975, 8.975, 5.957, 10.037, 9.374, 9.375, 8.137, 8.766, 9.734]
+2022-02-05 16:38:00,618 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:38:00,618 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj11, tru2, apt2) (index=2)
+
+2022-02-05 16:38:00,619 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,apt2), city(cit1), city(cit2), in(obj11,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:38:00,619 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:38:00,619 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 19
+2022-02-05 16:38:00,941 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj12, tru2, apt2), load-truck(obj21, tru2, apt2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), load-airplane(obj12, apn1, apt2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, apt2, pos2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:38:02,904 [DEBUG] [policy_search_with_augmented_states:423]      values=[10.764, 10.762, 11.756, 10.949, 10.947, 10.103, 4.950, 11.005]
+2022-02-05 16:38:02,904 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:38:02,904 [DEBUG] [policy_search_with_augmented_states:425] best_action=drive-truck(tru2, apt2, pos2, cit2) (index=6)
+
+2022-02-05 16:38:02,905 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(obj23,pos2), at(tru1,apt1), at(tru2,pos2), city(cit1), city(cit2), in(obj11,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:38:02,905 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:38:02,905 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 20
+2022-02-05 16:38:03,149 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj22, tru2, pos2), load-truck(obj23, tru2, pos2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), load-airplane(obj12, apn1, apt2), unload-truck(obj11, tru2, pos2), drive-truck(tru1, apt1, pos1, cit1), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:38:05,081 [DEBUG] [policy_search_with_augmented_states:423]      values=[5.336, 5.335, 10.630, 9.465, 9.465, 7.610, 8.435, 9.668]
+2022-02-05 16:38:05,081 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:38:05,081 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj23, tru2, pos2) (index=1)
+
+2022-02-05 16:38:05,082 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(obj22,pos2), at(tru1,apt1), at(tru2,pos2), city(cit1), city(cit2), in(obj11,tru2), in(obj23,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:38:05,082 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:38:05,082 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 21
+2022-02-05 16:38:05,297 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj22, tru2, pos2), load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), load-airplane(obj12, apn1, apt2), unload-truck(obj11, tru2, pos2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, pos2, apt2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:38:06,808 [DEBUG] [policy_search_with_augmented_states:423]      values=[4.032, 8.561, 7.065, 7.059, 5.452, 5.941, 7.658, 6.972]
+2022-02-05 16:38:06,808 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:38:06,808 [DEBUG] [policy_search_with_augmented_states:425] best_action=load-truck(obj22, tru2, pos2) (index=0)
+
+2022-02-05 16:38:06,809 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(tru1,apt1), at(tru2,pos2), city(cit1), city(cit2), in(obj11,tru2), in(obj22,tru2), in(obj23,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:38:06,809 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:38:06,809 [DEBUG] [policy_search_with_augmented_states:388] **** STEP 22
+2022-02-05 16:38:07,069 [DEBUG] [policy_search_with_augmented_states:412] #actions=8, actions=[load-truck(obj13, tru1, apt1), load-airplane(obj21, apn1, apt2), load-airplane(obj12, apn1, apt2), unload-truck(obj23, tru2, pos2), unload-truck(obj11, tru2, pos2), drive-truck(tru1, apt1, pos1, cit1), drive-truck(tru2, pos2, apt2, cit2), fly-airplane(apn1, apt2, apt1)]
+2022-02-05 16:38:09,315 [DEBUG] [policy_search_with_augmented_states:423]      values=[5.255, 4.026, 4.039, 5.558, 2.543, 2.739, 3.702, 3.947]
+2022-02-05 16:38:09,316 [DEBUG] [policy_search_with_augmented_states:424]   solvables=[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]
+2022-02-05 16:38:09,316 [DEBUG] [policy_search_with_augmented_states:425] best_action=unload-truck(obj11, tru2, pos2) (index=4)
+
+2022-02-05 16:38:09,316 [DEBUG] [policy_search_with_augmented_states:434] current_state=Model[airplane(apn1), airport(apt1), airport(apt2), at(apn1,apt2), at(obj11,pos2), at(obj12,apt2), at(obj13,apt1), at(obj21,apt2), at(tru1,apt1), at(tru2,pos2), city(cit1), city(cit2), in(obj22,tru2), in(obj23,tru2), in-city(apt1,cit1), in-city(apt2,cit2), in-city(pos1,cit1), in-city(pos2,cit2), location(apt1), location(apt2), location(pos1), location(pos2), package(obj11), package(obj12), package(obj13), package(obj21), package(obj22), package(obj23), truck(tru1), truck(tru2)]
+2022-02-05 16:38:09,316 [DEBUG] [policy_search_with_augmented_states:435] 
+2022-02-05 16:38:09,317 [DEBUG] [policy_search_with_augmented_states:438] status=1
+2022-02-05 16:38:09,317 [INFO] [_main:94] 21 executed action(s) and 156 state evaluations(s) in 49.569 second(s)
+2022-02-05 16:38:09,318 [INFO] [_main:97] [1m[32mFound valid plan with 21 action(s) for ../Data/pddl/logistics/train/probLOGISTICS-4-1.pddl[0m
+2022-02-05 16:38:09,318 [INFO] [_main:105] 1: load-truck(obj21, tru2, pos2) (value change: 41.18 -> 39.62)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 2: drive-truck(tru2, pos2, apt2, cit2) (value change: 39.62 -> 35.43)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 3: unload-truck(obj21, tru2, apt2) (value change: 35.43 -> 32.87)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 4: fly-airplane(apn1, apt2, apt1) (value change: 32.87 -> 35.12)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 5: load-truck(obj12, tru1, pos1) (value change: 35.12 -> 32.14)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 6: load-truck(obj13, tru1, pos1) (value change: 32.14 -> 32.55)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 7: load-truck(obj11, tru1, pos1) (value change: 32.55 -> 24.60)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 8: drive-truck(tru1, pos1, apt1, cit1) (value change: 24.60 -> 23.85)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 9: unload-truck(obj13, tru1, apt1) (value change: 23.85 -> 24.16)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 10: unload-truck(obj11, tru1, apt1) (value change: 24.16 -> 20.88)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 11: unload-truck(obj12, tru1, apt1) (value change: 20.88 -> 18.32)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 12: load-airplane(obj12, apn1, apt1) (value change: 18.32 -> 13.21)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 13: load-airplane(obj11, apn1, apt1) (value change: 13.21 -> 15.69)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 14: fly-airplane(apn1, apt1, apt2) (value change: 15.69 -> 11.32)
+2022-02-05 16:38:09,318 [INFO] [_main:105] 15: unload-airplane(obj12, apn1, apt2) (value change: 11.32 -> 12.33)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 16: unload-airplane(obj11, apn1, apt2) (value change: 12.33 -> 9.64)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 17: load-truck(obj11, tru2, apt2) (value change: 9.64 -> 5.96)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 18: drive-truck(tru2, apt2, pos2, cit2) (value change: 5.96 -> 4.95)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 19: load-truck(obj23, tru2, pos2) (value change: 4.95 -> 5.34)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 20: load-truck(obj22, tru2, pos2) (value change: 5.34 -> 4.03)
+2022-02-05 16:38:09,319 [INFO] [_main:105] 21: unload-truck(obj11, tru2, pos2) (value change: 4.03 -> 2.54)
+2022-02-05 16:38:09,355 [INFO] [<module>:129] All tasks completed in 52.044 second(s)

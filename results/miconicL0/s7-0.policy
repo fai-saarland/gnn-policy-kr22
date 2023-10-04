@@ -1,0 +1,33 @@
+2022-02-06 22:56:54,230 [INFO] [<module>:120] Call: plan.py --model lightning_logs/selfsupervised_optimal/miconic/checkpoints/epoch=73-step=29451-validation_loss=0.0033254995942115784.ckpt --cpu --ignore_unsolvable --domain ../Data/pddl/miconic/test/domain.pddl --print_trace --problem ../Data/pddl/miconic/test/s7-0.pddl
+2022-02-06 22:56:54,284 [INFO] [_main:79] Model 'lightning_logs/selfsupervised_optimal/miconic/checkpoints/epoch=73-step=29451-validation_loss=0.0033254995942115784.ckpt' loaded in 0.054 second(s)
+2022-02-06 22:56:54,285 [INFO] [_main:81] Loading PDDL files: domain='../Data/pddl/miconic/test/domain.pddl', problem='../Data/pddl/miconic/test/s7-0.pddl'
+2022-02-06 22:56:54,537 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'passenger', 'destin', 'floor', 'above'}, dynamic={'lift-at', 'served', 'boarded', 'origin'}
+2022-02-06 22:56:54,538 [INFO] [_main:86] Executing policy (max_length=500)
+2022-02-06 22:56:54,539 [INFO] [compute_traces_with_augmented_states:425] 21 object(s), obj_encoding={'p0': 0, 'p1': 1, 'p2': 2, 'p3': 3, 'p4': 4, 'p5': 5, 'p6': 6, 'f0': 7, 'f1': 8, 'f2': 9, 'f3': 10, 'f4': 11, 'f5': 12, 'f6': 13, 'f7': 14, 'f8': 15, 'f9': 16, 'f10': 17, 'f11': 18, 'f12': 19, 'f13': 20, 0: 'p0', 1: 'p1', 2: 'p2', 3: 'p3', 4: 'p4', 5: 'p5', 6: 'p6', 7: 'f0', 8: 'f1', 9: 'f2', 10: 'f3', 11: 'f4', 12: 'f5', 13: 'f6', 14: 'f7', 15: 'f8', 16: 'f9', 17: 'f10', 18: 'f11', 19: 'f12', 20: 'f13'}
+2022-02-06 22:56:54,539 [INFO] [policy_search_with_augmented_states:361] goals=(served(p0) and served(p1) and served(p2) and served(p3) and served(p4) and served(p5) and served(p6))
+2022-02-06 22:56:57,511 [INFO] [_main:92] 23 executed action(s) and 311 state evaluations(s) in 2.972 second(s)
+2022-02-06 22:56:57,512 [INFO] [_main:95] [1m[32mFound valid plan for ../Data/pddl/miconic/test/s7-0.pddl[0m
+2022-02-06 22:56:57,512 [INFO] [_main:103] 1: up(f0, f1) (value change: 27.71 -> 23.38 D)
+2022-02-06 22:56:57,512 [INFO] [_main:103] 2: board(f1, p2) (value change: 23.38 -> 22.38 D)
+2022-02-06 22:56:57,513 [INFO] [_main:103] 3: board(f1, p4) (value change: 22.38 -> 21.38 D)
+2022-02-06 22:56:57,513 [INFO] [_main:103] 4: board(f1, p0) (value change: 21.38 -> 20.38 D)
+2022-02-06 22:56:57,513 [INFO] [_main:103] 5: up(f1, f6) (value change: 20.38 -> 19.39 D)
+2022-02-06 22:56:57,513 [INFO] [_main:103] 6: board(f6, p6) (value change: 19.39 -> 18.38 D)
+2022-02-06 22:56:57,514 [INFO] [_main:103] 7: down(f6, f4) (value change: 18.38 -> 17.38 D)
+2022-02-06 22:56:57,514 [INFO] [_main:103] 8: depart(f4, p0) (value change: 17.38 -> 16.37 D)
+2022-02-06 22:56:57,515 [INFO] [_main:103] 9: up(f4, f9) (value change: 16.37 -> 15.37 D)
+2022-02-06 22:56:57,515 [INFO] [_main:103] 10: board(f9, p1) (value change: 15.37 -> 14.38 D)
+2022-02-06 22:56:57,515 [INFO] [_main:103] 11: up(f9, f10) (value change: 14.38 -> 13.39 D)
+2022-02-06 22:56:57,516 [INFO] [_main:103] 12: board(f10, p3) (value change: 13.39 -> 12.38 D)
+2022-02-06 22:56:57,516 [INFO] [_main:103] 13: down(f10, f2) (value change: 12.38 -> 11.36 D)
+2022-02-06 22:56:57,516 [INFO] [_main:103] 14: board(f2, p5) (value change: 11.36 -> 10.36 D)
+2022-02-06 22:56:57,516 [INFO] [_main:103] 15: depart(f2, p3) (value change: 10.36 -> 9.72 D)
+2022-02-06 22:56:57,517 [INFO] [_main:103] 16: up(f2, f11) (value change: 9.72 -> 8.67 D)
+2022-02-06 22:56:57,517 [INFO] [_main:103] 17: depart(f11, p6) (value change: 8.67 -> 7.63 D)
+2022-02-06 22:56:57,517 [INFO] [_main:103] 18: down(f11, f3) (value change: 7.63 -> 6.58 D)
+2022-02-06 22:56:57,517 [INFO] [_main:103] 19: depart(f3, p4) (value change: 6.58 -> 5.53 D)
+2022-02-06 22:56:57,517 [INFO] [_main:103] 20: depart(f3, p2) (value change: 5.53 -> 4.49 D)
+2022-02-06 22:56:57,518 [INFO] [_main:103] 21: up(f3, f5) (value change: 4.49 -> 3.44 D)
+2022-02-06 22:56:57,518 [INFO] [_main:103] 22: depart(f5, p5) (value change: 3.44 -> 2.40 D)
+2022-02-06 22:56:57,518 [INFO] [_main:103] 23: depart(f5, p1) (value change: 2.40 -> 0.40 D)
+2022-02-06 22:56:57,519 [INFO] [<module>:127] All tasks completed in 3.291 second(s)

@@ -1,0 +1,26 @@
+2023-09-07 12:49:46,546 [INFO] [<module>:116] Call: plan_multiple.py --domains blocks gripper --cycles=detect
+2023-09-07 12:49:46,557 [INFO] [_main:57] Model '../lightning_logs/gripper/version_0/checkpoints/epoch=15-step=576-validation_loss=0.007350483909249306.ckpt' loaded in 0.010 second(s)
+2023-09-07 12:49:46,557 [INFO] [_main:59] Loading PDDL files: domain='../data/pddl/gripper/test/domain.pddl', problem='../data/pddl/gripper/test/prob09.pddl'
+2023-09-07 12:49:46,663 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'gripper', 'ball', 'room'}, dynamic={'carry', 'at-robby', 'at', 'free'}
+2023-09-07 12:49:46,663 [INFO] [_main:64] Executing policy (max_length=500)
+2023-09-07 12:49:46,663 [INFO] [compute_traces_with_augmented_states:444] 24 object(s), obj_encoding={'rooma': 0, 'roomb': 1, 'ball20': 2, 'ball19': 3, 'ball18': 4, 'ball17': 5, 'ball16': 6, 'ball15': 7, 'ball14': 8, 'ball13': 9, 'ball12': 10, 'ball11': 11, 'ball10': 12, 'ball9': 13, 'ball8': 14, 'ball7': 15, 'ball6': 16, 'ball5': 17, 'ball4': 18, 'ball3': 19, 'ball2': 20, 'ball1': 21, 'left': 22, 'right': 23, 0: 'rooma', 1: 'roomb', 2: 'ball20', 3: 'ball19', 4: 'ball18', 5: 'ball17', 6: 'ball16', 7: 'ball15', 8: 'ball14', 9: 'ball13', 10: 'ball12', 11: 'ball11', 12: 'ball10', 13: 'ball9', 14: 'ball8', 15: 'ball7', 16: 'ball6', 17: 'ball5', 18: 'ball4', 19: 'ball3', 20: 'ball2', 21: 'ball1', 22: 'left', 23: 'right'}
+2023-09-07 12:49:46,664 [INFO] [policy_search_with_augmented_states:369] goals=(at(ball20,roomb) and at(ball19,roomb) and at(ball18,roomb) and at(ball17,roomb) and at(ball16,roomb) and at(ball15,roomb) and at(ball14,roomb) and at(ball13,roomb) and at(ball12,roomb) and at(ball11,roomb) and at(ball10,roomb) and at(ball9,roomb) and at(ball8,roomb) and at(ball7,roomb) and at(ball6,roomb) and at(ball5,roomb) and at(ball4,roomb) and at(ball3,roomb) and at(ball2,roomb) and at(ball1,roomb))
+2023-09-07 12:49:46,789 [INFO] [policy_search_with_augmented_states:385] [35mCycle detected after last action 'move(roomb, roomb)'[0m
+2023-09-07 12:49:46,789 [INFO] [_main:70] 2 executed action(s) and 45 state evaluations(s) in 0.125 second(s)
+2023-09-07 12:49:46,789 [INFO] [_main:75] [1m[31mFailed to find a plan for ../data/pddl/gripper/test/prob09.pddl[0m
+2023-09-07 12:49:46,789 [INFO] [_main:81] 1: move(rooma, roomb) (value change: 90.10 -> 73.43 D)
+2023-09-07 12:49:46,789 [INFO] [_main:81] 2: move(roomb, roomb) (value change: 73.43 -> 80.10 I)
+2023-09-07 12:49:46,789 [INFO] [<module>:123] All tasks completed in 18.322 second(s)
+2023-09-08 08:56:52,148 [INFO] [<module>:116] Call: plan_multiple.py --domains blocks gripper delivery --cycles detect
+2023-09-08 08:56:52,158 [INFO] [_main:57] Model '../lightning_logs/gripper/version_0/checkpoints/epoch=10-step=396-validation_loss=0.018513213843107224.ckpt' loaded in 0.010 second(s)
+2023-09-08 08:56:52,158 [INFO] [_main:59] Loading PDDL files: domain='../data/pddl/gripper/test/domain.pddl', problem='../data/pddl/gripper/test/prob09.pddl'
+2023-09-08 08:56:52,252 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'ball', 'room', 'gripper'}, dynamic={'at', 'free', 'carry', 'at-robby'}
+2023-09-08 08:56:52,252 [INFO] [_main:64] Executing policy (max_length=500)
+2023-09-08 08:56:52,252 [INFO] [compute_traces_with_augmented_states:444] 24 object(s), obj_encoding={'rooma': 0, 'roomb': 1, 'ball20': 2, 'ball19': 3, 'ball18': 4, 'ball17': 5, 'ball16': 6, 'ball15': 7, 'ball14': 8, 'ball13': 9, 'ball12': 10, 'ball11': 11, 'ball10': 12, 'ball9': 13, 'ball8': 14, 'ball7': 15, 'ball6': 16, 'ball5': 17, 'ball4': 18, 'ball3': 19, 'ball2': 20, 'ball1': 21, 'left': 22, 'right': 23, 0: 'rooma', 1: 'roomb', 2: 'ball20', 3: 'ball19', 4: 'ball18', 5: 'ball17', 6: 'ball16', 7: 'ball15', 8: 'ball14', 9: 'ball13', 10: 'ball12', 11: 'ball11', 12: 'ball10', 13: 'ball9', 14: 'ball8', 15: 'ball7', 16: 'ball6', 17: 'ball5', 18: 'ball4', 19: 'ball3', 20: 'ball2', 21: 'ball1', 22: 'left', 23: 'right'}
+2023-09-08 08:56:52,252 [INFO] [policy_search_with_augmented_states:369] goals=(at(ball20,roomb) and at(ball19,roomb) and at(ball18,roomb) and at(ball17,roomb) and at(ball16,roomb) and at(ball15,roomb) and at(ball14,roomb) and at(ball13,roomb) and at(ball12,roomb) and at(ball11,roomb) and at(ball10,roomb) and at(ball9,roomb) and at(ball8,roomb) and at(ball7,roomb) and at(ball6,roomb) and at(ball5,roomb) and at(ball4,roomb) and at(ball3,roomb) and at(ball2,roomb) and at(ball1,roomb))
+2023-09-08 08:56:52,374 [INFO] [policy_search_with_augmented_states:385] [35mCycle detected after last action 'move(roomb, roomb)'[0m
+2023-09-08 08:56:52,374 [INFO] [_main:70] 2 executed action(s) and 45 state evaluations(s) in 0.122 second(s)
+2023-09-08 08:56:52,374 [INFO] [_main:75] [1m[31mFailed to find a plan for ../data/pddl/gripper/test/prob09.pddl[0m
+2023-09-08 08:56:52,374 [INFO] [_main:81] 1: move(rooma, roomb) (value change: 85.07 -> 76.65 D)
+2023-09-08 08:56:52,374 [INFO] [_main:81] 2: move(roomb, roomb) (value change: 76.65 -> 77.49 I)
+2023-09-08 08:56:52,375 [INFO] [<module>:123] All tasks completed in 17.269 second(s)

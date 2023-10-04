@@ -1,0 +1,19 @@
+2022-01-31 15:59:17,316 [INFO] [<module>:113] Call: plan.py --cpu --ignore_unsolvable --domain ../Data/pddl/delivery/test/domain.pddl --problem ../Data/pddl/delivery/test/instance_7_2_1.pddl --model ../Models/delivery/checkpoints/epoch=27-step=120847.ckpt --print_trace
+2022-01-31 15:59:17,361 [INFO] [_main:74] Model '../Models/delivery/checkpoints/epoch=27-step=120847.ckpt' loaded in 0.044 second(s)
+2022-01-31 15:59:17,361 [INFO] [_main:76] Loading PDDL files: domain='../Data/pddl/delivery/test/domain.pddl', problem='../Data/pddl/delivery/test/instance_7_2_1.pddl'
+2022-01-31 15:59:17,576 [INFO] [_main:80] Executing policy (max_length=500)
+2022-01-31 15:59:17,577 [INFO] [compute_traces:391] #objects=52
+2022-01-31 15:59:18,459 [INFO] [_main:85] 11 executed action(s) and 42 state evaluations(s) in 0.883 second(s)
+2022-01-31 15:59:18,460 [INFO] [_main:88] [1m[32mFound valid plan for ../Data/pddl/delivery/test/instance_7_2_1.pddl[0m
+2022-01-31 15:59:18,460 [INFO] [_main:96] 1: move(t1, c_1_2, c_0_2) (value change: 18.05 -> 16.10)
+2022-01-31 15:59:18,461 [INFO] [_main:96] 2: pick-package(t1, p1, c_0_2) (value change: 16.10 -> 13.34)
+2022-01-31 15:59:18,461 [INFO] [_main:96] 3: move(t1, c_0_2, c_1_2) (value change: 13.34 -> 11.76)
+2022-01-31 15:59:18,461 [INFO] [_main:96] 4: move(t1, c_1_2, c_2_2) (value change: 11.76 -> 10.34)
+2022-01-31 15:59:18,461 [INFO] [_main:96] 5: drop-package(t1, p1, c_2_2) (value change: 10.34 -> 8.99)
+2022-01-31 15:59:18,461 [INFO] [_main:96] 6: move(t1, c_2_2, c_3_2) (value change: 8.99 -> 6.96)
+2022-01-31 15:59:18,462 [INFO] [_main:96] 7: move(t1, c_3_2, c_3_3) (value change: 6.96 -> 5.43)
+2022-01-31 15:59:18,462 [INFO] [_main:96] 8: pick-package(t1, p2, c_3_3) (value change: 5.43 -> 3.44)
+2022-01-31 15:59:18,462 [INFO] [_main:96] 9: move(t1, c_3_3, c_3_2) (value change: 3.44 -> 1.91)
+2022-01-31 15:59:18,462 [INFO] [_main:96] 10: move(t1, c_3_2, c_2_2) (value change: 1.91 -> 0.76)
+2022-01-31 15:59:18,462 [INFO] [_main:96] 11: drop-package(t1, p2, c_2_2) (value change: 0.76 -> 0.00)
+2022-01-31 15:59:18,464 [INFO] [<module>:120] All tasks completed in 1.149 second(s)

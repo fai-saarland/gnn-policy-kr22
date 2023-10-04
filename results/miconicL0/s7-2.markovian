@@ -1,0 +1,32 @@
+2022-02-07 19:09:14,424 [INFO] [<module>:122] Call: plan.py --cpu --ignore_unsolvable --print_trace --cycles detect --domain ../Data/pddl/miconic/test/domain.pddl --problem ../Data/pddl/miconic/test/s7-2.pddl --model lightning_logs/selfsupervised_optimal/miconic/checkpoints/epoch=73-step=29451-validation_loss=0.0033254995942115784.ckpt
+2022-02-07 19:09:14,473 [INFO] [_main:81] Model 'lightning_logs/selfsupervised_optimal/miconic/checkpoints/epoch=73-step=29451-validation_loss=0.0033254995942115784.ckpt' loaded in 0.048 second(s)
+2022-02-07 19:09:14,473 [INFO] [_main:83] Loading PDDL files: domain='../Data/pddl/miconic/test/domain.pddl', problem='../Data/pddl/miconic/test/s7-2.pddl'
+2022-02-07 19:09:14,701 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'destin', 'passenger', 'floor', 'above'}, dynamic={'served', 'lift-at', 'boarded', 'origin'}
+2022-02-07 19:09:14,702 [INFO] [_main:88] Executing policy (max_length=500)
+2022-02-07 19:09:14,702 [INFO] [compute_traces_with_augmented_states:444] 21 object(s), obj_encoding={'p0': 0, 'p1': 1, 'p2': 2, 'p3': 3, 'p4': 4, 'p5': 5, 'p6': 6, 'f0': 7, 'f1': 8, 'f2': 9, 'f3': 10, 'f4': 11, 'f5': 12, 'f6': 13, 'f7': 14, 'f8': 15, 'f9': 16, 'f10': 17, 'f11': 18, 'f12': 19, 'f13': 20, 0: 'p0', 1: 'p1', 2: 'p2', 3: 'p3', 4: 'p4', 5: 'p5', 6: 'p6', 7: 'f0', 8: 'f1', 9: 'f2', 10: 'f3', 11: 'f4', 12: 'f5', 13: 'f6', 14: 'f7', 15: 'f8', 16: 'f9', 17: 'f10', 18: 'f11', 19: 'f12', 20: 'f13'}
+2022-02-07 19:09:14,703 [INFO] [policy_search_with_augmented_states:369] goals=(served(p0) and served(p1) and served(p2) and served(p3) and served(p4) and served(p5) and served(p6))
+2022-02-07 19:09:17,078 [INFO] [_main:94] 22 executed action(s) and 309 state evaluations(s) in 2.376 second(s)
+2022-02-07 19:09:17,078 [INFO] [_main:97] [1m[32mFound valid plan with 22 action(s) for ../Data/pddl/miconic/test/s7-2.pddl[0m
+2022-02-07 19:09:17,079 [INFO] [_main:105] 1: board(f0, p1) (value change: 26.59 -> 22.38 D)
+2022-02-07 19:09:17,079 [INFO] [_main:105] 2: up(f0, f1) (value change: 22.38 -> 21.39 D)
+2022-02-07 19:09:17,079 [INFO] [_main:105] 3: board(f1, p4) (value change: 21.39 -> 20.38 D)
+2022-02-07 19:09:17,080 [INFO] [_main:105] 4: up(f1, f7) (value change: 20.38 -> 19.38 D)
+2022-02-07 19:09:17,080 [INFO] [_main:105] 5: depart(f7, p4) (value change: 19.38 -> 18.38 D)
+2022-02-07 19:09:17,080 [INFO] [_main:105] 6: up(f7, f13) (value change: 18.38 -> 17.38 D)
+2022-02-07 19:09:17,080 [INFO] [_main:105] 7: board(f13, p2) (value change: 17.38 -> 16.34 D)
+2022-02-07 19:09:17,081 [INFO] [_main:105] 8: board(f13, p6) (value change: 16.34 -> 15.35 D)
+2022-02-07 19:09:17,081 [INFO] [_main:105] 9: down(f13, f6) (value change: 15.35 -> 14.35 D)
+2022-02-07 19:09:17,081 [INFO] [_main:105] 10: depart(f6, p6) (value change: 14.35 -> 13.35 D)
+2022-02-07 19:09:17,082 [INFO] [_main:105] 11: down(f6, f2) (value change: 13.35 -> 12.35 D)
+2022-02-07 19:09:17,082 [INFO] [_main:105] 12: board(f2, p3) (value change: 12.35 -> 11.35 D)
+2022-02-07 19:09:17,082 [INFO] [_main:105] 13: depart(f2, p2) (value change: 11.35 -> 10.37 D)
+2022-02-07 19:09:17,082 [INFO] [_main:105] 14: board(f2, p5) (value change: 10.37 -> 9.37 D)
+2022-02-07 19:09:17,083 [INFO] [_main:105] 15: depart(f2, p1) (value change: 9.37 -> 8.36 D)
+2022-02-07 19:09:17,083 [INFO] [_main:105] 16: up(f2, f4) (value change: 8.36 -> 7.36 D)
+2022-02-07 19:09:17,083 [INFO] [_main:105] 17: depart(f4, p3) (value change: 7.36 -> 6.36 D)
+2022-02-07 19:09:17,083 [INFO] [_main:105] 18: up(f4, f9) (value change: 6.36 -> 5.35 D)
+2022-02-07 19:09:17,083 [INFO] [_main:105] 19: board(f9, p0) (value change: 5.35 -> 4.35 D)
+2022-02-07 19:09:17,084 [INFO] [_main:105] 20: depart(f9, p5) (value change: 4.35 -> 3.45 D)
+2022-02-07 19:09:17,084 [INFO] [_main:105] 21: down(f9, f8) (value change: 3.45 -> 2.39 D)
+2022-02-07 19:09:17,084 [INFO] [_main:105] 22: depart(f8, p0) (value change: 2.39 -> 0.39 D)
+2022-02-07 19:09:17,085 [INFO] [<module>:129] All tasks completed in 2.662 second(s)

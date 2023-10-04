@@ -1,0 +1,26 @@
+2023-09-07 12:50:22,083 [INFO] [<module>:116] Call: plan_multiple.py --domains blocks gripper
+2023-09-07 12:50:22,094 [INFO] [_main:57] Model '../lightning_logs/gripper/version_0/checkpoints/epoch=15-step=576-validation_loss=0.007350483909249306.ckpt' loaded in 0.011 second(s)
+2023-09-07 12:50:22,094 [INFO] [_main:59] Loading PDDL files: domain='../data/pddl/gripper/test/domain.pddl', problem='../data/pddl/gripper/test/prob05.pddl'
+2023-09-07 12:50:22,168 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'room', 'gripper', 'ball'}, dynamic={'at-robby', 'at', 'free', 'carry'}
+2023-09-07 12:50:22,168 [INFO] [_main:64] Executing policy (max_length=500)
+2023-09-07 12:50:22,168 [INFO] [compute_traces_with_augmented_states:444] 16 object(s), obj_encoding={'rooma': 0, 'roomb': 1, 'ball12': 2, 'ball11': 3, 'ball10': 4, 'ball9': 5, 'ball8': 6, 'ball7': 7, 'ball6': 8, 'ball5': 9, 'ball4': 10, 'ball3': 11, 'ball2': 12, 'ball1': 13, 'left': 14, 'right': 15, 0: 'rooma', 1: 'roomb', 2: 'ball12', 3: 'ball11', 4: 'ball10', 5: 'ball9', 6: 'ball8', 7: 'ball7', 8: 'ball6', 9: 'ball5', 10: 'ball4', 11: 'ball3', 12: 'ball2', 13: 'ball1', 14: 'left', 15: 'right'}
+2023-09-07 12:50:22,168 [INFO] [policy_search_with_augmented_states:369] goals=(at(ball12,roomb) and at(ball11,roomb) and at(ball10,roomb) and at(ball9,roomb) and at(ball8,roomb) and at(ball7,roomb) and at(ball6,roomb) and at(ball5,roomb) and at(ball4,roomb) and at(ball3,roomb) and at(ball2,roomb) and at(ball1,roomb))
+2023-09-07 12:50:22,239 [INFO] [policy_search_with_augmented_states:406] No applicable action that yields unvisited state for current_state=Model[at(ball1,rooma), at(ball10,rooma), at(ball11,rooma), at(ball12,rooma), at(ball2,rooma), at(ball3,rooma), at(ball4,rooma), at(ball5,rooma), at(ball6,rooma), at(ball7,rooma), at(ball8,rooma), at(ball9,rooma), at-robby(roomb), ball(ball1), ball(ball10), ball(ball11), ball(ball12), ball(ball2), ball(ball3), ball(ball4), ball(ball5), ball(ball6), ball(ball7), ball(ball8), ball(ball9), free(left), free(right), gripper(left), gripper(right), room(rooma), room(roomb)]
+2023-09-07 12:50:22,241 [INFO] [policy_search_with_augmented_states:407] Applicable actions = [move(roomb, roomb), move(roomb, rooma)]
+2023-09-07 12:50:22,241 [INFO] [_main:70] 1 executed action(s) and 26 state evaluations(s) in 0.073 second(s)
+2023-09-07 12:50:22,241 [INFO] [_main:75] [1m[31mFailed to find a plan for ../data/pddl/gripper/test/prob05.pddl[0m
+2023-09-07 12:50:22,241 [INFO] [_main:81] 1: move(rooma, roomb) (value change: 55.02 -> 45.89 D)
+2023-09-07 12:50:22,241 [INFO] [<module>:123] All tasks completed in 26.952 second(s)
+2023-09-08 08:52:31,611 [INFO] [<module>:116] Call: plan_multiple.py --domains blocks gripper delivery
+2023-09-08 08:52:31,622 [INFO] [_main:57] Model '../lightning_logs/gripper/version_0/checkpoints/epoch=10-step=396-validation_loss=0.018513213843107224.ckpt' loaded in 0.011 second(s)
+2023-09-08 08:52:31,622 [INFO] [_main:59] Loading PDDL files: domain='../data/pddl/gripper/test/domain.pddl', problem='../data/pddl/gripper/test/prob05.pddl'
+2023-09-08 08:52:31,694 [INFO] [load_pddl_problem_with_augmented_states:60] Predicates: static={'room', 'gripper', 'ball'}, dynamic={'at', 'at-robby', 'carry', 'free'}
+2023-09-08 08:52:31,694 [INFO] [_main:64] Executing policy (max_length=500)
+2023-09-08 08:52:31,695 [INFO] [compute_traces_with_augmented_states:444] 16 object(s), obj_encoding={'rooma': 0, 'roomb': 1, 'ball12': 2, 'ball11': 3, 'ball10': 4, 'ball9': 5, 'ball8': 6, 'ball7': 7, 'ball6': 8, 'ball5': 9, 'ball4': 10, 'ball3': 11, 'ball2': 12, 'ball1': 13, 'left': 14, 'right': 15, 0: 'rooma', 1: 'roomb', 2: 'ball12', 3: 'ball11', 4: 'ball10', 5: 'ball9', 6: 'ball8', 7: 'ball7', 8: 'ball6', 9: 'ball5', 10: 'ball4', 11: 'ball3', 12: 'ball2', 13: 'ball1', 14: 'left', 15: 'right'}
+2023-09-08 08:52:31,695 [INFO] [policy_search_with_augmented_states:369] goals=(at(ball12,roomb) and at(ball11,roomb) and at(ball10,roomb) and at(ball9,roomb) and at(ball8,roomb) and at(ball7,roomb) and at(ball6,roomb) and at(ball5,roomb) and at(ball4,roomb) and at(ball3,roomb) and at(ball2,roomb) and at(ball1,roomb))
+2023-09-08 08:52:31,761 [INFO] [policy_search_with_augmented_states:406] No applicable action that yields unvisited state for current_state=Model[at(ball1,rooma), at(ball10,rooma), at(ball11,rooma), at(ball12,rooma), at(ball2,rooma), at(ball3,rooma), at(ball4,rooma), at(ball5,rooma), at(ball6,rooma), at(ball7,rooma), at(ball8,rooma), at(ball9,rooma), at-robby(roomb), ball(ball1), ball(ball10), ball(ball11), ball(ball12), ball(ball2), ball(ball3), ball(ball4), ball(ball5), ball(ball6), ball(ball7), ball(ball8), ball(ball9), free(left), free(right), gripper(left), gripper(right), room(rooma), room(roomb)]
+2023-09-08 08:52:31,763 [INFO] [policy_search_with_augmented_states:407] Applicable actions = [move(roomb, rooma), move(roomb, roomb)]
+2023-09-08 08:52:31,763 [INFO] [_main:70] 1 executed action(s) and 26 state evaluations(s) in 0.069 second(s)
+2023-09-08 08:52:31,763 [INFO] [_main:75] [1m[31mFailed to find a plan for ../data/pddl/gripper/test/prob05.pddl[0m
+2023-09-08 08:52:31,763 [INFO] [_main:81] 1: move(rooma, roomb) (value change: 52.11 -> 47.07 D)
+2023-09-08 08:52:31,764 [INFO] [<module>:123] All tasks completed in 94.926 second(s)

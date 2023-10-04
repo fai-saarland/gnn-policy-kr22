@@ -1,0 +1,24 @@
+2022-02-02 19:41:52,432 [INFO] [<module>:113] Call: plan.py --cpu --model ../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt --domain ../Data/pddl/spanner-bidirectional/test/domain.pddl --problem ../Data/pddl/spanner-bidirectional/test/prob_spanners-7_nuts-7_locations-300.pddl --ignore_unsolvable --print_trace
+2022-02-02 19:41:52,506 [INFO] [_main:74] Model '../Models/spanner-bidirectional/checkpoints/epoch=32-step=7259.ckpt' loaded in 0.074 second(s)
+2022-02-02 19:41:52,507 [INFO] [_main:76] Loading PDDL files: domain='../Data/pddl/spanner-bidirectional/test/domain.pddl', problem='../Data/pddl/spanner-bidirectional/test/prob_spanners-7_nuts-7_locations-300.pddl'
+2022-02-02 19:41:52,959 [INFO] [_main:80] Executing policy (max_length=500)
+2022-02-02 19:41:52,959 [INFO] [compute_traces:391] #objects=317
+2022-02-02 19:41:55,132 [INFO] [_main:85] 16 executed action(s) and 33 state evaluations(s) in 2.173 second(s)
+2022-02-02 19:41:55,133 [INFO] [_main:90] [1m[31mFailed to find a plan for ../Data/pddl/spanner-bidirectional/test/prob_spanners-7_nuts-7_locations-300.pddl[0m
+2022-02-02 19:41:55,133 [INFO] [_main:96] 1: walk-forward(shed, location1, bob) (value change: 435.19 -> 433.23)
+2022-02-02 19:41:55,133 [INFO] [_main:96] 2: walk-forward(location1, location2, bob) (value change: 433.23 -> 431.02)
+2022-02-02 19:41:55,134 [INFO] [_main:96] 3: walk-forward(location2, location3, bob) (value change: 431.02 -> 427.05)
+2022-02-02 19:41:55,134 [INFO] [_main:96] 4: walk-forward(location3, location4, bob) (value change: 427.05 -> 422.00)
+2022-02-02 19:41:55,134 [INFO] [_main:96] 5: walk-forward(location4, location5, bob) (value change: 422.00 -> 421.18)
+2022-02-02 19:41:55,135 [INFO] [_main:96] 6: walk-forward(location5, location6, bob) (value change: 421.18 -> 417.78)
+2022-02-02 19:41:55,135 [INFO] [_main:96] 7: walk-forward(location6, location7, bob) (value change: 417.78 -> 413.87)
+2022-02-02 19:41:55,135 [INFO] [_main:96] 8: walk-forward(location7, location8, bob) (value change: 413.87 -> 410.76)
+2022-02-02 19:41:55,135 [INFO] [_main:96] 9: walk-forward(location8, location9, bob) (value change: 410.76 -> 409.39)
+2022-02-02 19:41:55,136 [INFO] [_main:96] 10: walk-forward(location9, location10, bob) (value change: 409.39 -> 406.38)
+2022-02-02 19:41:55,136 [INFO] [_main:96] 11: walk-forward(location10, location11, bob) (value change: 406.38 -> 405.77)
+2022-02-02 19:41:55,136 [INFO] [_main:96] 12: walk-forward(location11, location12, bob) (value change: 405.77 -> 406.78)
+2022-02-02 19:41:55,136 [INFO] [_main:96] 13: walk-forward(location12, location13, bob) (value change: 406.78 -> 402.92)
+2022-02-02 19:41:55,137 [INFO] [_main:96] 14: pickup_spanner(location13, spanner6, bob) (value change: 402.92 -> 368.66)
+2022-02-02 19:41:55,137 [INFO] [_main:96] 15: walk-backward(location13, location12, bob) (value change: 368.66 -> 391.74)
+2022-02-02 19:41:55,137 [INFO] [_main:96] 16: walk-forward(location12, location13, bob) (value change: 391.74 -> 389.76)
+2022-02-02 19:41:55,139 [INFO] [<module>:120] All tasks completed in 2.711 second(s)
