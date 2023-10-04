@@ -1,0 +1,46 @@
+aggregation: planformer
+batch_size: 64
+gradient_accumulation: 1
+gradient_clip: 0.1
+hidden_size: 64
+iterations: 2
+l1_factor: 0.0
+learning_rate: 0.0002
+loss: selfsupervised_suboptimal
+loss_constants: null
+max_samples: null
+max_samples_per_file: 1000
+patience: 50
+predicates:
+- !!python/tuple
+  - 'on'
+  - 2
+- !!python/tuple
+  - handempty
+  - 0
+- !!python/tuple
+  - ontable
+  - 1
+- !!python/tuple
+  - clear
+  - 1
+- !!python/tuple
+  - holding
+  - 1
+- !!python/tuple
+  - on_goal
+  - 2
+- !!python/tuple
+  - handempty_goal
+  - 0
+- !!python/tuple
+  - ontable_goal
+  - 1
+- !!python/tuple
+  - clear_goal
+  - 1
+- !!python/tuple
+  - holding_goal
+  - 1
+suboptimal_factor: 2.0
+weight_decay: 0.0

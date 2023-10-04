@@ -1,0 +1,58 @@
+aggregation: max
+batch_size: 64
+gradient_accumulation: 1
+gradient_clip: 0.1
+hidden_size: 64
+iterations: 30
+l1_factor: 0.0
+learning_rate: 0.0002
+loss: selfsupervised_suboptimal
+loss_constants: null
+max_samples: null
+max_samples_per_file: 1000
+patience: 25
+predicates:
+- !!python/tuple
+  - room
+  - 1
+- !!python/tuple
+  - ball
+  - 1
+- !!python/tuple
+  - gripper
+  - 1
+- !!python/tuple
+  - at
+  - 2
+- !!python/tuple
+  - at-robby
+  - 1
+- !!python/tuple
+  - free
+  - 1
+- !!python/tuple
+  - carry
+  - 2
+- !!python/tuple
+  - room_goal
+  - 1
+- !!python/tuple
+  - ball_goal
+  - 1
+- !!python/tuple
+  - gripper_goal
+  - 1
+- !!python/tuple
+  - at_goal
+  - 2
+- !!python/tuple
+  - at-robby_goal
+  - 1
+- !!python/tuple
+  - free_goal
+  - 1
+- !!python/tuple
+  - carry_goal
+  - 2
+suboptimal_factor: 2.0
+weight_decay: 0.0
