@@ -28,7 +28,7 @@ def l1_regularization(model: nn.Module, factor: float) -> Tensor:
 
 def supervised_optimal_loss(output, target):
     values, solvables = output
-    avg_abs_loss = torch.mean(torch.abs(torch.sub(target, values)))
+    avg_abs_loss = torch.mean(torch.abs(torch.sub(target, values)))  # TODO: Why not use squared loss?
     return avg_abs_loss
     # # TODO: Test if the following improves training.
     # # (Compares if two arbitrary states in the batch has the expected absolute value difference.)
@@ -175,7 +175,7 @@ def selfsupervised_suboptimal_loss(output, labels, solvable_labels, state_counts
         offset += state_count
     return loss / len(state_counts)
 
-def unsupervised_suboptimal_loss(output, labels, state_counts, device):
+def unsupervised_suboptimal_loss(output, labels, solvable_labels, state_counts, device):
     global g_suboptimal_factor
     loss = 0.0
     offset = 0
@@ -196,5 +196,26 @@ def unsupervised_suboptimal_loss(output, labels, state_counts, device):
                 successors = values[(offset + 1):(offset + 1 + (state_count - 1))].flatten()
                 min_value_successor = torch.min(successors)
                 loss += torch.max(torch.stack((torch.tensor(0.0, device=device), 1.0 + (min_value_successor - value_prediction))))
+        offset += state_count
+    return loss / len(state_counts)
+
+def selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, device):
+    global g_suboptimal_factor
+    loss = 0.0
+    offset = 0
+    values, _ = output
+    for index, state_count in enumerate(state_counts):
+        value_prediction = values[offset][0]
+        value_label = labels[index]
+        if value_label == 0:
+            loss += value_prediction
+            assert state_count == 1
+        else:
+            # max(0, (1 + min_{s'} V(s')) - V(s) for all successor states s' of s
+            successors = values[(offset + 1):(offset + 1 + (state_count - 1))].flatten()
+            min_value_successor = torch.min(successors)
+            loss += torch.max(torch.stack((torch.tensor(0.0, device=device), 1.0 + (min_value_successor - value_prediction))))
+            loss += torch.clamp(value_label - value_prediction, 0.0)
+            loss += torch.clamp(value_prediction - g_suboptimal_factor * value_label, 0.0)
         offset += state_count
     return loss / len(state_counts)

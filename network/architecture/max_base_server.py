@@ -23,24 +23,42 @@ class RelationMessagePassing(nn.Module):
             self.relation_modules.append(mlp)
         self.update = nn.Sequential(nn.Linear(2 * hidden_size, 2 * hidden_size, True), nn.ReLU(), nn.Linear(2 * hidden_size, hidden_size, True))
         self.dummy = nn.Parameter(torch.empty(0))
+        #print("\n")
+        #print("DEVICE")
+        #print(self.get_device())
+        #print("\n")
 
     def get_device(self):
-        return self.dummy.device
+        return torch.device("cuda")
+        #return self.dummy.device
 
-    def forward(self, node_states: Tensor, relations: Dict[int, Tensor]) -> Tuple[Tensor, Tensor]:
+    def forward(self, node_states: Tensor, relations: Dict[int, Tensor]) -> Tensor:
         # Compute an aggregated message for each recipient
-        sum_msg = torch.zeros_like(node_states, dtype=torch.float, device=self.get_device())
+        max_outputs = []
+        outputs = []
         for relation, module in enumerate(self.relation_modules):
             if (module is not None) and (relation in relations):
-                values = relations[relation]
+                values = relations[relation].to(torch.device("cuda"))
+                #print("\n")
+                #print(f"node_states: {node_states.get_device()}")
+                #print(f"values: {values.get_device()}")
                 input = torch.index_select(node_states, 0, values).view(-1, module[0].in_features)
                 output = module(input).view(-1, self.hidden_size)
-                node_indices = values.view(-1, 1).repeat(1, self.hidden_size)
-                sum_msg = torch.scatter_add(sum_msg, 0, node_indices, output)
+                max_outputs.append(torch.max(output))
+                node_indices = values.view(-1, 1).expand(-1, self.hidden_size)
+                outputs.append((output, node_indices))
+
+        max_offset = torch.max(torch.stack(max_outputs))
+        exps_sum = torch.full_like(node_states, 1E-16, device=self.get_device())
+        for output, node_indices in outputs:
+            exps = torch.exp(8.0 * (output - max_offset))
+            exps_sum = torch.scatter_add(exps_sum, 0, node_indices, exps)
 
         # Update states with aggregated messages
-        next_node_states = self.update(torch.cat([sum_msg, node_states], dim=1))
+        max_msg = ((1.0 / 8.0) * torch.log(exps_sum)) + max_offset
+        next_node_states = self.update(torch.cat([max_msg, node_states], dim=1))
         return next_node_states
+
 
 class Readout(nn.Module):
     def __init__(self, input_size: int, output_size: int, bias: bool = True):
@@ -50,7 +68,8 @@ class Readout(nn.Module):
         self.dummy = nn.Parameter(torch.empty(0))
 
     def get_device(self):
-        return self.dummy.device
+        return torch.device("cuda")
+        # return self.dummy.device
 
     def forward(self, batch_num_objects: List[int], node_states: Tensor) -> Tensor:
         # Loopless implementation, faster than the reference implementation.
@@ -74,36 +93,27 @@ class Readout(nn.Module):
             offset += num_objects
         return torch.stack(results)
 
+
 class RelationMessagePassingModel(nn.Module):
     def __init__(self, relations: list, hidden_size: int, iterations: int):
         super().__init__()
         self.hidden_size = hidden_size
         self.iterations = iterations
         self.relation_network = RelationMessagePassing(relations, hidden_size)
-        self.value_readout = Readout(hidden_size, 1)
-        self.solvable_readout = Readout(hidden_size, 1)
         self.dummy = nn.Parameter(torch.empty(0))
 
     def get_device(self):
-        return self.dummy.device
+        return torch.device("cuda")
+        #return self.dummy.device
 
-    def forward(self, states: Tuple[Dict[int, Tensor], List[int]]):
+    def forward(self, states: Tuple[Dict[int, Tensor], List[int]]) -> Tensor:
         node_states = self._initialize_nodes(sum(states[1]))
-        node_states = self._pass_messages(node_states, states[0])
-        value = self.value_readout(states[1], node_states)
-        solvable = self.value_readout(states[1], node_states)
-        return value, solvable
+        node_states = self._pass_messages(node_states, states[0], states[1])
+        return node_states
 
-    def feature_vectors(self, states: Tuple[Dict[int, Tensor], List[int]]):
-        node_states = self._initialize_nodes(sum(states[1]))
-        node_states = self._pass_messages(node_states, states[0])
-        value = self.value_readout.feature_vectors(states[1], node_states)
-        solvable = self.value_readout.feature_vectors(states[1], node_states)   # TODO: these two are identical?
-        return value, solvable
-
-    def _pass_messages(self, node_states: Tensor, relations: Dict[int, Tensor]) -> Tuple[Tensor, Tensor]:
+    def _pass_messages(self, node_states: Tensor, relations: Dict[int, Tensor], batch_num_objects: List[int]) -> Tensor:
         for _ in range(self.iterations):
-             node_states = self.relation_network(node_states, relations)
+            node_states = self.relation_network(node_states, relations)
         return node_states
 
     def _initialize_nodes(self, num_objects: int) -> Tensor:
@@ -113,7 +123,7 @@ class RelationMessagePassingModel(nn.Module):
         return init_nodes
 
 
-class AddModelBase(pl.LightningModule):
+class MaxModelBase(pl.LightningModule):
     def __init__(self, predicates: List[Tuple[str, int]], hidden_size: int, iterations: int):
         super().__init__()
         self.save_hyperparameters()
@@ -121,19 +131,29 @@ class AddModelBase(pl.LightningModule):
         arities = [(encoding[predicate], arity) for predicate, arity in predicates]
         self.encoding = encoding
         self.model = RelationMessagePassingModel(arities, hidden_size, iterations)
+        self.readout = Readout(hidden_size, 1)
+        self.solvable_readout = Readout(hidden_size, 1)
 
-    def forward(self, states: Tuple[Dict[int, Tensor], List[int]]):
+    def forward(self, states: Tuple[Dict[str, Tensor], List[int]]) -> Tensor:
         encoded_states = (dict([(self.encoding[name], values) for name, values in states[0].items()]), states[1])
-        value, solvable = self.model(encoded_states)
-        #print("\n")
-        #print("value")
-        #print(value)
-        #print("\n")
-        #print("solvable")
-        #print(solvable)
-        #assert True == False
-        return torch.abs(value), solvable
+        node_states = self.model(encoded_states)
+        value = torch.abs(self.readout(encoded_states[1], node_states))
+        solvable = self.solvable_readout(encoded_states[1], node_states)
+        return value, solvable
 
-    def feature_vectors(self, states: Tuple[Dict[int, Tensor], List[int]]):
-        encoded_states = (dict([(self.encoding[name], values) for name, values in states[0].items()]), states[1])
-        return self.model.feature_vectors(encoded_states)
+    def feature_vectors(self, states: Tuple[Dict[int, Tensor], List[int]]) -> Tensor:
+        encoded_states = (dict([(self.encoding[name], values.to(torch.device("cuda"))) for name, values in states[0].items()]), states[1])
+        node_states = self.model(encoded_states)
+        value = self.readout.feature_vectors(encoded_states[1], node_states)
+        solvable = self.solvable_readout.feature_vectors(encoded_states[1], node_states)
+        return value, solvable
+
+    def freeze_relation_model(self):
+        """Freeze the relation message passing model."""
+        for param in self.model.parameters():
+            param.requires_grad = False
+
+    def unfreeze_relation_model(self):
+        """Unfreeze the relation message passing model."""
+        for param in self.model.parameters():
+            param.requires_grad = True

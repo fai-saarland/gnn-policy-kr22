@@ -86,6 +86,9 @@ def load_file(file: Path, max_samples_per_file: int, verify_states: bool = False
 
     # load protobuf structure containing problem with labeled states
     labeled_problem = load_problem(file)
+    # print("\n")
+    # print("labeled_problem")
+    # print(labeled_problem)
     number_states = len(labeled_problem.LabeledStates)
     print(f'{number_states} state(s) ', end='', flush=True)
 

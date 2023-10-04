@@ -1,5 +1,5 @@
 import argparse
-from termcolor import colored
+#from termcolor import colored
 import pytorch_lightning as pl
 import torch
 
@@ -14,6 +14,42 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from datasets     import g_dataset_methods
 from architecture import g_model_classes
 
+import torch
+import os
+from numpy import inf
+from tqdm import tqdm
+
+
+class Oracle:
+    def __init__(self, bugs, collate):
+        self.bugs = bugs
+        self.collate = collate
+        self.counter = 0
+        self.batch_size = len(self.bugs) // 10
+        # split the bugs list into batches
+        self.batches = [self.bugs[i:i + self.batch_size] for i in range(0, len(self.bugs), self.batch_size)]
+        #print("ORACLE")
+        #print(self.bugs[0])
+        #print("BATCHES")
+        #print(self.batches[0])
+        #print("BATCHES")
+        #print(self.batches[0][0])
+
+
+    def get_bug_states(self):
+        if self.counter == len(self.batches):
+            self.counter = 0
+
+        # batch = self.collate(self.batches[self.counter])
+        #print("BUG")
+        #print(self.bugs[self.counter])
+        #batch = self.collate([self.bugs[self.counter]])
+        #print("SINGLE BATCH")
+        #print(batch)
+        # batch = self.collate(self.batches[self.counter])
+        batch = self.batches[self.counter]
+        self.counter += 1
+        return batch
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -22,18 +58,18 @@ def _parse_arguments():
     default_aggregation = 'max'
     default_size = 64  # 64, 128
     default_iterations = 30  # 30, 4
-    default_batch_size = 64 # 64
+    default_batch_size = 64 # 64  # TODO: HALF THIS FOR RETRAINING? MAYBE DONT
     default_gpus = 0  # No GPU
-    default_num_workers = 0  # TODO: increase this?
+    default_num_workers = 0
     default_loss_constants = None
-    default_learning_rate = 0.0002  # 0.0002, 0.0001
+    default_learning_rate = 0.0002  # 0.0002
     default_suboptimal_factor = 2.0
     default_l1 = 0.0
-    default_weight_decay = 0.0  # 0.0, 0.0001
+    default_weight_decay = 0.0  # 0.0
     default_gradient_accumulation = 1
     default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
     default_max_samples = None
-    default_patience = 50 # TODO: REDUCE THIS From 50
+    default_patience = 50  # TODO: REDUCE THIS From 50
     default_gradient_clip = 0.1
     default_profiler = None
     default_validation_frequency = 1
@@ -42,11 +78,12 @@ def _parse_arguments():
     # required arguments or --resume that requires a path
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
+    parser.add_argument('--bugs', required=True, type=Path, help='path to bugs dataset')
     parser.add_argument('--loss', required=True, nargs='?', choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal', 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal', 'online_optimal'])
     parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments with meaningful default values
-    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention', 'planformer'], help=f'readout aggregation function (default={default_aggregation})')
+    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention', 'retrain_planformer'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
     parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
@@ -87,34 +124,29 @@ def _process_args(args):
     if args.loss_constants:
         loss_constants = [ float(c) for c in args.loss_constants.split(',') ]
         if len(loss_constants) != 4 or min(loss_constants) < 0:
-            print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
+            # print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
+            print(f'WARNING: Invalid constants {loss_constants} for loss function, using default values')
         else:
             #print(colored(f'Using constants {loss_constants} for loss function', 'green'), attrs = [ 'bold' ]))
             set_loss_constants(loss_constants)
 
 def _load_datasets(args):
-    print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
+    # print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
+    print('Loading datasets...')
     try:
         load_dataset, collate = g_dataset_methods[args.loss]
     except KeyError:
         raise NotImplementedError(f"Loss function '{args.loss}'")
     (train_dataset, predicates) = load_dataset(args.train, args.max_samples_per_file, args.max_samples, args.verify_datasets)
     (validation_dataset, _) = load_dataset(args.validation, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    loader_params = {
-        "batch_size": args.batch_size,
-        "drop_last": False,
-        "collate_fn": collate,
-        "pin_memory": True,
-        "num_workers": args.num_workers,  # Use 0 on Windows, doesn't work with > 0 for some reason.
-    }
-    train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
-    validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
-    print(f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([ f"{name}/{arity}" for name, arity in predicates ])} ]')
-    return predicates, train_loader, validation_loader
+    (bugs_dataset, _) = load_dataset(args.bugs, args.max_samples_per_file, args.max_samples, args.verify_datasets)
+    return predicates, collate,  train_dataset, validation_dataset, bugs_dataset
 
-def _load_model(args, predicates):
-    print(colored('Loading model...', 'green', attrs = [ 'bold' ]))
+def _load_model(args, predicates, oracle):
+    # print(colored('Loading model...', 'green', attrs = [ 'bold' ]))
+    print('Loading model...')
     model_params = {
+        "oracle": oracle,
         "predicates": predicates,
         "hidden_size": args.size,
         "iterations": args.iterations,
@@ -140,11 +172,12 @@ def _load_model(args, predicates):
 
     print(Model)
     if args.resume is None: model = Model(**model_params)
-    else: model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
+    else: model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):
-    print(colored('Initializing trainer...', 'green', attrs = [ 'bold' ]))
+    # print(colored('Initializing trainer...', 'green', attrs = [ 'bold' ]))
+    print('Initializing trainer...')
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
@@ -168,17 +201,40 @@ def _load_trainer(args):
     if args.logdir or args.logname:
         logdir = args.logdir if args.logdir else 'lightning_logs'
         trainer_params['logger'] = TensorBoardLogger(logdir, name=args.logname)
-    if args.gpus > 0: trainer = pl.Trainer(gpus=args.gpus, auto_select_gpus=True, **trainer_params)
+    if args.gpus > 0: trainer = pl.Trainer(accelerator="gpu", devices=1 , **trainer_params)
     else: trainer = pl.Trainer(**trainer_params)
     return trainer
 
 def _main(args):
     _process_args(args)
-    predicates, train_loader, validation_loader = _load_datasets(args)
-    model = _load_model(args, predicates)
+    predicates, collate, train_dataset, validation_dataset, bugs_dataset = _load_datasets(args)
+
+    bug_states = [bug for bug in bugs_dataset]
+    oracle = Oracle(bug_states, collate)
+
+
+    loader_params = {
+        "batch_size": args.batch_size,
+        "drop_last": False,
+        "collate_fn": collate,
+        "pin_memory": True,
+        "num_workers": args.num_workers,
+    }
+    train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
+    validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
+    print(
+        f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([f"{name}/{arity}" for name, arity in predicates])} ]')
+
+
+    model = _load_model(args, predicates, oracle)
+    model.set_oracle(oracle)
     trainer = _load_trainer(args)
-    print(colored('Training model...', 'green', attrs = [ 'bold' ]))
+    checkpoint_path = f"{args.logdir}/version_{trainer.logger.version}/"
+    model.set_checkpoint_path(checkpoint_path)
+
+    print('Training model...')
     print(type(model).__name__)
+
     trainer.fit(model, train_loader, validation_loader)
 
 if __name__ == "__main__":

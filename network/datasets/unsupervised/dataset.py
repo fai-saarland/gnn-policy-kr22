@@ -17,11 +17,23 @@ class UnsupervisedDataset(Dataset):
 
     def __getitem__(self, idx):
         (label, state, successor_states) = self._states[idx]
+        #print("\n")
+        #print("state")
+        #print(state)
         state_with_successors = [state]
         solvable_labels = torch.tensor([ label < 2000000000 ]) # Use fn for solvability
         if label > 0:
             state_with_successors.extend(successor_states)
             solvable_labels = torch.cat([ solvable_labels, self._solvable_labels[idx] ])
+        #print("\n")
+        #print("state_with_successors")
+        #print(state_with_successors)
+        #print("\n")
+        #print("solvable_labels")
+        #print(solvable_labels)
+        #print("\n")
+        #print("label")
+        #print(label)
         return (label, state_with_successors, solvable_labels)
 
 def load_dataset(path: Path, max_samples_per_file: int, max_samples: int, verify: bool = False):

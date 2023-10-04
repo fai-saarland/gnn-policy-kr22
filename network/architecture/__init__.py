@@ -2,12 +2,14 @@ from .loss import l1_regularization
 from .loss import supervised_optimal_loss, unsupervised_optimal_loss
 from .loss import selfsupervised_optimal_loss, selfsupervised_suboptimal_loss, selfsupervised_suboptimal2_loss
 from .loss import unsupervised_suboptimal_loss
+from .loss import selfsupervised_suboptimal_loss_no_solvable_labels
 
 from .max_base import MaxModelBase, RelationMessagePassingModel as MaxRelationMessagePassingModel
 from .add_base import AddModelBase, RelationMessagePassingModel as AddRelationMessagePassingModel
 from .max_readout_base import MaxReadoutModelBase, RelationMessagePassingModel as MaxReadoutRelationMessagePassingModel
 from .attention_base import AttentionModelBase, RelationMessagePassingModel as AttentionRelationMessagePassingModel
 from .add_max_base import AddMaxModelBase, RelationMessagePassingModel as AddMaxRelationMessagePassingModel
+from .planformer_base import PlanFormerModelBase, RelationMessagePassingModel as PlanformerRelationMessagePassingModel
 
 # Add models
 from .model import SupervisedOptimalAddModel, SelfsupervisedSuboptimalAddModel, SelfsupervisedOptimalAddModel, UnsupervisedOptimalAddModel, UnsupervisedSuboptimalAddModel, OnlineOptimalAddModel
@@ -21,6 +23,11 @@ from .model import SupervisedOptimalAttentionModel, SelfsupervisedSuboptimalAtte
 from .model import SupervisedOptimalAddMaxModel, SelfsupervisedSuboptimalAddMaxModel, SelfsupervisedOptimalAddMaxModel, UnsupervisedOptimalAddMaxModel, UnsupervisedSuboptimalAddMaxModel, OnlineOptimalAddMaxModel
 # Models for new loss
 from .model import SelfsupervisedSuboptimalAddModel2, SelfsupervisedSuboptimalMaxModel2, SelfsupervisedSuboptimalAddMaxModel2, SelfsupervisedSuboptimalMaxReadoutModel2
+
+# PlanFormer models
+from .model import PlanFormer
+
+from .model import RetrainSelfsupervisedSuboptimalMaxModel, RetrainSelfsupervisedSuboptimalAddModel, RetrainSelfsupervisedSuboptimalAddMaxModel, RetrainSelfsupervisedSuboptimalMaxReadoutModel
 
 # Settings
 from .model import set_max_trace_length
@@ -78,5 +85,11 @@ g_model_classes = {
     ('attention', False, 'online_optimal'):             OnlineOptimalAttentionModel,
     ('attention', False, 'selfsupervised_suboptimal'):  SelfsupervisedSuboptimalAttentionModel,
     ('attention', False, 'unsupervised_suboptimal'):    UnsupervisedSuboptimalAttentionModel,
-    ('attention', False, 'base'):                       AttentionModelBase
+    ('attention', False, 'base'):                       AttentionModelBase,
+
+    ('planformer', False, 'selfsupervised_suboptimal'): PlanFormer,
+
+    ('retrain_max', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalMaxModel,
+    ('retrain_add', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddModel,
+    ('retrain_addmax', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddMaxModel
 }
