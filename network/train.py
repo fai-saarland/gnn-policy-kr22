@@ -20,20 +20,20 @@ def _parse_arguments():
 
     # default values for arguments
     default_aggregation = 'max'
-    default_size = 64  # 64, 128
-    default_iterations = 30  # 30, 4
-    default_batch_size = 64 # 64
+    default_size = 64
+    default_iterations = 30
+    default_batch_size = 64  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0  # TODO: increase this?
     default_loss_constants = None
-    default_learning_rate = 0.0002  # 0.0002, 0.0001
+    default_learning_rate = 0.0002
     default_suboptimal_factor = 2.0
     default_l1 = 0.0
-    default_weight_decay = 0.0  # 0.0, 0.0001
+    default_weight_decay = 0.0
     default_gradient_accumulation = 1
     default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
     default_max_samples = None
-    default_patience = 50 # TODO: REDUCE THIS From 50
+    default_patience = 50
     default_gradient_clip = 0.1
     default_profiler = None
     default_validation_frequency = 1
@@ -46,7 +46,7 @@ def _parse_arguments():
     parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments with meaningful default values
-    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention', 'planformer'], help=f'readout aggregation function (default={default_aggregation})')
+    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
     parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
@@ -139,8 +139,10 @@ def _load_model(args, predicates):
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
 
     print(Model)
-    if args.resume is None: model = Model(**model_params)
-    else: model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
+    if args.resume is None:
+        model = Model(**model_params)
+    else:
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
     return model
 
 def _load_trainer(args):
@@ -149,27 +151,23 @@ def _load_trainer(args):
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
-    # add learning rate finder
-    #callbacks.append(pl.callbacks.LearningRateFinder(num_training_steps=200, update_attr=True, attr_name="learning_rate"))  # TODO: CHANGED THIS
-    # add learning rate monitor
-    #callbacks.append(pl.callbacks.LearningRateMonitor(logging_interval='step'))
     trainer_params = {
-        "accelerator": "cpu",  # added this
         "num_sanity_val_steps": 0,
-        # "progress_bar_refresh_rate": 30 if args.verbose else 0,
         "callbacks": callbacks,
-        # "weights_summary": None,
-        # "auto_lr_find": True,   # TODO: THIS MIGHT BE IMPORTANT
         "profiler": args.profiler,
         "accumulate_grad_batches": args.gradient_accumulation,
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
     }
+    if args.gpus == 0:
+        trainer_params["accelerator"] = "cpu"
+    else:
+        trainer_params["accelerator"] = "gpu"
+
     if args.logdir or args.logname:
         logdir = args.logdir if args.logdir else 'lightning_logs'
         trainer_params['logger'] = TensorBoardLogger(logdir, name=args.logname)
-    if args.gpus > 0: trainer = pl.Trainer(gpus=args.gpus, auto_select_gpus=True, **trainer_params)
-    else: trainer = pl.Trainer(**trainer_params)
+    trainer = pl.Trainer(**trainer_params)
     return trainer
 
 def _main(args):

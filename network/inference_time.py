@@ -149,7 +149,6 @@ def _load_trainer(args):
     callbacks = []
     callbacks.append(ValidationLossLogging())
     trainer_params = {
-        "accelerator": "cpu",  # added this
         "num_sanity_val_steps": 0,
         # "progress_bar_refresh_rate": 30 if args.verbose else 0,
         "callbacks": callbacks,
@@ -160,6 +159,11 @@ def _load_trainer(args):
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
     }
+    if args.gpus == 0:
+        trainer_params["accelerator"] = "cpu"
+    else:
+        trainer_params["accelerator"] = "gpu"
+
     trainer = pl.Trainer(**trainer_params)
     return trainer
 

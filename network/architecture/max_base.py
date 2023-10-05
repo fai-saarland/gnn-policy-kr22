@@ -33,7 +33,7 @@ class RelationMessagePassing(nn.Module):
         outputs = []
         for relation, module in enumerate(self.relation_modules):
             if (module is not None) and (relation in relations):
-                values = relations[relation]
+                values = relations[relation].to(self.get_device())
                 input = torch.index_select(node_states, 0, values).view(-1, module[0].in_features)
                 output = module(input).view(-1, self.hidden_size)
                 max_outputs.append(torch.max(output))

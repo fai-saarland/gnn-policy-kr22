@@ -28,25 +28,11 @@ class Oracle:
         self.batch_size = len(self.bugs) // 10
         # split the bugs list into batches
         self.batches = [self.bugs[i:i + self.batch_size] for i in range(0, len(self.bugs), self.batch_size)]
-        #print("ORACLE")
-        #print(self.bugs[0])
-        #print("BATCHES")
-        #print(self.batches[0])
-        #print("BATCHES")
-        #print(self.batches[0][0])
-
 
     def get_bug_states(self):
         if self.counter == len(self.batches):
             self.counter = 0
 
-        # batch = self.collate(self.batches[self.counter])
-        #print("BUG")
-        #print(self.bugs[self.counter])
-        #batch = self.collate([self.bugs[self.counter]])
-        #print("SINGLE BATCH")
-        #print(batch)
-        # batch = self.collate(self.batches[self.counter])
         batch = self.batches[self.counter]
         self.counter += 1
         return batch
@@ -55,10 +41,10 @@ def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # default values for arguments
-    default_aggregation = 'max'
-    default_size = 64  # 64, 128
-    default_iterations = 30  # 30, 4
-    default_batch_size = 64 # 64  # TODO: HALF THIS FOR RETRAINING? MAYBE DONT
+    default_aggregation = 'retrain_max'
+    default_size = 64
+    default_iterations = 30
+    default_batch_size = 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_loss_constants = None
@@ -69,7 +55,7 @@ def _parse_arguments():
     default_gradient_accumulation = 1
     default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
     default_max_samples = None
-    default_patience = 50  # TODO: REDUCE THIS From 50
+    default_patience = 50
     default_gradient_clip = 0.1
     default_profiler = None
     default_validation_frequency = 1
@@ -83,7 +69,7 @@ def _parse_arguments():
     parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments with meaningful default values
-    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention', 'retrain_planformer'], help=f'readout aggregation function (default={default_aggregation})')
+    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
     parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
@@ -124,14 +110,12 @@ def _process_args(args):
     if args.loss_constants:
         loss_constants = [ float(c) for c in args.loss_constants.split(',') ]
         if len(loss_constants) != 4 or min(loss_constants) < 0:
-            # print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
             print(f'WARNING: Invalid constants {loss_constants} for loss function, using default values')
         else:
             #print(colored(f'Using constants {loss_constants} for loss function', 'green'), attrs = [ 'bold' ]))
             set_loss_constants(loss_constants)
 
 def _load_datasets(args):
-    # print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
     print('Loading datasets...')
     try:
         load_dataset, collate = g_dataset_methods[args.loss]
@@ -176,33 +160,28 @@ def _load_model(args, predicates, oracle):
     return model
 
 def _load_trainer(args):
-    # print(colored('Initializing trainer...', 'green', attrs = [ 'bold' ]))
     print('Initializing trainer...')
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
-    # add learning rate finder
-    #callbacks.append(pl.callbacks.LearningRateFinder(num_training_steps=200, update_attr=True, attr_name="learning_rate"))  # TODO: CHANGED THIS
-    # add learning rate monitor
-    #callbacks.append(pl.callbacks.LearningRateMonitor(logging_interval='step'))
     trainer_params = {
-        "accelerator": "cpu",  # added this
         "num_sanity_val_steps": 0,
-        # "progress_bar_refresh_rate": 30 if args.verbose else 0,
         "callbacks": callbacks,
-        # "weights_summary": None,
-        # "auto_lr_find": True,   # TODO: THIS MIGHT BE IMPORTANT
         "profiler": args.profiler,
         "accumulate_grad_batches": args.gradient_accumulation,
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
     }
+    if args.gpus == 0:
+        trainer_params["accelerator"] = "cpu"
+    else:
+        trainer_params["accelerator"] = "gpu"
+
     if args.logdir or args.logname:
         logdir = args.logdir if args.logdir else 'lightning_logs'
         trainer_params['logger'] = TensorBoardLogger(logdir, name=args.logname)
-    if args.gpus > 0: trainer = pl.Trainer(accelerator="gpu", devices=1 , **trainer_params)
-    else: trainer = pl.Trainer(**trainer_params)
+    trainer = pl.Trainer(**trainer_params)
     return trainer
 
 def _main(args):

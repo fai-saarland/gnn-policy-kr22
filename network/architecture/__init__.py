@@ -9,7 +9,6 @@ from .add_base import AddModelBase, RelationMessagePassingModel as AddRelationMe
 from .max_readout_base import MaxReadoutModelBase, RelationMessagePassingModel as MaxReadoutRelationMessagePassingModel
 from .attention_base import AttentionModelBase, RelationMessagePassingModel as AttentionRelationMessagePassingModel
 from .add_max_base import AddMaxModelBase, RelationMessagePassingModel as AddMaxRelationMessagePassingModel
-from .planformer_base import PlanFormerModelBase, RelationMessagePassingModel as PlanformerRelationMessagePassingModel
 
 # Add models
 from .model import SupervisedOptimalAddModel, SelfsupervisedSuboptimalAddModel, SelfsupervisedOptimalAddModel, UnsupervisedOptimalAddModel, UnsupervisedSuboptimalAddModel, OnlineOptimalAddModel
@@ -23,9 +22,6 @@ from .model import SupervisedOptimalAttentionModel, SelfsupervisedSuboptimalAtte
 from .model import SupervisedOptimalAddMaxModel, SelfsupervisedSuboptimalAddMaxModel, SelfsupervisedOptimalAddMaxModel, UnsupervisedOptimalAddMaxModel, UnsupervisedSuboptimalAddMaxModel, OnlineOptimalAddMaxModel
 # Models for new loss
 from .model import SelfsupervisedSuboptimalAddModel2, SelfsupervisedSuboptimalMaxModel2, SelfsupervisedSuboptimalAddMaxModel2, SelfsupervisedSuboptimalMaxReadoutModel2
-
-# PlanFormer models
-from .model import PlanFormer
 
 from .model import RetrainSelfsupervisedSuboptimalMaxModel, RetrainSelfsupervisedSuboptimalAddModel, RetrainSelfsupervisedSuboptimalAddMaxModel, RetrainSelfsupervisedSuboptimalMaxReadoutModel
 
@@ -86,8 +82,6 @@ g_model_classes = {
     ('attention', False, 'selfsupervised_suboptimal'):  SelfsupervisedSuboptimalAttentionModel,
     ('attention', False, 'unsupervised_suboptimal'):    UnsupervisedSuboptimalAttentionModel,
     ('attention', False, 'base'):                       AttentionModelBase,
-
-    ('planformer', False, 'selfsupervised_suboptimal'): PlanFormer,
 
     ('retrain_max', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalMaxModel,
     ('retrain_add', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddModel,

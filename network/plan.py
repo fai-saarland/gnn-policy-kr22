@@ -85,7 +85,10 @@ def _main(args):
     use_gpu = not use_cpu and torch.cuda.is_available()
     device = torch.cuda.current_device() if use_gpu else None
     Model = _load_model(args)
-    model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False).to(device)  # TODO: Map location?
+    try:
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False).to(device)
+    except:  # when doing cpu inference with a policy trained on gpu
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.model), strict=False, map_location=torch.device("cpu")).to(device)
     elapsed_time = timer() - start_time
     logger.info(f"Model '{args.model}' loaded in {elapsed_time:.3f} second(s)")
 
