@@ -2,6 +2,8 @@ import argparse
 from termcolor import colored
 import pytorch_lightning as pl
 import torch
+import os
+import re
 
 from architecture import set_suboptimal_factor, set_loss_constants
 from helpers import ValidationLossLogging
@@ -40,10 +42,9 @@ def _parse_arguments():
     default_save_top_k = 1
     default_loss = "selfsupervised_suboptimal"
 
-    # required arguments or --resume that requires a path
+    # required arguments
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
-    parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments with meaningful default values
     parser.add_argument('--loss', default=default_loss, nargs='?',
@@ -77,8 +78,9 @@ def _parse_arguments():
     parser.add_argument('--logname', default=None, type=str, help='if provided, versions are stored in folder with this name inside logdir')
     parser.add_argument('--save_top_k', default=default_save_top_k, type=int, help=f'number of top-k models to save (default={default_save_top_k})')
 
-    # specifying training length
-    parser.add_argument('--max_epochs', default=None, type=int, help='maximum number of epochs to train for')
+    # arguments for continuing the training of the original policy after re-training
+    parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
+    parser.add_argument('--retrained', default=None, type=Path, help='path to the re-trained policy')
 
     args = parser.parse_args()
     return args
@@ -149,6 +151,7 @@ def _load_model(args, predicates):
     if args.resume is None:
         model = Model(**model_params)
     else:
+        print(f"Resuming training of policy {args.resume}")
         try:
             model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
         except:
@@ -166,6 +169,14 @@ def _load_trainer(args):
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
+
+    max_epochs = None
+    # the training of the original policy will be continued for at most the number of epochs the re-trained policy was trained for
+    if args.retrained is not None:
+        # use regex to extract epoch from checkpoint path
+        max_epochs = int(re.search("epoch=(\d)", str(args.retrained)).group(1))
+        print(f"Continuing training for {max_epochs} epochs")
+
     trainer_params = {
         "num_sanity_val_steps": 0,
         "callbacks": callbacks,
@@ -173,7 +184,7 @@ def _load_trainer(args):
         "accumulate_grad_batches": args.gradient_accumulation,
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
-        "max_epochs": args.max_epochs,
+        "max_epochs": max_epochs,
     }
     if args.gpus == 0:
         trainer_params["accelerator"] = "cpu"

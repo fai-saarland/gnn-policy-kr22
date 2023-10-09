@@ -82,7 +82,7 @@ def _create_unsupervised_model_class(base: pl.LightningModule, loss):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
             output = self(collated_states_with_object_counts)
             validation = loss(output, labels, solvable_labels, state_counts, self.device)
-            self.log('validation_loss', validation)
+            self.log('validation_loss', validation, on_step=False, on_epoch=True)
 
     return Model
 
@@ -322,7 +322,6 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
             validation_loss = loss(output, labels, solvable_labels, state_counts, self.device)
 
             self.val_losses.append(validation_loss)
-            self.all_val_losses.append(validation_loss.item())
             self.log('validation_loss', validation_loss, on_step=False, on_epoch=True)
 
         # we only want to store re-trained policies with a validation loss that is not worse than that of the original policy
@@ -333,6 +332,7 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
             else:
                 self.log('retrain_validation_loss', np.inf)
             self.val_losses.clear()
+            self.all_val_losses.append(average_validation_loss.item())
 
     return Model
 
