@@ -86,166 +86,6 @@ def _create_unsupervised_model_class(base: pl.LightningModule, loss):
 
     return Model
 
-def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
-    """Create a model class for retraining of models trained without superversion that inherits from 'base' and uses 'loss' for training and validation."""
-    class Model(base):
-        def __init__(self, predicates: list, hidden_size: int, iterations: int, learning_rate: float, l1_factor: float, weight_decay: float, **kwargs):
-            super().__init__(predicates, hidden_size, iterations)
-            self.save_hyperparameters('learning_rate', 'l1_factor', 'weight_decay')
-            self.learning_rate = learning_rate
-            self.l1_factor = l1_factor
-            self.weight_decay = weight_decay
-            self.bug_states = []
-            self.bug_counts = np.array([])
-            self.training_step_counter = 0
-            self.loss = loss
-            self.bug_loss_weight = 0.1  # TODO: this is the bug loss weight in the first epoch!
-            self.min_train_loss = 0
-            self.max_train_loss = 0
-
-        def configure_optimizers(self):
-            return _create_optimizer(self, self.learning_rate, self.weight_decay)
-
-        def set_oracle(self, oracle):
-            self.oracle = oracle
-
-        def set_checkpoint_path(self, checkpoint_path):
-            self.checkpoint_path = checkpoint_path
-
-        # TODO: Not used yet
-        def set_update_interval(self, update_interval):
-            self.update_interval = update_interval
-
-        def state_to_string(self, state):
-            state_string = ""
-            for predicate in state[1][0].keys():  # only need to look at the first state since the successors are fixed
-                state_string += f'{predicate}: {state[1][0][predicate]}\n'
-            return state_string
-
-        # get new bug states from oracle, if a state is found again but with a better label we replace the old label
-        def get_bug_states(self):
-            new_bug_states = self.oracle.get_bug_states()
-
-            for new_bug in new_bug_states:
-                bug_string = self.state_to_string(new_bug)
-                if bug_string not in self.bug_dict:
-                    self.bug_states.append(new_bug)
-                    self.bug_dict[bug_string] = len(self.bug_states) - 1
-                    self.bug_counts = np.append(self.bug_counts, 1.0)
-                else:
-                    bug_index = self.bug_dict[bug_string]
-                    old_bug_label = self.bug_states[bug_index][0]
-                    new_bug_label = new_bug[0]
-                    if new_bug_label < old_bug_label:
-                        self.bug_states[bug_index] = new_bug
-                        self.bug_counts[bug_index] = 0.0
-
-            self.bug_counts += 1.0
-
-            assert len(self.bug_states) == len(self.bug_counts)
-
-        def training_step(self, train_batch, batch_index):
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = train_batch
-            output = self(collated_states_with_object_counts)
-            train_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
-
-            # these values are used for interpolation
-            with torch.no_grad():
-                if train_loss > self.max_train_loss:
-                    self.max_train_loss = train_loss
-                elif train_loss < self.min_train_loss:
-                    self.min_train_loss = train_loss
-
-
-            l1 = l1_regularization(self, self.l1_factor)
-            self.log('l1_loss', l1)
-            total = train_loss + l1
-            self.log('train_loss', total, prog_bar=True, on_step=False, on_epoch=True)
-            #print(f'train_loss: {total}')
-
-            # define distribution over bug states counts
-            bug_scores = 1 / self.bug_counts
-            bug_probs = bug_scores / np.sum(bug_scores)
-            bug_ids = np.arange(len(self.bug_states))  # TODO: COMPUTE THIS WHEN NEW BUGS ARE ADDED?
-
-            # sample bug states
-            bug_batch = []
-            for _ in range(len(train_batch)):
-                bug_id = np.random.choice(bug_ids, p=bug_probs)
-                bug_batch.append(self.bug_states[bug_id])
-
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = self.oracle.collate(bug_batch)
-
-            output = self(collated_states_with_object_counts)
-            # TODO: DOES NOT PREDICTING THE SOLVABLE LABELS WITH THE BUG LOSS DETERIORATE PERFORMANCE?
-            bug_loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, self.device)
-
-            self.log('bug_loss', bug_loss, prog_bar=True, on_step=False, on_epoch=True)
-
-            self.train_losses.append(total)
-            self.bug_losses.append(bug_loss)
-
-            loss = train_loss + self.bug_loss_weight * bug_loss
-            return loss
-
-        def on_train_start(self):
-            self.train_losses = []
-            self.bug_losses = []
-            self.bug_dict = {}
-            self.all_train_losses = []
-            self.all_bug_losses = []
-            self.all_val_losses = []
-
-            self.get_bug_states()  # TODO: ONLY GET BUGS AT THE BEGINNING FOR NOW
-
-        def on_train_epoch_end(self):
-            with torch.no_grad():
-                train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
-                print(f'epoch train loss: {train_loss}')
-                print(f'min train loss: {self.min_train_loss}')
-                print(f'max train loss: {self.max_train_loss}')
-
-                val_loss = sum(l.mean() for l in self.all_val_losses) / len(self.all_val_losses)
-
-                m = 1.0 / (self.max_train_loss - self.min_train_loss)
-                b = -self.min_train_loss / (self.max_train_loss - self.min_train_loss)
-                interpolated = m * train_loss + b
-                self.bug_loss_weight = 1.0 - interpolated
-                print(f'bug loss weight: {self.bug_loss_weight}')
-                bug_loss = sum(l.mean() for l in self.bug_losses) / len(self.bug_losses)
-                print(f'epoch bug loss: {bug_loss}')
-
-                self.all_train_losses.append(train_loss.item())
-                self.all_bug_losses.append(bug_loss.item())
-                self.train_losses.clear()
-                self.bug_losses.clear()
-
-        # TODO: DO THIS EVERY M EPOCHS
-        #def on_train_epoch_start(self):
-        #    self.get_bug_states()
-
-        def on_train_end(self):
-            with open(self.checkpoint_path + "losses.train", "w") as f:
-                f.write(json.dumps(self.all_train_losses))
-            with open(self.checkpoint_path + "losses.bugs", "w") as f:
-                f.write(json.dumps(self.all_bug_losses))
-            with open(self.checkpoint_path + "losses.val", "w") as f:
-                f.write(json.dumps(self.all_val_losses))
-            # TODO: SAVE FURTHER INFO? STORE BUGS?
-
-        def validation_step(self, validation_batch, batch_index):
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
-            output = self(collated_states_with_object_counts)
-            val_loss = loss(output, labels, solvable_labels, state_counts, self.device)
-
-            validation = val_loss
-
-            self.all_val_losses.append(validation)
-
-            self.log('validation_loss', validation)
-
-    return Model
-
 def _create_online_model_class(base: pl.LightningModule, loss):
     """Create a model class for online training (unsupervised) that inherits from 'base' and uses 'loss' for training and validation."""
     class Model(base):
@@ -303,6 +143,196 @@ def _create_online_model_class(base: pl.LightningModule, loss):
                 validation += loss(torch.stack(values), goals, counts, self.device)
             validation /= len(validation_batch)
             self.log('validation_loss', validation)
+
+    return Model
+
+def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
+    """Create a model class for retraining of models trained without superversion that inherits from 'base' and uses 'loss' for training and validation."""
+    class Model(base):
+        def __init__(self, predicates: list, hidden_size: int, iterations: int, learning_rate: float, l1_factor: float, weight_decay: float, **kwargs):
+            super().__init__(predicates, hidden_size, iterations)
+            # training hyperparameters
+            self.save_hyperparameters('learning_rate', 'l1_factor', 'weight_decay')
+            self.learning_rate = learning_rate
+            self.l1_factor = l1_factor
+            self.weight_decay = weight_decay
+            self.loss = loss
+            self.original_validation_loss = np.inf
+
+            # variables for bugs
+            self.bug_states = []
+            self.bug_counts = np.array([])
+            self.bug_ids = []
+            self.bug_dict = {}
+            self.update_counter = 0
+
+            # variables for computing of bug loss weight and logging
+            self.bug_loss_weight = 0.1  # This is the bug loss weight in the first epoch!
+            self.min_train_loss = 0
+            self.max_train_loss = 0
+            self.train_losses = []
+            self.bug_losses = []
+            self.val_losses = []
+            self.all_train_losses = []
+            self.all_bug_losses = []
+            self.all_val_losses = []
+
+        def configure_optimizers(self):
+            return _create_optimizer(self, self.learning_rate, self.weight_decay)
+
+        def initialize(self, oracle, checkpoint_path, update_interval, no_bug_loss_weight, no_bug_counts):
+            self.oracle = oracle
+            self.checkpoint_path = checkpoint_path
+            self.update_interval = update_interval
+            self.no_bug_loss_weight = no_bug_loss_weight
+            self.no_bug_counts = no_bug_counts
+
+        def set_original_validation_loss(self, original_validation_loss):
+            self.original_validation_loss = original_validation_loss
+
+        # map a state to a string such that we can check whether we have seen this state before
+        def state_to_string(self, state):
+            state_string = ""
+            for predicate in state[1][0].keys():  # only need to look at the first state since the successors are fixed
+                state_string += f'{predicate}: {state[1][0][predicate]}\n'
+            return state_string
+
+        # get new bug states from oracle, if a state is found again but with a better label we replace the old label
+        def get_bug_states(self):
+            new_bug_states = self.oracle.get_bug_states()
+
+            for new_bug in new_bug_states:
+                bug_string = self.state_to_string(new_bug)
+                if bug_string not in self.bug_dict:
+                    self.bug_states.append(new_bug)
+                    self.bug_dict[bug_string] = len(self.bug_states) - 1
+                    self.bug_counts = np.append(self.bug_counts, 0.0)
+                else:
+                    bug_index = self.bug_dict[bug_string]
+                    old_bug_label = self.bug_states[bug_index][0]
+                    new_bug_label = new_bug[0]
+                    if new_bug_label < old_bug_label:
+                        self.bug_states[bug_index] = new_bug
+                        self.bug_counts[bug_index] = 0.0
+
+            self.bug_counts += 1.0
+            self.bug_ids = np.arange(len(self.bug_states))
+
+            assert len(self.bug_states) == len(self.bug_counts)
+
+        def training_step(self, train_batch, batch_index):
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = train_batch
+            output = self(collated_states_with_object_counts)
+            train_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
+
+            # these values are used for interpolation
+            with torch.no_grad():
+                if train_loss > self.max_train_loss:
+                    self.max_train_loss = train_loss
+                elif train_loss < self.min_train_loss:
+                    self.min_train_loss = train_loss
+
+
+            l1 = l1_regularization(self, self.l1_factor)
+            self.log('l1_loss', l1)
+            total = train_loss + l1
+            self.log('train_loss', total, prog_bar=True, on_step=False, on_epoch=True)
+            #print(f'train_loss: {total}')
+
+            # define distribution over bug states counts
+            if not self.no_bug_counts:
+                bug_scores = 1 / self.bug_counts  # prioritize newer bugs
+            else:
+                bug_scores = np.ones(len(self.bug_counts))  # sample uniformly
+
+            bug_probs = bug_scores / np.sum(bug_scores)
+
+
+            # sample bug states
+            bug_batch = []
+            for _ in range(len(train_batch)):
+                bug_id = np.random.choice(self.bug_ids, p=bug_probs)
+                bug_batch.append(self.bug_states[bug_id])
+
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = self.oracle.collate(bug_batch)
+
+            output = self(collated_states_with_object_counts)
+            # TODO: DOES NOT PREDICTING THE SOLVABLE LABELS WITH THE BUG LOSS DETERIORATE PERFORMANCE?
+            bug_loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, self.device)
+
+            self.log('bug_loss', bug_loss, prog_bar=True, on_step=False, on_epoch=True)
+
+            self.train_losses.append(total)
+            self.bug_losses.append(bug_loss)
+
+            if not self.no_bug_loss_weight:
+                loss = train_loss + self.bug_loss_weight * bug_loss
+            else:
+                loss = train_loss + bug_loss
+
+            return loss
+
+        # when we load bugs only once at the start of the training
+        def on_train_start(self):
+            if self.update_interval == -1:
+                self.get_bug_states()
+
+        # when we iteratively load new bugs during training
+        def on_train_epoch_start(self):
+            if self.update_interval != -1 and self.update_counter % self.update_interval == 0:
+                self.get_bug_states()
+                self.update_counter += 1
+
+        def on_train_epoch_end(self):
+            with torch.no_grad():
+                # compute average loss on training samples during the last epoch
+                train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
+                print(f'epoch train loss: {train_loss}')
+                print(f'min train loss: {self.min_train_loss}')
+                print(f'max train loss: {self.max_train_loss}')
+
+                # linearly interpolate between min and max train loss
+                m = 1.0 / (self.max_train_loss - self.min_train_loss)
+                b = -self.min_train_loss / (self.max_train_loss - self.min_train_loss)
+                interpolated = m * train_loss + b
+
+                # update bug loss weight
+                self.bug_loss_weight = 1.0 - interpolated
+                print(f'bug loss weight: {self.bug_loss_weight}')
+                bug_loss = sum(l.mean() for l in self.bug_losses) / len(self.bug_losses)
+                print(f'epoch bug loss: {bug_loss}')
+
+                self.all_train_losses.append(train_loss.item())
+                self.all_bug_losses.append(bug_loss.item())
+                self.train_losses.clear()
+                self.bug_losses.clear()
+
+        # store information about training, validation, and bug losses
+        def on_train_end(self):
+            with open(self.checkpoint_path + "losses.train", "w") as f:
+                f.write(json.dumps(self.all_train_losses))
+            with open(self.checkpoint_path + "losses.bugs", "w") as f:
+                f.write(json.dumps(self.all_bug_losses))
+            with open(self.checkpoint_path + "losses.val", "w") as f:
+                f.write(json.dumps(self.all_val_losses))
+
+        def validation_step(self, validation_batch, batch_index):
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
+            output = self(collated_states_with_object_counts)
+            validation_loss = loss(output, labels, solvable_labels, state_counts, self.device)
+
+            self.val_losses.append(validation_loss)
+            self.all_val_losses.append(validation_loss.item())
+            self.log('validation_loss', validation_loss, on_step=False, on_epoch=True)
+
+        # we only want to store re-trained policies with a validation loss that is not worse than that of the original policy
+        def on_validation_epoch_end(self):
+            average_validation_loss = sum(l.mean() for l in self.val_losses) / len(self.val_losses)
+            if average_validation_loss <= self.original_validation_loss:
+                self.log('retrain_validation_loss', average_validation_loss)
+            else:
+                self.log('retrain_validation_loss', np.inf)
+            self.val_losses.clear()
 
     return Model
 

@@ -12,7 +12,7 @@ from torch.utils.data.dataloader import DataLoader
 from pytorch_lightning.loggers import TensorBoardLogger
 
 from datasets     import g_dataset_methods
-from architecture import g_model_classes
+from architecture import g_retrain_model_classes
 
 import torch
 import os
@@ -25,7 +25,7 @@ class Oracle:
         self.bugs = bugs
         self.collate = collate
         self.counter = 0
-        self.batch_size = len(self.bugs) // 10
+        self.batch_size = len(self.bugs) // 1
         # split the bugs list into batches
         self.batches = [self.bugs[i:i + self.batch_size] for i in range(0, len(self.bugs), self.batch_size)]
 
@@ -60,15 +60,21 @@ def _parse_arguments():
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 1
+    default_update_interval = -1
 
     # required arguments or --resume that requires a path
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bugs dataset')
     parser.add_argument('--loss', required=True, nargs='?', choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal', 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal', 'online_optimal'])
-    parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
+    parser.add_argument('--resume', required=True, default=None, type=Path, help='path to model (.ckpt) for resuming training')
+
+    # turn off components of the retraining algorithm
+    parser.add_argument('--no_bug_loss_weight', action='store_false', help='turn off the bug loss weight')
+    parser.add_argument('--no_bug_counts', action='store_false', help='turn off the bugs counter')
 
     # arguments with meaningful default values
+    parser.add_argument('--update_interval', default=default_update_interval, type=int, help=f'frequency at which new bugs are collected (default={default_update_interval})')
     parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
@@ -112,7 +118,6 @@ def _process_args(args):
         if len(loss_constants) != 4 or min(loss_constants) < 0:
             print(f'WARNING: Invalid constants {loss_constants} for loss function, using default values')
         else:
-            #print(colored(f'Using constants {loss_constants} for loss function', 'green'), attrs = [ 'bold' ]))
             set_loss_constants(loss_constants)
 
 def _load_datasets(args):
@@ -150,13 +155,12 @@ def _load_model(args, predicates, oracle):
     }
 
     try:
-        Model = g_model_classes[(args.aggregation, args.readout, args.loss)]
+        Model = g_retrain_model_classes[(args.aggregation, args.readout, args.loss)]
     except KeyError:
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
 
     print(Model)
-    if args.resume is None: model = Model(**model_params)
-    else: model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cpu'))
+    model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):
@@ -164,7 +168,9 @@ def _load_trainer(args):
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
-    callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
+    #callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
+    callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='retrain_validation_loss',
+                                     filename='{epoch}-{step}-{retrain_validation_loss}'))
     trainer_params = {
         "num_sanity_val_steps": 0,
         "callbacks": callbacks,
@@ -206,10 +212,16 @@ def _main(args):
 
 
     model = _load_model(args, predicates, oracle)
-    model.set_oracle(oracle)
     trainer = _load_trainer(args)
     checkpoint_path = f"{args.logdir}/version_{trainer.logger.version}/"
-    model.set_checkpoint_path(checkpoint_path)
+    model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
+
+    # compute validation loss before re-training
+    with torch.no_grad():
+        original_validation_loss = trainer.validate(model, validation_loader)[0]['validation_loss']
+        print(f'Validation loss before re-training: {original_validation_loss}')
+
+    model.set_original_validation_loss(original_validation_loss)
 
     print('Training model...')
     print(type(model).__name__)
