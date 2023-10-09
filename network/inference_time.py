@@ -141,7 +141,15 @@ def _load_model(args, predicates, path):
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
 
     print(Model)
-    model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False, map_location=torch.device('cpu'))
+    try:
+        model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False)
+    except:
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                               map_location=torch.device('cuda'))
+        except:
+            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                               map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):

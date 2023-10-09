@@ -1,5 +1,4 @@
 import argparse
-#from termcolor import colored
 import pytorch_lightning as pl
 import torch
 
@@ -12,7 +11,7 @@ from torch.utils.data.dataloader import DataLoader
 from pytorch_lightning.loggers import TensorBoardLogger
 
 from datasets     import g_dataset_methods
-from architecture import g_model_classes
+from architecture import g_retrain_model_classes
 
 from retrain import Oracle
 
@@ -23,41 +22,51 @@ import os
 from numpy import inf
 from tqdm import tqdm
 
+import re
+
 def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # default values for arguments
     default_aggregation = 'retrain_max'
-    default_size = 64  # 64, 128
-    default_iterations = 30  # 30, 4
-    default_batch_size = 64 # 64  # TODO: HALF THIS FOR RETRAINING? MAYBE DONT
+    default_size = 64
+    default_iterations = 30
+    default_batch_size = 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_loss_constants = None
-    default_learning_rate = 0.0002  # 0.0002
+    default_learning_rate = 0.0002
     default_suboptimal_factor = 2.0
     default_l1 = 0.0
-    default_weight_decay = 0.0  # 0.0
+    default_weight_decay = 0.0
     default_gradient_accumulation = 1
-    default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
+    default_max_samples_per_file = 1000
     default_max_samples = None
-    default_patience = 50  # TODO: REDUCE THIS From 50
+    default_patience = 50
     default_gradient_clip = 0.1
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 1
+    default_update_interval = -1
     default_loss = "selfsupervised_suboptimal"
 
-    # required arguments or --resume that requires a path
-    parser.add_argument('--trained', required=True, type=Path, help='trained policy')
-    parser.add_argument('--retrained', required=True, type=Path, help='retrained policy')
+    # required arguments
+    parser.add_argument('--original', required=True, type=Path,
+                        help='path to the original policy that was used for re-training')
+    parser.add_argument('--retrained', required=True, type=Path, help='path to directory containing re-trained policies')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bugs dataset')
-    parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
-    parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
-    parser.add_argument('--loss', nargs='?', choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal', 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal', 'online_optimal'], default=default_loss)
+
+    # turn off components of the retraining algorithm
+    parser.add_argument('--no_bug_loss_weight', action='store_false', help='turn off the bug loss weight')
+    parser.add_argument('--no_bug_counts', action='store_false', help='turn off the bugs counter')
 
     # arguments with meaningful default values
-    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention', 'retrain_planformer'], help=f'readout aggregation function (default={default_aggregation})')
+    parser.add_argument('--loss', default=default_loss, nargs='?',
+                        choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
+                                 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
+                                 'online_optimal'])
+    parser.add_argument('--update_interval', default=default_update_interval, type=int, help=f'frequency at which new bugs are collected (default={default_update_interval})')
+    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
     parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
@@ -98,29 +107,22 @@ def _process_args(args):
     if args.loss_constants:
         loss_constants = [ float(c) for c in args.loss_constants.split(',') ]
         if len(loss_constants) != 4 or min(loss_constants) < 0:
-            # print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
             print(f'WARNING: Invalid constants {loss_constants} for loss function, using default values')
         else:
-            #print(colored(f'Using constants {loss_constants} for loss function', 'green'), attrs = [ 'bold' ]))
             set_loss_constants(loss_constants)
 
 def _load_datasets(args):
-    # print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
     print('Loading datasets...')
     try:
         load_dataset, collate = g_dataset_methods[args.loss]
     except KeyError:
         raise NotImplementedError(f"Loss function '{args.loss}'")
-    (train_dataset, predicates) = load_dataset(args.train, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    (validation_dataset, _) = load_dataset(args.validation, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    (bugs_dataset, _) = load_dataset(args.bugs, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    return predicates, collate,  train_dataset, validation_dataset, bugs_dataset
+    (bugs_dataset, predicates) = load_dataset(args.bugs, args.max_samples_per_file, args.max_samples, args.verify_datasets)
+    return predicates, collate, bugs_dataset
 
-def _load_model(args, predicates, oracle, path):
-    # print(colored('Loading model...', 'green', attrs = [ 'bold' ]))
+def _load_model(args, predicates, path):
     print('Loading model...')
     model_params = {
-        "oracle": oracle,
         "predicates": predicates,
         "hidden_size": args.size,
         "iterations": args.iterations,
@@ -140,40 +142,51 @@ def _load_model(args, predicates, oracle, path):
     }
 
     try:
-        Model = g_model_classes[(args.aggregation, args.readout, args.loss)]
+        Model = g_retrain_model_classes[(args.aggregation, args.readout, args.loss)]
     except KeyError:
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
 
-    print(Model)
-    model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False, map_location=torch.device('cpu'))
+    try:
+        model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False)
+    except:
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                               map_location=torch.device('cuda'))
+        except:
+            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                               map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):
     print('Initializing trainer...')
     callbacks = []
-    callbacks.append(ValidationLossLogging())
+    if not args.verbose: callbacks.append(ValidationLossLogging())
+
     trainer_params = {
-        "accelerator": "cpu",  # added this
         "num_sanity_val_steps": 0,
-        # "progress_bar_refresh_rate": 30 if args.verbose else 0,
         "callbacks": callbacks,
-        # "weights_summary": None,
-        # "auto_lr_find": True,   # TODO: THIS MIGHT BE IMPORTANT
         "profiler": args.profiler,
         "accumulate_grad_batches": args.gradient_accumulation,
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
     }
+    if args.gpus == 0:
+        trainer_params["accelerator"] = "cpu"
+    else:
+        trainer_params["accelerator"] = "gpu"
+
+    if args.logdir or args.logname:
+        logdir = args.logdir if args.logdir else 'lightning_logs'
+        trainer_params['logger'] = TensorBoardLogger(logdir, name=args.logname)
     trainer = pl.Trainer(**trainer_params)
     return trainer
 
 def _main(args):
     _process_args(args)
-    predicates, collate, train_dataset, validation_dataset, bugs_dataset = _load_datasets(args)
+    predicates, collate, bugs_dataset = _load_datasets(args)
 
     bug_states = [bug for bug in bugs_dataset]
     oracle = Oracle(bug_states, collate)
-
 
     loader_params = {
         "batch_size": args.batch_size,
@@ -182,71 +195,70 @@ def _main(args):
         "pin_memory": True,
         "num_workers": args.num_workers,
     }
-    train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
-    validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
     bug_loader = DataLoader(bugs_dataset, shuffle=False, **loader_params)
 
-    trained_model = _load_model(args, predicates, oracle, args.trained)
-    trained_model.set_oracle(oracle)
-    retrained_model = _load_model(args, predicates, oracle, args.retrained)
-    retrained_model.set_oracle(oracle)
+    # get paths in checkpoint directory and discard those with validation loss = inf
+    checkpoint_paths = []
+    checkpoints_dir = Path(os.path.join(args.retrained, "checkpoints"))
+    for path in checkpoints_dir.iterdir():
+        retrain_validation_loss = re.search("validation_loss=(.*?).ckpt", str(path)).group(1)
+        if retrain_validation_loss != "inf":
+            checkpoint_paths.append(path)
+
+    print(checkpoint_paths)
+
+    bug_losses = []
+    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
+    for path in checkpoint_paths:
+        retrained_model = _load_model(args, predicates, path)
+        retrained_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
+        retrained_model.set_original_validation_loss(0)
+
+        with torch.no_grad():
+            losses = []
+            for bug_batch in tqdm(bug_loader):
+                labels, collated_states_with_object_counts, solvable_labels, state_counts = bug_batch
+
+                retrained_output = retrained_model(collated_states_with_object_counts)
+                retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels, state_counts, device)
+                losses.append(retrained_loss.item())
+            bug_losses.append(sum(losses) / len(losses))
+
+    best_policy_index = bug_losses.index(min(bug_losses))
+    best_policy = checkpoint_paths[best_policy_index]
+
+    print(f"The best re-trained policy achieved a bug loss of {min(bug_losses)}")
+
+    original_model = _load_model(args, predicates, args.original)
+    original_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
+    original_model.set_original_validation_loss(0)
 
     with torch.no_grad():
-        trained_train_losses = []
-        retrained_train_losses = []
-        for train_batch in tqdm(train_loader):
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = train_batch
-
-            trained_output = trained_model(collated_states_with_object_counts)
-            trained_loss = selfsupervised_suboptimal_loss(trained_output, labels, solvable_labels, state_counts,
-                                                          torch.device("cpu"))
-            trained_train_losses.append(trained_loss)
-
-            retrained_output = retrained_model(collated_states_with_object_counts)
-            retrained_loss = selfsupervised_suboptimal_loss(retrained_output, labels, solvable_labels, state_counts,
-                                                                               torch.device("cpu"))
-            retrained_train_losses.append(retrained_loss)
-
-        print(f"Trained Train Loss: {sum(trained_train_losses) / len(trained_train_losses)}")
-        print(f"Retrained Train Loss: {sum(retrained_train_losses) / len(retrained_train_losses)}")
-        print("\n")
-        trained_train_losses.clear()
-        retrained_train_losses.clear()
-
-        trained_val_losses = []
-        retrained_val_losses = []
-        for val_batch in tqdm(validation_loader):
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = val_batch
-
-            trained_output = trained_model(collated_states_with_object_counts)
-            trained_loss = selfsupervised_suboptimal_loss(trained_output, labels, solvable_labels, state_counts,
-                                                          torch.device("cpu"))
-            trained_val_losses.append(trained_loss)
-
-            retrained_output = retrained_model(collated_states_with_object_counts)
-            retrained_loss = selfsupervised_suboptimal_loss(retrained_output, labels, solvable_labels, state_counts,
-                                                            torch.device("cpu"))
-            retrained_val_losses.append(retrained_loss)
-
-        print(f"Trained Validation Loss: {sum(trained_val_losses) / len(trained_val_losses)}")
-        print(f"Retrained Validation Loss: {sum(retrained_val_losses) / len(retrained_val_losses)}")
-        print("\n")
-
-        trained_bug_losses = []
-        retrained_bug_losses = []
+        losses = []
         for bug_batch in tqdm(bug_loader):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = bug_batch
 
-            trained_output = trained_model(collated_states_with_object_counts)
-            trained_loss = selfsupervised_suboptimal_loss(trained_output, labels, solvable_labels, state_counts, torch.device("cpu"))
-            trained_bug_losses.append(trained_loss)
+            original_output = original_model(collated_states_with_object_counts)
+            original_loss = selfsupervised_suboptimal_loss_no_solvable_labels(original_output, labels, state_counts,
+                                                                               device)
+            losses.append(original_loss.item())
+        original_loss = sum(losses) / len(losses)
 
-            retrained_output = retrained_model(collated_states_with_object_counts)
-            retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels, state_counts, torch.device("cpu"))
-            retrained_bug_losses.append(retrained_loss)
+    print(f"Original model's loss on bug states: {original_loss}")
 
-        print(f"Trained Bug Loss: {sum(trained_bug_losses)/len(trained_bug_losses)}")
-        print(f"Retrained Bug Loss: {sum(retrained_bug_losses)/len(retrained_bug_losses)}")
+    if original_loss < bug_losses[best_policy_index]:
+        print("Re-training did not improve performance on bugs!!!")
+        return
+    else:
+        print("Re-training successful, storing best policy")
+        # create a new directory for the best policy
+        best_policy_dir = Path(os.path.join(args.retrained, "best"))
+        best_policy_dir.mkdir(parents=True, exist_ok=True)
+
+        # copy the best policy to the new directory
+        best_policy_name = os.path.basename(best_policy)
+        best_policy_path = os.path.join(best_policy_dir, best_policy_name)
+        os.system("cp " + str(best_policy) + " " + str(best_policy_path))
 
 
 if __name__ == "__main__":

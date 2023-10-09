@@ -38,14 +38,18 @@ def _parse_arguments():
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 1
+    default_loss = "selfsupervised_suboptimal"
 
     # required arguments or --resume that requires a path
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
-    parser.add_argument('--loss', required=True, nargs='?', choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal', 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal', 'online_optimal'])
     parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments with meaningful default values
+    parser.add_argument('--loss', default=default_loss, nargs='?',
+                        choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
+                                 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
+                                 'online_optimal'])
     parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
     parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
@@ -72,6 +76,9 @@ def _parse_arguments():
     parser.add_argument('--logdir', default=None, type=str, help='folder name where logs are stored')
     parser.add_argument('--logname', default=None, type=str, help='if provided, versions are stored in folder with this name inside logdir')
     parser.add_argument('--save_top_k', default=default_save_top_k, type=int, help=f'number of top-k models to save (default={default_save_top_k})')
+
+    # specifying training length
+    parser.add_argument('--max_epochs', default=None, type=int, help='maximum number of epochs to train for')
 
     args = parser.parse_args()
     return args
@@ -142,7 +149,15 @@ def _load_model(args, predicates):
     if args.resume is None:
         model = Model(**model_params)
     else:
-        model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
+        except:
+            try:
+                model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False,
+                                                   map_location=torch.device('cuda'))
+            except:
+                model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False,
+                                                   map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):
@@ -158,6 +173,7 @@ def _load_trainer(args):
         "accumulate_grad_batches": args.gradient_accumulation,
         "gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
+        "max_epochs": args.max_epochs,
     }
     if args.gpus == 0:
         trainer_params["accelerator"] = "cpu"

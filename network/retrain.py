@@ -59,21 +59,25 @@ def _parse_arguments():
     default_gradient_clip = 0.1
     default_profiler = None
     default_validation_frequency = 1
-    default_save_top_k = 1
+    default_save_top_k = 5
     default_update_interval = -1
+    default_loss = "selfsupervised_suboptimal"
 
     # required arguments or --resume that requires a path
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bugs dataset')
-    parser.add_argument('--loss', required=True, nargs='?', choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal', 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal', 'online_optimal'])
-    parser.add_argument('--resume', required=True, default=None, type=Path, help='path to model (.ckpt) for resuming training')
+    parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # turn off components of the retraining algorithm
     parser.add_argument('--no_bug_loss_weight', action='store_false', help='turn off the bug loss weight')
     parser.add_argument('--no_bug_counts', action='store_false', help='turn off the bugs counter')
 
     # arguments with meaningful default values
+    parser.add_argument('--loss', default=default_loss, nargs='?',
+                        choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
+                                 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
+                                 'online_optimal'])
     parser.add_argument('--update_interval', default=default_update_interval, type=int, help=f'frequency at which new bugs are collected (default={default_update_interval})')
     parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['retrain_add', 'retrain_max', 'retrain_addmax', 'retrain_attention'], help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
@@ -131,11 +135,10 @@ def _load_datasets(args):
     (bugs_dataset, _) = load_dataset(args.bugs, args.max_samples_per_file, args.max_samples, args.verify_datasets)
     return predicates, collate,  train_dataset, validation_dataset, bugs_dataset
 
-def _load_model(args, predicates, oracle):
+def _load_model(args, predicates):
     # print(colored('Loading model...', 'green', attrs = [ 'bold' ]))
     print('Loading model...')
     model_params = {
-        "oracle": oracle,
         "predicates": predicates,
         "hidden_size": args.size,
         "iterations": args.iterations,
@@ -160,7 +163,13 @@ def _load_model(args, predicates, oracle):
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
 
     print(Model)
-    model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cpu'))
+    try:
+        model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False)
+    except:
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cuda'))
+        except:
+            model = Model.load_from_checkpoint(checkpoint_path=str(args.resume), strict=False, map_location=torch.device('cpu'))
     return model
 
 def _load_trainer(args):
@@ -168,7 +177,6 @@ def _load_trainer(args):
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
-    #callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='retrain_validation_loss',
                                      filename='{epoch}-{step}-{retrain_validation_loss}'))
     trainer_params = {
@@ -197,7 +205,6 @@ def _main(args):
     bug_states = [bug for bug in bugs_dataset]
     oracle = Oracle(bug_states, collate)
 
-
     loader_params = {
         "batch_size": args.batch_size,
         "drop_last": False,
@@ -211,7 +218,7 @@ def _main(args):
         f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([f"{name}/{arity}" for name, arity in predicates])} ]')
 
 
-    model = _load_model(args, predicates, oracle)
+    model = _load_model(args, predicates)
     trainer = _load_trainer(args)
     checkpoint_path = f"{args.logdir}/version_{trainer.logger.version}/"
     model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
