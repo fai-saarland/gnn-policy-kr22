@@ -2,35 +2,37 @@ from pathlib import Path
 
 def read_plans(path: Path):
     problems = dict()
-    for dpath in path.glob('*'):
-        if dpath.is_dir():
-            problems[dpath] = dict()
+    directories = ["plans_original", "plans_retrained", "plans_continued"]
+    for directory in directories:
+        for dpath in path.glob(directory + '/*'):
+            if dpath.is_dir():
+                problems[dpath] = dict()
 
-            for filename in dpath.glob('*.plan'):
-                problem = filename.stem
-                if problem not in problems[dpath]: problems[dpath][problem] = dict()
-                with filename.open('r') as fd:
-                    plan = [ line.strip('\n') for line in fd.readlines() if line[0] == '(' ]
-                problems[dpath][problem]['planner'] = dict(length=len(plan), plan=plan)
-
-            for suffix in [ 'policy', 'markovian' ]:
-                for filename in dpath.glob(f'*.{suffix}'):
+                for filename in dpath.glob('*.plan'):
                     problem = filename.stem
                     if problem not in problems[dpath]: problems[dpath][problem] = dict()
                     with filename.open('r') as fd:
-                        plan = []
-                        reading_plan = False
-                        for line in fd.readlines():
-                            line = line.strip('\n')
-                            if line.find('Found valid plan') > 0:
-                                reading_plan = True
-                                continue
+                        plan = [ line.strip('\n') for line in fd.readlines() if line[0] == '(' ]
+                    problems[dpath][problem]['planner'] = dict(length=len(plan), plan=plan)
+
+                for suffix in [ 'policy']:
+                    for filename in dpath.glob(f'*.{suffix}'):
+                        problem = filename.stem
+                        if problem not in problems[dpath]: problems[dpath][problem] = dict()
+                        with filename.open('r') as fd:
+                            plan = []
+                            reading_plan = False
+                            for line in fd.readlines():
+                                line = line.strip('\n')
+                                if line.find('Found valid plan') > 0:
+                                    reading_plan = True
+                                    continue
+                                if reading_plan:
+                                    fields = line.split(' ')
+                                    if len(fields) >= 5 and fields[4][-1] == ':' and fields[4][:-1].isdigit():
+                                        plan.append(' '.join(fields[5:]))
                             if reading_plan:
-                                fields = line.split(' ')
-                                if len(fields) >= 5 and fields[4][-1] == ':' and fields[4][:-1].isdigit():
-                                    plan.append(' '.join(fields[5:]))
-                        if reading_plan:
-                            problems[dpath][problem][suffix] = dict(length=len(plan), plan=plan)
+                                problems[dpath][problem][suffix] = dict(length=len(plan), plan=plan)
     return problems
 
 def fill_table(table, problems, suffix):
@@ -56,7 +58,7 @@ def fill_table(table, problems, suffix):
 
 def get_table_row(name, size, record):
     row = f'{name:>47s} {{:>5s}}'.format(f'({size:,d})')
-    for suffix in [ 'policy', 'markovian' ]:
+    for suffix in [ 'policy']:
         solved = record[suffix]['solved']
         assert size > 0, f'{name}'
         percentage = f'({int(100 * solved / size)}\\%)'
@@ -78,7 +80,7 @@ def print_table(table):
         size = table[domain]['size']
         totals['size'] += size
 
-        for suffix in [ 'policy' , 'markovian' ]:
+        for suffix in [ 'policy']:
             if suffix not in totals: totals[suffix] = dict()
             if 'solved' not in totals[suffix]: totals[suffix]['solved'] = 0
             totals[suffix]['solved'] += table[domain][suffix]['solved']
@@ -104,7 +106,7 @@ if __name__ == "__main__":
     # create table
     table = dict()
     fill_table(table, problems, 'policy')
-    fill_table(table, problems, 'markovian')
+    #fill_table(table, problems, 'markovian')
 
     # print table
     print_table(table)

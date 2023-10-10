@@ -41,7 +41,7 @@ def _parse_arguments(arg_list_override=None):
     default_cycles = 'avoid'
     default_logfile = 'log_plan.txt'
     default_max_length = 500
-    default_registry_filename = '../DerivedPredicates/registry_rules.json'
+    default_registry_filename = '../derived_predicates/registry_rules.json'
 
     # required arguments
     parser = argparse.ArgumentParser()
