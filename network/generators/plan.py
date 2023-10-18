@@ -40,8 +40,12 @@ def load_pddl_problem_with_augmented_states(domain: Path, problem: Path, registr
     from tarski.io import PDDLReader
 
     from sys import path as sys_path
-    sys_path.append('../derived_predicates')
-    from augmentation import load_registry, get_registry_record, update_registry_record, construct_augmentation_function_simple
+    try:
+        sys_path.append('../derived_predicates')
+        from augmentation import load_registry, get_registry_record, update_registry_record, construct_augmentation_function_simple
+    except:
+        from .augmentation import load_registry, get_registry_record, update_registry_record, \
+            construct_augmentation_function_simple
 
     parser = PDDLReader(raise_on_error=True)
     parser.parse_domain(str(domain))

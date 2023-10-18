@@ -88,9 +88,9 @@ g_model_classes = {
     ('retrain_addmax', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddMaxModel
 }
 
-# can be extended further but we really only need the selfsupervised suboptimal max model
+# can be extended further, but we really only need the selfsupervised suboptimal max model
 g_retrain_model_classes = {
-    ('retrain_max', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalMaxModel,
-    ('retrain_add', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddModel,
-    ('retrain_addmax', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddMaxModel
+    ('max', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalMaxModel,
+    ('add', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddModel,
+    ('addmax', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddMaxModel
 }
