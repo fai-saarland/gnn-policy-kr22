@@ -126,7 +126,7 @@ def _parse_arguments():
     default_debug_level = 0
     default_cycles = 'avoid'
     default_logfile = 'log_plan.txt'
-    default_max_length = 500  # TODO: CHANGED THIS!!!!!!
+    default_max_length = 5#00  # TODO: CHANGED THIS!!!!!!
     default_registry_filename = '../derived_predicates/registry_rules.json'
 
     parser.add_argument('--domain', required=True, type=str, help='domain name')
@@ -246,7 +246,7 @@ def load_trainer(args, logdir, path=None, retrain=False):
     #else:
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
 
-    max_epochs = 2#None
+    max_epochs = 10#None
     # the training of the original policy will be continued for at most the number of epochs the re-trained policy was trained for
     if path is not None and not retrain:
         # use regex to extract epoch from checkpoint path
@@ -275,7 +275,7 @@ def planning(args, policy, domain_file, problem_file, logger, device):
     start_time = timer()
 
     # load model
-    Model = plan._load_model(args)  # TODO: WHAT FUNCTION IS THIS???
+    Model = plan._load_model(args)
     try:
         model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
     except:
@@ -422,8 +422,9 @@ def _main(args):
     else:
         print(colored('Using existing trained policy', 'red', attrs=['bold']))
         best_trained_policy = args.policy
+        best_trained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_trained_policy)).group(1))
 
-    print(best_trained_policy)
+    print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
 
     best_trained_policy_dir = train_logdir / 'best'
     best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -431,7 +432,7 @@ def _main(args):
     # copy the best policy to the new directory
     best_trained_policy_name = os.path.basename(best_trained_policy)
     best_trained_policy_path = os.path.join(best_trained_policy_dir, best_trained_policy_name)
-    os.system("cp " + str(best_trained_policy) + " " + str(best_trained_policy_path))  # TODO: ALSO COPY LOSSES?
+    os.system("cp " + str(best_trained_policy) + " " + str(best_trained_policy_path))
 
     # TODO: STEP 4: RE-TRAINING
     print(colored('Re-training policy', 'red', attrs=['bold']))
@@ -441,17 +442,12 @@ def _main(args):
     retrain_logdir.mkdir(parents=True, exist_ok=True)
 
     for _ in range(args.repeat):
-        model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)  # TODO: LOAD DIFFERENT MODEL! define new function
+        model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
         trainer = load_trainer(args, logdir=retrain_logdir, retrain=True)
         checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
         model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
 
-        # compute validation loss before re-training
-        with torch.no_grad():
-            original_validation_loss = trainer.validate(model, validation_loader)[0]['validation_loss']
-            print(f'Validation loss before re-training: {original_validation_loss}')
-
-        model.set_original_validation_loss(original_validation_loss + original_validation_loss * 0.1)  # TODO: WE ALLOW TO BE AT MOST 10% WORSE THAN THE ORIGINAL VALIDATION LOSS
+        model.set_original_validation_loss(best_trained_val_loss)  # TODO: REMOVE THIS!!!
 
         print('Re-training model...')
         print(type(model).__name__)
@@ -460,25 +456,30 @@ def _main(args):
 
     # TODO: STEP 5: EVALUATE RE-TRAINING
     print(colored('Determining best re-trained policy', 'red', attrs=['bold']))
-    checkpoint_paths = []
+    best_retrained_val_loss = float('inf')
+    best_retrained_policy = None
+    successful_retrained_policies = []
     for version_dir in retrain_logdir.glob('version_*'):
         checkpoint_dir = version_dir / 'checkpoints'
         for checkpoint in checkpoint_dir.glob('*.ckpt'):
-            try:
-                retrain_validation_loss = re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1)
-            except:
-                retrain_validation_loss = "inf"
-                print(f"Checkpoint encoding error: {checkpoint}")
-            if retrain_validation_loss != "inf":
-                checkpoint_paths.append(checkpoint)
+            retrained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
+            if retrained_val_loss < best_retrained_val_loss:
+                best_retrained_val_loss = retrained_val_loss
+                best_retrained_policy = checkpoint
 
-    if len(checkpoint_paths) == 0:
+            if retrained_val_loss <= (best_trained_val_loss + 0.1 * best_trained_val_loss):
+                successful_retrained_policies.append(checkpoint)
+
+    if len(successful_retrained_policies) == 0:
+        policy_paths = [best_retrained_policy]
         print("None of the re-trained policies achieved validation losses comparable to the trained policy!")
-        return
+    else:
+        policy_paths = successful_retrained_policies
+        print(f"{len(successful_retrained_policies)} re-trained policies achieved validation losses comparable to the trained policy!")
 
     bug_losses = []
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
-    for path in checkpoint_paths:
+    for path in policy_paths:
         retrained_model = load_model(args, predicates, path=path, retrain=True)
         retrained_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
         retrained_model.set_original_validation_loss(0)
@@ -494,13 +495,14 @@ def _main(args):
                 losses.append(retrained_loss.item())
             bug_losses.append(sum(losses) / len(losses))
 
-    best_retrained_policy_index = bug_losses.index(min(bug_losses))
-    best_retrained_policy = checkpoint_paths[best_retrained_policy_index]
+    best_retrained_bug_loss = min(bug_losses)
+    best_retrained_policy_index = bug_losses.index(best_retrained_bug_loss)
+    best_retrained_policy = policy_paths[best_retrained_policy_index]
+    best_retrained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_retrained_policy)).group(1))
 
-    print(f"The best re-trained policy achieved a bug loss of {min(bug_losses)}")
+    print(f"The best re-trained policy achieved a bug loss of {best_retrained_bug_loss} and a validation loss of {best_retrained_val_loss}")
 
-    trained_model = load_model(args, predicates, path=best_trained_policy_path)  # TODO: USE SAME FUNCTION AS FOR TRAINING
-
+    trained_model = load_model(args, predicates, path=best_trained_policy_path)
     with torch.no_grad():
         losses = []
         for bug_batch in tqdm(bug_loader):
@@ -510,13 +512,12 @@ def _main(args):
             trained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(trained_output, labels, state_counts,
                                                                               device)
             losses.append(trained_loss.item())
-        trained_loss = sum(losses) / len(losses)
+        trained_bug_loss = sum(losses) / len(losses)
 
-    print(f"Original model's loss on bug states: {trained_loss}")
+    print(f"Original model's loss on bug states: {trained_bug_loss}")
 
     if trained_loss < bug_losses[best_retrained_policy_index]:
-        print("Re-training did not improve performance on bugs!!!")  # TODO: SHOULD WE STILL CONTINUE THE PIPELINE?
-        # return
+        print("Re-training did not improve performance on bugs!!!")
     else:
         print("Re-training successful")
     # create a new directory for the best policy
@@ -534,7 +535,7 @@ def _main(args):
     continue_logdir.mkdir(parents=True, exist_ok=True)
 
     for _ in range(args.repeat):
-        model = load_model(args, predicates, path=best_trained_policy_path, retrain=False)  # TODO: USE SEPARATE FUNCTION?
+        model = load_model(args, predicates, path=best_trained_policy_path, retrain=False)
         trainer = load_trainer(args, logdir=continue_logdir, path=best_trained_policy_path, retrain=False)
         print(colored('Continuing training of model...', 'green', attrs=['bold']))
         print(type(model).__name__)
@@ -555,7 +556,7 @@ def _main(args):
                 best_continued_val_loss = val_loss
                 best_continued_policy = checkpoint
 
-    print(best_continued_policy)
+    print(f"The best continued policy achieved a validation loss of {best_continued_val_loss}")
 
     best_continued_policy_dir = continue_logdir / 'best'
     best_continued_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -563,74 +564,26 @@ def _main(args):
     # copy the best policy to the new directory
     best_continued_policy_name = os.path.basename(best_continued_policy)
     best_continued_policy_path = os.path.join(best_continued_policy_dir, best_continued_policy_name)
-    os.system("cp " + str(best_continued_policy) + " " + str(best_continued_policy_path))  # TODO: ALSO COPY LOSSES?
+    os.system("cp " + str(best_continued_policy) + " " + str(best_continued_policy_path))
 
 
-    # TODO: STEP 8: EVALUATE ALL
-    print(colored('Evaluating performance of trained, re-trained, and continued policies on validation and bug datasets', 'red', attrs=['bold']))
-    trained_model = load_model(args, predicates, path=best_trained_policy_path)
+    # TODO: STEP 8: EVALUATE CONTINUED MODEL ON BUGS
+    print(colored('Evaluating performance of continued policy bug dataset', 'red', attrs=['bold']))
     continued_model = load_model(args, predicates, path=best_continued_policy_path, retrain=False)
-    retrained_model = load_model(args, predicates, path=best_retrained_policy_path, retrain=True)
-    retrained_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
 
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
     with torch.no_grad():
-        trained_val_losses = []
-        continued_val_losses = []
-        retrained_val_losses = []
-        for val_batch in tqdm(validation_loader):
-            labels, collated_states_with_object_counts, solvable_labels, state_counts = val_batch
-
-            trained_output = trained_model(collated_states_with_object_counts)
-            trained_loss = selfsupervised_suboptimal_loss(trained_output, labels, solvable_labels, state_counts,
-                                                           device)
-            trained_val_losses.append(trained_loss)
-
-            continued_output = continued_model(collated_states_with_object_counts)
-            continued_loss = selfsupervised_suboptimal_loss(continued_output, labels, solvable_labels, state_counts,
-                                                            device)
-            continued_val_losses.append(continued_loss)
-
-            retrained_output = retrained_model(collated_states_with_object_counts)
-            retrained_loss = selfsupervised_suboptimal_loss(retrained_output, labels, solvable_labels, state_counts,
-                                                            device)
-            retrained_val_losses.append(retrained_loss)
-
-        trained_val_loss = sum(trained_val_losses) / len(trained_val_losses)
-        continued_val_loss = sum(continued_val_losses) / len(continued_val_losses)
-        retrained_val_loss = sum(retrained_val_losses) / len(retrained_val_losses)
-        print(f"Trained Validation Loss: {trained_val_loss}")
-        print(f"Continued Validation Loss: {continued_val_loss}")
-        print(f"Retrained Validation Loss: {retrained_val_loss}")
-        print("\n")
-
-        trained_bug_losses = []
         continued_bug_losses = []
-        retrained_bug_losses = []
         for bug_batch in tqdm(bug_loader):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = bug_batch
-
-            trained_output = trained_model(collated_states_with_object_counts)
-            trained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(trained_output, labels, state_counts,
-                                                           device)
-            trained_bug_losses.append(trained_loss)
 
             continued_output = continued_model(collated_states_with_object_counts)
             continued_loss = selfsupervised_suboptimal_loss_no_solvable_labels(continued_output, labels, state_counts,
                                                             device)
-            continued_bug_losses.append(continued_loss)
+            continued_bug_losses.append(continued_loss.item())
 
-            retrained_output = retrained_model(collated_states_with_object_counts)
-            retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels, state_counts,
-                                                            device)
-            retrained_bug_losses.append(retrained_loss)
-
-        trained_bug_loss = sum(trained_bug_losses) / len(trained_bug_losses)
         continued_bug_loss = sum(continued_bug_losses) / len(continued_bug_losses)
-        retrained_bug_loss = sum(retrained_bug_losses) / len(retrained_bug_losses)
-        print(f"Trained Bug Loss: {trained_bug_loss}")
-        print(f"Continued Bug Loss: {continued_bug_loss}")
-        print(f"Retrained Bug Loss: {retrained_bug_loss}")
+        print(f"Continued model's loss on bug states: {continued_bug_loss}")
         print("\n")
 
     # TODO: STEP 9: PLANNING
@@ -717,7 +670,7 @@ def _main(args):
         "policy_path": [],
         "val_loss": [],
         "bug_loss": [],
-        "size": [],
+        "instances": [],
         "solved": [],
         "L": [],
         "PQ": [],
@@ -728,9 +681,9 @@ def _main(args):
 
     results["type"].append("trained")
     results["policy_path"].append(best_trained_policy_path)
-    results["val_loss"].append(trained_val_loss.item())
-    results["bug_loss"].append(trained_bug_loss.item())
-    results["size"].append(trained_table["plans_trained"]["size"])
+    results["val_loss"].append(best_trained_val_loss)
+    results["bug_loss"].append(trained_bug_loss)
+    results["instances"].append(trained_table["plans_trained"]["size"])
     results["solved"].append(trained_table["plans_trained"]["policy"]["solved"])
     results["L"].append(trained_table["plans_trained"]["policy"]["L"])
     trained_PL = trained_table["plans_trained"]["policy"]["PL"]
@@ -746,9 +699,9 @@ def _main(args):
 
     results["type"].append("retrained")
     results["policy_path"].append(best_retrained_policy_path)
-    results["val_loss"].append(retrained_val_loss.item())
-    results["bug_loss"].append(retrained_bug_loss.item())
-    results["size"].append(retrained_table["plans_retrained"]["size"])
+    results["val_loss"].append(best_retrained_val_loss)
+    results["bug_loss"].append(best_retrained_bug_loss)
+    results["instances"].append(retrained_table["plans_retrained"]["size"])
     results["solved"].append(retrained_table["plans_retrained"]["policy"]["solved"])
     results["L"].append(retrained_table["plans_retrained"]["policy"]["L"])
     retrained_PL = retrained_table["plans_retrained"]["policy"]["PL"]
@@ -764,9 +717,9 @@ def _main(args):
 
     results["type"].append("continued")
     results["policy_path"].append(best_continued_policy_path)
-    results["val_loss"].append(continued_val_loss.item())
-    results["bug_loss"].append(continued_bug_loss.item())
-    results["size"].append(continued_table["plans_continued"]["size"])
+    results["val_loss"].append(best_continued_val_loss)
+    results["bug_loss"].append(continued_bug_loss)
+    results["instances"].append(continued_table["plans_continued"]["size"])
     results["solved"].append(continued_table["plans_continued"]["policy"]["solved"])
     results["L"].append(continued_table["plans_continued"]["policy"]["L"])
     continued_PL = continued_table["plans_continued"]["policy"]["PL"]
