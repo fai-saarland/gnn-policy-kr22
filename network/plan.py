@@ -154,6 +154,28 @@ def apply_policy(state):
     return apply_policy_to_state(state)
 
 
+########################################################################################################################
+
+
+from generators import setup_translation_server, translate_state
+def setup_translation(args_string):
+    arg_list = args_string.split()
+    if '--sas' not in arg_list:
+        print("You need to provide a sas file")
+        sys.exit(1)
+    args = _parse_arguments(arg_list)
+    registry_filename = args.registry_filename if args.augment else None
+    pddl_problem = load_pddl_problem_with_augmented_states(args.domain, args.problem, registry_filename, args.registry_key)
+    del pddl_problem['predicates']  # Why?
+
+    return setup_translation_server(sas_file=args.sas, **pddl_problem)
+
+def translate(fdr_state):
+    return translate_state(fdr_state)
+
+
+########################################################################################################################
+
 if __name__ == "__main__":
     # setup timer and exec name
     entry_time = timer()

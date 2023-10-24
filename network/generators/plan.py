@@ -783,3 +783,47 @@ def setup_policy_server(actions, initial, goal, language, model: pl.LightningMod
 
 def get_num_vars():
     return StaticServerData.num_vars
+
+
+########################################################################################################################
+
+def setup_translation_server(actions, initial, goal, language, sas_file, augment_fn=None):
+    StaticServerData.actions = actions
+    StaticServerData.initial = initial
+    StaticServerData.goal = goal
+    StaticServerData.language = language
+    StaticServerData.augment_fn = augment_fn
+    print("Setting up translation server")
+    objects = language.constants()
+    StaticServerData.obj_encoding = create_object_encoding(objects)
+    parse_sas_file(sas_file, StaticServerData.language, StaticServerData.actions)
+    print("Read variable and action mappings")
+    StaticServerData.static_facts = _collectStaticFacts(StaticServerData.initial, StaticServerData.available_facts, StaticServerData.actions, StaticServerData.language, None)
+    StaticServerData.torch_context_handler = torch.no_grad()
+    StaticServerData.torch_context_handler.__enter__()
+    # TODO shut this down again
+    # calculate denotation of goal atoms that is equal for every state
+    StaticServerData.goal_denotation = _get_goal_denotation(StaticServerData.goal, StaticServerData.obj_encoding)
+
+def translate_state(fdr_state):
+    current_state = deepcopy(StaticServerData.static_facts)
+    for i in range(len(StaticServerData.var_map)):
+        atom = StaticServerData.var_map[i][fdr_state[i]]
+        # TODO check this
+        if atom:
+            current_state.add(atom.predicate, *atom.subterms)
+
+    successor_candidates = [transition for transition in _get_successor_states(current_state, StaticServerData.actions)]
+    successor_candidates = sorted(successor_candidates, key=lambda x: x[0].ident())
+    successor_actions = []
+    successor_states = []
+    for candidate in successor_candidates:
+        if candidate[0] in StaticServerData.available_actions:
+            successor_actions += [candidate[0]]
+            successor_states += [candidate[1]]
+
+    collated_input, encoded_states = _to_input(successor_states, StaticServerData.goal_denotation,
+                                               StaticServerData.obj_encoding, StaticServerData.augment_fn,
+                                               StaticServerData.language, StaticServerData.device, None)
+
+    return collated_input, encoded_states

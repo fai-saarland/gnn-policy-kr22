@@ -25,25 +25,78 @@ from architecture import g_model_classes
 from architecture import g_retrain_model_classes
 from architecture import selfsupervised_suboptimal_loss_no_solvable_labels, selfsupervised_suboptimal_loss
 from generators import load_pddl_problem_with_augmented_states, compute_traces_with_augmented_states
+from bugfile_parser import parse_bug_file
 
 
 # TODO: READ BUG FILES HERE
 class Oracle:
-    def __init__(self, bugs, collate):
-        self.bugs = bugs
+    def __init__(self, collate, logdir, max_bugs_per_iteration, bugs=None):
         self.collate = collate
-        self.counter = 0
-        self.batch_size = len(self.bugs) // 1
-        # split the bugs list into batches
-        self.batches = [self.bugs[i:i + self.batch_size] for i in range(0, len(self.bugs), self.batch_size)]
+        self.logdir = logdir
+        self.max_bugs_per_iteration = max_bugs_per_iteration
+        self.bugs = bugs
 
     def get_bug_states(self):
-        if self.counter == len(self.batches):
-            self.counter = 0
+        if self.bugs is None:
+            raise NotImplementedError
+        else:
+            return self.translate_bug_states(self.bugs)
 
-        batch = self.batches[self.counter]
-        self.counter += 1
-        return batch
+    def translate_bug_states(self, path):
+        # store bug and sas files in new directory
+        bug_dir = Path(self.logdir + "/" + "bugfiles")
+        bug_dir.mkdir(parents=True, exist_ok=True)
+
+        bug_files = glob.glob(str(path) + "/*.bugfile")
+        translated_bugs = []
+        for bug_file in bug_files:
+            bug_file_name = bug_file.split("/")[-1].split(".")[0]
+            # copy bugfile to directory of the currently trained policy
+            os.system(f"cp {bug_file} {bug_dir}/{bug_file_name + '.bugfile'}")
+
+            bugs, sas = parse_bug_file(bug_file)
+            sas_file = Path(str(bug_dir) + "/" + bug_file_name + ".sas")
+            with open(sas_file, "w") as f:
+                f.write(sas)
+            domain_file = Path('data/pddl/' + str(args.domain) + '/test/domain.pddl')
+            problem_file = Path("data/pddl/" + str(args.domain) + "/train/" + bug_file_name + ".pddl")
+
+            setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
+            plan.setup_translation(setup_args)
+            for bug in bugs:
+                collated, encoded = plan.translate(bug.state_vals)
+                label = torch.tensor([bug.cost_bound])  # TODO: TO DEVICE?
+                solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
+                translated_bugs.append(((label, encoded, solvable_label), bug.cost_bound))
+
+        # sort the bugs according to their cost bound
+        translated_bugs.sort(key=lambda x: x[1])
+        # only keep the first max_bugs_per_iteration bugs and remove cost bound
+        n = min(len(translated_bugs), self.max_bugs_per_iteration)
+        translated_bugs = [x[0] for x in translated_bugs[:n]]
+
+        return translated_bugs
+
+
+def load_bugs(path):
+    bug_files = glob.glob(str(path) + "/*.bugfile")
+    translated_bugs = []
+    for bug_file in bug_files:
+        bugs, sas = parse_bug_file(bug_file)
+        bug_file_name = bug_file.split("/")[-1].split(".")[0]
+        sas_file = Path(str(path) + "/" + bug_file_name + ".sas")
+        domain_file = Path('data/pddl/' + str(args.domain) + '/test/domain.pddl')
+        problem_file = Path("data/pddl/" + str(args.domain) + "/train/" + bug_file_name + ".pddl")
+
+        setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
+        plan.setup_translation(setup_args)
+        for bug in bugs:
+            collated, encoded = plan.translate(bug.state_vals)
+            label = torch.tensor([bug.cost_bound])
+            solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
+            translated_bugs.append((label, encoded, solvable_label))
+
+    return translated_bugs
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -52,7 +105,7 @@ def _parse_arguments():
     default_aggregation = 'max'
     default_size = 64
     default_iterations = 30
-    default_batch_size = 64  # 64
+    default_batch_size = 256  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0  # TODO: increase this?
     default_loss_constants = None
@@ -70,6 +123,7 @@ def _parse_arguments():
     default_save_top_k = 5
     default_update_interval = -1
     default_loss = "selfsupervised_suboptimal"
+    default_max_bugs_per_iteration = 7000
 
     # TODO: COMPUTE PATHS AUTOMATICALLY FROM DOMAIN NAME
     # required arguments
@@ -87,6 +141,7 @@ def _parse_arguments():
     parser.add_argument('--no_bug_counts', action='store_false', help='turn off the bugs counter')
 
     # arguments with meaningful default values
+    parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--loss', default=default_loss, nargs='?',
                         choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
                                  'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
@@ -126,7 +181,7 @@ def _parse_arguments():
     default_debug_level = 0
     default_cycles = 'avoid'
     default_logfile = 'log_plan.txt'
-    default_max_length = 5#00  # TODO: CHANGED THIS!!!!!!
+    default_max_length = 500
     default_registry_filename = '../derived_predicates/registry_rules.json'
 
     parser.add_argument('--domain', required=True, type=str, help='domain name')
@@ -177,16 +232,9 @@ def load_datasets(args):
         raise NotImplementedError(f"Loss function '{args.loss}'")
     (train_dataset, predicates) = load_dataset(args.train, args.max_samples_per_file, args.max_samples, args.verify_datasets)
     (validation_dataset, _) = load_dataset(args.validation, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    (bugs_dataset, _) = load_dataset(args.bugs, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    loader_params = {
-        "batch_size": args.batch_size,
-        "drop_last": False,
-        "collate_fn": collate,
-        "pin_memory": True,
-        "num_workers": args.num_workers,  # Use 0 on Windows, doesn't work with > 0 for some reason.
-    }
+
     print(f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([ f"{name}/{arity}" for name, arity in predicates ])} ]')
-    return predicates, collate, train_dataset, validation_dataset, bugs_dataset
+    return predicates, collate, train_dataset, validation_dataset#(, bugs_dataset
 
 def load_model(args, predicates, path=None, retrain=False):
     print(colored('Loading model', 'green', attrs = [ 'bold' ]))
@@ -216,7 +264,6 @@ def load_model(args, predicates, path=None, retrain=False):
             Model = g_retrain_model_classes[(args.aggregation, args.readout, args.loss)]
     except KeyError:
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
-    print(Model)
 
     if path is None:
         model = Model(**model_params)
@@ -240,13 +287,9 @@ def load_trainer(args, logdir, path=None, retrain=False):
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=args.patience))
-    #if retrain:
-    #    callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='retrain_validation_loss',
-    #                                     filename='{epoch}-{step}-{retrain_validation_loss}'))
-    #else:
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss', filename='{epoch}-{step}-{validation_loss}'))
 
-    max_epochs = 10#None
+    max_epochs = 1#None  # TODO: CHANGE THIS!!!!!
     # the training of the original policy will be continued for at most the number of epochs the re-trained policy was trained for
     if path is not None and not retrain:
         # use regex to extract epoch from checkpoint path
@@ -377,7 +420,7 @@ def _main(args):
     # TODO: STEP 1: INITIALIZE
     print(colored('Initializing datasets and loaders', 'red', attrs=['bold']))
     _process_args(args)
-    predicates, collate, train_dataset, validation_dataset, bug_dataset = load_datasets(args)
+    predicates, collate, train_dataset, validation_dataset = load_datasets(args)
 
     loader_params = {
         "batch_size": args.batch_size,
@@ -388,7 +431,6 @@ def _main(args):
     }
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
     validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
-    bug_loader = DataLoader(bug_dataset, shuffle=True, **loader_params)  # TODO: should shuffle be false for evaluation?
 
 
     # TODO: STEP 2: TRAIN
@@ -414,6 +456,7 @@ def _main(args):
                 try:
                     val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
                 except:
+                    val_loss = float('inf')
                     print(f"Checkpoint encoding error: {checkpoint}")
                 if val_loss < best_trained_val_loss:
                     best_trained_val_loss = val_loss
@@ -436,8 +479,6 @@ def _main(args):
 
     # TODO: STEP 4: RE-TRAINING
     print(colored('Re-training policy', 'red', attrs=['bold']))
-    bug_states = [bug for bug in bug_dataset]  # TODO: HOW TO STORE ALL FOUND BUGS????
-    oracle = Oracle(bug_states, collate)
     retrain_logdir = args.logdir / "retrained"
     retrain_logdir.mkdir(parents=True, exist_ok=True)
 
@@ -445,6 +486,7 @@ def _main(args):
         model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
         trainer = load_trainer(args, logdir=retrain_logdir, retrain=True)
         checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
+        oracle = Oracle(bugs=args.bugs, collate=collate, logdir=checkpoint_path, max_bugs_per_iteration=args.max_bugs_per_iteration)
         model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
 
         model.set_original_validation_loss(best_trained_val_loss)  # TODO: REMOVE THIS!!!
@@ -477,6 +519,32 @@ def _main(args):
         policy_paths = successful_retrained_policies
         print(f"{len(successful_retrained_policies)} re-trained policies achieved validation losses comparable to the trained policy!")
 
+    # TODO: LOAD BUGS FROM DIRECTORY OF BEST RETRAINED MODEL!!!
+    trained_model = load_model(args, predicates, path=best_trained_policy_path)
+    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
+    for path in policy_paths:
+        retrained_model = load_model(args, predicates, path=path, retrain=True)
+        bug_path = path.parent / "bugfiles"
+        bugs = load_bugs(bug_path)
+        # retrained_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
+        # retrained_model.set_original_validation_loss(0)
+
+        # TODO: JUST ITERATE OVER BUGS ONCE
+        with torch.no_grad():
+            losses = []
+            for bug_batch in tqdm(bug_loader):
+                labels, collated_states_with_object_counts, solvable_labels, state_counts = bug_batch
+
+                retrained_output = retrained_model(collated_states_with_object_counts)
+                retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels,
+                                                                                   state_counts, device)
+                losses.append(retrained_loss.item())
+            bug_losses.append(sum(losses) / len(losses))
+
+
+
+
+
     bug_losses = []
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
     for path in policy_paths:
@@ -484,6 +552,8 @@ def _main(args):
         retrained_model.initialize(oracle, "", args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
         retrained_model.set_original_validation_loss(0)
 
+
+        # TODO: JUST ITERATE OVER BUGS ONCE
         with torch.no_grad():
             losses = []
             for bug_batch in tqdm(bug_loader):
