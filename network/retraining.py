@@ -68,7 +68,7 @@ class Oracle:
                 if len(encoded) == 1:
                     print("BUG HAS NO SUCCESSORS")
                     print(bug_file_name)
-                    print(bug.state_vals, bug.cost_bound, bug.bug_value)
+                    print(bug)
                     continue
                 translated_bugs.append(((label, encoded, solvable_label), bug.bug_value if bug.bug_value != -1 else float('inf')))
 
@@ -410,6 +410,7 @@ def read_plans(path: Path):
 def fill_table(table, problems, suffix):
     for dpath in problems:
         size = len(problems[dpath].keys())
+        table['size'] = size
 
         solved = [ problem for problem in problems[dpath] if problem in problems[dpath] and suffix in problems[dpath][problem] ]
         opt_solved = [ problem for problem in problems[dpath] if problem in problems[dpath] and 'planner' in problems[dpath][problem] ]
@@ -425,8 +426,8 @@ def fill_table(table, problems, suffix):
 
         table[suffix] = dict(solved=len(solved), L=L, PL=PL, OL=OL, N=N)
 
-def save_planning_results(results, type, policy_path, val_loss, bug_loss, table):
-    results["type"].append(type)
+def save_planning_results(results, policy_type, policy_path, val_loss, bug_loss, table):
+    results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
     results["val_loss"].append(val_loss)
     results["bug_loss"].append(bug_loss)
@@ -448,6 +449,7 @@ def _main(args):
     # TODO: STEP 1: INITIALIZE
     print(colored('Initializing datasets and loaders', 'red', attrs=['bold']))
     _process_args(args)
+    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
     predicates, collate, train_dataset, validation_dataset = load_datasets(args)
 
     loader_params = {
@@ -467,7 +469,7 @@ def _main(args):
 
     if args.policy is None:
         print(colored('Training policies from scratch', 'red', attrs=['bold']))
-        for _ in range(args.repeat + 1):
+        for _ in range(args.repeat):
             model = load_model(args, predicates)
             trainer = load_trainer(args, logdir=train_logdir)
             print(colored('Training model...', 'green', attrs = [ 'bold' ]))
@@ -493,9 +495,16 @@ def _main(args):
     else:
         print(colored('Using existing trained policy', 'red', attrs=['bold']))
         best_trained_policy = args.policy
-        best_trained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_trained_policy)).group(1))
+
+        # load the policy and eval on our validation set, since another validation set might have been used during training
+        model = load_model(args, predicates, path=best_trained_policy, retrain=False)
+        trainer = load_trainer(args, logdir=train_logdir)
+        best_trained_val_loss = trainer.validate(model, validation_loader)[0]['validation_loss']
+        best_trained_policy = args.policy
+        #best_trained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_trained_policy)).group(1))
 
     print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
+    best_trained_bug_loss = None
 
     best_trained_policy_dir = train_logdir / 'best'
     best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -511,7 +520,7 @@ def _main(args):
         retrain_logdir = args.logdir / "retrained"
         retrain_logdir.mkdir(parents=True, exist_ok=True)
 
-        for _ in range(args.repeat + 1):
+        for _ in range(args.repeat):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
             trainer = load_trainer(args, logdir=retrain_logdir)
             checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
@@ -539,12 +548,14 @@ def _main(args):
                 if retrained_val_loss <= (best_trained_val_loss + 0.1 * best_trained_val_loss):
                     successful_retrained_policies.append(checkpoint)
 
-        if len(successful_retrained_policies) == 0:
-            policy_paths = [best_retrained_policy]
-            print("None of the re-trained policies achieved validation losses comparable to the trained policy!")
-        else:
-            policy_paths = successful_retrained_policies
-            print(f"{len(successful_retrained_policies)} re-trained policies achieved validation losses comparable to the trained policy!")
+        #if len(successful_retrained_policies) == 0:
+        #    policy_paths = [best_retrained_policy]
+        #    print("None of the re-trained policies achieved validation losses comparable to the trained policy!")
+        #else:
+        #    policy_paths = successful_retrained_policies
+        #    print(f"{len(successful_retrained_policies)} re-trained policies achieved validation losses comparable to the trained policy!")
+
+        policy_paths = [best_retrained_policy]  # for now, we only care about the retrained policy with the lowest validation loss
 
         # evaluate how much the best re-trained policies improved performance on bug states
         trained_model = load_model(args, predicates, path=best_trained_policy_path)
@@ -603,12 +614,12 @@ def _main(args):
         os.system("cp -r " + str(best_retrained_policy.parent.parent / "bugfiles") + " " + str(best_retrained_policy_dir))
 
     # TODO: STEP 6: CONTINUE TRAINING
-    if not args.no_continue or not args.no_retrain:
+    if (not args.no_continue) and (not args.no_retrain):
         print(colored('Continuing training of trained policy for same number of epochs as best re-trained policy', 'red', attrs=['bold']))
         continue_logdir = args.logdir / "continued"
         continue_logdir.mkdir(parents=True, exist_ok=True)
 
-        for _ in range(args.repeat + 1):
+        for _ in range(args.repeat):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=False)
             trainer = load_trainer(args, logdir=continue_logdir, path=best_retrained_policy_path)
             print(colored('Continuing training of model...', 'green', attrs=['bold']))
@@ -646,7 +657,6 @@ def _main(args):
         print(colored('Evaluating performance of continued policy bug dataset', 'red', attrs=['bold']))
         continued_model = load_model(args, predicates, path=best_continued_policy_path, retrain=False)
 
-        device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
         bug_path = Path(best_retrained_policy_path).parent / "bugfiles"
         bugs = load_bugs(bug_path)
         with torch.no_grad():
@@ -679,75 +689,18 @@ def _main(args):
 
     plans_trained_path = args.logdir / "plans_trained"
     plans_trained_path.mkdir(parents=True, exist_ok=True)
-    os.system("cp " + "optimal_plans/" + str(args.domain) + "/*.plan " + str(plans_trained_path))
-    policies_and_directories.append((best_trained_policy_path, plans_trained_path))
+    policies_and_directories.append(("trained", best_trained_policy_path, plans_trained_path))
 
     if not args.no_retrain:
         plans_retrained_path = args.logdir / "plans_retrained"
         plans_retrained_path.mkdir(parents=True, exist_ok=True)
-        os.system("cp " + "optimal_plans/" + str(args.domain) + "/*.plan " + str(plans_retrained_path))
-        policies_and_directories.append((best_retrained_policy_path, plans_retrained_path))
+        policies_and_directories.append(("retrained", best_retrained_policy_path, plans_retrained_path))
 
-    if not args.no_continue or not args.no_retrain:
+    if (not args.no_continue) and (not args.no_retrain):
         plans_continued_path = args.logdir / "plans_continued"
         plans_continued_path.mkdir(parents=True, exist_ok=True)
-        os.system("cp " + "optimal_plans/" + str(args.domain) + "/*.plan " + str(plans_continued_path))
-        policies_and_directories.append((best_continued_policy_path, plans_continued_path))
+        policies_and_directories.append(("continued", best_continued_policy_path, plans_continued_path))
 
-
-    for policy, directory in policies_and_directories:
-        domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
-        problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
-        print(policy)
-        print(domain_file)
-        print("\n")
-        print(problem_files)
-        print("\n")
-        for problem_file in problem_files:
-            problem_name = str(Path(problem_file).stem)
-            if problem_name == 'domain':
-                continue
-            print(problem_name)
-            # setup logger
-            if args.cycles == 'detect':  # TODO: IS THIS CORRECT?
-                logfile_name = problem_name + ".markovian"
-            elif args.cycles == "avoid":
-                logfile_name = problem_name + ".policy"
-
-            log_file = directory / logfile_name
-
-            log_level = logging.INFO if args.debug_level == 0 else logging.DEBUG
-            logger = plan._get_logger(exec_name + problem_name, log_file, log_level)
-            logger.info(f'Call: {" ".join(argv)}')
-
-            # do jobs
-            planning(args, policy, domain_file, problem_file, logger, device)
-
-            # final stats
-            elapsed_time = timer() - entry_time
-            logger.info(f'All tasks completed in {elapsed_time:.3f} second(s)')
-
-            del logger
-
-    trained_plans = read_plans(plans_trained_path)
-    print(trained_plans)
-    trained_table = dict()
-    fill_table(trained_table, trained_plans, 'policy')
-
-    if not args.no_retrain:
-        retrained_plans = read_plans(plans_retrained_path)
-        print(retrained_plans)
-        retrained_table = dict()
-        fill_table(retrained_table, retrained_plans, 'policy')
-
-    if not args.no_continue or not args.no_retrain:
-        continued_plans = read_plans(plans_continued_path)
-        print(continued_plans)
-        continued_table = dict()
-        fill_table(continued_table, continued_plans, 'policy')
-
-    # TODO: STEP 10: WRITE EVERYTHING TO A PANDAS DATAFRAME
-    print(colored('Storing results', 'red', attrs=['bold']))
     results = {
         "type": [],
         "policy_path": [],
@@ -761,21 +714,74 @@ def _main(args):
         "OL": [],
         "N": []
     }
+    for policy_type, policy, directory in policies_and_directories:
+        domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
+        problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
+        for i in range(args.repeat):
+            version_path = directory / f"version_{i}"
+            version_path.mkdir(parents=True, exist_ok=True)
+            os.system("cp " + "optimal_plans/" + str(args.domain) + "/*.plan " + str(version_path))
+            for problem_file in problem_files:
+                problem_name = str(Path(problem_file).stem)
+                if problem_name == 'domain':
+                    continue
 
-    policy_types = ["trained", "retrained", "continued"]
-    if args.no_retrain:
-        policy_types.remove("retrained")
-    if args.no_continue:
-        policy_types.remove("continued")
+                # setup logger
+                if args.cycles == 'detect':  # TODO: IS THIS CORRECT?
+                    logfile_name = problem_name + ".markovian"
+                elif args.cycles == "avoid":
+                    logfile_name = problem_name + ".policy"
 
+                log_file = version_path / logfile_name
 
-    save_planning_results(results, "trained", best_trained_policy_path, best_trained_val_loss, best_trained_bug_loss, trained_table)
+                log_level = logging.INFO if args.debug_level == 0 else logging.DEBUG
+                logger = plan._get_logger(exec_name + problem_name, log_file, log_level)
+                logger.info(f'Call: {" ".join(argv)}')
 
-    if not args.no_retrain:
-        save_planning_results(results, "retrained", best_retrained_policy_path, best_retrained_val_loss, best_retrained_bug_loss, retrained_table)
+                # do jobs
+                planning(args, policy, domain_file, problem_file, logger, device)
 
-    if not args.no_continue or not args.no_retrain:
-        save_planning_results(results, "continued", best_continued_policy_path, best_continued_val_loss, continued_bug_loss, continued_table)
+                # final stats
+                elapsed_time = timer() - entry_time
+                logger.info(f'All tasks completed in {elapsed_time:.3f} second(s)')
+
+                del logger
+
+        best_solved = 0
+        best_plan_quality = float('inf')
+        best_table = None
+        for version_dir in directory.glob('version_*'):
+            plans = read_plans(version_dir)
+            table = dict()
+            fill_table(table, plans, 'policy')
+            solved = table['policy']['solved']
+            try:
+                plan_quality = table['policy']['PL'] / table['policy']['OL']
+            except:
+                plan_quality = 0
+
+            if (solved > best_solved) or (solved == best_solved and plan_quality < best_plan_quality):
+                best_solved = solved
+                best_plan_quality = plan_quality
+                best_table = table
+                best_version_dir = version_dir
+
+        best_plans_path = directory / "best"
+        best_plans_path.mkdir(parents=True, exist_ok=True)
+        os.system("cp " + str(best_version_dir) + "/*.plan " + str(best_plans_path))
+        os.system("cp " + str(best_version_dir) + "/*.policy " + str(best_plans_path))
+
+        if policy_type == "trained":
+            save_planning_results(results, "trained", best_trained_policy_path, best_trained_val_loss,
+                                  best_trained_bug_loss, best_table)
+        elif policy_type == "retrained":
+            save_planning_results(results, "retrained", best_retrained_policy_path, best_retrained_val_loss,
+                                  best_retrained_bug_loss, best_table)
+        elif policy_type == "continued":
+            save_planning_results(results, "continued", best_continued_policy_path, best_continued_val_loss,
+                                  continued_bug_loss, best_table)
+
+    print(colored('Storing results', 'red', attrs=['bold']))
 
     results = pd.DataFrame(results)
     results.to_csv(args.logdir / "results.csv")
