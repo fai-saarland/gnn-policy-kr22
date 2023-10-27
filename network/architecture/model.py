@@ -187,9 +187,6 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
             self.no_bug_loss_weight = no_bug_loss_weight
             self.no_bug_counts = no_bug_counts
 
-        def set_original_validation_loss(self, original_validation_loss):
-            self.original_validation_loss = original_validation_loss
-
         # map a state to a string such that we can check whether we have seen this state before
         def state_to_string(self, state):
             state_string = ""
@@ -323,16 +320,6 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
 
             self.val_losses.append(validation_loss)
             self.log('validation_loss', validation_loss, on_step=False, on_epoch=True)
-
-        # we only want to store re-trained policies with a validation loss that is not worse than that of the original policy
-        def on_validation_epoch_end(self):
-            average_validation_loss = sum(l.mean() for l in self.val_losses) / len(self.val_losses)
-            if average_validation_loss <= self.original_validation_loss:
-                self.log('retrain_validation_loss', average_validation_loss)
-            else:
-                self.log('retrain_validation_loss', np.inf)
-            self.val_losses.clear()
-            self.all_val_losses.append(average_validation_loss.item())
 
     return Model
 
