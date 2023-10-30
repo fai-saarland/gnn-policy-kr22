@@ -25,12 +25,12 @@ class UnsupervisedDataset(Dataset):
 
         return (label, state_with_successors, solvable_labels)
 
-def load_dataset(path: Path, max_samples_per_file: int, max_samples: int, verify: bool = False):
+def load_dataset(path: Path, indices, max_samples_per_file: int, max_samples: int, verify: bool = False):
     # TODO: Balance states by label
     is_spanner = 'spanner' in str(path) and 'spanner-bidirectional' not in str(path)
     load_file_fn = None if not is_spanner else load_file_spanner
-    labeled_states, solvable_labels, predicates_with_goals = load_directory(path, max_samples_per_file, max_samples, load_file_fn=load_file_fn, verify_states=verify)
-    return (UnsupervisedDataset(labeled_states, solvable_labels), predicates_with_goals)
+    labeled_states, solvable_labels, predicates_with_goals, indices = load_directory(path, indices, max_samples_per_file, max_samples, load_file_fn=load_file_fn, verify_states=verify)
+    return (UnsupervisedDataset(labeled_states, solvable_labels), predicates_with_goals, indices)
 
 # Make a combined representation of the list of states with successors.
 # For this, the objects for each state are uniquely identified so that

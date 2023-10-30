@@ -10,6 +10,7 @@ from sys import argv
 import plan
 import glob
 import pandas as pd
+import json
 
 from architecture import set_suboptimal_factor, set_loss_constants
 from helpers import ValidationLossLogging
@@ -127,6 +128,8 @@ def _parse_arguments():
     default_loss = "selfsupervised_suboptimal"
     default_max_bugs_per_iteration = 7000
     default_max_epochs = None
+    default_train_indices = None
+    default_val_indices = None
 
     # TODO: COMPUTE PATHS AUTOMATICALLY FROM DOMAIN NAME?
     # required arguments
@@ -146,6 +149,10 @@ def _parse_arguments():
     # turn off steps of the retraining pipeline
     parser.add_argument('--no_retrain', action='store_true', help='turn off the re-training of the policy')
     parser.add_argument('--no_continue', action='store_true', help='turn off the continuation of the policy\'s training')
+
+    # specifying which states should be selected for training and validation sets
+    parser.add_argument('--train_indices', default=default_train_indices, type=str, help=f'indices of states to use for training (default={default_train_indices})')
+    parser.add_argument('--val_indices', default=default_val_indices, type=str, help=f'indices of states to use for validation (default={default_val_indices})')
 
     # arguments with meaningful default values
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
@@ -237,11 +244,31 @@ def load_datasets(args):
         load_dataset, collate = g_dataset_methods[args.loss]
     except KeyError:
         raise NotImplementedError(f"Loss function '{args.loss}'")
-    (train_dataset, predicates) = load_dataset(args.train, args.max_samples_per_file, args.max_samples, args.verify_datasets)
-    (validation_dataset, _) = load_dataset(args.validation, args.max_samples_per_file, args.max_samples, args.verify_datasets)
+
+    # load indices of states to use for training and validation sets
+    if args.train_indices is not None:
+        with open(args.train_indices, 'r') as f:
+            train_indices = json.load(f)
+    else:
+        train_indices = {}
+    if args.val_indices is not None:
+        with open(args.val_indices, 'r') as f:
+            val_indices = json.load(f)
+    else:
+        val_indices = {}
+
+    (train_dataset, predicates, train_indices_selected_states) = load_dataset(args.train, train_indices, args.max_samples_per_file, args.max_samples, args.verify_datasets)
+    (validation_dataset, _, validation_indices_selected_states) = load_dataset(args.validation, val_indices, args.max_samples_per_file, args.max_samples, args.verify_datasets)
+
+    # write indices of selected states to a json file
+    with open(args.logdir / "train_indices_selected_states.json", "w") as f:
+        f.write(json.dumps(train_indices_selected_states, sort_keys=True, indent=4))
+    with open(args.logdir / "validation_indices_selected_states.json", "w") as f:
+        f.write(json.dumps(validation_indices_selected_states, sort_keys=True, indent=4))
+
 
     print(f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([ f"{name}/{arity}" for name, arity in predicates ])} ]')
-    return predicates, collate, train_dataset, validation_dataset
+    return predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states
 
 def load_model(args, predicates, path=None, retrain=False):
     print(colored('Loading model', 'green', attrs = [ 'bold' ]))
@@ -449,8 +476,19 @@ def _main(args):
     # TODO: STEP 1: INITIALIZE
     print(colored('Initializing datasets and loaders', 'red', attrs=['bold']))
     _process_args(args)
+    args.logdir.mkdir(parents=True, exist_ok=True)
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
-    predicates, collate, train_dataset, validation_dataset = load_datasets(args)
+    predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states = load_datasets(args)
+
+    #print("INDICES")
+    #for k,v in train_indices_selected_states.items():
+    #    print(k)
+    #    print(sum(v) / len(v))
+    #print("\n")
+    #for k,v in validation_indices_selected_states.items():
+    #    print(k)
+    #    print(sum(v) / len(v))
+    #print("\n")
 
     loader_params = {
         "batch_size": args.batch_size,
@@ -461,6 +499,8 @@ def _main(args):
     }
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
     validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
+
+    #assert True == False
 
 
     # TODO: STEP 2: TRAIN

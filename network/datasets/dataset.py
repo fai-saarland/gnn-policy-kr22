@@ -80,15 +80,12 @@ def _verify_states(labeled_problem, to_predicate):
             if label_best_child >= label:
                 print(colored(f'WARNING: state with label {label} has no better successor (best child has label {label_best_child})', 'magenta', attrs = [ 'bold' ]))
 
-def load_file(file: Path, max_samples_per_file: int, verify_states: bool = False):
+def load_file(file: Path, indices, max_samples_per_file: int, verify_states: bool = False):
     start_time = timer()
     print(f'Loading {file} ... ', end='', flush=True)
 
     # load protobuf structure containing problem with labeled states
     labeled_problem = load_problem(file)
-    # print("\n")
-    # print("labeled_problem")
-    # print(labeled_problem)
     number_states = len(labeled_problem.LabeledStates)
     print(f'{number_states} state(s) ', end='', flush=True)
 
@@ -102,12 +99,19 @@ def load_file(file: Path, max_samples_per_file: int, verify_states: bool = False
     if verify_states:
         _verify_states(labeled_problem, to_predicate)
 
-    # random selection of max_samples_per_file (if specified)
+    # random selection of max_samples_per_file or using given indices
     indices_selected_states = list(range(number_states))
     if max_samples_per_file is not None and max_samples_per_file < number_states:
-        shuffle(indices_selected_states)
-        indices_selected_states = indices_selected_states[:max_samples_per_file]
+        if str(file) not in indices:
+            shuffle(indices_selected_states)
+            indices_selected_states = indices_selected_states[:max_samples_per_file]
+            indices[str(file)] = indices_selected_states  # store indices for later use
+        else:
+            indices_selected_states = indices[str(file)]
+            assert len(indices_selected_states) == max_samples_per_file
         print(f'({max_samples_per_file} sampled) ', end='', flush=True)
+    else:
+        indices_selected_states = list(range(number_states))
 
     # parse selected states and its successors
     num_states = len(indices_selected_states)
@@ -121,7 +125,7 @@ def load_file(file: Path, max_samples_per_file: int, verify_states: bool = False
     elapsed_time = timer() - start_time
 
     print(f'{elapsed_time:.3f} second(s)')
-    return (predicates, labeled_states_with_successors, solvable_labels)
+    return (predicates, labeled_states_with_successors, solvable_labels, indices)
 
 # Returns 1 (resp. 0) iff state for Spanner is solvable (resp. unsolvable)
 def _spanner_solvable(state):
@@ -222,7 +226,7 @@ def load_file_spanner(file: Path, max_samples_per_file: int, verify_states: bool
     print(f'{elapsed_time:.3f} second(s)')
     return (predicates, labeled_states_with_successors, solvable_labels)
 
-def load_directory(path: Path, max_samples_per_file: int, max_samples: int, filtering_fn = None, load_file_fn = None, verify_states: bool = False):
+def load_directory(path: Path, indices, max_samples_per_file: int, max_samples: int, filtering_fn = None, load_file_fn = None, verify_states: bool = False):
     if filtering_fn is not None:
         raise NotImplementedError('Filtering of states (see code for additional info)')
         # Filtering function should be passed to load_file() like max_samples_per_file
@@ -231,11 +235,12 @@ def load_directory(path: Path, max_samples_per_file: int, max_samples: int, filt
     labeled_states = []
     solvable_labels = []
     files = list(path.glob('*.states'))
+    files.sort()
     print(f'{len(files)} file(s) to load from {path}')
     load_file_fn_aux = load_file if load_file_fn is None else load_file_fn
     for i, file in enumerate(files):
         print(f'({1+i}/{len(files)}) ', end='')
-        predicates, states, _solvable_labels = load_file_fn_aux(file, max_samples_per_file, verify_states)
+        predicates, states, _solvable_labels, indices = load_file_fn_aux(file, indices, max_samples_per_file, verify_states)
         assert len(states) == len(_solvable_labels)
         assert max_samples_per_file is None or len(states) <= max_samples_per_file
         labeled_states.extend(states)
@@ -260,5 +265,8 @@ def load_directory(path: Path, max_samples_per_file: int, max_samples: int, filt
     print(f'dataset labels: total={len(labeled_states)}, histogram={histogram}')
 
     predicates_with_goals = predicates + [(predicate + '_goal', arity) for predicate, arity in predicates]
-    return (labeled_states, solvable_labels, predicates_with_goals)
+
+    #print(indices)
+    #print(labeled_states[0])
+    return (labeled_states, solvable_labels, predicates_with_goals, indices)
 
