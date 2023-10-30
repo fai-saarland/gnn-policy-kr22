@@ -191,7 +191,7 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
         def state_to_string(self, state):
             state_string = ""
             for predicate in state[1][0].keys():  # only need to look at the first state since the successors are fixed
-                state_string += f'{predicate}: {state[1][0][predicate]}\n'
+                state_string += f'{predicate}: {state[1][0][predicate]} '
             return state_string
 
         # get new bug states from oracle, if a state is found again but with a better label we replace the old label

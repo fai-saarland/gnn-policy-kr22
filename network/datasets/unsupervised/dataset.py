@@ -15,6 +15,9 @@ class UnsupervisedDataset(Dataset):
     def __len__(self):
         return len(self._states)
 
+    def get_states(self):
+        return self._states
+
     def __getitem__(self, idx):
         (label, state, successor_states) = self._states[idx]
         state_with_successors = [state]

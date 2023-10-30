@@ -11,7 +11,6 @@ import plan
 import glob
 import pandas as pd
 import json
-
 from architecture import set_suboptimal_factor, set_loss_constants
 from helpers import ValidationLossLogging
 from pathlib import Path
@@ -19,21 +18,21 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 from torch.utils.data.dataloader import DataLoader
 from pytorch_lightning.loggers import TensorBoardLogger
-
 from datasets     import g_dataset_methods
 from architecture import g_model_classes
 from architecture import g_retrain_model_classes
-from architecture import selfsupervised_suboptimal_loss_no_solvable_labels, selfsupervised_suboptimal_loss
+from architecture import selfsupervised_suboptimal_loss_no_solvable_labels
 from generators import load_pddl_problem_with_augmented_states, compute_traces_with_augmented_states
 from bugfile_parser import parse_bug_file
 
 
 class Oracle:
-    def __init__(self, collate, logdir, max_bugs_per_iteration, bugs=None):
+    def __init__(self, collate, logdir, train_states, bugs=None):
         self.collate = collate
         self.logdir = logdir
-        self.max_bugs_per_iteration = max_bugs_per_iteration
+        self.max_bugs_per_iteration = len(train_states)  # TODO: HOW TO CHOOSE THIS WHEN DOING ITERATIVE DEBUGGING?
         self.bugs = bugs
+        self.train_states = train_states
 
     def get_bug_states(self):
         if self.bugs is None:
@@ -42,7 +41,7 @@ class Oracle:
             return self.translate_bug_states(self.bugs)
 
     def translate_bug_states(self, path):
-        # store bug and sas files in new directory
+        # store bug and sas files in a new directory
         bug_dir = Path(self.logdir + "/" + "bugfiles")
         bug_dir.mkdir(parents=True, exist_ok=True)
 
@@ -64,12 +63,19 @@ class Oracle:
             plan.setup_translation(setup_args)
             for bug in bugs:
                 collated, encoded = plan.translate(bug.state_vals)
-                label = torch.tensor([bug.cost_bound])  # TODO: TO DEVICE?
+                label = torch.tensor([bug.cost_bound])
                 solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
                 if len(encoded) == 1:
                     print("BUG HAS NO SUCCESSORS")
                     print(bug_file_name)
                     print(bug)
+                    print("\n")
+                    continue
+                if state_to_string(encoded) in self.train_states:
+                    print("STATE ALREADY IN TRAIN SET")
+                    print(bug_file_name)
+                    print(bug)
+                    print("\n")
                     continue
                 translated_bugs.append(((label, encoded, solvable_label), bug.bug_value if bug.bug_value != -1 else float('inf')))
 
@@ -81,6 +87,7 @@ class Oracle:
 
         return translated_bugs
 
+# loads all bug states from a given path
 def load_bugs(path):
     bug_files = glob.glob(str(path) + "/*.bugfile")
     translated_bugs = []
@@ -100,6 +107,13 @@ def load_bugs(path):
             translated_bugs.append((label, encoded, solvable_label))
 
     return translated_bugs
+
+# map a state to a string such that we can check whether we have seen this state before
+def state_to_string(state):
+    state_string = ""
+    for predicate in state[1].keys():  # only need to look at the first state since the successors are fixed
+        state_string += f'{predicate}: {state[1][predicate]} '
+    return state_string
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -126,7 +140,7 @@ def _parse_arguments():
     default_save_top_k = 5
     default_update_interval = -1
     default_loss = "selfsupervised_suboptimal"
-    default_max_bugs_per_iteration = 7000
+    # default_max_bugs_per_iteration = 9000
     default_max_epochs = None
     default_train_indices = None
     default_val_indices = None
@@ -156,7 +170,7 @@ def _parse_arguments():
 
     # arguments with meaningful default values
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
-    parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
+    # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--loss', default=default_loss, nargs='?',
                         choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
                                  'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
@@ -402,7 +416,7 @@ def planning(args, policy, domain_file, problem_file, logger, device):
                                                                     float(value_to),
                                                                     'D' if float(value_from) > float(
                                                                         value_to) else 'I'))
-
+# parses a policy's plans which are given as .policy files
 def read_plans(path: Path):
     problems = dict()
     problems[path] = dict()
@@ -434,6 +448,7 @@ def read_plans(path: Path):
                     problems[path][problem][suffix] = dict(length=len(plan), plan=plan)
     return problems
 
+# extracts info from parsed .plan files and writes it to a given table object
 def fill_table(table, problems, suffix):
     for dpath in problems:
         size = len(problems[dpath].keys())
@@ -453,6 +468,7 @@ def fill_table(table, problems, suffix):
 
         table[suffix] = dict(solved=len(solved), L=L, PL=PL, OL=OL, N=N)
 
+# writes results of a planning run ato a csv file
 def save_planning_results(results, policy_type, policy_path, val_loss, bug_loss, table):
     results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
@@ -480,15 +496,8 @@ def _main(args):
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
     predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states = load_datasets(args)
 
-    #print("INDICES")
-    #for k,v in train_indices_selected_states.items():
-    #    print(k)
-    #    print(sum(v) / len(v))
-    #print("\n")
-    #for k,v in validation_indices_selected_states.items():
-    #    print(k)
-    #    print(sum(v) / len(v))
-    #print("\n")
+    # we will use this to check whether a bug is already in the training set
+    train_states = set([state_to_string(state) for state in train_dataset.get_states()])
 
     loader_params = {
         "batch_size": args.batch_size,
@@ -499,8 +508,6 @@ def _main(args):
     }
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
     validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
-
-    #assert True == False
 
 
     # TODO: STEP 2: TRAIN
@@ -564,7 +571,7 @@ def _main(args):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
             trainer = load_trainer(args, logdir=retrain_logdir)
             checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
-            oracle = Oracle(bugs=args.bugs, collate=collate, logdir=checkpoint_path, max_bugs_per_iteration=args.max_bugs_per_iteration)
+            oracle = Oracle(bugs=args.bugs, collate=collate, logdir=checkpoint_path, train_states=train_states)
             model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
 
             print('Re-training model...')
@@ -628,6 +635,7 @@ def _main(args):
 
                 avg_retrained_bug_loss = sum(retrained_bug_losses) / len(retrained_bug_losses)
                 avg_trained_bug_loss = sum(trained_bug_losses) / len(trained_bug_losses)
+                # we compute the relative improvement on bug states because different retrained policies use different bug states, so we can't just compare the losses
                 delta = avg_trained_bug_loss - avg_retrained_bug_loss
                 if delta > max_delta:
                     max_delta = delta
@@ -722,7 +730,7 @@ def _main(args):
     print(colored('Running policies on test instances', 'red', attrs=['bold']))
     # setup timer and exec name
     entry_time = timer()
-    exec_path = Path(argv[0]).parent  # TODO: WHAT IS THIS?
+    exec_path = Path(argv[0]).parent
     exec_name = Path(argv[0]).stem
 
     policies_and_directories = []
@@ -767,7 +775,7 @@ def _main(args):
                     continue
 
                 # setup logger
-                if args.cycles == 'detect':  # TODO: IS THIS CORRECT?
+                if args.cycles == 'detect':
                     logfile_name = problem_name + ".markovian"
                 elif args.cycles == "avoid":
                     logfile_name = problem_name + ".policy"
@@ -787,6 +795,7 @@ def _main(args):
 
                 del logger
 
+        # after running planning multiple times we want to find the table corresponding to the best run
         best_solved = 0
         best_plan_quality = float('inf')
         best_table = None
@@ -800,6 +809,7 @@ def _main(args):
             except:
                 plan_quality = 0
 
+            # either the current run solved more instances or it achieved a better plan quality
             if (solved > best_solved) or (solved == best_solved and plan_quality < best_plan_quality):
                 best_solved = solved
                 best_plan_quality = plan_quality
@@ -811,6 +821,7 @@ def _main(args):
         os.system("cp " + str(best_version_dir) + "/*.plan " + str(best_plans_path))
         os.system("cp " + str(best_version_dir) + "/*.policy " + str(best_plans_path))
 
+        # save results of the best run to a csv file
         if policy_type == "trained":
             save_planning_results(results, "trained", best_trained_policy_path, best_trained_val_loss,
                                   best_trained_bug_loss, best_table)
