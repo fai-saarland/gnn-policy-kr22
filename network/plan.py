@@ -14,6 +14,7 @@ from architecture import g_model_classes
 
 def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True):
     logger = logging.getLogger(name)
+    #logger = logging.getLogger()
     logger.propagate = False
     logger.setLevel(level)
 
@@ -32,7 +33,7 @@ def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
-    return logger
+    return logger, file_handler
 
 
 def _parse_arguments(arg_list_override=None):

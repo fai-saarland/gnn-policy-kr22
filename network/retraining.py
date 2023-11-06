@@ -124,7 +124,7 @@ def _parse_arguments():
     default_iterations = 30
     default_batch_size = 64  # 64
     default_gpus = 0  # No GPU
-    default_num_workers = 0  # TODO: increase this?
+    default_num_workers = 0
     default_loss_constants = None
     default_learning_rate = 0.0002
     default_suboptimal_factor = 2.0
@@ -140,7 +140,7 @@ def _parse_arguments():
     default_save_top_k = 5
     default_update_interval = -1
     default_loss = "selfsupervised_suboptimal"
-    # default_max_bugs_per_iteration = 9000
+    # default_max_bugs_per_iteration = 9000  # TODO: HOW TO CHOOSE THIS WHEN DOING ITERATIVE DEBUGGING?
     default_max_epochs = None
     default_train_indices = None
     default_val_indices = None
@@ -150,7 +150,7 @@ def _parse_arguments():
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bug dataset')
-    parser.add_argument('--repeat', required=True, type=int, help='how often each training step is repeated')
+    parser.add_argument('--seeds', required=True, type=int, help='number of random seeds used for training')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
     # when using an existing trained policy
@@ -169,6 +169,7 @@ def _parse_arguments():
     parser.add_argument('--val_indices', default=default_val_indices, type=str, help=f'indices of states to use for validation (default={default_val_indices})')
 
     # arguments with meaningful default values
+    parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
     # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--loss', default=default_loss, nargs='?',
@@ -367,8 +368,9 @@ def load_trainer(args, logdir, path=None):
     trainer = pl.Trainer(**trainer_params)
     return trainer
 
-def planning(args, policy, domain_file, problem_file, logger, device):
+def planning(args, policy, domain_file, problem_file, device):
     start_time = timer()
+    result_string = ""
 
     # load model
     Model = plan._load_model(args)
@@ -382,110 +384,57 @@ def planning(args, policy, domain_file, problem_file, logger, device):
             model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
                                                map_location=torch.device('cpu')).to(device)
     elapsed_time = timer() - start_time
-    logger.info(f"Model '{policy}' loaded in {elapsed_time:.3f} second(s)")
 
-    logger.info(f"Loading PDDL files: domain='{domain_file}', problem='{problem_file}'")
+    result_string = result_string + f"Model '{policy}' loaded in {elapsed_time:.3f} second(s)"
+    result_string = result_string + "\n"
+    result_string = result_string + f"Loading PDDL files: domain='{domain_file}', problem='{problem_file}'"
+    result_string = result_string + "\n"
+
     registry_filename = args.registry_filename if args.augment else None
     pddl_problem = load_pddl_problem_with_augmented_states(domain_file, problem_file, registry_filename,
-                                                           args.registry_key, logger)
+                                                           args.registry_key, None)
     del pddl_problem['predicates']  # Why?
 
-    logger.info(f'Executing policy (max_length={args.max_length})')
+    result_string = result_string + f'Executing policy (max_length={args.max_length})'
+    result_string = result_string + "\n"
     start_time = timer()
     is_spanner = args.spanner and 'spanner' in str(domain_file)
     unsolvable_weight = 0.0 if args.ignore_unsolvable else 100000.0
     action_trace, state_trace, value_trace, is_solution, num_evaluations = compute_traces_with_augmented_states(
         model=model, cycles=args.cycles, max_trace_length=args.max_length, unsolvable_weight=unsolvable_weight,
-        logger=logger, is_spanner=is_spanner, **pddl_problem)
+        logger=None, is_spanner=is_spanner, **pddl_problem)
     elapsed_time = timer() - start_time
-    logger.info(
-        f'{len(action_trace)} executed action(s) and {num_evaluations} state evaluations(s) in {elapsed_time:.3f} second(s)')
+    result_string = result_string + f'{len(action_trace)} executed action(s) and {num_evaluations} state evaluations(s) in {elapsed_time:.3f} second(s)'
+    result_string = result_string + "\n"
 
     if is_solution:
-        logger.info(colored(f'Found valid plan with {len(action_trace)} action(s) for {problem_file}', 'green',
-                            attrs=['bold']))
+        result_string = result_string + f'Found valid plan with {len(action_trace)} action(s) for {problem_file}'
+        result_string = result_string + "\n"
     else:
-        logger.info(colored(f'Failed to find a plan for {problem_file}', 'red', attrs=['bold']))
+        result_string = result_string + f'Failed to find a plan for {problem_file}'
+        result_string = result_string + "\n"
 
     if args.print_trace:
         for index, action in enumerate(action_trace):
             value_from = value_trace[index]
             value_to = value_trace[index + 1]
-            logger.info(
-                '{}: {} (value change: {:.2f} -> {:.2f} {})'.format(index + 1, action.name, float(value_from),
-                                                                    float(value_to),
-                                                                    'D' if float(value_from) > float(
-                                                                        value_to) else 'I'))
-# parses a policy's plans which are given as .policy files
-def read_plans(path: Path):
-    problems = dict()
-    problems[path] = dict()
+            result_string = result_string + '{}: {} (value change: {:.2f} -> {:.2f} {})'.format(index + 1, action.name, float(value_from), float(value_to), 'D' if float(value_from) > float(value_to) else 'I')
+            result_string = result_string + "\n"
 
-    for filename in path.glob('*.plan'):
-        problem = filename.stem
-        if problem not in problems[path]: problems[path][problem] = dict()
-        with filename.open('r') as fd:
-            plan = [ line.strip('\n') for line in fd.readlines() if line[0] == '(' ]
-        problems[path][problem]['planner'] = dict(length=len(plan), plan=plan)
-
-    for suffix in ['policy']:
-        for filename in path.glob(f'*.{suffix}'):
-            problem = filename.stem
-            if problem not in problems[path]: problems[path][problem] = dict()
-            with filename.open('r') as fd:
-                plan = []
-                reading_plan = False
-                for line in fd.readlines():
-                    line = line.strip('\n')
-                    if line.find('Found valid plan') > 0:
-                        reading_plan = True
-                        continue
-                    if reading_plan:
-                        fields = line.split(' ')
-                        if len(fields) >= 5 and fields[4][-1] == ':' and fields[4][:-1].isdigit():
-                            plan.append(' '.join(fields[5:]))
-                if reading_plan:
-                    problems[path][problem][suffix] = dict(length=len(plan), plan=plan)
-    return problems
-
-# extracts info from parsed .plan files and writes it to a given table object
-def fill_table(table, problems, suffix):
-    for dpath in problems:
-        size = len(problems[dpath].keys())
-        table['size'] = size
-
-        solved = [ problem for problem in problems[dpath] if problem in problems[dpath] and suffix in problems[dpath][problem] ]
-        opt_solved = [ problem for problem in problems[dpath] if problem in problems[dpath] and 'planner' in problems[dpath][problem] ]
-        assert len(solved) <= size and len(opt_solved) <= size
-
-        lengths = [ problems[dpath][problem][suffix]['length'] for problem in solved ]
-        L = sum(lengths)
-
-        solved_and_opt = set(solved) & set(opt_solved)
-        lengths = [ problems[dpath][problem][suffix]['length'] for problem in solved_and_opt ]
-        opt_lengths = [ problems[dpath][problem]['planner']['length'] for problem in solved_and_opt ]
-        PL, OL, N = sum(lengths), sum(opt_lengths), len(solved_and_opt)
-
-        table[suffix] = dict(solved=len(solved), L=L, PL=PL, OL=OL, N=N)
+    return result_string, action_trace, is_solution
 
 # writes results of a planning run ato a csv file
-def save_planning_results(results, policy_type, policy_path, val_loss, bug_loss, table):
+def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning_results):
     results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
     results["val_loss"].append(val_loss)
     results["bug_loss"].append(bug_loss)
-    results["instances"].append(table["size"])
-    results["solved"].append(table["policy"]["solved"])
-    results["L"].append(table["policy"]["L"])
-    PL = table["policy"]["PL"]
-    results["PL"].append(PL)
-    OL = table["policy"]["OL"]
-    results["OL"].append(OL)
-    if OL > 0:
-        results["PQ"].append(PL / OL)
-    else:
-        results["PQ"].append(0)
-    results["N"].append(table["policy"]["N"])
+    results["instances"].append(planning_results["instances"])
+    results["max_coverage"].append(planning_results["max_coverage"])
+    results["min_coverage"].append(planning_results["min_coverage"])
+    results["avg_coverage"].append(planning_results["avg_coverage"])
+    results["best_plan_quality"].append(planning_results["best_plan_quality"])
+    results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
 
 def _main(args):
@@ -514,9 +463,10 @@ def _main(args):
     train_logdir = args.logdir / "trained"
     train_logdir.mkdir(parents=True, exist_ok=True)
 
+    # we either train a policy from scratch or use a given one
     if args.policy is None:
         print(colored('Training policies from scratch', 'red', attrs=['bold']))
-        for _ in range(args.repeat):
+        for _ in range(args.seeds):
             model = load_model(args, predicates)
             trainer = load_trainer(args, logdir=train_logdir)
             print(colored('Training model...', 'green', attrs = [ 'bold' ]))
@@ -531,6 +481,7 @@ def _main(args):
             checkpoint_dir = version_dir / 'checkpoints'
             for checkpoint in checkpoint_dir.glob('*.ckpt'):
                 try:
+                    # validation losses are stored in the name of the stored policy
                     val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
                 except:
                     val_loss = float('inf')
@@ -548,7 +499,6 @@ def _main(args):
         trainer = load_trainer(args, logdir=train_logdir)
         best_trained_val_loss = trainer.validate(model, validation_loader)[0]['validation_loss']
         best_trained_policy = args.policy
-        #best_trained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_trained_policy)).group(1))
 
     print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
     best_trained_bug_loss = None
@@ -567,7 +517,7 @@ def _main(args):
         retrain_logdir = args.logdir / "retrained"
         retrain_logdir.mkdir(parents=True, exist_ok=True)
 
-        for _ in range(args.repeat):
+        for _ in range(args.seeds):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
             trainer = load_trainer(args, logdir=retrain_logdir)
             checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
@@ -587,11 +537,17 @@ def _main(args):
         for version_dir in retrain_logdir.glob('version_*'):
             checkpoint_dir = version_dir / 'checkpoints'
             for checkpoint in checkpoint_dir.glob('*.ckpt'):
-                retrained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
+                # validation losses are stored in the name of the stored policy
+                try:
+                    retrained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
+                except:
+                    retrained_val_loss = float('inf')
+                    print(f"Checkpoint encoding error: {checkpoint}")
                 if retrained_val_loss < best_retrained_val_loss:
                     best_retrained_val_loss = retrained_val_loss
                     best_retrained_policy = checkpoint
 
+                # we might want to consider all retrained policies that achieved validation losses similar to the original trained policy
                 if retrained_val_loss <= (best_trained_val_loss + 0.1 * best_trained_val_loss):
                     successful_retrained_policies.append(checkpoint)
 
@@ -604,9 +560,9 @@ def _main(args):
 
         policy_paths = [best_retrained_policy]  # for now, we only care about the retrained policy with the lowest validation loss
 
-        # evaluate how much the best re-trained policies improved performance on bug states
+        # evaluate how much the best retrained policies improved performance on bug states, important when considering all retrained policies
+        # that achieved validation losses comparable to the original trained policy
         trained_model = load_model(args, predicates, path=best_trained_policy_path)
-        device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
         max_delta = float('-inf')
         best_retrained_policy = None
         for path in policy_paths:
@@ -667,7 +623,7 @@ def _main(args):
         continue_logdir = args.logdir / "continued"
         continue_logdir.mkdir(parents=True, exist_ok=True)
 
-        for _ in range(args.repeat):
+        for _ in range(args.seeds):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=False)
             trainer = load_trainer(args, logdir=continue_logdir, path=best_retrained_policy_path)
             print(colored('Continuing training of model...', 'green', attrs=['bold']))
@@ -682,12 +638,12 @@ def _main(args):
             checkpoint_dir = version_dir / 'checkpoints'
             for checkpoint in checkpoint_dir.glob('*.ckpt'):
                 try:
-                    val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
+                    continued_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
                 except:
                     print(f"Checkpoint encoding error: {checkpoint}")
-                    val_loss = float('inf')
-                if val_loss < best_continued_val_loss:
-                    best_continued_val_loss = val_loss
+                    continued_val_loss = float('inf')
+                if continued_val_loss < best_continued_val_loss:
+                    best_continued_val_loss = continued_val_loss
                     best_continued_policy = checkpoint
 
         print(f"The best continued policy achieved a validation loss of {best_continued_val_loss}")
@@ -728,11 +684,6 @@ def _main(args):
 
     # TODO: STEP 9: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))
-    # setup timer and exec name
-    entry_time = timer()
-    exec_path = Path(argv[0]).parent
-    exec_name = Path(argv[0]).stem
-
     policies_and_directories = []
 
     plans_trained_path = args.logdir / "plans_trained"
@@ -755,85 +706,84 @@ def _main(args):
         "val_loss": [],
         "bug_loss": [],
         "instances": [],
-        "solved": [],
-        "L": [],
-        "PQ": [],
-        "PL": [],
-        "OL": [],
-        "N": []
+        "max_coverage": [],
+        "min_coverage": [],
+        "avg_coverage": [],
+        "best_plan_quality": [],
+        "plans_directory": [],
     }
     for policy_type, policy, directory in policies_and_directories:
+        # load files for planning
         domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
         problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
-        for i in range(args.repeat):
+        # initialize metrics
+        best_coverage = 0
+        best_plan_quality = float('inf')
+        best_planning_run = None
+        coverages = []
+        for i in range(args.runs):
+            # create directory for current run
             version_path = directory / f"version_{i}"
             version_path.mkdir(parents=True, exist_ok=True)
-            os.system("cp " + "optimal_plans/" + str(args.domain) + "/*.plan " + str(version_path))
+            # initialize metrics for current run
+            plan_lengths = []
+            is_solutions = []
             for problem_file in problem_files:
                 problem_name = str(Path(problem_file).stem)
                 if problem_name == 'domain':
                     continue
 
-                # setup logger
                 if args.cycles == 'detect':
                     logfile_name = problem_name + ".markovian"
-                elif args.cycles == "avoid":
+                else:
                     logfile_name = problem_name + ".policy"
-
                 log_file = version_path / logfile_name
+                # logger.info(f'Call: {" ".join(argv)}')  # TODO: KEEP THIS?
 
-                log_level = logging.INFO if args.debug_level == 0 else logging.DEBUG
-                logger = plan._get_logger(exec_name + problem_name, log_file, log_level)
-                logger.info(f'Call: {" ".join(argv)}')
+                # run planning
+                result_string, action_trace, is_solution = planning(args, policy, domain_file, problem_file, device)
 
-                # do jobs
-                planning(args, policy, domain_file, problem_file, logger, device)
+                # store results
+                with open(log_file, "w") as f:
+                    f.write(result_string)
 
-                # final stats
-                elapsed_time = timer() - entry_time
-                logger.info(f'All tasks completed in {elapsed_time:.3f} second(s)')
+                is_solutions.append(is_solution)
+                if is_solution:
+                    plan_lengths.append(len(action_trace))
+                    print(f"Solved problem {problem_name} with plan length: {len(action_trace)}")
+                else:
+                    print(f"Failed to solve problem {problem_name}")
 
-                del logger
+                print(result_string)
 
-        # after running planning multiple times we want to find the table corresponding to the best run
-        best_solved = 0
-        best_plan_quality = float('inf')
-        best_table = None
-        for version_dir in directory.glob('version_*'):
-            plans = read_plans(version_dir)
-            table = dict()
-            fill_table(table, plans, 'policy')
-            solved = table['policy']['solved']
-            try:
-                plan_quality = table['policy']['PL'] / table['policy']['OL']
-            except:
-                plan_quality = 0
-
-            # either the current run solved more instances or it achieved a better plan quality
-            if (solved > best_solved) or (solved == best_solved and plan_quality < best_plan_quality):
-                best_solved = solved
+            # compute coverage of this run and check whether it is the best one yet
+            coverage = sum(is_solutions)
+            coverages.append(coverage)
+            plan_quality = sum(plan_lengths) / coverage
+            if coverage > best_coverage or (coverage == best_coverage and plan_quality < best_plan_quality):
+                best_coverage = coverage
                 best_plan_quality = plan_quality
-                best_table = table
-                best_version_dir = version_dir
+                best_planning_run = str(version_path)
 
-        best_plans_path = directory / "best"
-        best_plans_path.mkdir(parents=True, exist_ok=True)
-        os.system("cp " + str(best_version_dir) + "/*.plan " + str(best_plans_path))
-        os.system("cp " + str(best_version_dir) + "/*.policy " + str(best_plans_path))
+        print(coverages)
+        planning_results = dict(instances=len(problem_files)-1, max_coverage=max(coverages),
+                                             min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
+                                             best_plan_quality=best_plan_quality, plans_directory=best_planning_run)
+        print(planning_results)
 
-        # save results of the best run to a csv file
+        # save results of the best run
         if policy_type == "trained":
-            save_planning_results(results, "trained", best_trained_policy_path, best_trained_val_loss,
-                                  best_trained_bug_loss, best_table)
+            save_results(results, policy_type, best_trained_policy_path, best_trained_val_loss,
+                                  best_trained_bug_loss, planning_results)
         elif policy_type == "retrained":
-            save_planning_results(results, "retrained", best_retrained_policy_path, best_retrained_val_loss,
-                                  best_retrained_bug_loss, best_table)
+            save_results(results, policy_type, best_retrained_policy_path, best_retrained_val_loss,
+                                  best_retrained_bug_loss, planning_results)
         elif policy_type == "continued":
-            save_planning_results(results, "continued", best_continued_policy_path, best_continued_val_loss,
-                                  continued_bug_loss, best_table)
+            save_results(results, policy_type, best_continued_policy_path, best_continued_val_loss,
+                                  continued_bug_loss, planning_results)
+
 
     print(colored('Storing results', 'red', attrs=['bold']))
-
     results = pd.DataFrame(results)
     results.to_csv(args.logdir / "results.csv")
     print(results)

@@ -147,7 +147,7 @@ def _create_online_model_class(base: pl.LightningModule, loss):
     return Model
 
 def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
-    """Create a model class for retraining of models trained without superversion that inherits from 'base' and uses 'loss' for training and validation."""
+    """Create a model class for retraining of models trained without supervision that inherits from 'base' and uses 'loss' for training and validation."""
     class Model(base):
         def __init__(self, predicates: list, hidden_size: int, iterations: int, learning_rate: float, l1_factor: float, weight_decay: float, **kwargs):
             super().__init__(predicates, hidden_size, iterations)
@@ -234,7 +234,6 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
             self.log('l1_loss', l1)
             total = train_loss + l1
             self.log('train_loss', total, prog_bar=True, on_step=False, on_epoch=True)
-            #print(f'train_loss: {total}')
 
             # define distribution over bug states counts
             if not self.no_bug_counts:

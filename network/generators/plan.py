@@ -395,11 +395,11 @@ def policy_search_with_augmented_states(actions, initial, goals, obj_encoding: D
 
         # SPANNER: special case to avoid very time-consuming execution
         if is_spanner and _spanner_unsolvable(current_state, logger):
-            logger.info(colored(f'SPANNER TASK FAILURE', 'red', attrs=[ 'bold' ]))
+            if logger: logger.info(colored(f'SPANNER TASK FAILURE', 'red', attrs=[ 'bold' ]))
             break
         elif is_spanner and _spanner_solved(current_state, logger):
-            logger.info(colored(f'SPANNER TASK SOLVED', 'green', attrs=[ 'bold' ]))
-            logger.info(f'current_state={current_state}')
+            if logger: logger.info(colored(f'SPANNER TASK SOLVED', 'green', attrs=[ 'bold' ]))
+            if logger: logger.info(f'current_state={current_state}')
             break
 
         # explore current state (avoid loops by removing already visited successors)
@@ -408,8 +408,8 @@ def policy_search_with_augmented_states(actions, initial, goals, obj_encoding: D
             successor_candidates = [ transition for transition in successor_candidates if transition[1] not in closed_states ]
 
         if len(successor_candidates) == 0:
-            logger.info(f'No applicable action that yields unvisited state for current_state={current_state}')
-            logger.info(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+            if logger: logger.info(f'No applicable action that yields unvisited state for current_state={current_state}')
+            if logger: logger.info(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
             break
 
         successor_actions = [ candidate[0] for candidate in successor_candidates ]
