@@ -35,7 +35,7 @@ class Oracle:
         self.train_states = train_states
 
     def get_bug_states(self):
-        if self.bugs is None:
+        if self.bugs is None:  # TODO: Rather implement it such that it always looks for bugfiles in a directory with a given name
             raise NotImplementedError
         else:
             return self.translate_bug_states(self.bugs)
@@ -46,6 +46,7 @@ class Oracle:
         bug_dir.mkdir(parents=True, exist_ok=True)
 
         bug_files = glob.glob(str(path) + "/*.bugfile")
+        print("BUG FILES: ", bug_files)
         translated_bugs = []
         for bug_file in bug_files:
             bug_file_name = bug_file.split("/")[-1].split(".")[0]
@@ -84,6 +85,7 @@ class Oracle:
         # only keep the first max_bugs_per_iteration bugs and remove bug value
         n = min(len(translated_bugs), self.max_bugs_per_iteration)
         translated_bugs = [x[0] for x in translated_bugs[:n]]
+        print(f"Selected {n} bugs for re-training")
 
         return translated_bugs
 
