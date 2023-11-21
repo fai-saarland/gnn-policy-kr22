@@ -9,6 +9,7 @@ from .add_base import AddModelBase, RelationMessagePassingModel as AddRelationMe
 from .max_readout_base import MaxReadoutModelBase, RelationMessagePassingModel as MaxReadoutRelationMessagePassingModel
 from .attention_base import AttentionModelBase, RelationMessagePassingModel as AttentionRelationMessagePassingModel
 from .add_max_base import AddMaxModelBase, RelationMessagePassingModel as AddMaxRelationMessagePassingModel
+from .planformer_base import PlanFormerModelBase, RelationMessagePassingModel as PlanformerRelationMessagePassingModel
 
 # Add models
 from .model import SupervisedOptimalAddModel, SelfsupervisedSuboptimalAddModel, SelfsupervisedOptimalAddModel, UnsupervisedOptimalAddModel, UnsupervisedSuboptimalAddModel, OnlineOptimalAddModel
@@ -23,7 +24,11 @@ from .model import SupervisedOptimalAddMaxModel, SelfsupervisedSuboptimalAddMaxM
 # Models for new loss
 from .model import SelfsupervisedSuboptimalAddModel2, SelfsupervisedSuboptimalMaxModel2, SelfsupervisedSuboptimalAddMaxModel2, SelfsupervisedSuboptimalMaxReadoutModel2
 
+# Model for retraining
 from .model import RetrainSelfsupervisedSuboptimalMaxModel, RetrainSelfsupervisedSuboptimalAddModel, RetrainSelfsupervisedSuboptimalAddMaxModel, RetrainSelfsupervisedSuboptimalMaxReadoutModel
+
+# PlanFormer models
+from .model import PlanFormer
 
 # Settings
 from .model import set_max_trace_length
@@ -31,6 +36,9 @@ from .loss import set_suboptimal_factor, set_loss_constants
 
 # Maps (aggregation, readout, loss) -> model
 g_model_classes = {
+    ('planformer', False, 'selfsupervised_suboptimal'): PlanFormer,
+    ('planformer', False, 'base'): PlanFormerModelBase,
+
     ('max',       True,  'supervised_optimal'):         SupervisedOptimalMaxReadoutModel,
     ('max',       True,  'unsupervised_optimal'):       UnsupervisedOptimalMaxReadoutModel,
     ('max',       True,  'selfsupervised_optimal'):     SelfsupervisedOptimalMaxReadoutModel,

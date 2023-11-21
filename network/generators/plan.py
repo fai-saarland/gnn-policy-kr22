@@ -410,6 +410,8 @@ def policy_search_with_augmented_states(actions, initial, goals, obj_encoding: D
         if len(successor_candidates) == 0:
             if logger: logger.info(f'No applicable action that yields unvisited state for current_state={current_state}')
             if logger: logger.info(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+            print(f'No applicable action that yields unvisited state for current_state')
+            print(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
             break
 
         successor_actions = [ candidate[0] for candidate in successor_candidates ]
@@ -450,6 +452,7 @@ def compute_traces_with_augmented_states(actions, initial, goal, language, model
 
     with torch.no_grad():
         return policy_search_with_augmented_states(actions, initial, goal, obj_encoding, language, model, augment_fn=augment_fn, cycles=cycles, max_state_trace_length=max_trace_length, unsolvable_weight=unsolvable_weight, logger=logger, is_spanner=is_spanner)
+
 
 ########################################################################################################################
 
@@ -827,3 +830,13 @@ def translate_state(fdr_state):
                                                StaticServerData.language, StaticServerData.device, None)
 
     return collated_input, encoded_states
+
+def translate_state_to_pddl(fdr_state):
+    current_state = deepcopy(StaticServerData.static_facts)
+    for i in range(len(StaticServerData.var_map)):
+        atom = StaticServerData.var_map[i][fdr_state[i]]
+        # TODO check this
+        if atom:
+            current_state.add(atom.predicate, *atom.subterms)
+
+    return current_state

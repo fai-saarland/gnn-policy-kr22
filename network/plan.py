@@ -158,7 +158,7 @@ def apply_policy(state):
 ########################################################################################################################
 
 
-from generators import setup_translation_server, translate_state
+from generators import setup_translation_server, translate_state, translate_state_to_pddl
 def setup_translation(args_string):
     arg_list = args_string.split()
     if '--sas' not in arg_list:
@@ -173,6 +173,9 @@ def setup_translation(args_string):
 
 def translate(fdr_state):
     return translate_state(fdr_state)
+
+def translate_pddl(fdr_state):
+    return translate_state_to_pddl(fdr_state)
 
 
 ########################################################################################################################

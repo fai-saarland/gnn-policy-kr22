@@ -263,6 +263,19 @@ def load_directory(path: Path, indices, max_samples_per_file: int, max_samples: 
             histogram[label] = 0
         histogram[label] += 1
     print(f'dataset labels: total={len(labeled_states)}, histogram={histogram}')
+    # histogram is a dict where the keys are the labels and the values are the number of states with that label
+    # print mean and std of labels
+    occurences = list(histogram.values())
+    labels = sorted(list(histogram.keys()))
+    mean = sum(occurences) / len(occurences)
+    std = (sum([ (x - mean) ** 2 for x in occurences ]) / len(occurences)) ** 0.5
+    min_occ = min(occurences)
+    max_occ = max(occurences)
+    print(f'dataset distribution: mean={mean}, std={std}, min={min_occ}, max={max_occ}')
+    keys_values = [(key, value) for key, value in histogram.items()]
+    keys_values = sorted(keys_values, key=lambda x: x[1])
+    print(f'sorted: {keys_values}')
+    print(f'{len(labels)} labels: {labels}')
 
     predicates_with_goals = predicates + [(predicate + '_goal', arity) for predicate, arity in predicates]
 
