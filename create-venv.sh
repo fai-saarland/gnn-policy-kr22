@@ -7,3 +7,7 @@ pip install termcolor
 pip install torch
 pip install pytorch_lightning
 pip install tarski
+
+# For policy server
+pip install grpcio
+pip install protobuf
