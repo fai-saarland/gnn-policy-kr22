@@ -723,8 +723,7 @@ def parse_sas_file(sas_file, language, actions):
             print('ERROR: Cannot determine mappings\n')
             raise e
 
-
-def apply_policy_to_state(fdr_state):
+def state_and_successors(fdr_state):
     current_state = deepcopy(StaticServerData.static_facts)
     for i in range(len(StaticServerData.var_map)):
         atom = StaticServerData.var_map[i][fdr_state[i]]
@@ -740,7 +739,10 @@ def apply_policy_to_state(fdr_state):
         if candidate[0] in StaticServerData.available_actions:
             successor_actions += [candidate[0]]
             successor_states += [candidate[1]]
+    return current_state, successor_actions, successor_states
 
+def apply_policy_to_state(fdr_state):
+    current_state, successor_actions, successor_states = state_and_successors(fdr_state)
     collated_input, encoded_states = _to_input(successor_states, StaticServerData.goal_denotation, StaticServerData.obj_encoding, StaticServerData.augment_fn, StaticServerData.language, StaticServerData.device, None)
     output_values, output_solvables = StaticServerData.model(collated_input)
     output_solvables = torch.round(torch.sigmoid(output_solvables))
@@ -752,6 +754,22 @@ def apply_policy_to_state(fdr_state):
     best_action = successor_actions[best_successor_index]
     best_action_id = StaticServerData.action_map[best_action]
     return best_action_id
+
+def apply_policy_to_state_prob_dist(fdr_state):
+    current_state, successor_actions, successor_states = state_and_successors(fdr_state)
+    collated_input, encoded_states = _to_input(successor_states, StaticServerData.goal_denotation, StaticServerData.obj_encoding, StaticServerData.augment_fn, StaticServerData.language, StaticServerData.device, None)
+    output_values, output_solvables = StaticServerData.model(collated_input)
+    output_solvables = torch.round(torch.sigmoid(output_solvables))
+    output_values += (1.0 - output_solvables) * StaticServerData.unsolvable_weight
+
+    sum_output_values = sum(output_values)
+    if sum_output_values > 0.:
+        output_values /= sum_output_values
+
+    output_values = [x[0] for x in output_values.tolist()]
+    actions = [StaticServerData.action_map[x] for x in successor_actions]
+    out = list(zip(actions, output_values))
+    return out
 
 
 def setup_policy_server(actions, initial, goal, language, model: pl.LightningModule, sas_file,

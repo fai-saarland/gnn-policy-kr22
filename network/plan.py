@@ -9,7 +9,8 @@ import torch
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from generators import (compute_traces_with_augmented_states, load_pddl_problem_with_augmented_states, serve_policy,
-                        setup_policy_server, apply_policy_to_state, get_num_vars)
+                        setup_policy_server, apply_policy_to_state,
+                        apply_policy_to_state_prob_dist, get_num_vars)
 from architecture import g_model_classes
 
 def _get_logger(name : str, logfile : Path, level = logging.INFO, console = True):
