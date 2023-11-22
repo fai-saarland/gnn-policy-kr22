@@ -761,7 +761,6 @@ def apply_policy_to_state_prob_dist(fdr_state):
     output_values, output_solvables = StaticServerData.model(collated_input)
     output_solvables = torch.round(torch.sigmoid(output_solvables))
     output_values += (1.0 - output_solvables) * StaticServerData.unsolvable_weight
-    print(successor_action
 
     sum_output_values = sum(output_values)
     output_values *= -1.
