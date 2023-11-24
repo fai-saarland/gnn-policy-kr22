@@ -169,7 +169,7 @@ def setup_translation(args_string):
     pddl_problem = load_pddl_problem_with_augmented_states(args.domain, args.problem, registry_filename, args.registry_key)
     del pddl_problem['predicates']  # Why?
 
-    return setup_translation_server(sas_file=args.sas, **pddl_problem)
+    return setup_translation_server(sas_file=args.sas, **pddl_problem), pddl_problem
 
 def translate(fdr_state):
     return translate_state(fdr_state)

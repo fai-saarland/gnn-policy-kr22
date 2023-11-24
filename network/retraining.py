@@ -46,7 +46,9 @@ class Oracle:
         bug_dir.mkdir(parents=True, exist_ok=True)
 
         bug_files = glob.glob(str(path) + "/*.bugfile")
+        print("\n")
         print("BUG FILES: ", bug_files)
+        print("\n")
         translated_bugs = []
         for bug_file in bug_files:
             bug_file_name = bug_file.split("/")[-1].split(".")[0]
@@ -57,8 +59,11 @@ class Oracle:
             sas_file = Path(str(bug_dir) + "/" + bug_file_name + ".sas")
             with open(sas_file, "w") as f:
                 f.write(sas)
-            domain_file = Path('data/pddl/' + str(args.domain) + '/test/domain.pddl')
-            problem_file = Path("data/pddl/" + str(args.domain) + "/train/" + bug_file_name + ".pddl")
+            pddl_directory = "/" + str(path).split("/")[-1] + "/"
+            domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
+            print(domain_file)
+            problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
+            print(problem_file)
 
             setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
             plan.setup_translation(setup_args)
@@ -67,6 +72,7 @@ class Oracle:
                 label = torch.tensor([bug.cost_bound])
                 solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
                 if len(encoded) == 1:
+                    print("\n")
                     print("BUG HAS NO SUCCESSORS")
                     print(bug_file_name)
                     print(bug)
@@ -96,9 +102,9 @@ def load_bugs(path):
     for bug_file in bug_files:
         bugs, sas = parse_bug_file(bug_file)
         bug_file_name = bug_file.split("/")[-1].split(".")[0]
-        sas_file = Path(str(path) + "/" + bug_file_name + ".sas")
-        domain_file = Path('data/pddl/' + str(args.domain) + '/test/domain.pddl')
-        problem_file = Path("data/pddl/" + str(args.domain) + "/train/" + bug_file_name + ".pddl")
+        pddl_directory = "/" + str(path).split("/")[-1] + "/"
+        domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
+        problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
 
         setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
         plan.setup_translation(setup_args)
@@ -152,7 +158,6 @@ def _parse_arguments():
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bug dataset')
-    parser.add_argument('--seeds', required=True, type=int, help='number of random seeds used for training')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
     # when using an existing trained policy
@@ -172,6 +177,7 @@ def _parse_arguments():
 
     # arguments with meaningful default values
     parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
+    parser.add_argument('--seeds', type=int, default=1, help='number of random seeds used for training')
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
     # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--loss', default=default_loss, nargs='?',

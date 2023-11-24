@@ -19,23 +19,26 @@ from bugfile_parser import parse_bug_file
 def load_bugs(path):
     bug_files = glob.glob(str(path) + "/*.bugfile")
     translation = []
-    for bug_file in bug_files[0:1]:
+    for bug_file in bug_files:
         bugs, sas = parse_bug_file(bug_file)
         bug_file_name = bug_file.split("/")[-1].split(".")[0]
         sas_file = Path(str(path) + "/" + bug_file_name + ".sas")
         with open(sas_file, "w") as f:
             f.write(sas)
-        domain_file = Path('data/pddl/' + str(args.domain) + '/test/domain.pddl')
-        problem_file = Path("data/pddl/" + str(args.domain) + "/train/" + bug_file_name + ".pddl")
+        pddl_directory = "/" + str(path).split("/")[-1] + "/"
+        domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
+        print(domain_file)
+        problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
+        print(problem_file)
 
         setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
-        plan.setup_translation(setup_args)
+        _, pddl_problem = plan.setup_translation(setup_args)
         translated_bugs = []
         for bug in bugs:
             encoded = plan.translate_pddl(bug.state_vals)
             translated_bugs.append(encoded)
 
-        translation.append((domain_file, problem_file, translated_bugs))
+        translation.append((pddl_problem, domain_file, problem_file, translated_bugs))
 
     return translation
 
@@ -112,7 +115,7 @@ def _process_args(args):
         else:
             set_loss_constants(loss_constants)
 
-def planning(args, bug, policy, domain_file, problem_file, device):
+def planning(args, pddl_problem, bug, policy, domain_file, problem_file, device):
     start_time = timer()
     result_string = ""
 
@@ -135,9 +138,10 @@ def planning(args, bug, policy, domain_file, problem_file, device):
     result_string = result_string + "\n"
 
     registry_filename = args.registry_filename if args.augment else None
-    pddl_problem = load_pddl_problem_with_augmented_states(domain_file, problem_file, registry_filename,
-                                                           args.registry_key, None)
-    del pddl_problem['predicates']  # Why?
+    #pddl_problem = load_pddl_problem_with_augmented_states(domain_file, problem_file, registry_filename,
+    #                                                       args.registry_key, None)
+    #del pddl_problem['predicates']  # Why?
+    del pddl_problem['initial']
     pddl_problem['initial'] = bug
 
     result_string = result_string + f'Executing policy (max_length={args.max_length})'
@@ -175,7 +179,9 @@ def save_results(results, policy_path, planning_results):
     results["max_coverage"].append(planning_results["max_coverage"])
     results["min_coverage"].append(planning_results["min_coverage"])
     results["avg_coverage"].append(planning_results["avg_coverage"])
-    results["best_plan_quality"].append(planning_results["best_plan_quality"])
+    results["max_quality"].append(planning_results["max_quality"])
+    results["min_quality"].append(planning_results["min_quality"])
+    results["avg_quality"].append(planning_results["avg_quality"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
 
@@ -193,19 +199,23 @@ def _main(args):
         "max_coverage": [],
         "min_coverage": [],
         "avg_coverage": [],
-        "best_plan_quality": [],
+        "max_quality": [],
+        "min_quality": [],
+        "avg_quality": [],
         "plans_directory": [],
     }
 
     # load files for planning
     translated_bugs = load_bugs(args.bugs)
-    num_bugs = [len(translation[2]) for translation in translated_bugs]
+    num_bugs = [len(translation[3]) for translation in translated_bugs]
     num_bugs = sum(num_bugs)
 
     # initialize metrics
-    best_coverage = 0
     best_planning_run = None
     coverages = []
+    best_coverage = 0
+    qualities = []
+    best_quality = float('inf')
     for i in range(args.runs):
         # create directory for current run
         version_path = args.logdir / f"version_{i}"
@@ -214,21 +224,23 @@ def _main(args):
         plan_lengths = []
         is_solutions = []
         for translation in translated_bugs:
-            domain_file = translation[0]
-            problem_file = translation[1]
-            bugs = translation[2]
+            pddl_problem = translation[0]
+            domain_file = translation[1]
+            problem_file = translation[2]
+            bugs = translation[3]
+
+            problem_name = str(Path(problem_file).stem)
 
             # run planning
             bug_id = -1
             for bug in bugs:
                 bug_id += 1
-                problem_name = str(Path(problem_file).stem)
                 if args.cycles == 'detect':
                     logfile_name = problem_name + f"_{bug_id}" + ".markovian"
                 else:
                     logfile_name = problem_name + f"_{bug_id}" + ".policy"
                 log_file = version_path / logfile_name
-                result_string, action_trace, is_solution = planning(args, bug, args.policy, domain_file, problem_file, device)
+                result_string, action_trace, is_solution = planning(args, pddl_problem, bug, args.policy, domain_file, problem_file, device)
 
                 # store results
                 with open(log_file, "w") as f:
@@ -250,15 +262,16 @@ def _main(args):
             plan_quality = sum(plan_lengths) / coverage
         except:
             continue
+        qualities.append(plan_quality)
         if coverage > best_coverage:
             best_coverage = coverage
-            best_plan_quality = plan_quality
             best_planning_run = str(version_path)
 
         print(coverages)
         planning_results = dict(instances=num_bugs, max_coverage=max(coverages),
-                                             min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
-                                             best_plan_quality=best_plan_quality, plans_directory=best_planning_run)
+                                min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
+                                max_quality=max(qualities), min_quality=min(qualities),
+                                avg_quality=sum(qualities) / len(qualities), plans_directory=best_planning_run)
         print(planning_results)
 
         # save results of the best run
