@@ -1,24 +1,40 @@
 import argparse
-import logging
 from termcolor import colored
-import pytorch_lightning as pl
 import torch
-import os
-import re
 from timeit import default_timer as timer
-from sys import argv
 import plan
 import glob
 import pandas as pd
 from architecture import set_suboptimal_factor, set_loss_constants
 from pathlib import Path
-from generators import load_pddl_problem_with_augmented_states, compute_traces_with_augmented_states
+from generators import compute_traces_with_augmented_states
 from bugfile_parser import parse_bug_file
+from architecture import selfsupervised_suboptimal_loss_no_solvable_labels
+from retraining import load_model
+from datasets import g_dataset_methods
+
+def load_predicates(args):
+    print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
+    try:
+        load_dataset, collate = g_dataset_methods[args.loss]
+    except KeyError:
+        raise NotImplementedError(f"Loss function '{args.loss}'")
+
+    if args.domain == "reward":
+        train = Path('data/states/train/reward/reward/')
+    elif args.domain == "delivery":
+        train = Path('data/states/train/delivery/delivery/')
+    #elif args.domain == ""
+
+    predicates = load_dataset(train, {}, 1, 1, False)[1]
+
+    return predicates, collate
 
 # loads all bug states from a given path
 def load_bugs(path):
     bug_files = glob.glob(str(path) + "/*.bugfile")
-    translation = []
+    translation_pddl = []
+    collated_bugs = []
     for bug_file in bug_files:
         bugs, sas = parse_bug_file(bug_file)
         bug_file_name = bug_file.split("/")[-1].split(".")[0]
@@ -38,9 +54,16 @@ def load_bugs(path):
             encoded = plan.translate_pddl(bug.state_vals)
             translated_bugs.append(encoded)
 
-        translation.append((pddl_problem, domain_file, problem_file, translated_bugs))
+            collated, encoded = plan.translate(bug.state_vals)
+            label = torch.tensor([bug.cost_bound])
+            solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
+            if len(encoded) == 1:
+                continue
+            collated_bugs.append((label, encoded, solvable_label))
 
-    return translation
+        translation_pddl.append((pddl_problem, domain_file, problem_file, translated_bugs))
+
+    return translation_pddl, collated_bugs
 
 # map a state to a string such that we can check whether we have seen this state before
 def state_to_string(state):
@@ -69,6 +92,53 @@ def _parse_arguments():
                         choices=['add', 'max', 'addmax', 'attention', 'planformer'],
                         help=f'readout aggregation function (default={default_aggregation})')
     parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
+
+    # stuff that is required for loading a model
+    default_size = 64
+    default_iterations = 30
+    default_batch_size = 64
+    default_loss_constants = None
+    default_learning_rate = 0.0002
+    default_suboptimal_factor = 2.0
+    default_l1 = 0.0
+    default_weight_decay = 0.0
+    default_gradient_accumulation = 1
+    default_patience = 50
+    default_gradient_clip = 0.1
+    default_loss = "selfsupervised_suboptimal"
+    default_max_samples_per_file = 1000
+    default_max_samples = None
+
+    parser.add_argument('--loss', default=default_loss, nargs='?',
+                        choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
+                                 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
+                                 'online_optimal'])
+    parser.add_argument('--size', default=default_size, type=int,
+                        help=f'number of features per object (default={default_size})')
+    parser.add_argument('--iterations', default=default_iterations, type=int,
+                        help=f'number of convolutions (default={default_iterations})')
+    parser.add_argument('--batch_size', default=default_batch_size, type=int,
+                        help=f'maximum size of batches (default={default_batch_size})')
+    parser.add_argument('--loss_constants', default=default_loss_constants, type=str,
+                        help=f'constants (multipliers) in loss function (default={default_loss_constants})')
+    parser.add_argument('--learning_rate', default=default_learning_rate, type=float,
+                        help=f'learning rate of training session (default={default_learning_rate})')
+    parser.add_argument('--suboptimal_factor', default=default_suboptimal_factor, type=float,
+                        help=f'approximation factor of suboptimal learning (default={default_suboptimal_factor})')
+    parser.add_argument('--l1', default=default_l1, type=float,
+                        help=f'strength of L1 regularization (default={default_l1})')
+    parser.add_argument('--weight_decay', default=default_weight_decay, type=float,
+                        help=f'strength of weight decay regularization (default={default_weight_decay})')
+    parser.add_argument('--gradient_accumulation', default=default_gradient_accumulation, type=int,
+                        help=f'number of gradients to accumulate before step (default={default_gradient_accumulation})')
+    parser.add_argument('--patience', default=default_patience, type=int,
+                        help=f'patience for early stopping (default={default_patience})')
+    parser.add_argument('--gradient_clip', default=default_gradient_clip, type=float,
+                        help=f'gradient clip value (default={default_gradient_clip})')
+    parser.add_argument('--max_samples_per_file', default=default_max_samples_per_file, type=int,
+                        help=f'maximum number of states per dataset (default={default_max_samples_per_file})')
+    parser.add_argument('--max_samples', default=default_max_samples, type=int,
+                        help=f'maximum number of states in total (default={default_max_samples})')
 
     default_debug_level = 0
     default_cycles = 'avoid'
@@ -182,6 +252,9 @@ def save_results(results, policy_path, planning_results):
     results["max_quality"].append(planning_results["max_quality"])
     results["min_quality"].append(planning_results["min_quality"])
     results["avg_quality"].append(planning_results["avg_quality"])
+    results["max_bug_loss"].append(planning_results["max_bug_loss"])
+    results["min_bug_loss"].append(planning_results["min_bug_loss"])
+    results["avg_bug_loss"].append(planning_results["avg_bug_loss"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
 
@@ -189,9 +262,16 @@ def save_results(results, policy_path, planning_results):
 def _main(args):
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
 
-    # TODO: STEP 9: PLANNING
-    print(colored('Running policies on test instances', 'red', attrs=['bold']))
+    # load bugs
+    translated_bugs, collated_bugs = load_bugs(args.bugs)
+    num_bugs = [len(translation[3]) for translation in translated_bugs]
+    num_bugs = sum(num_bugs)
 
+    # load model
+    predicates, collate = load_predicates(args)
+    gnn_model = load_model(args, predicates, path=args.policy, retrain=False)
+
+    print(colored('Running policies on test instances', 'red', attrs=['bold']))
 
     results = {
         "policy_path": [],
@@ -202,21 +282,35 @@ def _main(args):
         "max_quality": [],
         "min_quality": [],
         "avg_quality": [],
+        "max_bug_loss": [],
+        "min_bug_loss": [],
+        "avg_bug_loss": [],
         "plans_directory": [],
     }
-
-    # load files for planning
-    translated_bugs = load_bugs(args.bugs)
-    num_bugs = [len(translation[3]) for translation in translated_bugs]
-    num_bugs = sum(num_bugs)
 
     # initialize metrics
     best_planning_run = None
     coverages = []
     best_coverage = 0
     qualities = []
-    best_quality = float('inf')
+    bugs_losses = []
     for i in range(args.runs):
+        # TODO: EVALUATION
+        with torch.no_grad():
+            losses = []
+            for bug in collated_bugs:
+                try:
+                    labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
+
+                    output = gnn_model(collated_states_with_object_counts)
+                    loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, device)
+                    losses.append(loss.item())
+                except:
+                    print(f"Error processing bug")
+                    print(bug)
+                    continue
+            bugs_losses.append(sum(losses) / len(losses))
+
         # create directory for current run
         version_path = args.logdir / f"version_{i}"
         version_path.mkdir(parents=True, exist_ok=True)
@@ -271,13 +365,16 @@ def _main(args):
         planning_results = dict(instances=num_bugs, max_coverage=max(coverages),
                                 min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
                                 max_quality=max(qualities), min_quality=min(qualities),
-                                avg_quality=sum(qualities) / len(qualities), plans_directory=best_planning_run)
+                                avg_quality=sum(qualities) / len(qualities), max_bug_loss=max(bugs_losses),
+                                min_bug_loss=min(bugs_losses), avg_bug_loss=sum(bugs_losses) / len(bugs_losses),
+                                plans_directory=best_planning_run)
         print(planning_results)
 
         # save results of the best run
         save_results(results, args.policy, planning_results)
 
     print(colored('Storing results', 'red', attrs=['bold']))
+    print(results)
     results = pd.DataFrame(results)
     results.to_csv(args.logdir / "results.csv")
     print(results)

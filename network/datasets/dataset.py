@@ -279,7 +279,5 @@ def load_directory(path: Path, indices, max_samples_per_file: int, max_samples: 
 
     predicates_with_goals = predicates + [(predicate + '_goal', arity) for predicate, arity in predicates]
 
-    #print(indices)
-    #print(labeled_states[0])
     return (labeled_states, solvable_labels, predicates_with_goals, indices)
 

@@ -106,7 +106,7 @@ def _parse_arguments():
 
     # arguments for PlanFormer (GNN + Transformer)
     parser.add_argument('--d_model', default=128, type=int, help=f'number of input tokens (default=128)')
-    parser.add_argument('--d_ff', default=256, type=int, help=f'number of feedforward network hidden units (default=256)')
+    parser.add_argument('--d_ff', default=128, type=int, help=f'number of feedforward network hidden units (default=128)')
     parser.add_argument('--n_heads', default=4, type=int, help=f'number of attention heads (default=4)')
     parser.add_argument('--n_layers', default=4, type=int, help=f'number of transformer layers (default=4)')
     parser.add_argument('--drop', default=0.1, type=float, help=f'dropout probability (default=0.1)')

@@ -70,7 +70,7 @@ class Oracle:
             for bug in bugs:
                 collated, encoded = plan.translate(bug.state_vals)
                 label = torch.tensor([bug.cost_bound])
-                solvable_label = torch.tensor([True] * len(encoded))  # we will not use these
+                solvable_label = torch.tensor([True] * len(encoded))
                 if len(encoded) == 1:
                     print("\n")
                     print("BUG HAS NO SUCCESSORS")
@@ -79,6 +79,7 @@ class Oracle:
                     print("\n")
                     continue
                 if state_to_string(encoded) in self.train_states:
+                    print("\n")
                     print("STATE ALREADY IN TRAIN SET")
                     print(bug_file_name)
                     print(bug)
@@ -102,6 +103,8 @@ def load_bugs(path):
     for bug_file in bug_files:
         bugs, sas = parse_bug_file(bug_file)
         bug_file_name = bug_file.split("/")[-1].split(".")[0]
+        sas_file = Path(str(path) + "/" + bug_file_name + ".sas")
+
         pddl_directory = "/" + str(path).split("/")[-1] + "/"
         domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
         problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
@@ -176,8 +179,8 @@ def _parse_arguments():
     parser.add_argument('--val_indices', default=default_val_indices, type=str, help=f'indices of states to use for validation (default={default_val_indices})')
 
     # arguments with meaningful default values
-    parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
     parser.add_argument('--seeds', type=int, default=1, help='number of random seeds used for training')
+    parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
     # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--loss', default=default_loss, nargs='?',
@@ -575,7 +578,8 @@ def _main(args):
         best_retrained_policy = None
         for path in policy_paths:
             retrained_model = load_model(args, predicates, path=path, retrain=True)
-            bug_path = path.parent.parent / "bugfiles"
+            # bug_path = path.parent.parent / "bugfiles" # TODO: Change this for iterative debugging
+            bug_path = args.bugs
             bugs = load_bugs(bug_path)
             retrained_bug_losses = []
             trained_bug_losses = []
@@ -669,7 +673,8 @@ def _main(args):
         print(colored('Evaluating performance of continued policy bug dataset', 'red', attrs=['bold']))
         continued_model = load_model(args, predicates, path=best_continued_policy_path, retrain=False)
 
-        bug_path = Path(best_retrained_policy_path).parent / "bugfiles"
+        # bug_path = Path(best_retrained_policy_path).parent / "bugfiles"  # TODO: Change this for iterative debugging
+        bug_path = args.bugs
         bugs = load_bugs(bug_path)
         with torch.no_grad():
             continued_bug_losses = []
