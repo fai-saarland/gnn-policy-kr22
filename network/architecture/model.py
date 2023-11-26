@@ -255,7 +255,7 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
             output = self(collated_states_with_object_counts)
             # TODO: DOES NOT PREDICTING THE SOLVABLE LABELS WITH THE BUG LOSS DETERIORATE PERFORMANCE?
             # bug_loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, self.device)
-            bug_loss = self.loss(output, labels, state_counts, self.device)
+            bug_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
 
             self.log('bug_loss', bug_loss, prog_bar=True, on_step=False, on_epoch=True)
 
