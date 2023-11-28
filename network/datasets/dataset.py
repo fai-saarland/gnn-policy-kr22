@@ -179,7 +179,61 @@ def _spanner_solvable(state):
     #print(f'num_needed={num_needed}, num_on_floor={num_on_floor}, num_available={num_available}')
     return num_needed <= num_available
 
-def load_file_spanner(file: Path, max_samples_per_file: int, verify_states: bool = False):
+def load_file_spanner(file: Path, indices, max_samples_per_file: int, verify_states: bool = False):
+    start_time = timer()
+    print(f'Loading {file} ... ', end='', flush=True)
+
+    # load protobuf structure containing problem with labeled states
+    labeled_problem = load_problem(file)
+    number_states = len(labeled_problem.LabeledStates)
+    print(f'{number_states} state(s) ', end='', flush=True)
+
+    # get predicates, facts and goal_predicates
+    to_predicate = dict([(predicate.Id, predicate.Name) for predicate in labeled_problem.Predicates])
+    predicates = [(predicate.Name, predicate.Arity) for predicate in labeled_problem.Predicates]
+    facts = _parse_atoms(labeled_problem.Facts, to_predicate)
+    goal_predicates = [(predicate + '_goal', object_ids) for predicate, object_ids in _parse_atoms(labeled_problem.Goals, to_predicate)]
+
+    # verify states
+    if verify_states:
+        _verify_states(labeled_problem, to_predicate)
+
+    # random selection of max_samples_per_file or using given indices
+    indices_selected_states = list(range(number_states))
+    if max_samples_per_file is not None and max_samples_per_file < number_states:
+        if str(file) not in indices:
+            shuffle(indices_selected_states)
+            indices_selected_states = indices_selected_states[:max_samples_per_file]
+            indices[str(file)] = indices_selected_states  # store indices for later use
+        else:
+            indices_selected_states = indices[str(file)]
+            assert len(indices_selected_states) == max_samples_per_file
+        print(f'({max_samples_per_file} sampled) ', end='', flush=True)
+    else:
+        indices_selected_states = list(range(number_states))
+
+    # parse selected states and its successors
+    num_states = len(indices_selected_states)
+    selected_states = [ labeled_problem.LabeledStates[i] for i in indices_selected_states ]
+    parsed_states = [ _parse_state(labeled_state.State, facts, goal_predicates, to_predicate) for labeled_state in selected_states ]
+    labels_as_tensors = [ torch.tensor([labeled_state.Label]) for labeled_state in selected_states ]
+    labeled_states = [ (labels_as_tensors[i], parsed_states[i]) for i in range(num_states) ]
+    successor_lists = [ [ _parse_state(successor, facts, goal_predicates, to_predicate) for successor in labeled_state.SuccessorStates ] for labeled_state in selected_states ]
+    solvable_labels = [ torch.tensor([ _spanner_solvable(successor) for successor in successors ], dtype=torch.bool) for successors in successor_lists ]
+    labeled_states_with_successors = [ labeled_states[i] + (successor_lists[i],) for i in range(num_states) ]
+    elapsed_time = timer() - start_time
+
+    for i in range(len(solvable_labels)):
+        label = int(labeled_states[i][0])
+        labels_sum = sum(solvable_labels[i])
+        assert labels_sum == 0 or label < 2000000000, f'labels={solvable_labels[i]}, label={label}, state={labeled_states[i][1]}, solvable={_spanner_solvable(labeled_states[i][1])}'
+        assert labels_sum > 0 or (len(solvable_labels[i]) == 0 and label == 0) or label > 2000000000, f'labels={solvable_labels[i]}, label={label}, state={labeled_states[i][1]}, solvable={_spanner_solvable(labeled_states[i][1])}'
+        #if labels_sum > 0 and labels_sum < len(solvable_labels[i]): print(f'XXXX={solvable_labels[i]}')
+
+    print(f'{elapsed_time:.3f} second(s)')
+    return (predicates, labeled_states_with_successors, solvable_labels, indices)
+
+def load_file_spanner_old(file: Path, max_samples_per_file: int, verify_states: bool = False):
     start_time = timer()
     print(f'Loading {file} ... ', end='', flush=True)
 

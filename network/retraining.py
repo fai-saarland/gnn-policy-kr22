@@ -104,7 +104,8 @@ def load_bugs(path):
         bugs, sas = parse_bug_file(bug_file)
         bug_file_name = bug_file.split("/")[-1].split(".")[0]
         sas_file = Path(str(path) + "/" + bug_file_name + ".sas")
-
+        with open(sas_file, "w") as f:
+            f.write(sas)
         pddl_directory = "/" + str(path).split("/")[-1] + "/"
         domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
         problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
