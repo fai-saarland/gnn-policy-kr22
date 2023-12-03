@@ -466,7 +466,6 @@ def _main(args):
         os.system("cp " + str(best_trained_policy.parent.parent.parent / "train_indices_selected_states.json") + " " + str(best_trained_policy_dir))
         os.system("cp " + str(best_trained_policy.parent.parent.parent / "validation_indices_selected_states.json") + " " + str(best_trained_policy_dir))
 
-        # TODO: STEP 9: PLANNING
         print(colored('Running policies on test instances', 'red', attrs=['bold']))
         policies_and_directories = []
 

@@ -248,10 +248,6 @@ def _main(args):
     predicates, collate = load_predicates(args)
     gnn_model = load_model(args, predicates, path=args.policy, retrain=False)
 
-
-    # TODO: Enumerate all bugs, store in a dict for each bug the bug loss and results of planning, then look at results for each bug
-    # TODO: ARE BUGS ALWAYS LOADED IN SAME ORDER?
-
     bug_dict = {}
     for translation in translated_bugs:
         bugs = translation[3]
@@ -281,13 +277,12 @@ def _main(args):
                 #print(bug_string)
                 with torch.no_grad():
                     try:
-                        # model predicts value of SUCCESSORS, but the labels are the state value of the current state!!!
                         labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([gnn_bug])
 
                         output = gnn_model(collated_states_with_object_counts)
-                        loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts,
-                                                                                 device)
-                        # loss = selfsupervised_suboptimal_loss(output, labels, solvable_labels, state_counts, device)
+                        # loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts,
+                        #                                                          device)
+                        loss = selfsupervised_suboptimal_loss(output, labels, solvable_labels, state_counts, device)
 
                     except Exception as e:
                         print(e)
@@ -316,7 +311,7 @@ def _main(args):
                     print(f"Failed to solve problem {problem_name} {bug_string}")
                 bug_dict[bug_string][1].append(is_solution)
                 bug_dict[bug_string][2].append(len(action_trace))
-
+    print(bug_dict)
     # compute averages per bug
     bug_results = {
         "bug_string": [],
@@ -351,103 +346,6 @@ def _main(args):
     print(colored('Storing results', 'red', attrs=['bold']))
     results = pd.DataFrame(bug_results)
     results.to_csv(args.logdir / "results.csv")
-
-"""
-    # TODO: EVALUATION
-    bug_id = -1
-    with torch.no_grad():
-        losses = []
-        for bug in translated_bugs:
-            bug_id += 1
-            try:
-                labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
-
-                output = gnn_model(collated_states_with_object_counts)
-                loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, device)
-                losses.append(loss.item())
-                bug_dict[bug_id] = [loss.item(), []]
-            except:
-                print(f"Error processing bug")
-                print(bug)
-                continue
-        bugs_losses.append(sum(losses) / len(losses))
-
-    # create directory for current run
-    version_path = args.logdir / f"version_{i}"
-    version_path.mkdir(parents=True, exist_ok=True)
-    # initialize metrics for current run
-    plan_lengths = []
-    is_solutions = []
-    bug_id = -1
-    for translation in translated_bugs:
-        pddl_problem = translation[0]
-        domain_file = translation[1]
-        problem_file = translation[2]
-        bugs = translation[3]
-
-        problem_name = str(Path(problem_file).stem)
-
-        # run planning
-        for bug in bugs:
-            bug_id += 1
-            if args.cycles == 'detect':
-                logfile_name = problem_name + f"_{bug_id}" + ".markovian"
-            else:
-                logfile_name = problem_name + f"_{bug_id}" + ".policy"
-            log_file = version_path / logfile_name
-            result_string, action_trace, is_solution = planning(args, pddl_problem, bug, args.policy, domain_file, problem_file, device)
-
-            # store results
-            with open(log_file, "w") as f:
-                f.write(result_string)
-
-            is_solutions.append(is_solution)
-            if is_solution:
-                print(f"Solved problem {problem_name} {bug_id} with plan length: {len(action_trace)}")
-            else:
-                print(f"Failed to solve problem {problem_name} {bug_id}")
-            plan_lengths.append(len(action_trace))
-
-            bug_dict[bug_id][1].append(is_solution)
-
-            # print(result_string)
-
-    # compute coverage of this run and check whether it is the best one yet
-    coverage = sum(is_solutions)
-    coverages.append(coverage)
-    try:
-        plan_quality = sum(plan_lengths) / coverage
-    except:
-        continue
-    qualities.append(plan_quality)
-    if coverage > best_coverage:
-        best_coverage = coverage
-        best_planning_run = str(version_path)
-
-    print(coverages)
-    planning_results = dict(instances=num_bugs, max_coverage=max(coverages),
-                            min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
-                            max_quality=max(qualities), min_quality=min(qualities),
-                            avg_quality=sum(qualities) / len(qualities), max_bug_loss=max(bugs_losses),
-                            min_bug_loss=min(bugs_losses), avg_bug_loss=sum(bugs_losses) / len(bugs_losses),
-                            plans_directory=best_planning_run)
-    print(planning_results)
-
-    # save results of the best run
-    save_results(results, args.policy, planning_results)
-
-print(colored('Storing results', 'red', attrs=['bold']))
-print(results)
-results = pd.DataFrame(results)
-results.to_csv(args.logdir / "results.csv")
-print(results)
-
-for bug_id in bug_dict.keys():
-    bug_dict[bug_id][1] = sum(bug_dict[bug_id][1]) / len(bug_dict[bug_id][1])
-print(bug_dict)
-for bug_id in bug_dict.keys():
-    print(f"Bug {bug_id} has loss {bug_dict[bug_id][0]} and coverage {bug_dict[bug_id][1]}")
-"""
 
 if __name__ == "__main__":
     args = _parse_arguments()

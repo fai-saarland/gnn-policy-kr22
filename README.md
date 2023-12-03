@@ -1,92 +1,71 @@
-# general_policies
+# Documentation
 
+## bugfiles / bugfiles2
+Contains the bugs of the policy for the reward domain (our_models/reward_old or our_models/reward).
 
+## data
+Contains the data sets of all domains and the corresponding pddl files.
 
-## Getting started
+## derived_predicates
+Contains code for augmenting states such that the GNN becomes more expressive. Not relevant for our purposes.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## models
+Contains the original policies trained by Stahlberg.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## new_docker
+Contains a Dockerfile that Stahlberg apparently used.
 
-## Add your files
+## optimal_plans
+Contains the optimal plans for all domains.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## our_models
+Contains the policies we trained.
 
+## results
+Contains the plans that Stahlberg used to generate the table in his paper.
+
+## server_scripts 
+Contains some of the scripts that I used to run experiments on the GPU cluster. The .sub files describe the required 
+resources of the job, and the .sh files describe which scripts are executed in the job.
+
+## spanner-bidirectional
+Contains some code that Stahlberg used to modify the Spanner domain.
+
+## network
+This is the directory that contains all the important code. The most important scripts are:
+- `training.py`: Trains policies. For example, to train policies for the reward domain by sampling 3 data sets (rounds),
+repeating the optimization 2 times for each (seeds), and then evaluating the policy with the best validation set by running it on
+each test instance 10 times (runs), run the following command below. All policies, the indices of their data sets, and the planning results
+will be stored in the log directory.
+``` 
+python3 network/training.py --train data/states/train/reward/reward --validation data/states/validation/reward/reward --logdir /Users/nicola_mueller/desktop/gnn-policy-kr22/train_reward --domain reward --runs 10 --seeds 2 --rounds 3 
 ```
-cd existing_repo
-git remote add origin https://gitlab.cs.uni-saarland.de/s8namuel/general_policies.git
-git branch -M main
-git push -uf origin main
+- `retraining.py`: Retrains policies. It is a large script that implements the complete retraining pipeline consisting of the following steps:
+  1. Loading the trained policy given by the --policy argument (if omitted then a policy is trained from scratch but this is not done by sampling multiple data sets)
+  2. Retraining the policy using the bugfiles given by the --bugs argument. If you provide the "--no_retrain" flag, then this and the following steps are skipped and the script just runs the given policy 
+     on the test instances.
+  3. Determining the best retrained policy according the validation loss (there are alternatives for doing this in the code).
+  4. Continuing the training of the original policy for the same number of epochs as the best retrained policy was trained for.
+     This is done to test whether the retrained policy is better than the original policy due to being trained on bugs or just because it was trained longer. 
+     This part can be skipped by providing the "--no_continue" flag.
+  5. Finding the best continued policy according to the validation loss.
+  6. Evaluating the best continued policy's loss on bugs. This tests whether training for more epochs can improve performance on bugs without needing to specifically train on them.
+  7. All policies are run on the test instances multiple times (--runs) and the results are stored in a "results.csv" file inside the log directory. The plans of each policy are stored there too.
+
+For example, to retrain the policy trained on the reward domain with the corresponding bugfiles, using the same training and validation set as the original policy (--train_indices and --val_indices),
+repeating the optimization with 10 random seeds (--seeds), and running the resulting best policies on each test instance 10 times (--runs), run the following command:
 ```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.cs.uni-saarland.de/s8namuel/general_policies/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+python3 network/retraining.py --policy /Users/nicola_mueller/Desktop/gnn-policy-kr22/our_models/reward/epoch=137-step=19320-validation_loss=0.0020315158180892467.ckpt --train data/states/train/reward/reward --validation data/states/validation/reward/reward --train_indices test/train_indices_selected_states.json --val_indices test/validation_indices_selected_states.json --bugs /Users/nicola_mueller/Desktop/gnn-policy-kr22/bugfiles2/train --logdir /Users/nicola_mueller/desktop/gnn-policy-kr22/retrain_reward --domain reward --seeds 10 --runs 30 
+```
+The retraining script has many more optinal arguments, and you can find them in the `_parse_arguments` function in line 130.
+- `bugs_planning.py`: Runs policies on bug states. For a given policy (--policy) and a set of bugs (--bugs), this script computes the policy's loss and planning performance on each bug multiple times
+   (--runs) and stores the results in a "results.csv" file inside the log directory. The plans of each policy are stored there too. For example, run the following command:
+```
+python3 network/bugs_planning.py --policy /Users/nicola_mueller/Desktop/gnn-policy-kr22/our_models/reward/epoch=137-step=19320-validation_loss=0.0020315158180892467.ckpt --bugs /Users/nicola_mueller/Desktop/gnn-policy-kr22/bugfiles2/train --logdir /Users/nicola_mueller/desktop/gnn-policy-kr22/bugs_reward --domain reward --runs 3
+```
+- `read_plans.py`: Reads plans and prints coverage and plan quality. This simple utility script was used to debug the planning code. For example, run the following command:
+``` 
+python3 network/read_plans.py --logdir /Users/nicola_mueller/Desktop/gnn-policy-kr22/test_reward/plans_trained
+```
+## network/architecture
+This directory contains the code for the GNN architectures and loading the models. In `model.py` the `_create_unsupervised_retrain_model_class` implements the retraining algorithm.
