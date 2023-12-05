@@ -78,7 +78,8 @@ class Oracle:
                     print(bug)
                     print("\n")
                     continue
-                if state_to_string(encoded) in self.train_states:
+                # only need to look at the first state, which is the current one
+                if state_to_string(encoded[0]) in self.train_states:
                     print("\n")
                     print("STATE ALREADY IN TRAIN SET")
                     print(bug_file_name)
@@ -123,8 +124,9 @@ def load_bugs(path):
 # map a state to a string such that we can check whether we have seen this state before
 def state_to_string(state):
     state_string = ""
-    for predicate in state[1].keys():  # only need to look at the first state since the successors are fixed
-        state_string += f'{predicate}: {state[1][predicate]} '
+    for predicate in state.keys():
+        state_string += f'{predicate}: {state[predicate]} '
+
     return state_string
 
 def _parse_arguments():
@@ -458,7 +460,8 @@ def _main(args):
     predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states = load_datasets(args)
 
     # we will use this to check whether a bug is already in the training set
-    train_states = set([state_to_string(state) for state in train_dataset.get_states()])
+    train_states = set([state_to_string(labeled_state[1]) for labeled_state in train_dataset.get_states()])
+    #train_states = None
 
     loader_params = {
         "batch_size": args.batch_size,

@@ -21,7 +21,7 @@ def load_predicates(args):
         raise NotImplementedError(f"Loss function '{args.loss}'")
 
     if args.domain == "reward":
-        train = Path('data/states/validation/reward/reward/')  # laoding validation set is faster
+        train = Path('data/states/validation/reward/reward/')  # loading validation set is faster
     elif args.domain == "delivery":
         train = Path('data/states/validation/delivery/delivery/')
     #elif args.domain == ""
@@ -32,14 +32,15 @@ def load_predicates(args):
 
 def state_to_string(state):
     state_string = ""
-    for predicate in state[0].keys():  # only need to look at the first state since the successors are fixed
-        state_string += f'{predicate}: {state[0][predicate]} '
+    for predicate in state.keys():
+        state_string += f'{predicate}: {state[predicate]} '
     return state_string
 
 # loads all bug states from a given path
 def load_bugs(path):
     bug_files = sorted(glob.glob(str(path) + "/*.bugfile"))
     translation_pddl = []
+    # latter we want to map the encoded states to their original FDR representation
     string_to_fdr = {}
     for bug_file in bug_files:
         bugs, sas = parse_bug_file(bug_file)
@@ -63,7 +64,8 @@ def load_bugs(path):
             solvable_label = torch.tensor([True] * len(encoded))
 
             translated_bugs.append((encoded_pddl, (label, encoded, solvable_label)))
-            string_to_fdr[state_to_string(encoded)] = str(bug.state_vals)
+            # only need to look at first state, since it is the current one
+            string_to_fdr[state_to_string(encoded[0])] = str(bug.state_vals) + " " + str(Path(problem_file).stem)
 
         translation_pddl.append((pddl_problem, domain_file, problem_file, translated_bugs))
 
@@ -74,7 +76,6 @@ def _parse_arguments():
 
     # default values for arguments
     default_gpus = 0  # No GPU
-    default_max_epochs = None
     default_aggregation = 'max'
 
     # required arguments
@@ -248,21 +249,22 @@ def _main(args):
     predicates, collate = load_predicates(args)
     gnn_model = load_model(args, predicates, path=args.policy, retrain=False)
 
+    # make an entry for each state (keys are FDR representation since its compact)
     bug_dict = {}
     for translation in translated_bugs:
         bugs = translation[3]
         for bug in bugs:
             gnn_bug = bug[1]
-            bug_string = string_to_fdr[state_to_string(gnn_bug[1])]
-            bug_dict[bug_string] = [[], [], []]
-
+            states = gnn_bug[1]
+            # only need to look at first state, since it is the current one
+            bug_string = string_to_fdr[state_to_string(states[0])]
+            bug_dict[bug_string] = [[], [], [], []]
 
     for i in range(args.runs):
         # create directory for current run
         version_path = args.logdir / f"version_{i}"
         version_path.mkdir(parents=True, exist_ok=True)
 
-        bug_id = -1
         for translation in translated_bugs:
             pddl_problem = translation[0]
             domain_file = translation[1]
@@ -273,8 +275,9 @@ def _main(args):
             for bug in bugs:
                 # TODO: EVALUATE LOSS
                 gnn_bug = bug[1]
-                bug_string = string_to_fdr[state_to_string(gnn_bug[1])]
-                #print(bug_string)
+                label = gnn_bug[0]
+                states = gnn_bug[1]
+                bug_string = string_to_fdr[state_to_string(states[0])]
                 with torch.no_grad():
                     try:
                         labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([gnn_bug])
@@ -293,7 +296,6 @@ def _main(args):
 
                 # TODO: RUN POLICY
                 pddl_bug = bug[0]
-                bug_id += 1
                 if args.cycles == 'detect':
                     logfile_name = problem_name + f"_{bug_string}" + ".markovian"
                 else:
@@ -311,13 +313,16 @@ def _main(args):
                     print(f"Failed to solve problem {problem_name} {bug_string}")
                 bug_dict[bug_string][1].append(is_solution)
                 bug_dict[bug_string][2].append(len(action_trace))
+                bug_dict[bug_string][3].append(len(action_trace) - label.item())
     print(bug_dict)
+
     # compute averages per bug
     bug_results = {
         "bug_string": [],
         "avg_loss": [],
         "avg_coverage": [],
         "avg_plan_length": [],
+        "avg_deviation": [],
         "num_bugs": [],
         "instances": [],
         "runs": []
@@ -327,6 +332,7 @@ def _main(args):
         bug_results["avg_loss"].append(sum(bug_dict[bug_string][0]) / len(bug_dict[bug_string][0]))
         bug_results["avg_coverage"].append(sum(bug_dict[bug_string][1]) / len(bug_dict[bug_string][1]))
         bug_results["avg_plan_length"].append(sum(bug_dict[bug_string][2]) / len(bug_dict[bug_string][2]))
+        bug_results["avg_deviation"].append(sum(bug_dict[bug_string][3]) / len(bug_dict[bug_string][3]))
         bug_results["num_bugs"].append(num_bugs)
         bug_results["instances"].append(len(translated_bugs))
         bug_results["runs"].append(args.runs)
@@ -334,10 +340,12 @@ def _main(args):
     total_avg_loss = sum(bug_results["avg_loss"]) / len(bug_results["avg_loss"])
     total_avg_coverage = sum(bug_results["avg_coverage"]) / len(bug_results["avg_coverage"])
     total_avg_plan_length = sum(bug_results["avg_plan_length"]) / len(bug_results["avg_plan_length"])
+    total_avg_deviation = sum(bug_results["avg_deviation"]) / len(bug_results["avg_deviation"])
     bug_results["bug_string"] = ["total"] + bug_results["bug_string"]
     bug_results["avg_loss"] = [total_avg_loss] + bug_results["avg_loss"]
     bug_results["avg_coverage"] = [total_avg_coverage] + bug_results["avg_coverage"]
     bug_results["avg_plan_length"] = [total_avg_plan_length] + bug_results["avg_plan_length"]
+    bug_results["avg_deviation"] = [total_avg_deviation] + bug_results["avg_deviation"]
     bug_results["num_bugs"].append(num_bugs)
     bug_results["instances"].append(len(translated_bugs))
     bug_results["runs"].append(args.runs)

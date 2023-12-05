@@ -825,7 +825,7 @@ def translate_state(fdr_state):
             successor_actions += [candidate[0]]
             successor_states += [candidate[1]]
 
-    collated_input, encoded_states = _to_input(successor_states, StaticServerData.goal_denotation,
+    collated_input, encoded_states = _to_input([current_state] + successor_states, StaticServerData.goal_denotation,
                                                StaticServerData.obj_encoding, StaticServerData.augment_fn,
                                                StaticServerData.language, StaticServerData.device, None)
 
