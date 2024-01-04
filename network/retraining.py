@@ -731,8 +731,8 @@ def _main(args):
     }
     for policy_type, policy, directory in policies_and_directories:
         # load files for planning
-        domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
-        problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
+        domain_file = Path('data/pddl/' + args.domain + '/train/domain.pddl')
+        problem_files = glob.glob(str('data/pddl/' + args.domain + '/train/' + '*.pddl'))
         # initialize metrics
         best_coverage = 0
         best_plan_quality = float('inf')

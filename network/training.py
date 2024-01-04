@@ -72,7 +72,7 @@ def _parse_arguments():
     parser.add_argument('--loss', default=default_loss, nargs='?',
                         choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
                                  'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
-                                 'online_optimal'])
+                                 'online_optimal', "mean_squared_error"])
     parser.add_argument('--update_interval', default=default_update_interval, type=int,
                         help=f'frequency at which new bugs are collected (default={default_update_interval})')
     parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention', 'planformer'], help=f'readout aggregation function (default={default_aggregation})')
@@ -105,10 +105,10 @@ def _parse_arguments():
     parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
 
     # arguments for PlanFormer (GNN + Transformer)
-    parser.add_argument('--d_model', default=128, type=int, help=f'number of input tokens (default=128)')
-    parser.add_argument('--d_ff', default=128, type=int, help=f'number of feedforward network hidden units (default=128)')
-    parser.add_argument('--n_heads', default=4, type=int, help=f'number of attention heads (default=4)')
-    parser.add_argument('--n_layers', default=4, type=int, help=f'number of transformer layers (default=4)')
+    parser.add_argument('--d_model', default=64, type=int, help=f'number of input tokens (default=128)')
+    parser.add_argument('--d_ff', default=64, type=int, help=f'number of feedforward network hidden units (default=128)')
+    parser.add_argument('--n_heads', default=2, type=int, help=f'number of attention heads (default=4)')
+    parser.add_argument('--n_layers', default=2, type=int, help=f'number of transformer layers (default=4)')
     parser.add_argument('--drop', default=0.1, type=float, help=f'dropout probability (default=0.1)')
 
     default_debug_level = 0

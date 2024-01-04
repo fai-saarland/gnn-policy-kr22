@@ -329,7 +329,7 @@ def planning(args, policy, domain_file, problem_file, device):
     return result_string, action_trace, is_solution
 
 # writes results of a planning run ato a csv file
-def save_results(results, policy_path, val_loss, planning_results, d_model, d_ff, n_heads, n_layers):
+def save_results(results, policy_path, val_loss, planning_results, d_model, d_ff, n_heads, n_layers, drop):
     results["policy_path"].append(policy_path)
     results["val_loss"].append(val_loss)
     results["instances"].append(planning_results["instances"])
@@ -340,6 +340,7 @@ def save_results(results, policy_path, val_loss, planning_results, d_model, d_ff
     results["dim_feedforward"].append(d_ff)
     results["num_heads"].append(n_heads)
     results["num_layers"].append(n_layers)
+    results["dropout"].append(drop)
     results["best_plan_quality"].append(planning_results["best_plan_quality"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
@@ -350,15 +351,18 @@ def _main(args):
     d_model_vals = [64, 128]
     d_ff_vals = [128, 256]
     n_heads_vals = [2, 4]
-    n_layers_vals = [2, 4]
+    #n_layers_vals = [2, 4]
+    #dropout_vals = [0.1, 0.2, 0.3]
 
     # compute all configurations
     configs = []
     for d_model in d_model_vals:
         for d_ff in d_ff_vals:
             for n_heads in n_heads_vals:
-                for n_layers in n_layers_vals:
-                    configs.append((d_model, d_ff, n_heads, n_layers))
+                configs.append((d_model, d_ff, n_heads))
+                #for n_layers in n_layers_vals:
+                #    for drop in dropout_vals:
+                #        configs.append((d_model, d_ff, n_heads, n_layers, drop))
 
     results = {
         "policy_path": [],
@@ -371,6 +375,7 @@ def _main(args):
         "dim_feedforward": [],
         "num_heads": [],
         "num_layers": [],
+        "dropout": [],
         "best_plan_quality": [],
         "plans_directory": [],
     }
@@ -385,7 +390,8 @@ def _main(args):
         args.d_model = config[0]
         args.d_ff = config[1]
         args.n_heads = config[2]
-        args.n_layers = config[3]
+        #args.n_layers = config[3]
+        #args.drop = config[4]
 
 
         # TODO: STEP 1: INITIALIZE
@@ -427,10 +433,6 @@ def _main(args):
                 trainer = load_trainer(args, logdir=round_dir)
                 print(colored('Training model...', 'green', attrs = [ 'bold' ]))
                 print(type(model).__name__)
-                # if args.aggregation == 'planformer':
-                    # add learning rate finder
-                    # tuner = pl.tuner.Tuner(trainer)
-                    # tuner.lr_find(model, train_dataloaders=train_loader, val_dataloaders=validation_loader)
                 trainer.fit(model, train_loader, validation_loader)
 
         # TODO: STEP 3: FIND BEST TRAINED MODEL
@@ -536,7 +538,7 @@ def _main(args):
             print(planning_results)
 
             # save results of the best run
-            save_results(results, best_trained_policy_path, best_trained_val_loss, planning_results, d_model=config[0], d_ff=config[1], n_heads=config[2], n_layers=config[3])
+            save_results(results, best_trained_policy_path, best_trained_val_loss, planning_results, d_model=config[0], d_ff=config[1], n_heads=config[2], n_layers=args.n_layers, drop=args.drop)
 
     print(colored('Storing results', 'red', attrs=['bold']))
     results = pd.DataFrame(results)

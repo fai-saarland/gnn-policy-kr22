@@ -9,6 +9,8 @@ from generators.plan import policy_search
 
 from architecture import selfsupervised_suboptimal_loss_no_solvable_labels
 
+from architecture import mean_squared_error_loss
+
 import numpy as np
 
 import json
@@ -323,6 +325,38 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
 
     return Model
 
+def _create_mse_model_class(base: pl.LightningModule, loss):
+    """Create a model class for supervised training using mean squared error."""
+    class Model(base):
+        def __init__(self, predicates: list, hidden_size: int, iterations: int, learning_rate: float, l1_factor: float, weight_decay: float, **kwargs):
+            super().__init__(predicates, hidden_size, iterations)
+            self.save_hyperparameters('learning_rate', 'l1_factor', 'weight_decay')
+            self.learning_rate = learning_rate
+            self.l1_factor = l1_factor
+            self.weight_decay = weight_decay
+
+        def configure_optimizers(self):
+            return _create_optimizer(self, self.learning_rate, self.weight_decay)
+
+        def training_step(self, train_batch, batch_index):
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = train_batch
+            output = self(collated_states_with_object_counts)
+            train = loss(output, labels, solvable_labels, state_counts, self.device)
+            self.log('train_loss', train)
+            l1 = l1_regularization(self, self.l1_factor)
+            self.log('l1_loss', l1)
+            total = train + l1
+            self.log('total_loss', total)
+            return total
+
+        def validation_step(self, validation_batch, batch_index):
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
+            output = self(collated_states_with_object_counts)
+            validation = loss(output, labels, solvable_labels, state_counts, self.device)
+            self.log('validation_loss', validation, on_step=False, on_epoch=True)
+
+    return Model
+
 def _create_unsupervised_planformer_model_class(base: pl.LightningModule, loss):
     """Create a model class for unsupervised training that inherits from 'base' and uses 'loss' for training and validation."""
     class Model(base):
@@ -333,6 +367,7 @@ def _create_unsupervised_planformer_model_class(base: pl.LightningModule, loss):
             self.learning_rate = learning_rate
             self.l1_factor = l1_factor
             self.weight_decay = weight_decay
+            self.train_losses =  []
 
         def configure_optimizers(self):
             optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
@@ -358,6 +393,7 @@ def _create_unsupervised_planformer_model_class(base: pl.LightningModule, loss):
             self.log('l1_loss', l1)
             total = train + l1
             self.log('total_loss', total)
+            self.train_losses.append(total)
             return total
 
         def validation_step(self, validation_batch, batch_index):
@@ -366,9 +402,16 @@ def _create_unsupervised_planformer_model_class(base: pl.LightningModule, loss):
             validation = loss(output, labels, solvable_labels, state_counts, self.device)
             self.log('validation_loss', validation)
 
+        def on_train_epoch_end(self):
+            with torch.no_grad():
+                # compute average loss on training samples during the last epoch
+                train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
+                print(f'epoch train loss: {train_loss}')
+                self.train_losses.clear()
+
     return Model
 
-PlanFormer = _create_unsupervised_planformer_model_class(PlanFormerModelBase, selfsupervised_suboptimal_loss)
+PlanFormer = _create_unsupervised_planformer_model_class(PlanFormerModelBase, mean_squared_error_loss)
 
 SupervisedOptimalAddModel = _create_supervised_model_class(AddModelBase, supervised_optimal_loss)
 SupervisedOptimalMaxModel = _create_supervised_model_class(MaxModelBase, supervised_optimal_loss)
@@ -416,5 +459,7 @@ RetrainSelfsupervisedSuboptimalMaxModel = _create_unsupervised_retrain_model_cla
 RetrainSelfsupervisedSuboptimalAddMaxModel = _create_unsupervised_retrain_model_class(AddMaxModelBase, selfsupervised_suboptimal_loss)
 RetrainSelfsupervisedSuboptimalMaxReadoutModel = _create_unsupervised_retrain_model_class(MaxReadoutModelBase, selfsupervised_suboptimal_loss)
 RetrainSelfsupervisedSuboptimalAttentionModel = _create_unsupervised_retrain_model_class(AttentionModelBase, selfsupervised_suboptimal_loss)
+
+MSEMaxModel = _create_mse_model_class(MaxModelBase, mean_squared_error_loss)
 
 

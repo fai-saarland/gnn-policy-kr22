@@ -219,3 +219,25 @@ def selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_coun
             loss += torch.clamp(value_prediction - g_suboptimal_factor * value_label, 0.0)
         offset += state_count
     return loss / len(state_counts)
+
+def mean_squared_error_loss(output, labels, solvable_labels, state_counts, device):
+    global g_suboptimal_factor
+    loss = 0.0
+    offset = 0
+    values, solvables = output
+    for index, state_count in enumerate(state_counts):
+        value_prediction = values[offset][0]
+        solvable_prediction = solvables[offset][0]
+        value_label = labels[index]
+        is_solvable = value_label < 2000000000
+        solvable_label = torch.tensor(1.0 if is_solvable else 0.0, device=solvable_prediction.device)
+        loss += torch.binary_cross_entropy_with_logits(solvable_prediction, solvable_label)
+        if is_solvable:  # Is a solvable state, apply loss on value prediction
+            if value_label == 0:
+                loss += torch.pow(value_prediction - value_label, 2)
+                assert state_count == 1
+            else:
+                # compute MSE:
+                loss += torch.pow(value_prediction - value_label, 2)
+        offset += state_count
+    return loss / len(state_counts)

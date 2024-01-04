@@ -13,5 +13,6 @@ g_dataset_methods = {
     'selfsupervised_suboptimal2': (unsupervised_load, unsupervised_collate),
     'unsupervised_optimal':       (unsupervised_load, unsupervised_collate),
     'unsupervised_suboptimal':    (unsupervised_load, unsupervised_collate),
-    'online_optimal':             (online_load, online_collate)
+    'online_optimal':             (online_load, online_collate),
+    "mean_squared_error":         (unsupervised_load, unsupervised_collate),
 }
