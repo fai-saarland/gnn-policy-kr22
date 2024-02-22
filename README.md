@@ -13,7 +13,7 @@ Contains code for augmenting states such that the GNN becomes more expressive. N
 Contains the original policies trained by Stahlberg.
 
 ## new_docker
-Contains a Dockerfile that Stahlberg apparently used.
+Contains a Dockerfile for running the code on the GPU cluster.
 
 ## optimal_plans
 Contains the optimal plans for all domains.
