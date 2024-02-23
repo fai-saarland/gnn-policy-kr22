@@ -1,0 +1,7849 @@
+begin_sas
+begin_version
+3
+end_version
+begin_metric
+1
+end_metric
+14
+begin_variable
+var0
+-1
+212
+Atom at(c_0_0)
+Atom at(c_0_1)
+Atom at(c_0_10)
+Atom at(c_0_11)
+Atom at(c_0_13)
+Atom at(c_0_14)
+Atom at(c_0_2)
+Atom at(c_0_3)
+Atom at(c_0_4)
+Atom at(c_0_5)
+Atom at(c_0_6)
+Atom at(c_0_7)
+Atom at(c_0_8)
+Atom at(c_0_9)
+Atom at(c_10_0)
+Atom at(c_10_1)
+Atom at(c_10_10)
+Atom at(c_10_11)
+Atom at(c_10_12)
+Atom at(c_10_13)
+Atom at(c_10_14)
+Atom at(c_10_2)
+Atom at(c_10_3)
+Atom at(c_10_4)
+Atom at(c_10_6)
+Atom at(c_10_7)
+Atom at(c_10_8)
+Atom at(c_10_9)
+Atom at(c_11_0)
+Atom at(c_11_1)
+Atom at(c_11_10)
+Atom at(c_11_11)
+Atom at(c_11_12)
+Atom at(c_11_13)
+Atom at(c_11_14)
+Atom at(c_11_2)
+Atom at(c_11_3)
+Atom at(c_11_4)
+Atom at(c_11_5)
+Atom at(c_11_6)
+Atom at(c_11_7)
+Atom at(c_11_8)
+Atom at(c_11_9)
+Atom at(c_12_0)
+Atom at(c_12_1)
+Atom at(c_12_10)
+Atom at(c_12_11)
+Atom at(c_12_13)
+Atom at(c_12_14)
+Atom at(c_12_2)
+Atom at(c_12_3)
+Atom at(c_12_4)
+Atom at(c_12_5)
+Atom at(c_12_6)
+Atom at(c_12_7)
+Atom at(c_12_8)
+Atom at(c_12_9)
+Atom at(c_13_0)
+Atom at(c_13_1)
+Atom at(c_13_11)
+Atom at(c_13_12)
+Atom at(c_13_13)
+Atom at(c_13_14)
+Atom at(c_13_2)
+Atom at(c_13_3)
+Atom at(c_13_4)
+Atom at(c_13_5)
+Atom at(c_13_6)
+Atom at(c_13_7)
+Atom at(c_13_8)
+Atom at(c_13_9)
+Atom at(c_14_0)
+Atom at(c_14_1)
+Atom at(c_14_10)
+Atom at(c_14_11)
+Atom at(c_14_12)
+Atom at(c_14_13)
+Atom at(c_14_2)
+Atom at(c_14_3)
+Atom at(c_14_4)
+Atom at(c_14_5)
+Atom at(c_14_6)
+Atom at(c_14_7)
+Atom at(c_14_8)
+Atom at(c_14_9)
+Atom at(c_1_0)
+Atom at(c_1_1)
+Atom at(c_1_10)
+Atom at(c_1_11)
+Atom at(c_1_12)
+Atom at(c_1_13)
+Atom at(c_1_14)
+Atom at(c_1_2)
+Atom at(c_1_3)
+Atom at(c_1_4)
+Atom at(c_1_5)
+Atom at(c_1_7)
+Atom at(c_1_8)
+Atom at(c_1_9)
+Atom at(c_2_0)
+Atom at(c_2_1)
+Atom at(c_2_10)
+Atom at(c_2_11)
+Atom at(c_2_12)
+Atom at(c_2_13)
+Atom at(c_2_14)
+Atom at(c_2_2)
+Atom at(c_2_3)
+Atom at(c_2_4)
+Atom at(c_2_5)
+Atom at(c_2_6)
+Atom at(c_2_8)
+Atom at(c_2_9)
+Atom at(c_3_0)
+Atom at(c_3_1)
+Atom at(c_3_10)
+Atom at(c_3_11)
+Atom at(c_3_12)
+Atom at(c_3_13)
+Atom at(c_3_14)
+Atom at(c_3_2)
+Atom at(c_3_3)
+Atom at(c_3_4)
+Atom at(c_3_5)
+Atom at(c_3_6)
+Atom at(c_3_7)
+Atom at(c_3_8)
+Atom at(c_3_9)
+Atom at(c_4_0)
+Atom at(c_4_10)
+Atom at(c_4_11)
+Atom at(c_4_12)
+Atom at(c_4_13)
+Atom at(c_4_14)
+Atom at(c_4_2)
+Atom at(c_4_4)
+Atom at(c_4_5)
+Atom at(c_4_6)
+Atom at(c_4_7)
+Atom at(c_4_8)
+Atom at(c_4_9)
+Atom at(c_5_0)
+Atom at(c_5_1)
+Atom at(c_5_10)
+Atom at(c_5_11)
+Atom at(c_5_12)
+Atom at(c_5_13)
+Atom at(c_5_14)
+Atom at(c_5_2)
+Atom at(c_5_3)
+Atom at(c_5_4)
+Atom at(c_5_5)
+Atom at(c_5_6)
+Atom at(c_5_7)
+Atom at(c_5_8)
+Atom at(c_5_9)
+Atom at(c_6_0)
+Atom at(c_6_1)
+Atom at(c_6_10)
+Atom at(c_6_11)
+Atom at(c_6_12)
+Atom at(c_6_13)
+Atom at(c_6_14)
+Atom at(c_6_2)
+Atom at(c_6_3)
+Atom at(c_6_4)
+Atom at(c_6_5)
+Atom at(c_6_6)
+Atom at(c_6_7)
+Atom at(c_6_8)
+Atom at(c_6_9)
+Atom at(c_7_0)
+Atom at(c_7_1)
+Atom at(c_7_10)
+Atom at(c_7_11)
+Atom at(c_7_12)
+Atom at(c_7_13)
+Atom at(c_7_2)
+Atom at(c_7_3)
+Atom at(c_7_4)
+Atom at(c_7_5)
+Atom at(c_7_6)
+Atom at(c_7_8)
+Atom at(c_7_9)
+Atom at(c_8_0)
+Atom at(c_8_1)
+Atom at(c_8_10)
+Atom at(c_8_11)
+Atom at(c_8_12)
+Atom at(c_8_13)
+Atom at(c_8_14)
+Atom at(c_8_3)
+Atom at(c_8_4)
+Atom at(c_8_5)
+Atom at(c_8_6)
+Atom at(c_8_7)
+Atom at(c_8_8)
+Atom at(c_8_9)
+Atom at(c_9_0)
+Atom at(c_9_1)
+Atom at(c_9_10)
+Atom at(c_9_11)
+Atom at(c_9_12)
+Atom at(c_9_13)
+Atom at(c_9_14)
+Atom at(c_9_2)
+Atom at(c_9_3)
+Atom at(c_9_4)
+Atom at(c_9_6)
+Atom at(c_9_7)
+Atom at(c_9_8)
+Atom at(c_9_9)
+end_variable
+begin_variable
+var1
+-1
+2
+Atom picked(c_8_5)
+Atom reward(c_8_5)
+end_variable
+begin_variable
+var2
+-1
+2
+Atom picked(c_5_8)
+Atom reward(c_5_8)
+end_variable
+begin_variable
+var3
+-1
+2
+Atom picked(c_5_14)
+Atom reward(c_5_14)
+end_variable
+begin_variable
+var4
+-1
+2
+Atom picked(c_5_1)
+Atom reward(c_5_1)
+end_variable
+begin_variable
+var5
+-1
+2
+Atom picked(c_4_10)
+Atom reward(c_4_10)
+end_variable
+begin_variable
+var6
+-1
+2
+Atom picked(c_3_7)
+Atom reward(c_3_7)
+end_variable
+begin_variable
+var7
+-1
+2
+Atom picked(c_3_13)
+Atom reward(c_3_13)
+end_variable
+begin_variable
+var8
+-1
+2
+Atom picked(c_14_7)
+Atom reward(c_14_7)
+end_variable
+begin_variable
+var9
+-1
+2
+Atom picked(c_11_14)
+Atom reward(c_11_14)
+end_variable
+begin_variable
+var10
+-1
+2
+Atom picked(c_10_7)
+Atom reward(c_10_7)
+end_variable
+begin_variable
+var11
+-1
+2
+Atom picked(c_10_1)
+Atom reward(c_10_1)
+end_variable
+begin_variable
+var12
+-1
+2
+Atom picked(c_0_2)
+Atom reward(c_0_2)
+end_variable
+begin_variable
+var13
+-1
+2
+Atom picked(c_0_1)
+Atom reward(c_0_1)
+end_variable
+14
+begin_mutex_group
+2
+13 0
+13 1
+end_mutex_group
+begin_mutex_group
+2
+12 0
+12 1
+end_mutex_group
+begin_mutex_group
+2
+11 0
+11 1
+end_mutex_group
+begin_mutex_group
+2
+10 0
+10 1
+end_mutex_group
+begin_mutex_group
+2
+9 0
+9 1
+end_mutex_group
+begin_mutex_group
+2
+8 0
+8 1
+end_mutex_group
+begin_mutex_group
+2
+7 0
+7 1
+end_mutex_group
+begin_mutex_group
+2
+6 0
+6 1
+end_mutex_group
+begin_mutex_group
+2
+5 0
+5 1
+end_mutex_group
+begin_mutex_group
+2
+4 0
+4 1
+end_mutex_group
+begin_mutex_group
+2
+3 0
+3 1
+end_mutex_group
+begin_mutex_group
+2
+2 0
+2 1
+end_mutex_group
+begin_mutex_group
+2
+1 0
+1 1
+end_mutex_group
+begin_mutex_group
+212
+0 0
+0 1
+0 2
+0 3
+0 4
+0 5
+0 6
+0 7
+0 8
+0 9
+0 10
+0 11
+0 12
+0 13
+0 14
+0 15
+0 16
+0 17
+0 18
+0 19
+0 20
+0 21
+0 22
+0 23
+0 24
+0 25
+0 26
+0 27
+0 28
+0 29
+0 30
+0 31
+0 32
+0 33
+0 34
+0 35
+0 36
+0 37
+0 38
+0 39
+0 40
+0 41
+0 42
+0 43
+0 44
+0 45
+0 46
+0 47
+0 48
+0 49
+0 50
+0 51
+0 52
+0 53
+0 54
+0 55
+0 56
+0 57
+0 58
+0 59
+0 60
+0 61
+0 62
+0 63
+0 64
+0 65
+0 66
+0 67
+0 68
+0 69
+0 70
+0 71
+0 72
+0 73
+0 74
+0 75
+0 76
+0 77
+0 78
+0 79
+0 80
+0 81
+0 82
+0 83
+0 84
+0 85
+0 86
+0 87
+0 88
+0 89
+0 90
+0 91
+0 92
+0 93
+0 94
+0 95
+0 96
+0 97
+0 98
+0 99
+0 100
+0 101
+0 102
+0 103
+0 104
+0 105
+0 106
+0 107
+0 108
+0 109
+0 110
+0 111
+0 112
+0 113
+0 114
+0 115
+0 116
+0 117
+0 118
+0 119
+0 120
+0 121
+0 122
+0 123
+0 124
+0 125
+0 126
+0 127
+0 128
+0 129
+0 130
+0 131
+0 132
+0 133
+0 134
+0 135
+0 136
+0 137
+0 138
+0 139
+0 140
+0 141
+0 142
+0 143
+0 144
+0 145
+0 146
+0 147
+0 148
+0 149
+0 150
+0 151
+0 152
+0 153
+0 154
+0 155
+0 156
+0 157
+0 158
+0 159
+0 160
+0 161
+0 162
+0 163
+0 164
+0 165
+0 166
+0 167
+0 168
+0 169
+0 170
+0 171
+0 172
+0 173
+0 174
+0 175
+0 176
+0 177
+0 178
+0 179
+0 180
+0 181
+0 182
+0 183
+0 184
+0 185
+0 186
+0 187
+0 188
+0 189
+0 190
+0 191
+0 192
+0 193
+0 194
+0 195
+0 196
+0 197
+0 198
+0 199
+0 200
+0 201
+0 202
+0 203
+0 204
+0 205
+0 206
+0 207
+0 208
+0 209
+0 210
+0 211
+end_mutex_group
+begin_state
+0
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+end_state
+begin_goal
+13
+1 0
+2 0
+3 0
+4 0
+5 0
+6 0
+7 0
+8 0
+9 0
+10 0
+11 0
+12 0
+13 0
+end_goal
+759
+begin_operator
+move c_0_0 c_0_1
+0
+1
+0 0 0 1
+1
+end_operator
+begin_operator
+move c_0_0 c_1_0
+0
+1
+0 0 0 85
+1
+end_operator
+begin_operator
+move c_0_1 c_0_0
+0
+1
+0 0 1 0
+1
+end_operator
+begin_operator
+move c_0_1 c_0_2
+0
+1
+0 0 1 6
+1
+end_operator
+begin_operator
+move c_0_1 c_1_1
+0
+1
+0 0 1 86
+1
+end_operator
+begin_operator
+move c_0_10 c_0_11
+0
+1
+0 0 2 3
+1
+end_operator
+begin_operator
+move c_0_10 c_0_9
+0
+1
+0 0 2 13
+1
+end_operator
+begin_operator
+move c_0_10 c_1_10
+0
+1
+0 0 2 87
+1
+end_operator
+begin_operator
+move c_0_11 c_0_10
+0
+1
+0 0 3 2
+1
+end_operator
+begin_operator
+move c_0_11 c_1_11
+0
+1
+0 0 3 88
+1
+end_operator
+begin_operator
+move c_0_13 c_0_14
+0
+1
+0 0 4 5
+1
+end_operator
+begin_operator
+move c_0_13 c_1_13
+0
+1
+0 0 4 90
+1
+end_operator
+begin_operator
+move c_0_14 c_0_13
+0
+1
+0 0 5 4
+1
+end_operator
+begin_operator
+move c_0_14 c_1_14
+0
+1
+0 0 5 91
+1
+end_operator
+begin_operator
+move c_0_2 c_0_1
+0
+1
+0 0 6 1
+1
+end_operator
+begin_operator
+move c_0_2 c_0_3
+0
+1
+0 0 6 7
+1
+end_operator
+begin_operator
+move c_0_2 c_1_2
+0
+1
+0 0 6 92
+1
+end_operator
+begin_operator
+move c_0_3 c_0_2
+0
+1
+0 0 7 6
+1
+end_operator
+begin_operator
+move c_0_3 c_0_4
+0
+1
+0 0 7 8
+1
+end_operator
+begin_operator
+move c_0_3 c_1_3
+0
+1
+0 0 7 93
+1
+end_operator
+begin_operator
+move c_0_4 c_0_3
+0
+1
+0 0 8 7
+1
+end_operator
+begin_operator
+move c_0_4 c_0_5
+0
+1
+0 0 8 9
+1
+end_operator
+begin_operator
+move c_0_4 c_1_4
+0
+1
+0 0 8 94
+1
+end_operator
+begin_operator
+move c_0_5 c_0_4
+0
+1
+0 0 9 8
+1
+end_operator
+begin_operator
+move c_0_5 c_0_6
+0
+1
+0 0 9 10
+1
+end_operator
+begin_operator
+move c_0_5 c_1_5
+0
+1
+0 0 9 95
+1
+end_operator
+begin_operator
+move c_0_6 c_0_5
+0
+1
+0 0 10 9
+1
+end_operator
+begin_operator
+move c_0_6 c_0_7
+0
+1
+0 0 10 11
+1
+end_operator
+begin_operator
+move c_0_7 c_0_6
+0
+1
+0 0 11 10
+1
+end_operator
+begin_operator
+move c_0_7 c_0_8
+0
+1
+0 0 11 12
+1
+end_operator
+begin_operator
+move c_0_7 c_1_7
+0
+1
+0 0 11 96
+1
+end_operator
+begin_operator
+move c_0_8 c_0_7
+0
+1
+0 0 12 11
+1
+end_operator
+begin_operator
+move c_0_8 c_0_9
+0
+1
+0 0 12 13
+1
+end_operator
+begin_operator
+move c_0_8 c_1_8
+0
+1
+0 0 12 97
+1
+end_operator
+begin_operator
+move c_0_9 c_0_10
+0
+1
+0 0 13 2
+1
+end_operator
+begin_operator
+move c_0_9 c_0_8
+0
+1
+0 0 13 12
+1
+end_operator
+begin_operator
+move c_0_9 c_1_9
+0
+1
+0 0 13 98
+1
+end_operator
+begin_operator
+move c_10_0 c_10_1
+0
+1
+0 0 14 15
+1
+end_operator
+begin_operator
+move c_10_0 c_11_0
+0
+1
+0 0 14 28
+1
+end_operator
+begin_operator
+move c_10_0 c_9_0
+0
+1
+0 0 14 198
+1
+end_operator
+begin_operator
+move c_10_1 c_10_0
+0
+1
+0 0 15 14
+1
+end_operator
+begin_operator
+move c_10_1 c_10_2
+0
+1
+0 0 15 21
+1
+end_operator
+begin_operator
+move c_10_1 c_11_1
+0
+1
+0 0 15 29
+1
+end_operator
+begin_operator
+move c_10_1 c_9_1
+0
+1
+0 0 15 199
+1
+end_operator
+begin_operator
+move c_10_10 c_10_11
+0
+1
+0 0 16 17
+1
+end_operator
+begin_operator
+move c_10_10 c_10_9
+0
+1
+0 0 16 27
+1
+end_operator
+begin_operator
+move c_10_10 c_11_10
+0
+1
+0 0 16 30
+1
+end_operator
+begin_operator
+move c_10_10 c_9_10
+0
+1
+0 0 16 200
+1
+end_operator
+begin_operator
+move c_10_11 c_10_10
+0
+1
+0 0 17 16
+1
+end_operator
+begin_operator
+move c_10_11 c_10_12
+0
+1
+0 0 17 18
+1
+end_operator
+begin_operator
+move c_10_11 c_11_11
+0
+1
+0 0 17 31
+1
+end_operator
+begin_operator
+move c_10_11 c_9_11
+0
+1
+0 0 17 201
+1
+end_operator
+begin_operator
+move c_10_12 c_10_11
+0
+1
+0 0 18 17
+1
+end_operator
+begin_operator
+move c_10_12 c_10_13
+0
+1
+0 0 18 19
+1
+end_operator
+begin_operator
+move c_10_12 c_11_12
+0
+1
+0 0 18 32
+1
+end_operator
+begin_operator
+move c_10_12 c_9_12
+0
+1
+0 0 18 202
+1
+end_operator
+begin_operator
+move c_10_13 c_10_12
+0
+1
+0 0 19 18
+1
+end_operator
+begin_operator
+move c_10_13 c_10_14
+0
+1
+0 0 19 20
+1
+end_operator
+begin_operator
+move c_10_13 c_11_13
+0
+1
+0 0 19 33
+1
+end_operator
+begin_operator
+move c_10_13 c_9_13
+0
+1
+0 0 19 203
+1
+end_operator
+begin_operator
+move c_10_14 c_10_13
+0
+1
+0 0 20 19
+1
+end_operator
+begin_operator
+move c_10_14 c_11_14
+0
+1
+0 0 20 34
+1
+end_operator
+begin_operator
+move c_10_14 c_9_14
+0
+1
+0 0 20 204
+1
+end_operator
+begin_operator
+move c_10_2 c_10_1
+0
+1
+0 0 21 15
+1
+end_operator
+begin_operator
+move c_10_2 c_10_3
+0
+1
+0 0 21 22
+1
+end_operator
+begin_operator
+move c_10_2 c_11_2
+0
+1
+0 0 21 35
+1
+end_operator
+begin_operator
+move c_10_2 c_9_2
+0
+1
+0 0 21 205
+1
+end_operator
+begin_operator
+move c_10_3 c_10_2
+0
+1
+0 0 22 21
+1
+end_operator
+begin_operator
+move c_10_3 c_10_4
+0
+1
+0 0 22 23
+1
+end_operator
+begin_operator
+move c_10_3 c_11_3
+0
+1
+0 0 22 36
+1
+end_operator
+begin_operator
+move c_10_3 c_9_3
+0
+1
+0 0 22 206
+1
+end_operator
+begin_operator
+move c_10_4 c_10_3
+0
+1
+0 0 23 22
+1
+end_operator
+begin_operator
+move c_10_4 c_11_4
+0
+1
+0 0 23 37
+1
+end_operator
+begin_operator
+move c_10_4 c_9_4
+0
+1
+0 0 23 207
+1
+end_operator
+begin_operator
+move c_10_6 c_10_7
+0
+1
+0 0 24 25
+1
+end_operator
+begin_operator
+move c_10_6 c_11_6
+0
+1
+0 0 24 39
+1
+end_operator
+begin_operator
+move c_10_6 c_9_6
+0
+1
+0 0 24 208
+1
+end_operator
+begin_operator
+move c_10_7 c_10_6
+0
+1
+0 0 25 24
+1
+end_operator
+begin_operator
+move c_10_7 c_10_8
+0
+1
+0 0 25 26
+1
+end_operator
+begin_operator
+move c_10_7 c_11_7
+0
+1
+0 0 25 40
+1
+end_operator
+begin_operator
+move c_10_7 c_9_7
+0
+1
+0 0 25 209
+1
+end_operator
+begin_operator
+move c_10_8 c_10_7
+0
+1
+0 0 26 25
+1
+end_operator
+begin_operator
+move c_10_8 c_10_9
+0
+1
+0 0 26 27
+1
+end_operator
+begin_operator
+move c_10_8 c_11_8
+0
+1
+0 0 26 41
+1
+end_operator
+begin_operator
+move c_10_8 c_9_8
+0
+1
+0 0 26 210
+1
+end_operator
+begin_operator
+move c_10_9 c_10_10
+0
+1
+0 0 27 16
+1
+end_operator
+begin_operator
+move c_10_9 c_10_8
+0
+1
+0 0 27 26
+1
+end_operator
+begin_operator
+move c_10_9 c_11_9
+0
+1
+0 0 27 42
+1
+end_operator
+begin_operator
+move c_10_9 c_9_9
+0
+1
+0 0 27 211
+1
+end_operator
+begin_operator
+move c_11_0 c_10_0
+0
+1
+0 0 28 14
+1
+end_operator
+begin_operator
+move c_11_0 c_11_1
+0
+1
+0 0 28 29
+1
+end_operator
+begin_operator
+move c_11_0 c_12_0
+0
+1
+0 0 28 43
+1
+end_operator
+begin_operator
+move c_11_1 c_10_1
+0
+1
+0 0 29 15
+1
+end_operator
+begin_operator
+move c_11_1 c_11_0
+0
+1
+0 0 29 28
+1
+end_operator
+begin_operator
+move c_11_1 c_11_2
+0
+1
+0 0 29 35
+1
+end_operator
+begin_operator
+move c_11_1 c_12_1
+0
+1
+0 0 29 44
+1
+end_operator
+begin_operator
+move c_11_10 c_10_10
+0
+1
+0 0 30 16
+1
+end_operator
+begin_operator
+move c_11_10 c_11_11
+0
+1
+0 0 30 31
+1
+end_operator
+begin_operator
+move c_11_10 c_11_9
+0
+1
+0 0 30 42
+1
+end_operator
+begin_operator
+move c_11_10 c_12_10
+0
+1
+0 0 30 45
+1
+end_operator
+begin_operator
+move c_11_11 c_10_11
+0
+1
+0 0 31 17
+1
+end_operator
+begin_operator
+move c_11_11 c_11_10
+0
+1
+0 0 31 30
+1
+end_operator
+begin_operator
+move c_11_11 c_11_12
+0
+1
+0 0 31 32
+1
+end_operator
+begin_operator
+move c_11_11 c_12_11
+0
+1
+0 0 31 46
+1
+end_operator
+begin_operator
+move c_11_12 c_10_12
+0
+1
+0 0 32 18
+1
+end_operator
+begin_operator
+move c_11_12 c_11_11
+0
+1
+0 0 32 31
+1
+end_operator
+begin_operator
+move c_11_12 c_11_13
+0
+1
+0 0 32 33
+1
+end_operator
+begin_operator
+move c_11_13 c_10_13
+0
+1
+0 0 33 19
+1
+end_operator
+begin_operator
+move c_11_13 c_11_12
+0
+1
+0 0 33 32
+1
+end_operator
+begin_operator
+move c_11_13 c_11_14
+0
+1
+0 0 33 34
+1
+end_operator
+begin_operator
+move c_11_13 c_12_13
+0
+1
+0 0 33 47
+1
+end_operator
+begin_operator
+move c_11_14 c_10_14
+0
+1
+0 0 34 20
+1
+end_operator
+begin_operator
+move c_11_14 c_11_13
+0
+1
+0 0 34 33
+1
+end_operator
+begin_operator
+move c_11_14 c_12_14
+0
+1
+0 0 34 48
+1
+end_operator
+begin_operator
+move c_11_2 c_10_2
+0
+1
+0 0 35 21
+1
+end_operator
+begin_operator
+move c_11_2 c_11_1
+0
+1
+0 0 35 29
+1
+end_operator
+begin_operator
+move c_11_2 c_11_3
+0
+1
+0 0 35 36
+1
+end_operator
+begin_operator
+move c_11_2 c_12_2
+0
+1
+0 0 35 49
+1
+end_operator
+begin_operator
+move c_11_3 c_10_3
+0
+1
+0 0 36 22
+1
+end_operator
+begin_operator
+move c_11_3 c_11_2
+0
+1
+0 0 36 35
+1
+end_operator
+begin_operator
+move c_11_3 c_11_4
+0
+1
+0 0 36 37
+1
+end_operator
+begin_operator
+move c_11_3 c_12_3
+0
+1
+0 0 36 50
+1
+end_operator
+begin_operator
+move c_11_4 c_10_4
+0
+1
+0 0 37 23
+1
+end_operator
+begin_operator
+move c_11_4 c_11_3
+0
+1
+0 0 37 36
+1
+end_operator
+begin_operator
+move c_11_4 c_11_5
+0
+1
+0 0 37 38
+1
+end_operator
+begin_operator
+move c_11_4 c_12_4
+0
+1
+0 0 37 51
+1
+end_operator
+begin_operator
+move c_11_5 c_11_4
+0
+1
+0 0 38 37
+1
+end_operator
+begin_operator
+move c_11_5 c_11_6
+0
+1
+0 0 38 39
+1
+end_operator
+begin_operator
+move c_11_5 c_12_5
+0
+1
+0 0 38 52
+1
+end_operator
+begin_operator
+move c_11_6 c_10_6
+0
+1
+0 0 39 24
+1
+end_operator
+begin_operator
+move c_11_6 c_11_5
+0
+1
+0 0 39 38
+1
+end_operator
+begin_operator
+move c_11_6 c_11_7
+0
+1
+0 0 39 40
+1
+end_operator
+begin_operator
+move c_11_6 c_12_6
+0
+1
+0 0 39 53
+1
+end_operator
+begin_operator
+move c_11_7 c_10_7
+0
+1
+0 0 40 25
+1
+end_operator
+begin_operator
+move c_11_7 c_11_6
+0
+1
+0 0 40 39
+1
+end_operator
+begin_operator
+move c_11_7 c_11_8
+0
+1
+0 0 40 41
+1
+end_operator
+begin_operator
+move c_11_7 c_12_7
+0
+1
+0 0 40 54
+1
+end_operator
+begin_operator
+move c_11_8 c_10_8
+0
+1
+0 0 41 26
+1
+end_operator
+begin_operator
+move c_11_8 c_11_7
+0
+1
+0 0 41 40
+1
+end_operator
+begin_operator
+move c_11_8 c_11_9
+0
+1
+0 0 41 42
+1
+end_operator
+begin_operator
+move c_11_8 c_12_8
+0
+1
+0 0 41 55
+1
+end_operator
+begin_operator
+move c_11_9 c_10_9
+0
+1
+0 0 42 27
+1
+end_operator
+begin_operator
+move c_11_9 c_11_10
+0
+1
+0 0 42 30
+1
+end_operator
+begin_operator
+move c_11_9 c_11_8
+0
+1
+0 0 42 41
+1
+end_operator
+begin_operator
+move c_11_9 c_12_9
+0
+1
+0 0 42 56
+1
+end_operator
+begin_operator
+move c_12_0 c_11_0
+0
+1
+0 0 43 28
+1
+end_operator
+begin_operator
+move c_12_0 c_12_1
+0
+1
+0 0 43 44
+1
+end_operator
+begin_operator
+move c_12_0 c_13_0
+0
+1
+0 0 43 57
+1
+end_operator
+begin_operator
+move c_12_1 c_11_1
+0
+1
+0 0 44 29
+1
+end_operator
+begin_operator
+move c_12_1 c_12_0
+0
+1
+0 0 44 43
+1
+end_operator
+begin_operator
+move c_12_1 c_12_2
+0
+1
+0 0 44 49
+1
+end_operator
+begin_operator
+move c_12_1 c_13_1
+0
+1
+0 0 44 58
+1
+end_operator
+begin_operator
+move c_12_10 c_11_10
+0
+1
+0 0 45 30
+1
+end_operator
+begin_operator
+move c_12_10 c_12_11
+0
+1
+0 0 45 46
+1
+end_operator
+begin_operator
+move c_12_10 c_12_9
+0
+1
+0 0 45 56
+1
+end_operator
+begin_operator
+move c_12_11 c_11_11
+0
+1
+0 0 46 31
+1
+end_operator
+begin_operator
+move c_12_11 c_12_10
+0
+1
+0 0 46 45
+1
+end_operator
+begin_operator
+move c_12_11 c_13_11
+0
+1
+0 0 46 59
+1
+end_operator
+begin_operator
+move c_12_13 c_11_13
+0
+1
+0 0 47 33
+1
+end_operator
+begin_operator
+move c_12_13 c_12_14
+0
+1
+0 0 47 48
+1
+end_operator
+begin_operator
+move c_12_13 c_13_13
+0
+1
+0 0 47 61
+1
+end_operator
+begin_operator
+move c_12_14 c_11_14
+0
+1
+0 0 48 34
+1
+end_operator
+begin_operator
+move c_12_14 c_12_13
+0
+1
+0 0 48 47
+1
+end_operator
+begin_operator
+move c_12_14 c_13_14
+0
+1
+0 0 48 62
+1
+end_operator
+begin_operator
+move c_12_2 c_11_2
+0
+1
+0 0 49 35
+1
+end_operator
+begin_operator
+move c_12_2 c_12_1
+0
+1
+0 0 49 44
+1
+end_operator
+begin_operator
+move c_12_2 c_12_3
+0
+1
+0 0 49 50
+1
+end_operator
+begin_operator
+move c_12_2 c_13_2
+0
+1
+0 0 49 63
+1
+end_operator
+begin_operator
+move c_12_3 c_11_3
+0
+1
+0 0 50 36
+1
+end_operator
+begin_operator
+move c_12_3 c_12_2
+0
+1
+0 0 50 49
+1
+end_operator
+begin_operator
+move c_12_3 c_12_4
+0
+1
+0 0 50 51
+1
+end_operator
+begin_operator
+move c_12_3 c_13_3
+0
+1
+0 0 50 64
+1
+end_operator
+begin_operator
+move c_12_4 c_11_4
+0
+1
+0 0 51 37
+1
+end_operator
+begin_operator
+move c_12_4 c_12_3
+0
+1
+0 0 51 50
+1
+end_operator
+begin_operator
+move c_12_4 c_12_5
+0
+1
+0 0 51 52
+1
+end_operator
+begin_operator
+move c_12_4 c_13_4
+0
+1
+0 0 51 65
+1
+end_operator
+begin_operator
+move c_12_5 c_11_5
+0
+1
+0 0 52 38
+1
+end_operator
+begin_operator
+move c_12_5 c_12_4
+0
+1
+0 0 52 51
+1
+end_operator
+begin_operator
+move c_12_5 c_12_6
+0
+1
+0 0 52 53
+1
+end_operator
+begin_operator
+move c_12_5 c_13_5
+0
+1
+0 0 52 66
+1
+end_operator
+begin_operator
+move c_12_6 c_11_6
+0
+1
+0 0 53 39
+1
+end_operator
+begin_operator
+move c_12_6 c_12_5
+0
+1
+0 0 53 52
+1
+end_operator
+begin_operator
+move c_12_6 c_12_7
+0
+1
+0 0 53 54
+1
+end_operator
+begin_operator
+move c_12_6 c_13_6
+0
+1
+0 0 53 67
+1
+end_operator
+begin_operator
+move c_12_7 c_11_7
+0
+1
+0 0 54 40
+1
+end_operator
+begin_operator
+move c_12_7 c_12_6
+0
+1
+0 0 54 53
+1
+end_operator
+begin_operator
+move c_12_7 c_12_8
+0
+1
+0 0 54 55
+1
+end_operator
+begin_operator
+move c_12_7 c_13_7
+0
+1
+0 0 54 68
+1
+end_operator
+begin_operator
+move c_12_8 c_11_8
+0
+1
+0 0 55 41
+1
+end_operator
+begin_operator
+move c_12_8 c_12_7
+0
+1
+0 0 55 54
+1
+end_operator
+begin_operator
+move c_12_8 c_12_9
+0
+1
+0 0 55 56
+1
+end_operator
+begin_operator
+move c_12_8 c_13_8
+0
+1
+0 0 55 69
+1
+end_operator
+begin_operator
+move c_12_9 c_11_9
+0
+1
+0 0 56 42
+1
+end_operator
+begin_operator
+move c_12_9 c_12_10
+0
+1
+0 0 56 45
+1
+end_operator
+begin_operator
+move c_12_9 c_12_8
+0
+1
+0 0 56 55
+1
+end_operator
+begin_operator
+move c_12_9 c_13_9
+0
+1
+0 0 56 70
+1
+end_operator
+begin_operator
+move c_13_0 c_12_0
+0
+1
+0 0 57 43
+1
+end_operator
+begin_operator
+move c_13_0 c_13_1
+0
+1
+0 0 57 58
+1
+end_operator
+begin_operator
+move c_13_0 c_14_0
+0
+1
+0 0 57 71
+1
+end_operator
+begin_operator
+move c_13_1 c_12_1
+0
+1
+0 0 58 44
+1
+end_operator
+begin_operator
+move c_13_1 c_13_0
+0
+1
+0 0 58 57
+1
+end_operator
+begin_operator
+move c_13_1 c_13_2
+0
+1
+0 0 58 63
+1
+end_operator
+begin_operator
+move c_13_1 c_14_1
+0
+1
+0 0 58 72
+1
+end_operator
+begin_operator
+move c_13_11 c_12_11
+0
+1
+0 0 59 46
+1
+end_operator
+begin_operator
+move c_13_11 c_13_12
+0
+1
+0 0 59 60
+1
+end_operator
+begin_operator
+move c_13_11 c_14_11
+0
+1
+0 0 59 74
+1
+end_operator
+begin_operator
+move c_13_12 c_13_11
+0
+1
+0 0 60 59
+1
+end_operator
+begin_operator
+move c_13_12 c_13_13
+0
+1
+0 0 60 61
+1
+end_operator
+begin_operator
+move c_13_12 c_14_12
+0
+1
+0 0 60 75
+1
+end_operator
+begin_operator
+move c_13_13 c_12_13
+0
+1
+0 0 61 47
+1
+end_operator
+begin_operator
+move c_13_13 c_13_12
+0
+1
+0 0 61 60
+1
+end_operator
+begin_operator
+move c_13_13 c_13_14
+0
+1
+0 0 61 62
+1
+end_operator
+begin_operator
+move c_13_13 c_14_13
+0
+1
+0 0 61 76
+1
+end_operator
+begin_operator
+move c_13_14 c_12_14
+0
+1
+0 0 62 48
+1
+end_operator
+begin_operator
+move c_13_14 c_13_13
+0
+1
+0 0 62 61
+1
+end_operator
+begin_operator
+move c_13_2 c_12_2
+0
+1
+0 0 63 49
+1
+end_operator
+begin_operator
+move c_13_2 c_13_1
+0
+1
+0 0 63 58
+1
+end_operator
+begin_operator
+move c_13_2 c_13_3
+0
+1
+0 0 63 64
+1
+end_operator
+begin_operator
+move c_13_2 c_14_2
+0
+1
+0 0 63 77
+1
+end_operator
+begin_operator
+move c_13_3 c_12_3
+0
+1
+0 0 64 50
+1
+end_operator
+begin_operator
+move c_13_3 c_13_2
+0
+1
+0 0 64 63
+1
+end_operator
+begin_operator
+move c_13_3 c_13_4
+0
+1
+0 0 64 65
+1
+end_operator
+begin_operator
+move c_13_3 c_14_3
+0
+1
+0 0 64 78
+1
+end_operator
+begin_operator
+move c_13_4 c_12_4
+0
+1
+0 0 65 51
+1
+end_operator
+begin_operator
+move c_13_4 c_13_3
+0
+1
+0 0 65 64
+1
+end_operator
+begin_operator
+move c_13_4 c_13_5
+0
+1
+0 0 65 66
+1
+end_operator
+begin_operator
+move c_13_4 c_14_4
+0
+1
+0 0 65 79
+1
+end_operator
+begin_operator
+move c_13_5 c_12_5
+0
+1
+0 0 66 52
+1
+end_operator
+begin_operator
+move c_13_5 c_13_4
+0
+1
+0 0 66 65
+1
+end_operator
+begin_operator
+move c_13_5 c_13_6
+0
+1
+0 0 66 67
+1
+end_operator
+begin_operator
+move c_13_5 c_14_5
+0
+1
+0 0 66 80
+1
+end_operator
+begin_operator
+move c_13_6 c_12_6
+0
+1
+0 0 67 53
+1
+end_operator
+begin_operator
+move c_13_6 c_13_5
+0
+1
+0 0 67 66
+1
+end_operator
+begin_operator
+move c_13_6 c_13_7
+0
+1
+0 0 67 68
+1
+end_operator
+begin_operator
+move c_13_6 c_14_6
+0
+1
+0 0 67 81
+1
+end_operator
+begin_operator
+move c_13_7 c_12_7
+0
+1
+0 0 68 54
+1
+end_operator
+begin_operator
+move c_13_7 c_13_6
+0
+1
+0 0 68 67
+1
+end_operator
+begin_operator
+move c_13_7 c_13_8
+0
+1
+0 0 68 69
+1
+end_operator
+begin_operator
+move c_13_7 c_14_7
+0
+1
+0 0 68 82
+1
+end_operator
+begin_operator
+move c_13_8 c_12_8
+0
+1
+0 0 69 55
+1
+end_operator
+begin_operator
+move c_13_8 c_13_7
+0
+1
+0 0 69 68
+1
+end_operator
+begin_operator
+move c_13_8 c_13_9
+0
+1
+0 0 69 70
+1
+end_operator
+begin_operator
+move c_13_8 c_14_8
+0
+1
+0 0 69 83
+1
+end_operator
+begin_operator
+move c_13_9 c_12_9
+0
+1
+0 0 70 56
+1
+end_operator
+begin_operator
+move c_13_9 c_13_8
+0
+1
+0 0 70 69
+1
+end_operator
+begin_operator
+move c_13_9 c_14_9
+0
+1
+0 0 70 84
+1
+end_operator
+begin_operator
+move c_14_0 c_13_0
+0
+1
+0 0 71 57
+1
+end_operator
+begin_operator
+move c_14_0 c_14_1
+0
+1
+0 0 71 72
+1
+end_operator
+begin_operator
+move c_14_1 c_13_1
+0
+1
+0 0 72 58
+1
+end_operator
+begin_operator
+move c_14_1 c_14_0
+0
+1
+0 0 72 71
+1
+end_operator
+begin_operator
+move c_14_1 c_14_2
+0
+1
+0 0 72 77
+1
+end_operator
+begin_operator
+move c_14_10 c_14_11
+0
+1
+0 0 73 74
+1
+end_operator
+begin_operator
+move c_14_10 c_14_9
+0
+1
+0 0 73 84
+1
+end_operator
+begin_operator
+move c_14_11 c_13_11
+0
+1
+0 0 74 59
+1
+end_operator
+begin_operator
+move c_14_11 c_14_10
+0
+1
+0 0 74 73
+1
+end_operator
+begin_operator
+move c_14_11 c_14_12
+0
+1
+0 0 74 75
+1
+end_operator
+begin_operator
+move c_14_12 c_13_12
+0
+1
+0 0 75 60
+1
+end_operator
+begin_operator
+move c_14_12 c_14_11
+0
+1
+0 0 75 74
+1
+end_operator
+begin_operator
+move c_14_12 c_14_13
+0
+1
+0 0 75 76
+1
+end_operator
+begin_operator
+move c_14_13 c_13_13
+0
+1
+0 0 76 61
+1
+end_operator
+begin_operator
+move c_14_13 c_14_12
+0
+1
+0 0 76 75
+1
+end_operator
+begin_operator
+move c_14_2 c_13_2
+0
+1
+0 0 77 63
+1
+end_operator
+begin_operator
+move c_14_2 c_14_1
+0
+1
+0 0 77 72
+1
+end_operator
+begin_operator
+move c_14_2 c_14_3
+0
+1
+0 0 77 78
+1
+end_operator
+begin_operator
+move c_14_3 c_13_3
+0
+1
+0 0 78 64
+1
+end_operator
+begin_operator
+move c_14_3 c_14_2
+0
+1
+0 0 78 77
+1
+end_operator
+begin_operator
+move c_14_3 c_14_4
+0
+1
+0 0 78 79
+1
+end_operator
+begin_operator
+move c_14_4 c_13_4
+0
+1
+0 0 79 65
+1
+end_operator
+begin_operator
+move c_14_4 c_14_3
+0
+1
+0 0 79 78
+1
+end_operator
+begin_operator
+move c_14_4 c_14_5
+0
+1
+0 0 79 80
+1
+end_operator
+begin_operator
+move c_14_5 c_13_5
+0
+1
+0 0 80 66
+1
+end_operator
+begin_operator
+move c_14_5 c_14_4
+0
+1
+0 0 80 79
+1
+end_operator
+begin_operator
+move c_14_5 c_14_6
+0
+1
+0 0 80 81
+1
+end_operator
+begin_operator
+move c_14_6 c_13_6
+0
+1
+0 0 81 67
+1
+end_operator
+begin_operator
+move c_14_6 c_14_5
+0
+1
+0 0 81 80
+1
+end_operator
+begin_operator
+move c_14_6 c_14_7
+0
+1
+0 0 81 82
+1
+end_operator
+begin_operator
+move c_14_7 c_13_7
+0
+1
+0 0 82 68
+1
+end_operator
+begin_operator
+move c_14_7 c_14_6
+0
+1
+0 0 82 81
+1
+end_operator
+begin_operator
+move c_14_7 c_14_8
+0
+1
+0 0 82 83
+1
+end_operator
+begin_operator
+move c_14_8 c_13_8
+0
+1
+0 0 83 69
+1
+end_operator
+begin_operator
+move c_14_8 c_14_7
+0
+1
+0 0 83 82
+1
+end_operator
+begin_operator
+move c_14_8 c_14_9
+0
+1
+0 0 83 84
+1
+end_operator
+begin_operator
+move c_14_9 c_13_9
+0
+1
+0 0 84 70
+1
+end_operator
+begin_operator
+move c_14_9 c_14_10
+0
+1
+0 0 84 73
+1
+end_operator
+begin_operator
+move c_14_9 c_14_8
+0
+1
+0 0 84 83
+1
+end_operator
+begin_operator
+move c_1_0 c_0_0
+0
+1
+0 0 85 0
+1
+end_operator
+begin_operator
+move c_1_0 c_1_1
+0
+1
+0 0 85 86
+1
+end_operator
+begin_operator
+move c_1_0 c_2_0
+0
+1
+0 0 85 99
+1
+end_operator
+begin_operator
+move c_1_1 c_0_1
+0
+1
+0 0 86 1
+1
+end_operator
+begin_operator
+move c_1_1 c_1_0
+0
+1
+0 0 86 85
+1
+end_operator
+begin_operator
+move c_1_1 c_1_2
+0
+1
+0 0 86 92
+1
+end_operator
+begin_operator
+move c_1_1 c_2_1
+0
+1
+0 0 86 100
+1
+end_operator
+begin_operator
+move c_1_10 c_0_10
+0
+1
+0 0 87 2
+1
+end_operator
+begin_operator
+move c_1_10 c_1_11
+0
+1
+0 0 87 88
+1
+end_operator
+begin_operator
+move c_1_10 c_1_9
+0
+1
+0 0 87 98
+1
+end_operator
+begin_operator
+move c_1_10 c_2_10
+0
+1
+0 0 87 101
+1
+end_operator
+begin_operator
+move c_1_11 c_0_11
+0
+1
+0 0 88 3
+1
+end_operator
+begin_operator
+move c_1_11 c_1_10
+0
+1
+0 0 88 87
+1
+end_operator
+begin_operator
+move c_1_11 c_1_12
+0
+1
+0 0 88 89
+1
+end_operator
+begin_operator
+move c_1_11 c_2_11
+0
+1
+0 0 88 102
+1
+end_operator
+begin_operator
+move c_1_12 c_1_11
+0
+1
+0 0 89 88
+1
+end_operator
+begin_operator
+move c_1_12 c_1_13
+0
+1
+0 0 89 90
+1
+end_operator
+begin_operator
+move c_1_12 c_2_12
+0
+1
+0 0 89 103
+1
+end_operator
+begin_operator
+move c_1_13 c_0_13
+0
+1
+0 0 90 4
+1
+end_operator
+begin_operator
+move c_1_13 c_1_12
+0
+1
+0 0 90 89
+1
+end_operator
+begin_operator
+move c_1_13 c_1_14
+0
+1
+0 0 90 91
+1
+end_operator
+begin_operator
+move c_1_13 c_2_13
+0
+1
+0 0 90 104
+1
+end_operator
+begin_operator
+move c_1_14 c_0_14
+0
+1
+0 0 91 5
+1
+end_operator
+begin_operator
+move c_1_14 c_1_13
+0
+1
+0 0 91 90
+1
+end_operator
+begin_operator
+move c_1_14 c_2_14
+0
+1
+0 0 91 105
+1
+end_operator
+begin_operator
+move c_1_2 c_0_2
+0
+1
+0 0 92 6
+1
+end_operator
+begin_operator
+move c_1_2 c_1_1
+0
+1
+0 0 92 86
+1
+end_operator
+begin_operator
+move c_1_2 c_1_3
+0
+1
+0 0 92 93
+1
+end_operator
+begin_operator
+move c_1_2 c_2_2
+0
+1
+0 0 92 106
+1
+end_operator
+begin_operator
+move c_1_3 c_0_3
+0
+1
+0 0 93 7
+1
+end_operator
+begin_operator
+move c_1_3 c_1_2
+0
+1
+0 0 93 92
+1
+end_operator
+begin_operator
+move c_1_3 c_1_4
+0
+1
+0 0 93 94
+1
+end_operator
+begin_operator
+move c_1_3 c_2_3
+0
+1
+0 0 93 107
+1
+end_operator
+begin_operator
+move c_1_4 c_0_4
+0
+1
+0 0 94 8
+1
+end_operator
+begin_operator
+move c_1_4 c_1_3
+0
+1
+0 0 94 93
+1
+end_operator
+begin_operator
+move c_1_4 c_1_5
+0
+1
+0 0 94 95
+1
+end_operator
+begin_operator
+move c_1_4 c_2_4
+0
+1
+0 0 94 108
+1
+end_operator
+begin_operator
+move c_1_5 c_0_5
+0
+1
+0 0 95 9
+1
+end_operator
+begin_operator
+move c_1_5 c_1_4
+0
+1
+0 0 95 94
+1
+end_operator
+begin_operator
+move c_1_5 c_2_5
+0
+1
+0 0 95 109
+1
+end_operator
+begin_operator
+move c_1_7 c_0_7
+0
+1
+0 0 96 11
+1
+end_operator
+begin_operator
+move c_1_7 c_1_8
+0
+1
+0 0 96 97
+1
+end_operator
+begin_operator
+move c_1_8 c_0_8
+0
+1
+0 0 97 12
+1
+end_operator
+begin_operator
+move c_1_8 c_1_7
+0
+1
+0 0 97 96
+1
+end_operator
+begin_operator
+move c_1_8 c_1_9
+0
+1
+0 0 97 98
+1
+end_operator
+begin_operator
+move c_1_8 c_2_8
+0
+1
+0 0 97 111
+1
+end_operator
+begin_operator
+move c_1_9 c_0_9
+0
+1
+0 0 98 13
+1
+end_operator
+begin_operator
+move c_1_9 c_1_10
+0
+1
+0 0 98 87
+1
+end_operator
+begin_operator
+move c_1_9 c_1_8
+0
+1
+0 0 98 97
+1
+end_operator
+begin_operator
+move c_1_9 c_2_9
+0
+1
+0 0 98 112
+1
+end_operator
+begin_operator
+move c_2_0 c_1_0
+0
+1
+0 0 99 85
+1
+end_operator
+begin_operator
+move c_2_0 c_2_1
+0
+1
+0 0 99 100
+1
+end_operator
+begin_operator
+move c_2_0 c_3_0
+0
+1
+0 0 99 113
+1
+end_operator
+begin_operator
+move c_2_1 c_1_1
+0
+1
+0 0 100 86
+1
+end_operator
+begin_operator
+move c_2_1 c_2_0
+0
+1
+0 0 100 99
+1
+end_operator
+begin_operator
+move c_2_1 c_2_2
+0
+1
+0 0 100 106
+1
+end_operator
+begin_operator
+move c_2_1 c_3_1
+0
+1
+0 0 100 114
+1
+end_operator
+begin_operator
+move c_2_10 c_1_10
+0
+1
+0 0 101 87
+1
+end_operator
+begin_operator
+move c_2_10 c_2_11
+0
+1
+0 0 101 102
+1
+end_operator
+begin_operator
+move c_2_10 c_2_9
+0
+1
+0 0 101 112
+1
+end_operator
+begin_operator
+move c_2_10 c_3_10
+0
+1
+0 0 101 115
+1
+end_operator
+begin_operator
+move c_2_11 c_1_11
+0
+1
+0 0 102 88
+1
+end_operator
+begin_operator
+move c_2_11 c_2_10
+0
+1
+0 0 102 101
+1
+end_operator
+begin_operator
+move c_2_11 c_2_12
+0
+1
+0 0 102 103
+1
+end_operator
+begin_operator
+move c_2_11 c_3_11
+0
+1
+0 0 102 116
+1
+end_operator
+begin_operator
+move c_2_12 c_1_12
+0
+1
+0 0 103 89
+1
+end_operator
+begin_operator
+move c_2_12 c_2_11
+0
+1
+0 0 103 102
+1
+end_operator
+begin_operator
+move c_2_12 c_2_13
+0
+1
+0 0 103 104
+1
+end_operator
+begin_operator
+move c_2_12 c_3_12
+0
+1
+0 0 103 117
+1
+end_operator
+begin_operator
+move c_2_13 c_1_13
+0
+1
+0 0 104 90
+1
+end_operator
+begin_operator
+move c_2_13 c_2_12
+0
+1
+0 0 104 103
+1
+end_operator
+begin_operator
+move c_2_13 c_2_14
+0
+1
+0 0 104 105
+1
+end_operator
+begin_operator
+move c_2_13 c_3_13
+0
+1
+0 0 104 118
+1
+end_operator
+begin_operator
+move c_2_14 c_1_14
+0
+1
+0 0 105 91
+1
+end_operator
+begin_operator
+move c_2_14 c_2_13
+0
+1
+0 0 105 104
+1
+end_operator
+begin_operator
+move c_2_14 c_3_14
+0
+1
+0 0 105 119
+1
+end_operator
+begin_operator
+move c_2_2 c_1_2
+0
+1
+0 0 106 92
+1
+end_operator
+begin_operator
+move c_2_2 c_2_1
+0
+1
+0 0 106 100
+1
+end_operator
+begin_operator
+move c_2_2 c_2_3
+0
+1
+0 0 106 107
+1
+end_operator
+begin_operator
+move c_2_2 c_3_2
+0
+1
+0 0 106 120
+1
+end_operator
+begin_operator
+move c_2_3 c_1_3
+0
+1
+0 0 107 93
+1
+end_operator
+begin_operator
+move c_2_3 c_2_2
+0
+1
+0 0 107 106
+1
+end_operator
+begin_operator
+move c_2_3 c_2_4
+0
+1
+0 0 107 108
+1
+end_operator
+begin_operator
+move c_2_3 c_3_3
+0
+1
+0 0 107 121
+1
+end_operator
+begin_operator
+move c_2_4 c_1_4
+0
+1
+0 0 108 94
+1
+end_operator
+begin_operator
+move c_2_4 c_2_3
+0
+1
+0 0 108 107
+1
+end_operator
+begin_operator
+move c_2_4 c_2_5
+0
+1
+0 0 108 109
+1
+end_operator
+begin_operator
+move c_2_4 c_3_4
+0
+1
+0 0 108 122
+1
+end_operator
+begin_operator
+move c_2_5 c_1_5
+0
+1
+0 0 109 95
+1
+end_operator
+begin_operator
+move c_2_5 c_2_4
+0
+1
+0 0 109 108
+1
+end_operator
+begin_operator
+move c_2_5 c_2_6
+0
+1
+0 0 109 110
+1
+end_operator
+begin_operator
+move c_2_5 c_3_5
+0
+1
+0 0 109 123
+1
+end_operator
+begin_operator
+move c_2_6 c_2_5
+0
+1
+0 0 110 109
+1
+end_operator
+begin_operator
+move c_2_6 c_3_6
+0
+1
+0 0 110 124
+1
+end_operator
+begin_operator
+move c_2_8 c_1_8
+0
+1
+0 0 111 97
+1
+end_operator
+begin_operator
+move c_2_8 c_2_9
+0
+1
+0 0 111 112
+1
+end_operator
+begin_operator
+move c_2_8 c_3_8
+0
+1
+0 0 111 126
+1
+end_operator
+begin_operator
+move c_2_9 c_1_9
+0
+1
+0 0 112 98
+1
+end_operator
+begin_operator
+move c_2_9 c_2_10
+0
+1
+0 0 112 101
+1
+end_operator
+begin_operator
+move c_2_9 c_2_8
+0
+1
+0 0 112 111
+1
+end_operator
+begin_operator
+move c_2_9 c_3_9
+0
+1
+0 0 112 127
+1
+end_operator
+begin_operator
+move c_3_0 c_2_0
+0
+1
+0 0 113 99
+1
+end_operator
+begin_operator
+move c_3_0 c_3_1
+0
+1
+0 0 113 114
+1
+end_operator
+begin_operator
+move c_3_0 c_4_0
+0
+1
+0 0 113 128
+1
+end_operator
+begin_operator
+move c_3_1 c_2_1
+0
+1
+0 0 114 100
+1
+end_operator
+begin_operator
+move c_3_1 c_3_0
+0
+1
+0 0 114 113
+1
+end_operator
+begin_operator
+move c_3_1 c_3_2
+0
+1
+0 0 114 120
+1
+end_operator
+begin_operator
+move c_3_10 c_2_10
+0
+1
+0 0 115 101
+1
+end_operator
+begin_operator
+move c_3_10 c_3_11
+0
+1
+0 0 115 116
+1
+end_operator
+begin_operator
+move c_3_10 c_3_9
+0
+1
+0 0 115 127
+1
+end_operator
+begin_operator
+move c_3_10 c_4_10
+0
+1
+0 0 115 129
+1
+end_operator
+begin_operator
+move c_3_11 c_2_11
+0
+1
+0 0 116 102
+1
+end_operator
+begin_operator
+move c_3_11 c_3_10
+0
+1
+0 0 116 115
+1
+end_operator
+begin_operator
+move c_3_11 c_3_12
+0
+1
+0 0 116 117
+1
+end_operator
+begin_operator
+move c_3_11 c_4_11
+0
+1
+0 0 116 130
+1
+end_operator
+begin_operator
+move c_3_12 c_2_12
+0
+1
+0 0 117 103
+1
+end_operator
+begin_operator
+move c_3_12 c_3_11
+0
+1
+0 0 117 116
+1
+end_operator
+begin_operator
+move c_3_12 c_3_13
+0
+1
+0 0 117 118
+1
+end_operator
+begin_operator
+move c_3_12 c_4_12
+0
+1
+0 0 117 131
+1
+end_operator
+begin_operator
+move c_3_13 c_2_13
+0
+1
+0 0 118 104
+1
+end_operator
+begin_operator
+move c_3_13 c_3_12
+0
+1
+0 0 118 117
+1
+end_operator
+begin_operator
+move c_3_13 c_3_14
+0
+1
+0 0 118 119
+1
+end_operator
+begin_operator
+move c_3_13 c_4_13
+0
+1
+0 0 118 132
+1
+end_operator
+begin_operator
+move c_3_14 c_2_14
+0
+1
+0 0 119 105
+1
+end_operator
+begin_operator
+move c_3_14 c_3_13
+0
+1
+0 0 119 118
+1
+end_operator
+begin_operator
+move c_3_14 c_4_14
+0
+1
+0 0 119 133
+1
+end_operator
+begin_operator
+move c_3_2 c_2_2
+0
+1
+0 0 120 106
+1
+end_operator
+begin_operator
+move c_3_2 c_3_1
+0
+1
+0 0 120 114
+1
+end_operator
+begin_operator
+move c_3_2 c_3_3
+0
+1
+0 0 120 121
+1
+end_operator
+begin_operator
+move c_3_2 c_4_2
+0
+1
+0 0 120 134
+1
+end_operator
+begin_operator
+move c_3_3 c_2_3
+0
+1
+0 0 121 107
+1
+end_operator
+begin_operator
+move c_3_3 c_3_2
+0
+1
+0 0 121 120
+1
+end_operator
+begin_operator
+move c_3_3 c_3_4
+0
+1
+0 0 121 122
+1
+end_operator
+begin_operator
+move c_3_4 c_2_4
+0
+1
+0 0 122 108
+1
+end_operator
+begin_operator
+move c_3_4 c_3_3
+0
+1
+0 0 122 121
+1
+end_operator
+begin_operator
+move c_3_4 c_3_5
+0
+1
+0 0 122 123
+1
+end_operator
+begin_operator
+move c_3_4 c_4_4
+0
+1
+0 0 122 135
+1
+end_operator
+begin_operator
+move c_3_5 c_2_5
+0
+1
+0 0 123 109
+1
+end_operator
+begin_operator
+move c_3_5 c_3_4
+0
+1
+0 0 123 122
+1
+end_operator
+begin_operator
+move c_3_5 c_3_6
+0
+1
+0 0 123 124
+1
+end_operator
+begin_operator
+move c_3_5 c_4_5
+0
+1
+0 0 123 136
+1
+end_operator
+begin_operator
+move c_3_6 c_2_6
+0
+1
+0 0 124 110
+1
+end_operator
+begin_operator
+move c_3_6 c_3_5
+0
+1
+0 0 124 123
+1
+end_operator
+begin_operator
+move c_3_6 c_3_7
+0
+1
+0 0 124 125
+1
+end_operator
+begin_operator
+move c_3_6 c_4_6
+0
+1
+0 0 124 137
+1
+end_operator
+begin_operator
+move c_3_7 c_3_6
+0
+1
+0 0 125 124
+1
+end_operator
+begin_operator
+move c_3_7 c_3_8
+0
+1
+0 0 125 126
+1
+end_operator
+begin_operator
+move c_3_7 c_4_7
+0
+1
+0 0 125 138
+1
+end_operator
+begin_operator
+move c_3_8 c_2_8
+0
+1
+0 0 126 111
+1
+end_operator
+begin_operator
+move c_3_8 c_3_7
+0
+1
+0 0 126 125
+1
+end_operator
+begin_operator
+move c_3_8 c_3_9
+0
+1
+0 0 126 127
+1
+end_operator
+begin_operator
+move c_3_8 c_4_8
+0
+1
+0 0 126 139
+1
+end_operator
+begin_operator
+move c_3_9 c_2_9
+0
+1
+0 0 127 112
+1
+end_operator
+begin_operator
+move c_3_9 c_3_10
+0
+1
+0 0 127 115
+1
+end_operator
+begin_operator
+move c_3_9 c_3_8
+0
+1
+0 0 127 126
+1
+end_operator
+begin_operator
+move c_3_9 c_4_9
+0
+1
+0 0 127 140
+1
+end_operator
+begin_operator
+move c_4_0 c_3_0
+0
+1
+0 0 128 113
+1
+end_operator
+begin_operator
+move c_4_0 c_5_0
+0
+1
+0 0 128 141
+1
+end_operator
+begin_operator
+move c_4_10 c_3_10
+0
+1
+0 0 129 115
+1
+end_operator
+begin_operator
+move c_4_10 c_4_11
+0
+1
+0 0 129 130
+1
+end_operator
+begin_operator
+move c_4_10 c_4_9
+0
+1
+0 0 129 140
+1
+end_operator
+begin_operator
+move c_4_10 c_5_10
+0
+1
+0 0 129 143
+1
+end_operator
+begin_operator
+move c_4_11 c_3_11
+0
+1
+0 0 130 116
+1
+end_operator
+begin_operator
+move c_4_11 c_4_10
+0
+1
+0 0 130 129
+1
+end_operator
+begin_operator
+move c_4_11 c_4_12
+0
+1
+0 0 130 131
+1
+end_operator
+begin_operator
+move c_4_11 c_5_11
+0
+1
+0 0 130 144
+1
+end_operator
+begin_operator
+move c_4_12 c_3_12
+0
+1
+0 0 131 117
+1
+end_operator
+begin_operator
+move c_4_12 c_4_11
+0
+1
+0 0 131 130
+1
+end_operator
+begin_operator
+move c_4_12 c_4_13
+0
+1
+0 0 131 132
+1
+end_operator
+begin_operator
+move c_4_12 c_5_12
+0
+1
+0 0 131 145
+1
+end_operator
+begin_operator
+move c_4_13 c_3_13
+0
+1
+0 0 132 118
+1
+end_operator
+begin_operator
+move c_4_13 c_4_12
+0
+1
+0 0 132 131
+1
+end_operator
+begin_operator
+move c_4_13 c_4_14
+0
+1
+0 0 132 133
+1
+end_operator
+begin_operator
+move c_4_13 c_5_13
+0
+1
+0 0 132 146
+1
+end_operator
+begin_operator
+move c_4_14 c_3_14
+0
+1
+0 0 133 119
+1
+end_operator
+begin_operator
+move c_4_14 c_4_13
+0
+1
+0 0 133 132
+1
+end_operator
+begin_operator
+move c_4_14 c_5_14
+0
+1
+0 0 133 147
+1
+end_operator
+begin_operator
+move c_4_2 c_3_2
+0
+1
+0 0 134 120
+1
+end_operator
+begin_operator
+move c_4_2 c_5_2
+0
+1
+0 0 134 148
+1
+end_operator
+begin_operator
+move c_4_4 c_3_4
+0
+1
+0 0 135 122
+1
+end_operator
+begin_operator
+move c_4_4 c_4_5
+0
+1
+0 0 135 136
+1
+end_operator
+begin_operator
+move c_4_4 c_5_4
+0
+1
+0 0 135 150
+1
+end_operator
+begin_operator
+move c_4_5 c_3_5
+0
+1
+0 0 136 123
+1
+end_operator
+begin_operator
+move c_4_5 c_4_4
+0
+1
+0 0 136 135
+1
+end_operator
+begin_operator
+move c_4_5 c_4_6
+0
+1
+0 0 136 137
+1
+end_operator
+begin_operator
+move c_4_5 c_5_5
+0
+1
+0 0 136 151
+1
+end_operator
+begin_operator
+move c_4_6 c_3_6
+0
+1
+0 0 137 124
+1
+end_operator
+begin_operator
+move c_4_6 c_4_5
+0
+1
+0 0 137 136
+1
+end_operator
+begin_operator
+move c_4_6 c_4_7
+0
+1
+0 0 137 138
+1
+end_operator
+begin_operator
+move c_4_6 c_5_6
+0
+1
+0 0 137 152
+1
+end_operator
+begin_operator
+move c_4_7 c_3_7
+0
+1
+0 0 138 125
+1
+end_operator
+begin_operator
+move c_4_7 c_4_6
+0
+1
+0 0 138 137
+1
+end_operator
+begin_operator
+move c_4_7 c_4_8
+0
+1
+0 0 138 139
+1
+end_operator
+begin_operator
+move c_4_7 c_5_7
+0
+1
+0 0 138 153
+1
+end_operator
+begin_operator
+move c_4_8 c_3_8
+0
+1
+0 0 139 126
+1
+end_operator
+begin_operator
+move c_4_8 c_4_7
+0
+1
+0 0 139 138
+1
+end_operator
+begin_operator
+move c_4_8 c_4_9
+0
+1
+0 0 139 140
+1
+end_operator
+begin_operator
+move c_4_8 c_5_8
+0
+1
+0 0 139 154
+1
+end_operator
+begin_operator
+move c_4_9 c_3_9
+0
+1
+0 0 140 127
+1
+end_operator
+begin_operator
+move c_4_9 c_4_10
+0
+1
+0 0 140 129
+1
+end_operator
+begin_operator
+move c_4_9 c_4_8
+0
+1
+0 0 140 139
+1
+end_operator
+begin_operator
+move c_4_9 c_5_9
+0
+1
+0 0 140 155
+1
+end_operator
+begin_operator
+move c_5_0 c_4_0
+0
+1
+0 0 141 128
+1
+end_operator
+begin_operator
+move c_5_0 c_5_1
+0
+1
+0 0 141 142
+1
+end_operator
+begin_operator
+move c_5_0 c_6_0
+0
+1
+0 0 141 156
+1
+end_operator
+begin_operator
+move c_5_1 c_5_0
+0
+1
+0 0 142 141
+1
+end_operator
+begin_operator
+move c_5_1 c_5_2
+0
+1
+0 0 142 148
+1
+end_operator
+begin_operator
+move c_5_1 c_6_1
+0
+1
+0 0 142 157
+1
+end_operator
+begin_operator
+move c_5_10 c_4_10
+0
+1
+0 0 143 129
+1
+end_operator
+begin_operator
+move c_5_10 c_5_11
+0
+1
+0 0 143 144
+1
+end_operator
+begin_operator
+move c_5_10 c_5_9
+0
+1
+0 0 143 155
+1
+end_operator
+begin_operator
+move c_5_10 c_6_10
+0
+1
+0 0 143 158
+1
+end_operator
+begin_operator
+move c_5_11 c_4_11
+0
+1
+0 0 144 130
+1
+end_operator
+begin_operator
+move c_5_11 c_5_10
+0
+1
+0 0 144 143
+1
+end_operator
+begin_operator
+move c_5_11 c_5_12
+0
+1
+0 0 144 145
+1
+end_operator
+begin_operator
+move c_5_11 c_6_11
+0
+1
+0 0 144 159
+1
+end_operator
+begin_operator
+move c_5_12 c_4_12
+0
+1
+0 0 145 131
+1
+end_operator
+begin_operator
+move c_5_12 c_5_11
+0
+1
+0 0 145 144
+1
+end_operator
+begin_operator
+move c_5_12 c_5_13
+0
+1
+0 0 145 146
+1
+end_operator
+begin_operator
+move c_5_12 c_6_12
+0
+1
+0 0 145 160
+1
+end_operator
+begin_operator
+move c_5_13 c_4_13
+0
+1
+0 0 146 132
+1
+end_operator
+begin_operator
+move c_5_13 c_5_12
+0
+1
+0 0 146 145
+1
+end_operator
+begin_operator
+move c_5_13 c_5_14
+0
+1
+0 0 146 147
+1
+end_operator
+begin_operator
+move c_5_13 c_6_13
+0
+1
+0 0 146 161
+1
+end_operator
+begin_operator
+move c_5_14 c_4_14
+0
+1
+0 0 147 133
+1
+end_operator
+begin_operator
+move c_5_14 c_5_13
+0
+1
+0 0 147 146
+1
+end_operator
+begin_operator
+move c_5_14 c_6_14
+0
+1
+0 0 147 162
+1
+end_operator
+begin_operator
+move c_5_2 c_4_2
+0
+1
+0 0 148 134
+1
+end_operator
+begin_operator
+move c_5_2 c_5_1
+0
+1
+0 0 148 142
+1
+end_operator
+begin_operator
+move c_5_2 c_5_3
+0
+1
+0 0 148 149
+1
+end_operator
+begin_operator
+move c_5_2 c_6_2
+0
+1
+0 0 148 163
+1
+end_operator
+begin_operator
+move c_5_3 c_5_2
+0
+1
+0 0 149 148
+1
+end_operator
+begin_operator
+move c_5_3 c_5_4
+0
+1
+0 0 149 150
+1
+end_operator
+begin_operator
+move c_5_3 c_6_3
+0
+1
+0 0 149 164
+1
+end_operator
+begin_operator
+move c_5_4 c_4_4
+0
+1
+0 0 150 135
+1
+end_operator
+begin_operator
+move c_5_4 c_5_3
+0
+1
+0 0 150 149
+1
+end_operator
+begin_operator
+move c_5_4 c_5_5
+0
+1
+0 0 150 151
+1
+end_operator
+begin_operator
+move c_5_4 c_6_4
+0
+1
+0 0 150 165
+1
+end_operator
+begin_operator
+move c_5_5 c_4_5
+0
+1
+0 0 151 136
+1
+end_operator
+begin_operator
+move c_5_5 c_5_4
+0
+1
+0 0 151 150
+1
+end_operator
+begin_operator
+move c_5_5 c_5_6
+0
+1
+0 0 151 152
+1
+end_operator
+begin_operator
+move c_5_5 c_6_5
+0
+1
+0 0 151 166
+1
+end_operator
+begin_operator
+move c_5_6 c_4_6
+0
+1
+0 0 152 137
+1
+end_operator
+begin_operator
+move c_5_6 c_5_5
+0
+1
+0 0 152 151
+1
+end_operator
+begin_operator
+move c_5_6 c_5_7
+0
+1
+0 0 152 153
+1
+end_operator
+begin_operator
+move c_5_6 c_6_6
+0
+1
+0 0 152 167
+1
+end_operator
+begin_operator
+move c_5_7 c_4_7
+0
+1
+0 0 153 138
+1
+end_operator
+begin_operator
+move c_5_7 c_5_6
+0
+1
+0 0 153 152
+1
+end_operator
+begin_operator
+move c_5_7 c_5_8
+0
+1
+0 0 153 154
+1
+end_operator
+begin_operator
+move c_5_7 c_6_7
+0
+1
+0 0 153 168
+1
+end_operator
+begin_operator
+move c_5_8 c_4_8
+0
+1
+0 0 154 139
+1
+end_operator
+begin_operator
+move c_5_8 c_5_7
+0
+1
+0 0 154 153
+1
+end_operator
+begin_operator
+move c_5_8 c_5_9
+0
+1
+0 0 154 155
+1
+end_operator
+begin_operator
+move c_5_8 c_6_8
+0
+1
+0 0 154 169
+1
+end_operator
+begin_operator
+move c_5_9 c_4_9
+0
+1
+0 0 155 140
+1
+end_operator
+begin_operator
+move c_5_9 c_5_10
+0
+1
+0 0 155 143
+1
+end_operator
+begin_operator
+move c_5_9 c_5_8
+0
+1
+0 0 155 154
+1
+end_operator
+begin_operator
+move c_5_9 c_6_9
+0
+1
+0 0 155 170
+1
+end_operator
+begin_operator
+move c_6_0 c_5_0
+0
+1
+0 0 156 141
+1
+end_operator
+begin_operator
+move c_6_0 c_6_1
+0
+1
+0 0 156 157
+1
+end_operator
+begin_operator
+move c_6_0 c_7_0
+0
+1
+0 0 156 171
+1
+end_operator
+begin_operator
+move c_6_1 c_5_1
+0
+1
+0 0 157 142
+1
+end_operator
+begin_operator
+move c_6_1 c_6_0
+0
+1
+0 0 157 156
+1
+end_operator
+begin_operator
+move c_6_1 c_6_2
+0
+1
+0 0 157 163
+1
+end_operator
+begin_operator
+move c_6_1 c_7_1
+0
+1
+0 0 157 172
+1
+end_operator
+begin_operator
+move c_6_10 c_5_10
+0
+1
+0 0 158 143
+1
+end_operator
+begin_operator
+move c_6_10 c_6_11
+0
+1
+0 0 158 159
+1
+end_operator
+begin_operator
+move c_6_10 c_6_9
+0
+1
+0 0 158 170
+1
+end_operator
+begin_operator
+move c_6_10 c_7_10
+0
+1
+0 0 158 173
+1
+end_operator
+begin_operator
+move c_6_11 c_5_11
+0
+1
+0 0 159 144
+1
+end_operator
+begin_operator
+move c_6_11 c_6_10
+0
+1
+0 0 159 158
+1
+end_operator
+begin_operator
+move c_6_11 c_6_12
+0
+1
+0 0 159 160
+1
+end_operator
+begin_operator
+move c_6_11 c_7_11
+0
+1
+0 0 159 174
+1
+end_operator
+begin_operator
+move c_6_12 c_5_12
+0
+1
+0 0 160 145
+1
+end_operator
+begin_operator
+move c_6_12 c_6_11
+0
+1
+0 0 160 159
+1
+end_operator
+begin_operator
+move c_6_12 c_6_13
+0
+1
+0 0 160 161
+1
+end_operator
+begin_operator
+move c_6_12 c_7_12
+0
+1
+0 0 160 175
+1
+end_operator
+begin_operator
+move c_6_13 c_5_13
+0
+1
+0 0 161 146
+1
+end_operator
+begin_operator
+move c_6_13 c_6_12
+0
+1
+0 0 161 160
+1
+end_operator
+begin_operator
+move c_6_13 c_6_14
+0
+1
+0 0 161 162
+1
+end_operator
+begin_operator
+move c_6_13 c_7_13
+0
+1
+0 0 161 176
+1
+end_operator
+begin_operator
+move c_6_14 c_5_14
+0
+1
+0 0 162 147
+1
+end_operator
+begin_operator
+move c_6_14 c_6_13
+0
+1
+0 0 162 161
+1
+end_operator
+begin_operator
+move c_6_2 c_5_2
+0
+1
+0 0 163 148
+1
+end_operator
+begin_operator
+move c_6_2 c_6_1
+0
+1
+0 0 163 157
+1
+end_operator
+begin_operator
+move c_6_2 c_6_3
+0
+1
+0 0 163 164
+1
+end_operator
+begin_operator
+move c_6_2 c_7_2
+0
+1
+0 0 163 177
+1
+end_operator
+begin_operator
+move c_6_3 c_5_3
+0
+1
+0 0 164 149
+1
+end_operator
+begin_operator
+move c_6_3 c_6_2
+0
+1
+0 0 164 163
+1
+end_operator
+begin_operator
+move c_6_3 c_6_4
+0
+1
+0 0 164 165
+1
+end_operator
+begin_operator
+move c_6_3 c_7_3
+0
+1
+0 0 164 178
+1
+end_operator
+begin_operator
+move c_6_4 c_5_4
+0
+1
+0 0 165 150
+1
+end_operator
+begin_operator
+move c_6_4 c_6_3
+0
+1
+0 0 165 164
+1
+end_operator
+begin_operator
+move c_6_4 c_6_5
+0
+1
+0 0 165 166
+1
+end_operator
+begin_operator
+move c_6_4 c_7_4
+0
+1
+0 0 165 179
+1
+end_operator
+begin_operator
+move c_6_5 c_5_5
+0
+1
+0 0 166 151
+1
+end_operator
+begin_operator
+move c_6_5 c_6_4
+0
+1
+0 0 166 165
+1
+end_operator
+begin_operator
+move c_6_5 c_6_6
+0
+1
+0 0 166 167
+1
+end_operator
+begin_operator
+move c_6_5 c_7_5
+0
+1
+0 0 166 180
+1
+end_operator
+begin_operator
+move c_6_6 c_5_6
+0
+1
+0 0 167 152
+1
+end_operator
+begin_operator
+move c_6_6 c_6_5
+0
+1
+0 0 167 166
+1
+end_operator
+begin_operator
+move c_6_6 c_6_7
+0
+1
+0 0 167 168
+1
+end_operator
+begin_operator
+move c_6_6 c_7_6
+0
+1
+0 0 167 181
+1
+end_operator
+begin_operator
+move c_6_7 c_5_7
+0
+1
+0 0 168 153
+1
+end_operator
+begin_operator
+move c_6_7 c_6_6
+0
+1
+0 0 168 167
+1
+end_operator
+begin_operator
+move c_6_7 c_6_8
+0
+1
+0 0 168 169
+1
+end_operator
+begin_operator
+move c_6_8 c_5_8
+0
+1
+0 0 169 154
+1
+end_operator
+begin_operator
+move c_6_8 c_6_7
+0
+1
+0 0 169 168
+1
+end_operator
+begin_operator
+move c_6_8 c_6_9
+0
+1
+0 0 169 170
+1
+end_operator
+begin_operator
+move c_6_8 c_7_8
+0
+1
+0 0 169 182
+1
+end_operator
+begin_operator
+move c_6_9 c_5_9
+0
+1
+0 0 170 155
+1
+end_operator
+begin_operator
+move c_6_9 c_6_10
+0
+1
+0 0 170 158
+1
+end_operator
+begin_operator
+move c_6_9 c_6_8
+0
+1
+0 0 170 169
+1
+end_operator
+begin_operator
+move c_6_9 c_7_9
+0
+1
+0 0 170 183
+1
+end_operator
+begin_operator
+move c_7_0 c_6_0
+0
+1
+0 0 171 156
+1
+end_operator
+begin_operator
+move c_7_0 c_7_1
+0
+1
+0 0 171 172
+1
+end_operator
+begin_operator
+move c_7_0 c_8_0
+0
+1
+0 0 171 184
+1
+end_operator
+begin_operator
+move c_7_1 c_6_1
+0
+1
+0 0 172 157
+1
+end_operator
+begin_operator
+move c_7_1 c_7_0
+0
+1
+0 0 172 171
+1
+end_operator
+begin_operator
+move c_7_1 c_7_2
+0
+1
+0 0 172 177
+1
+end_operator
+begin_operator
+move c_7_1 c_8_1
+0
+1
+0 0 172 185
+1
+end_operator
+begin_operator
+move c_7_10 c_6_10
+0
+1
+0 0 173 158
+1
+end_operator
+begin_operator
+move c_7_10 c_7_11
+0
+1
+0 0 173 174
+1
+end_operator
+begin_operator
+move c_7_10 c_7_9
+0
+1
+0 0 173 183
+1
+end_operator
+begin_operator
+move c_7_10 c_8_10
+0
+1
+0 0 173 186
+1
+end_operator
+begin_operator
+move c_7_11 c_6_11
+0
+1
+0 0 174 159
+1
+end_operator
+begin_operator
+move c_7_11 c_7_10
+0
+1
+0 0 174 173
+1
+end_operator
+begin_operator
+move c_7_11 c_7_12
+0
+1
+0 0 174 175
+1
+end_operator
+begin_operator
+move c_7_11 c_8_11
+0
+1
+0 0 174 187
+1
+end_operator
+begin_operator
+move c_7_12 c_6_12
+0
+1
+0 0 175 160
+1
+end_operator
+begin_operator
+move c_7_12 c_7_11
+0
+1
+0 0 175 174
+1
+end_operator
+begin_operator
+move c_7_12 c_7_13
+0
+1
+0 0 175 176
+1
+end_operator
+begin_operator
+move c_7_12 c_8_12
+0
+1
+0 0 175 188
+1
+end_operator
+begin_operator
+move c_7_13 c_6_13
+0
+1
+0 0 176 161
+1
+end_operator
+begin_operator
+move c_7_13 c_7_12
+0
+1
+0 0 176 175
+1
+end_operator
+begin_operator
+move c_7_13 c_8_13
+0
+1
+0 0 176 189
+1
+end_operator
+begin_operator
+move c_7_2 c_6_2
+0
+1
+0 0 177 163
+1
+end_operator
+begin_operator
+move c_7_2 c_7_1
+0
+1
+0 0 177 172
+1
+end_operator
+begin_operator
+move c_7_2 c_7_3
+0
+1
+0 0 177 178
+1
+end_operator
+begin_operator
+move c_7_3 c_6_3
+0
+1
+0 0 178 164
+1
+end_operator
+begin_operator
+move c_7_3 c_7_2
+0
+1
+0 0 178 177
+1
+end_operator
+begin_operator
+move c_7_3 c_7_4
+0
+1
+0 0 178 179
+1
+end_operator
+begin_operator
+move c_7_3 c_8_3
+0
+1
+0 0 178 191
+1
+end_operator
+begin_operator
+move c_7_4 c_6_4
+0
+1
+0 0 179 165
+1
+end_operator
+begin_operator
+move c_7_4 c_7_3
+0
+1
+0 0 179 178
+1
+end_operator
+begin_operator
+move c_7_4 c_7_5
+0
+1
+0 0 179 180
+1
+end_operator
+begin_operator
+move c_7_4 c_8_4
+0
+1
+0 0 179 192
+1
+end_operator
+begin_operator
+move c_7_5 c_6_5
+0
+1
+0 0 180 166
+1
+end_operator
+begin_operator
+move c_7_5 c_7_4
+0
+1
+0 0 180 179
+1
+end_operator
+begin_operator
+move c_7_5 c_7_6
+0
+1
+0 0 180 181
+1
+end_operator
+begin_operator
+move c_7_5 c_8_5
+0
+1
+0 0 180 193
+1
+end_operator
+begin_operator
+move c_7_6 c_6_6
+0
+1
+0 0 181 167
+1
+end_operator
+begin_operator
+move c_7_6 c_7_5
+0
+1
+0 0 181 180
+1
+end_operator
+begin_operator
+move c_7_6 c_8_6
+0
+1
+0 0 181 194
+1
+end_operator
+begin_operator
+move c_7_8 c_6_8
+0
+1
+0 0 182 169
+1
+end_operator
+begin_operator
+move c_7_8 c_7_9
+0
+1
+0 0 182 183
+1
+end_operator
+begin_operator
+move c_7_8 c_8_8
+0
+1
+0 0 182 196
+1
+end_operator
+begin_operator
+move c_7_9 c_6_9
+0
+1
+0 0 183 170
+1
+end_operator
+begin_operator
+move c_7_9 c_7_10
+0
+1
+0 0 183 173
+1
+end_operator
+begin_operator
+move c_7_9 c_7_8
+0
+1
+0 0 183 182
+1
+end_operator
+begin_operator
+move c_7_9 c_8_9
+0
+1
+0 0 183 197
+1
+end_operator
+begin_operator
+move c_8_0 c_7_0
+0
+1
+0 0 184 171
+1
+end_operator
+begin_operator
+move c_8_0 c_8_1
+0
+1
+0 0 184 185
+1
+end_operator
+begin_operator
+move c_8_0 c_9_0
+0
+1
+0 0 184 198
+1
+end_operator
+begin_operator
+move c_8_1 c_7_1
+0
+1
+0 0 185 172
+1
+end_operator
+begin_operator
+move c_8_1 c_8_0
+0
+1
+0 0 185 184
+1
+end_operator
+begin_operator
+move c_8_1 c_9_1
+0
+1
+0 0 185 199
+1
+end_operator
+begin_operator
+move c_8_10 c_7_10
+0
+1
+0 0 186 173
+1
+end_operator
+begin_operator
+move c_8_10 c_8_11
+0
+1
+0 0 186 187
+1
+end_operator
+begin_operator
+move c_8_10 c_8_9
+0
+1
+0 0 186 197
+1
+end_operator
+begin_operator
+move c_8_10 c_9_10
+0
+1
+0 0 186 200
+1
+end_operator
+begin_operator
+move c_8_11 c_7_11
+0
+1
+0 0 187 174
+1
+end_operator
+begin_operator
+move c_8_11 c_8_10
+0
+1
+0 0 187 186
+1
+end_operator
+begin_operator
+move c_8_11 c_8_12
+0
+1
+0 0 187 188
+1
+end_operator
+begin_operator
+move c_8_11 c_9_11
+0
+1
+0 0 187 201
+1
+end_operator
+begin_operator
+move c_8_12 c_7_12
+0
+1
+0 0 188 175
+1
+end_operator
+begin_operator
+move c_8_12 c_8_11
+0
+1
+0 0 188 187
+1
+end_operator
+begin_operator
+move c_8_12 c_8_13
+0
+1
+0 0 188 189
+1
+end_operator
+begin_operator
+move c_8_12 c_9_12
+0
+1
+0 0 188 202
+1
+end_operator
+begin_operator
+move c_8_13 c_7_13
+0
+1
+0 0 189 176
+1
+end_operator
+begin_operator
+move c_8_13 c_8_12
+0
+1
+0 0 189 188
+1
+end_operator
+begin_operator
+move c_8_13 c_8_14
+0
+1
+0 0 189 190
+1
+end_operator
+begin_operator
+move c_8_13 c_9_13
+0
+1
+0 0 189 203
+1
+end_operator
+begin_operator
+move c_8_14 c_8_13
+0
+1
+0 0 190 189
+1
+end_operator
+begin_operator
+move c_8_14 c_9_14
+0
+1
+0 0 190 204
+1
+end_operator
+begin_operator
+move c_8_3 c_7_3
+0
+1
+0 0 191 178
+1
+end_operator
+begin_operator
+move c_8_3 c_8_4
+0
+1
+0 0 191 192
+1
+end_operator
+begin_operator
+move c_8_3 c_9_3
+0
+1
+0 0 191 206
+1
+end_operator
+begin_operator
+move c_8_4 c_7_4
+0
+1
+0 0 192 179
+1
+end_operator
+begin_operator
+move c_8_4 c_8_3
+0
+1
+0 0 192 191
+1
+end_operator
+begin_operator
+move c_8_4 c_8_5
+0
+1
+0 0 192 193
+1
+end_operator
+begin_operator
+move c_8_4 c_9_4
+0
+1
+0 0 192 207
+1
+end_operator
+begin_operator
+move c_8_5 c_7_5
+0
+1
+0 0 193 180
+1
+end_operator
+begin_operator
+move c_8_5 c_8_4
+0
+1
+0 0 193 192
+1
+end_operator
+begin_operator
+move c_8_5 c_8_6
+0
+1
+0 0 193 194
+1
+end_operator
+begin_operator
+move c_8_6 c_7_6
+0
+1
+0 0 194 181
+1
+end_operator
+begin_operator
+move c_8_6 c_8_5
+0
+1
+0 0 194 193
+1
+end_operator
+begin_operator
+move c_8_6 c_8_7
+0
+1
+0 0 194 195
+1
+end_operator
+begin_operator
+move c_8_6 c_9_6
+0
+1
+0 0 194 208
+1
+end_operator
+begin_operator
+move c_8_7 c_8_6
+0
+1
+0 0 195 194
+1
+end_operator
+begin_operator
+move c_8_7 c_8_8
+0
+1
+0 0 195 196
+1
+end_operator
+begin_operator
+move c_8_7 c_9_7
+0
+1
+0 0 195 209
+1
+end_operator
+begin_operator
+move c_8_8 c_7_8
+0
+1
+0 0 196 182
+1
+end_operator
+begin_operator
+move c_8_8 c_8_7
+0
+1
+0 0 196 195
+1
+end_operator
+begin_operator
+move c_8_8 c_8_9
+0
+1
+0 0 196 197
+1
+end_operator
+begin_operator
+move c_8_8 c_9_8
+0
+1
+0 0 196 210
+1
+end_operator
+begin_operator
+move c_8_9 c_7_9
+0
+1
+0 0 197 183
+1
+end_operator
+begin_operator
+move c_8_9 c_8_10
+0
+1
+0 0 197 186
+1
+end_operator
+begin_operator
+move c_8_9 c_8_8
+0
+1
+0 0 197 196
+1
+end_operator
+begin_operator
+move c_8_9 c_9_9
+0
+1
+0 0 197 211
+1
+end_operator
+begin_operator
+move c_9_0 c_10_0
+0
+1
+0 0 198 14
+1
+end_operator
+begin_operator
+move c_9_0 c_8_0
+0
+1
+0 0 198 184
+1
+end_operator
+begin_operator
+move c_9_0 c_9_1
+0
+1
+0 0 198 199
+1
+end_operator
+begin_operator
+move c_9_1 c_10_1
+0
+1
+0 0 199 15
+1
+end_operator
+begin_operator
+move c_9_1 c_8_1
+0
+1
+0 0 199 185
+1
+end_operator
+begin_operator
+move c_9_1 c_9_0
+0
+1
+0 0 199 198
+1
+end_operator
+begin_operator
+move c_9_1 c_9_2
+0
+1
+0 0 199 205
+1
+end_operator
+begin_operator
+move c_9_10 c_10_10
+0
+1
+0 0 200 16
+1
+end_operator
+begin_operator
+move c_9_10 c_8_10
+0
+1
+0 0 200 186
+1
+end_operator
+begin_operator
+move c_9_10 c_9_11
+0
+1
+0 0 200 201
+1
+end_operator
+begin_operator
+move c_9_10 c_9_9
+0
+1
+0 0 200 211
+1
+end_operator
+begin_operator
+move c_9_11 c_10_11
+0
+1
+0 0 201 17
+1
+end_operator
+begin_operator
+move c_9_11 c_8_11
+0
+1
+0 0 201 187
+1
+end_operator
+begin_operator
+move c_9_11 c_9_10
+0
+1
+0 0 201 200
+1
+end_operator
+begin_operator
+move c_9_11 c_9_12
+0
+1
+0 0 201 202
+1
+end_operator
+begin_operator
+move c_9_12 c_10_12
+0
+1
+0 0 202 18
+1
+end_operator
+begin_operator
+move c_9_12 c_8_12
+0
+1
+0 0 202 188
+1
+end_operator
+begin_operator
+move c_9_12 c_9_11
+0
+1
+0 0 202 201
+1
+end_operator
+begin_operator
+move c_9_12 c_9_13
+0
+1
+0 0 202 203
+1
+end_operator
+begin_operator
+move c_9_13 c_10_13
+0
+1
+0 0 203 19
+1
+end_operator
+begin_operator
+move c_9_13 c_8_13
+0
+1
+0 0 203 189
+1
+end_operator
+begin_operator
+move c_9_13 c_9_12
+0
+1
+0 0 203 202
+1
+end_operator
+begin_operator
+move c_9_13 c_9_14
+0
+1
+0 0 203 204
+1
+end_operator
+begin_operator
+move c_9_14 c_10_14
+0
+1
+0 0 204 20
+1
+end_operator
+begin_operator
+move c_9_14 c_8_14
+0
+1
+0 0 204 190
+1
+end_operator
+begin_operator
+move c_9_14 c_9_13
+0
+1
+0 0 204 203
+1
+end_operator
+begin_operator
+move c_9_2 c_10_2
+0
+1
+0 0 205 21
+1
+end_operator
+begin_operator
+move c_9_2 c_9_1
+0
+1
+0 0 205 199
+1
+end_operator
+begin_operator
+move c_9_2 c_9_3
+0
+1
+0 0 205 206
+1
+end_operator
+begin_operator
+move c_9_3 c_10_3
+0
+1
+0 0 206 22
+1
+end_operator
+begin_operator
+move c_9_3 c_8_3
+0
+1
+0 0 206 191
+1
+end_operator
+begin_operator
+move c_9_3 c_9_2
+0
+1
+0 0 206 205
+1
+end_operator
+begin_operator
+move c_9_3 c_9_4
+0
+1
+0 0 206 207
+1
+end_operator
+begin_operator
+move c_9_4 c_10_4
+0
+1
+0 0 207 23
+1
+end_operator
+begin_operator
+move c_9_4 c_8_4
+0
+1
+0 0 207 192
+1
+end_operator
+begin_operator
+move c_9_4 c_9_3
+0
+1
+0 0 207 206
+1
+end_operator
+begin_operator
+move c_9_6 c_10_6
+0
+1
+0 0 208 24
+1
+end_operator
+begin_operator
+move c_9_6 c_8_6
+0
+1
+0 0 208 194
+1
+end_operator
+begin_operator
+move c_9_6 c_9_7
+0
+1
+0 0 208 209
+1
+end_operator
+begin_operator
+move c_9_7 c_10_7
+0
+1
+0 0 209 25
+1
+end_operator
+begin_operator
+move c_9_7 c_8_7
+0
+1
+0 0 209 195
+1
+end_operator
+begin_operator
+move c_9_7 c_9_6
+0
+1
+0 0 209 208
+1
+end_operator
+begin_operator
+move c_9_7 c_9_8
+0
+1
+0 0 209 210
+1
+end_operator
+begin_operator
+move c_9_8 c_10_8
+0
+1
+0 0 210 26
+1
+end_operator
+begin_operator
+move c_9_8 c_8_8
+0
+1
+0 0 210 196
+1
+end_operator
+begin_operator
+move c_9_8 c_9_7
+0
+1
+0 0 210 209
+1
+end_operator
+begin_operator
+move c_9_8 c_9_9
+0
+1
+0 0 210 211
+1
+end_operator
+begin_operator
+move c_9_9 c_10_9
+0
+1
+0 0 211 27
+1
+end_operator
+begin_operator
+move c_9_9 c_8_9
+0
+1
+0 0 211 197
+1
+end_operator
+begin_operator
+move c_9_9 c_9_10
+0
+1
+0 0 211 200
+1
+end_operator
+begin_operator
+move c_9_9 c_9_8
+0
+1
+0 0 211 210
+1
+end_operator
+begin_operator
+pick-reward c_0_1
+1
+0 1
+1
+0 13 1 0
+1
+end_operator
+begin_operator
+pick-reward c_0_2
+1
+0 6
+1
+0 12 1 0
+1
+end_operator
+begin_operator
+pick-reward c_10_1
+1
+0 15
+1
+0 11 1 0
+1
+end_operator
+begin_operator
+pick-reward c_10_7
+1
+0 25
+1
+0 10 1 0
+1
+end_operator
+begin_operator
+pick-reward c_11_14
+1
+0 34
+1
+0 9 1 0
+1
+end_operator
+begin_operator
+pick-reward c_14_7
+1
+0 82
+1
+0 8 1 0
+1
+end_operator
+begin_operator
+pick-reward c_3_13
+1
+0 118
+1
+0 7 1 0
+1
+end_operator
+begin_operator
+pick-reward c_3_7
+1
+0 125
+1
+0 6 1 0
+1
+end_operator
+begin_operator
+pick-reward c_4_10
+1
+0 129
+1
+0 5 1 0
+1
+end_operator
+begin_operator
+pick-reward c_5_1
+1
+0 142
+1
+0 4 1 0
+1
+end_operator
+begin_operator
+pick-reward c_5_14
+1
+0 147
+1
+0 3 1 0
+1
+end_operator
+begin_operator
+pick-reward c_5_8
+1
+0 154
+1
+0 2 1 0
+1
+end_operator
+begin_operator
+pick-reward c_8_5
+1
+0 193
+1
+0 1 1 0
+1
+end_operator
+0
+end_sas
+74
+state
+100 1 1 1 1 1 1 1 1 1 1 1 1 1 
+74
+result
+2
+72
+3
+state
+114 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3
+result
+2
+73
+3
+pool
+25
+state
+120 1 1 1 1 1 1 1 1 1 1 1 1 1 
+25
+result
+1
+74
+8
+state
+121 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8
+result
+1
+75
+8
+pool
+179
+state
+154 1 1 1 1 1 0 1 1 1 1 1 1 1 
+179
+result
+-1
+78
+175
+state
+153 1 1 1 1 1 0 1 1 1 1 1 1 1 
+175
+result
+-1
+77
+172
+state
+138 1 1 1 1 1 0 1 1 1 1 1 1 1 
+172
+result
+-1
+78
+64
+state
+125 1 1 1 1 1 0 1 1 1 1 1 1 1 
+64
+result
+-1
+78
+88
+state
+125 1 1 1 1 1 1 1 1 1 1 1 1 1 
+88
+result
+-1
+79
+167
+state
+124 1 1 1 1 1 1 1 1 1 1 1 1 1 
+167
+result
+-1
+78
+51
+state
+123 1 1 1 1 1 1 1 1 1 1 1 1 1 
+51
+result
+-1
+77
+33
+state
+122 1 1 1 1 1 1 1 1 1 1 1 1 1 
+33
+result
+-1
+76
+10
+state
+108 1 1 1 1 1 1 1 1 1 1 1 1 1 
+10
+result
+-1
+75
+10
+pool
+719
+state
+123 0 0 0 0 0 0 0 0 0 0 0 0 1 
+719
+result
+-1
+8
+718
+state
+124 0 0 0 0 0 0 0 0 0 0 0 0 1 
+718
+result
+-1
+9
+717
+state
+137 0 0 0 0 0 0 0 0 0 0 0 0 1 
+717
+result
+-1
+10
+716
+state
+138 0 0 0 0 0 0 0 0 0 0 0 0 1 
+716
+result
+-1
+11
+715
+state
+153 0 0 0 0 0 0 0 0 0 0 0 0 1 
+715
+result
+-1
+12
+714
+state
+168 0 0 0 0 0 0 0 0 0 0 0 0 1 
+714
+result
+-1
+13
+713
+state
+169 0 0 0 0 0 0 0 0 0 0 0 0 1 
+713
+result
+-1
+14
+712
+state
+170 0 0 0 0 0 0 0 0 0 0 0 0 1 
+712
+result
+-1
+15
+711
+state
+158 0 0 0 0 0 0 0 0 0 0 0 0 1 
+711
+result
+-1
+16
+710
+state
+159 0 0 0 0 0 0 0 0 0 0 0 0 1 
+710
+result
+-1
+17
+709
+state
+160 0 0 0 0 0 0 0 0 0 0 0 0 1 
+709
+result
+-1
+18
+708
+state
+175 0 0 0 0 0 0 0 0 0 0 0 0 1 
+708
+result
+-1
+19
+707
+state
+188 0 0 0 0 0 0 0 0 0 0 0 0 1 
+707
+result
+-1
+20
+706
+state
+202 0 0 0 0 0 0 0 0 0 0 0 0 1 
+706
+result
+-1
+21
+705
+state
+203 0 0 0 0 0 0 0 0 0 0 0 0 1 
+705
+result
+-1
+22
+704
+state
+19 0 0 0 0 0 0 0 0 0 0 0 0 1 
+704
+result
+-1
+23
+703
+state
+33 0 0 0 0 0 0 0 0 0 0 0 0 1 
+703
+result
+-1
+24
+702
+state
+34 0 0 0 0 0 0 0 0 0 0 0 0 1 
+702
+result
+-1
+25
+701
+state
+34 0 0 0 0 0 0 0 0 1 0 0 0 1 
+701
+result
+-1
+26
+700
+state
+20 0 0 0 0 0 0 0 0 1 0 0 0 1 
+700
+result
+-1
+27
+699
+state
+204 0 0 0 0 0 0 0 0 1 0 0 0 1 
+699
+result
+-1
+28
+698
+state
+190 0 0 0 0 0 0 0 0 1 0 0 0 1 
+698
+result
+-1
+29
+697
+state
+189 0 0 0 0 0 0 0 0 1 0 0 0 1 
+697
+result
+-1
+30
+696
+state
+176 0 0 0 0 0 0 0 0 1 0 0 0 1 
+696
+result
+-1
+31
+695
+state
+161 0 0 0 0 0 0 0 0 1 0 0 0 1 
+695
+result
+-1
+32
+694
+state
+146 0 0 0 0 0 0 0 0 1 0 0 0 1 
+694
+result
+-1
+33
+693
+state
+147 0 0 0 0 0 0 0 0 1 0 0 0 1 
+693
+result
+-1
+34
+692
+state
+147 0 0 1 0 0 0 0 0 1 0 0 0 1 
+692
+result
+-1
+35
+691
+state
+146 0 0 1 0 0 0 0 0 1 0 0 0 1 
+691
+result
+-1
+36
+690
+state
+132 0 0 1 0 0 0 0 0 1 0 0 0 1 
+690
+result
+-1
+37
+689
+state
+118 0 0 1 0 0 0 0 0 1 0 0 0 1 
+689
+result
+-1
+38
+688
+state
+118 0 0 1 0 0 0 1 0 1 0 0 0 1 
+688
+result
+-1
+39
+687
+state
+117 0 0 1 0 0 0 1 0 1 0 0 0 1 
+687
+result
+-1
+40
+686
+state
+116 0 0 1 0 0 0 1 0 1 0 0 0 1 
+686
+result
+-1
+41
+685
+state
+115 0 0 1 0 0 0 1 0 1 0 0 0 1 
+685
+result
+-1
+42
+684
+state
+127 0 0 1 0 0 0 1 0 1 0 0 0 1 
+684
+result
+-1
+43
+683
+state
+126 0 0 1 0 0 0 1 0 1 0 0 0 1 
+683
+result
+-1
+44
+682
+state
+125 0 0 1 0 0 0 1 0 1 0 0 0 1 
+682
+result
+-1
+45
+681
+state
+125 0 0 1 0 0 1 1 0 1 0 0 0 1 
+681
+result
+-1
+46
+680
+state
+126 0 0 1 0 0 1 1 0 1 0 0 0 1 
+680
+result
+-1
+47
+679
+state
+127 0 0 1 0 0 1 1 0 1 0 0 0 1 
+679
+result
+-1
+48
+678
+state
+115 0 0 1 0 0 1 1 0 1 0 0 0 1 
+678
+result
+-1
+49
+677
+state
+129 0 0 1 0 0 1 1 0 1 0 0 0 1 
+677
+result
+-1
+50
+676
+state
+129 0 0 1 0 1 1 1 0 1 0 0 0 1 
+676
+result
+-1
+51
+675
+state
+143 0 0 1 0 1 1 1 0 1 0 0 0 1 
+675
+result
+-1
+52
+674
+state
+155 0 0 1 0 1 1 1 0 1 0 0 0 1 
+674
+result
+-1
+53
+673
+state
+154 0 0 1 0 1 1 1 0 1 0 0 0 1 
+673
+result
+-1
+54
+672
+state
+154 0 1 1 0 1 1 1 0 1 0 0 0 1 
+672
+result
+-1
+55
+671
+state
+169 0 1 1 0 1 1 1 0 1 0 0 0 1 
+671
+result
+-1
+56
+670
+state
+182 0 1 1 0 1 1 1 0 1 0 0 0 1 
+670
+result
+-1
+57
+669
+state
+196 0 1 1 0 1 1 1 0 1 0 0 0 1 
+669
+result
+-1
+58
+668
+state
+210 0 1 1 0 1 1 1 0 1 0 0 0 1 
+668
+result
+-1
+59
+667
+state
+26 0 1 1 0 1 1 1 0 1 0 0 0 1 
+667
+result
+-1
+60
+666
+state
+41 0 1 1 0 1 1 1 0 1 0 0 0 1 
+666
+result
+-1
+61
+665
+state
+55 0 1 1 0 1 1 1 0 1 0 0 0 1 
+665
+result
+-1
+62
+664
+state
+69 0 1 1 0 1 1 1 0 1 0 0 0 1 
+664
+result
+-1
+63
+663
+state
+83 0 1 1 0 1 1 1 0 1 0 0 0 1 
+663
+result
+-1
+64
+662
+state
+82 0 1 1 0 1 1 1 0 1 0 0 0 1 
+662
+result
+-1
+65
+661
+state
+82 0 1 1 0 1 1 1 1 1 0 0 0 1 
+661
+result
+-1
+66
+660
+state
+68 0 1 1 0 1 1 1 1 1 0 0 0 1 
+660
+result
+-1
+67
+659
+state
+54 0 1 1 0 1 1 1 1 1 0 0 0 1 
+659
+result
+-1
+68
+658
+state
+40 0 1 1 0 1 1 1 1 1 0 0 0 1 
+658
+result
+-1
+69
+657
+state
+25 0 1 1 0 1 1 1 1 1 0 0 0 1 
+657
+result
+-1
+70
+656
+state
+25 0 1 1 0 1 1 1 1 1 1 0 0 1 
+656
+result
+-1
+71
+655
+state
+209 0 1 1 0 1 1 1 1 1 1 0 0 1 
+655
+result
+-1
+72
+654
+state
+195 0 1 1 0 1 1 1 1 1 1 0 0 1 
+654
+result
+-1
+73
+653
+state
+194 0 1 1 0 1 1 1 1 1 1 0 0 1 
+653
+result
+-1
+74
+652
+state
+193 0 1 1 0 1 1 1 1 1 1 0 0 1 
+652
+result
+-1
+75
+651
+state
+193 1 1 1 0 1 1 1 1 1 1 0 0 1 
+651
+result
+-1
+76
+650
+state
+192 1 1 1 0 1 1 1 1 1 1 0 0 1 
+650
+result
+-1
+77
+649
+state
+207 1 1 1 0 1 1 1 1 1 1 0 0 1 
+649
+result
+-1
+78
+648
+state
+23 1 1 1 0 1 1 1 1 1 1 0 0 1 
+648
+result
+-1
+79
+647
+state
+22 1 1 1 0 1 1 1 1 1 1 0 0 1 
+647
+result
+-1
+80
+646
+state
+21 1 1 1 0 1 1 1 1 1 1 0 0 1 
+646
+result
+-1
+81
+645
+state
+15 1 1 1 0 1 1 1 1 1 1 0 0 1 
+645
+result
+-1
+82
+644
+state
+15 1 1 1 0 1 1 1 1 1 1 1 0 1 
+644
+result
+-1
+83
+643
+state
+199 1 1 1 0 1 1 1 1 1 1 1 0 1 
+643
+result
+-1
+84
+642
+state
+185 1 1 1 0 1 1 1 1 1 1 1 0 1 
+642
+result
+-1
+85
+641
+state
+172 1 1 1 0 1 1 1 1 1 1 1 0 1 
+641
+result
+-1
+86
+640
+state
+157 1 1 1 0 1 1 1 1 1 1 1 0 1 
+640
+result
+-1
+87
+639
+state
+142 1 1 1 0 1 1 1 1 1 1 1 0 1 
+639
+result
+-1
+88
+638
+state
+142 1 1 1 1 1 1 1 1 1 1 1 0 1 
+638
+result
+-1
+89
+637
+state
+141 1 1 1 1 1 1 1 1 1 1 1 0 1 
+637
+result
+-1
+90
+15
+state
+128 1 1 1 1 1 1 1 1 1 1 1 0 1 
+15
+result
+-1
+91
+15
+pool
+18
+state
+99 1 1 1 1 1 1 1 1 1 1 1 1 1 
+18
+result
+2
+73
+18
+pool
+19
+state
+109 1 1 1 1 1 1 1 1 1 1 1 1 1 
+19
+result
+-1
+76
+19
+pool
+20
+state
+137 1 1 1 1 1 1 1 1 1 1 1 1 1 
+20
+result
+-1
+78
+20
+pool
+25
+pool
+62
+state
+154 1 1 1 1 1 1 1 1 1 1 1 1 1 
+62
+result
+-1
+79
+83
+state
+153 1 1 1 1 1 1 1 1 1 1 1 1 1 
+83
+result
+-1
+78
+26
+state
+152 1 1 1 1 1 1 1 1 1 1 1 1 1 
+26
+result
+-1
+79
+26
+pool
+28
+state
+138 1 1 1 1 1 1 1 1 1 1 1 1 1 
+28
+result
+-1
+79
+28
+pool
+31
+state
+113 1 1 1 1 1 1 1 1 1 1 1 1 1 
+31
+result
+1
+74
+31
+pool
+33
+pool
+169
+state
+126 1 1 1 1 1 1 1 1 1 1 1 1 1 
+169
+result
+-1
+80
+1048
+state
+111 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1048
+result
+-1
+81
+1047
+state
+97 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1047
+result
+-1
+82
+35
+state
+12 1 1 1 1 1 1 1 1 1 1 1 1 1 
+35
+result
+-1
+83
+34
+state
+11 1 1 1 1 1 1 1 1 1 1 1 1 1 
+34
+result
+-1
+84
+34
+pool
+35
+pool
+38
+state
+113 1 1 1 1 1 1 1 1 1 1 1 0 1 
+38
+result
+-1
+74
+38
+pool
+1069
+state
+154 1 1 1 1 1 0 1 1 1 1 1 0 0 
+1069
+result
+-1
+67
+1068
+state
+153 1 1 1 1 1 0 1 1 1 1 1 0 0 
+1068
+result
+-1
+68
+1067
+state
+138 1 1 1 1 1 0 1 1 1 1 1 0 0 
+1067
+result
+-1
+69
+1066
+state
+125 1 1 1 1 1 0 1 1 1 1 1 0 0 
+1066
+result
+-1
+70
+1065
+state
+125 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1065
+result
+-1
+71
+1064
+state
+124 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1064
+result
+-1
+72
+1063
+state
+123 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1063
+result
+-1
+73
+44
+state
+122 1 1 1 1 1 1 1 1 1 1 1 0 0 
+44
+result
+-1
+74
+41
+state
+121 1 1 1 1 1 1 1 1 1 1 1 0 0 
+41
+result
+-1
+75
+41
+pool
+43
+state
+95 1 1 1 1 1 1 1 1 1 1 1 1 1 
+43
+result
+-1
+75
+43
+pool
+44
+pool
+65
+state
+148 1 1 1 1 1 1 1 1 1 1 1 0 1 
+65
+result
+-1
+72
+623
+state
+134 1 1 1 1 1 1 1 1 1 1 1 0 1 
+623
+result
+-1
+73
+45
+state
+120 1 1 1 1 1 1 1 1 1 1 1 0 1 
+45
+result
+-1
+73
+45
+pool
+93
+state
+109 1 1 1 1 1 1 1 1 1 1 1 0 0 
+93
+result
+-1
+68
+46
+state
+95 1 1 1 1 1 1 1 1 1 1 1 0 0 
+46
+result
+-1
+69
+46
+pool
+49
+state
+151 1 1 1 1 1 1 1 1 1 1 1 1 1 
+49
+result
+10
+76
+1344
+state
+19 0 0 0 1 0 0 0 0 0 0 1 1 1 
+1344
+result
+2
+30
+1343
+state
+33 0 0 0 1 0 0 0 0 0 0 1 1 1 
+1343
+result
+2
+31
+1342
+state
+34 0 0 0 1 0 0 0 0 0 0 1 1 1 
+1342
+result
+2
+32
+1341
+state
+34 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1341
+result
+2
+33
+1340
+state
+20 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1340
+result
+2
+34
+1339
+state
+19 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1339
+result
+2
+35
+1338
+state
+203 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1338
+result
+2
+36
+1337
+state
+189 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1337
+result
+2
+37
+1336
+state
+176 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1336
+result
+2
+38
+1335
+state
+161 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1335
+result
+2
+39
+1334
+state
+146 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1334
+result
+2
+40
+1333
+state
+147 0 0 0 1 0 0 0 0 1 0 1 1 1 
+1333
+result
+2
+41
+1332
+state
+147 0 0 1 1 0 0 0 0 1 0 1 1 1 
+1332
+result
+2
+42
+1331
+state
+146 0 0 1 1 0 0 0 0 1 0 1 1 1 
+1331
+result
+2
+43
+1330
+state
+132 0 0 1 1 0 0 0 0 1 0 1 1 1 
+1330
+result
+2
+44
+1329
+state
+118 0 0 1 1 0 0 0 0 1 0 1 1 1 
+1329
+result
+2
+45
+1328
+state
+118 0 0 1 1 0 0 1 0 1 0 1 1 1 
+1328
+result
+2
+46
+1327
+state
+132 0 0 1 1 0 0 1 0 1 0 1 1 1 
+1327
+result
+2
+47
+1326
+state
+131 0 0 1 1 0 0 1 0 1 0 1 1 1 
+1326
+result
+2
+48
+1325
+state
+130 0 0 1 1 0 0 1 0 1 0 1 1 1 
+1325
+result
+2
+49
+1324
+state
+129 0 0 1 1 0 0 1 0 1 0 1 1 1 
+1324
+result
+2
+50
+1323
+state
+129 0 0 1 1 1 0 1 0 1 0 1 1 1 
+1323
+result
+2
+51
+1322
+state
+140 0 0 1 1 1 0 1 0 1 0 1 1 1 
+1322
+result
+2
+52
+1321
+state
+139 0 0 1 1 1 0 1 0 1 0 1 1 1 
+1321
+result
+2
+53
+1320
+state
+138 0 0 1 1 1 0 1 0 1 0 1 1 1 
+1320
+result
+2
+54
+1319
+state
+125 0 0 1 1 1 0 1 0 1 0 1 1 1 
+1319
+result
+2
+55
+1318
+state
+125 0 0 1 1 1 1 1 0 1 0 1 1 1 
+1318
+result
+2
+56
+1317
+state
+138 0 0 1 1 1 1 1 0 1 0 1 1 1 
+1317
+result
+2
+57
+1316
+state
+153 0 0 1 1 1 1 1 0 1 0 1 1 1 
+1316
+result
+2
+58
+1315
+state
+154 0 0 1 1 1 1 1 0 1 0 1 1 1 
+1315
+result
+2
+59
+1314
+state
+154 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1314
+result
+2
+60
+1313
+state
+169 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1313
+result
+2
+61
+1312
+state
+182 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1312
+result
+2
+62
+1311
+state
+196 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1311
+result
+2
+63
+1310
+state
+195 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1310
+result
+2
+64
+1309
+state
+209 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1309
+result
+2
+65
+1308
+state
+25 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1308
+result
+2
+66
+1307
+state
+40 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1307
+result
+2
+67
+1306
+state
+54 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1306
+result
+2
+68
+1305
+state
+68 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1305
+result
+2
+69
+1304
+state
+82 0 1 1 1 1 1 1 0 1 0 1 1 1 
+1304
+result
+2
+70
+1303
+state
+82 0 1 1 1 1 1 1 1 1 0 1 1 1 
+1303
+result
+2
+71
+1302
+state
+68 0 1 1 1 1 1 1 1 1 0 1 1 1 
+1302
+result
+2
+72
+1301
+state
+54 0 1 1 1 1 1 1 1 1 0 1 1 1 
+1301
+result
+2
+73
+1300
+state
+40 0 1 1 1 1 1 1 1 1 0 1 1 1 
+1300
+result
+2
+74
+1299
+state
+25 0 1 1 1 1 1 1 1 1 0 1 1 1 
+1299
+result
+2
+75
+1298
+state
+25 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1298
+result
+2
+76
+1297
+state
+209 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1297
+result
+2
+77
+1296
+state
+195 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1296
+result
+2
+78
+87
+state
+194 0 1 1 1 1 1 1 1 1 1 1 1 1 
+87
+result
+2
+79
+1295
+state
+193 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1295
+result
+2
+80
+1294
+state
+193 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1294
+result
+2
+81
+78
+state
+180 1 1 1 1 1 1 1 1 1 1 1 1 1 
+78
+result
+2
+82
+56
+state
+166 1 1 1 1 1 1 1 1 1 1 1 1 1 
+56
+result
+2
+83
+1343
+result
+4
+29
+1342
+result
+4
+30
+1341
+result
+4
+31
+1340
+result
+4
+32
+1339
+result
+4
+33
+1338
+result
+4
+34
+1337
+result
+4
+35
+1336
+result
+4
+36
+1335
+result
+4
+37
+1334
+result
+4
+38
+1333
+result
+4
+39
+1332
+result
+4
+40
+1331
+result
+4
+41
+1330
+result
+4
+42
+1329
+result
+4
+43
+1328
+result
+4
+44
+1327
+result
+4
+45
+1326
+result
+4
+46
+1325
+result
+4
+47
+1324
+result
+4
+48
+1323
+result
+4
+49
+1322
+result
+4
+50
+1321
+result
+4
+51
+1320
+result
+4
+52
+1319
+result
+4
+53
+1318
+result
+4
+54
+1317
+result
+4
+55
+1316
+result
+4
+56
+1315
+result
+4
+57
+1314
+result
+4
+58
+1313
+result
+4
+59
+1312
+result
+4
+60
+1311
+result
+4
+61
+1310
+result
+4
+62
+1309
+result
+4
+63
+1308
+result
+4
+64
+1307
+result
+4
+65
+1306
+result
+4
+66
+1305
+result
+4
+67
+1304
+result
+4
+68
+1303
+result
+4
+69
+1302
+result
+4
+70
+1301
+result
+4
+71
+1300
+result
+4
+72
+1299
+result
+4
+73
+1298
+result
+4
+74
+1297
+result
+4
+75
+1296
+result
+4
+76
+87
+result
+4
+77
+1295
+result
+4
+78
+1294
+result
+4
+79
+78
+result
+4
+80
+56
+result
+4
+81
+78
+result
+6
+78
+56
+result
+6
+79
+56
+result
+8
+77
+49
+pool
+51
+pool
+52
+state
+165 1 1 1 1 1 1 1 1 1 1 1 1 1 
+52
+result
+8
+78
+52
+pool
+52
+result
+10
+76
+56
+pool
+1631
+state
+157 1 1 1 1 1 1 1 1 1 1 1 0 1 
+1631
+result
+-1
+72
+81
+state
+172 1 1 1 1 1 1 1 1 1 1 1 0 1 
+81
+result
+-1
+73
+57
+state
+171 1 1 1 1 1 1 1 1 1 1 1 0 1 
+57
+result
+-1
+74
+57
+pool
+59
+state
+110 1 1 1 1 1 1 1 1 1 1 1 1 1 
+59
+result
+-1
+77
+59
+pool
+1632
+state
+181 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1632
+result
+6
+79
+61
+state
+167 1 1 1 1 1 1 1 1 1 1 1 1 1 
+61
+result
+6
+80
+61
+pool
+61
+result
+8
+78
+62
+pool
+64
+pool
+65
+pool
+68
+state
+120 1 1 1 1 1 1 1 1 1 1 1 1 0 
+68
+result
+2
+71
+68
+pool
+1634
+state
+108 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1634
+result
+-1
+67
+69
+state
+94 1 1 1 1 1 1 1 1 1 1 1 0 0 
+69
+result
+-1
+68
+69
+pool
+174
+state
+139 1 1 1 1 1 0 1 1 1 1 1 1 1 
+174
+result
+-1
+79
+171
+state
+126 1 1 1 1 1 0 1 1 1 1 1 1 1 
+171
+result
+-1
+80
+72
+state
+111 1 1 1 1 1 0 1 1 1 1 1 1 1 
+72
+result
+-1
+81
+72
+pool
+74
+pool
+410
+state
+146 1 0 1 1 0 0 0 1 1 1 1 1 1 
+410
+result
+-1
+162
+832
+state
+138 1 0 1 1 1 1 1 1 1 1 1 1 1 
+832
+result
+-1
+162
+409
+state
+132 1 0 1 1 0 0 0 1 1 1 1 1 1 
+409
+result
+-1
+163
+408
+state
+118 1 0 1 1 0 0 0 1 1 1 1 1 1 
+408
+result
+-1
+164
+407
+state
+118 1 0 1 1 0 0 1 1 1 1 1 1 1 
+407
+result
+-1
+165
+1073
+state
+129 1 0 1 1 1 0 1 1 1 1 1 0 0 
+1073
+result
+-1
+160
+1071
+state
+155 1 0 1 1 1 0 1 1 1 1 1 0 0 
+1071
+result
+-1
+158
+404
+state
+115 1 0 1 1 0 0 1 1 1 1 1 1 1 
+404
+result
+-1
+162
+402
+state
+129 1 0 1 1 1 0 1 1 1 1 1 1 1 
+402
+result
+-1
+162
+94
+state
+153 1 0 1 1 1 1 1 1 1 1 1 1 1 
+94
+result
+-1
+161
+1070
+state
+154 1 0 1 1 1 0 1 1 1 1 1 0 0 
+1070
+result
+-1
+157
+399
+state
+154 1 0 1 1 1 0 1 1 1 1 1 1 1 
+399
+result
+-1
+159
+411
+state
+147 1 0 1 1 0 0 0 1 1 1 1 1 1 
+411
+result
+-1
+163
+403
+state
+129 1 0 1 1 0 0 1 1 1 1 1 1 1 
+403
+result
+-1
+161
+400
+state
+139 1 0 1 1 1 0 1 1 1 1 1 1 1 
+400
+result
+-1
+160
+835
+state
+138 1 0 1 1 1 0 1 1 1 1 1 1 1 
+835
+result
+-1
+161
+834
+state
+125 1 0 1 1 1 0 1 1 1 1 1 1 1 
+834
+result
+-1
+162
+833
+state
+125 1 0 1 1 1 1 1 1 1 1 1 1 1 
+833
+result
+-1
+163
+406
+state
+117 1 0 1 1 0 0 1 1 1 1 1 1 1 
+406
+result
+-1
+164
+405
+state
+116 1 0 1 1 0 0 1 1 1 1 1 1 1 
+405
+result
+-1
+163
+1072
+state
+143 1 0 1 1 1 0 1 1 1 1 1 0 0 
+1072
+result
+-1
+159
+401
+state
+140 1 0 1 1 1 0 1 1 1 1 1 1 1 
+401
+result
+-1
+161
+1082
+state
+147 1 0 1 1 0 0 0 1 1 1 1 0 0 
+1082
+result
+-1
+161
+1081
+state
+146 1 0 1 1 0 0 0 1 1 1 1 0 0 
+1081
+result
+-1
+160
+1080
+state
+132 1 0 1 1 0 0 0 1 1 1 1 0 0 
+1080
+result
+-1
+161
+1079
+state
+118 1 0 1 1 0 0 0 1 1 1 1 0 0 
+1079
+result
+-1
+162
+1078
+state
+118 1 0 1 1 0 0 1 1 1 1 1 0 0 
+1078
+result
+-1
+163
+1077
+state
+117 1 0 1 1 0 0 1 1 1 1 1 0 0 
+1077
+result
+-1
+162
+1076
+state
+116 1 0 1 1 0 0 1 1 1 1 1 0 0 
+1076
+result
+-1
+161
+1075
+state
+130 1 0 1 1 0 0 1 1 1 1 1 0 0 
+1075
+result
+-1
+160
+1074
+state
+129 1 0 1 1 0 0 1 1 1 1 1 0 0 
+1074
+result
+-1
+159
+95
+state
+154 1 0 1 1 1 1 1 1 1 1 1 1 1 
+95
+result
+-1
+160
+75
+state
+169 1 0 1 1 1 1 1 1 1 1 1 1 1 
+75
+result
+-1
+159
+75
+pool

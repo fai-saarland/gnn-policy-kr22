@@ -1,0 +1,3024 @@
+begin_sas
+begin_version
+3
+end_version
+begin_metric
+1
+end_metric
+9
+begin_variable
+var0
+-1
+2
+Atom at(tru2, apt2)
+Atom at(tru2, pos2)
+end_variable
+begin_variable
+var1
+-1
+2
+Atom at(tru1, apt1)
+Atom at(tru1, pos1)
+end_variable
+begin_variable
+var2
+-1
+2
+Atom at(apn1, apt1)
+Atom at(apn1, apt2)
+end_variable
+begin_variable
+var3
+-1
+7
+Atom at(obj23, apt1)
+Atom at(obj23, apt2)
+Atom at(obj23, pos1)
+Atom at(obj23, pos2)
+Atom in(obj23, apn1)
+Atom in(obj23, tru1)
+Atom in(obj23, tru2)
+end_variable
+begin_variable
+var4
+-1
+7
+Atom at(obj22, apt1)
+Atom at(obj22, apt2)
+Atom at(obj22, pos1)
+Atom at(obj22, pos2)
+Atom in(obj22, apn1)
+Atom in(obj22, tru1)
+Atom in(obj22, tru2)
+end_variable
+begin_variable
+var5
+-1
+7
+Atom at(obj21, apt1)
+Atom at(obj21, apt2)
+Atom at(obj21, pos1)
+Atom at(obj21, pos2)
+Atom in(obj21, apn1)
+Atom in(obj21, tru1)
+Atom in(obj21, tru2)
+end_variable
+begin_variable
+var6
+-1
+7
+Atom at(obj13, apt1)
+Atom at(obj13, apt2)
+Atom at(obj13, pos1)
+Atom at(obj13, pos2)
+Atom in(obj13, apn1)
+Atom in(obj13, tru1)
+Atom in(obj13, tru2)
+end_variable
+begin_variable
+var7
+-1
+7
+Atom at(obj12, apt1)
+Atom at(obj12, apt2)
+Atom at(obj12, pos1)
+Atom at(obj12, pos2)
+Atom in(obj12, apn1)
+Atom in(obj12, tru1)
+Atom in(obj12, tru2)
+end_variable
+begin_variable
+var8
+-1
+7
+Atom at(obj11, apt1)
+Atom at(obj11, apt2)
+Atom at(obj11, pos1)
+Atom at(obj11, pos2)
+Atom in(obj11, apn1)
+Atom in(obj11, tru1)
+Atom in(obj11, tru2)
+end_variable
+9
+begin_mutex_group
+2
+2 0
+2 1
+end_mutex_group
+begin_mutex_group
+2
+1 0
+1 1
+end_mutex_group
+begin_mutex_group
+2
+0 0
+0 1
+end_mutex_group
+begin_mutex_group
+7
+8 0
+8 1
+8 2
+8 3
+8 4
+8 5
+8 6
+end_mutex_group
+begin_mutex_group
+7
+7 0
+7 1
+7 2
+7 3
+7 4
+7 5
+7 6
+end_mutex_group
+begin_mutex_group
+7
+6 0
+6 1
+6 2
+6 3
+6 4
+6 5
+6 6
+end_mutex_group
+begin_mutex_group
+7
+5 0
+5 1
+5 2
+5 3
+5 4
+5 5
+5 6
+end_mutex_group
+begin_mutex_group
+7
+4 0
+4 1
+4 2
+4 3
+4 4
+4 5
+4 6
+end_mutex_group
+begin_mutex_group
+7
+3 0
+3 1
+3 2
+3 3
+3 4
+3 5
+3 6
+end_mutex_group
+begin_state
+1
+1
+0
+3
+3
+3
+2
+2
+2
+end_state
+begin_goal
+6
+3 3
+4 1
+5 3
+6 3
+7 0
+8 2
+end_goal
+78
+begin_operator
+drive-truck tru1 apt1 pos1 cit1
+0
+1
+0 1 0 1
+1
+end_operator
+begin_operator
+drive-truck tru1 pos1 apt1 cit1
+0
+1
+0 1 1 0
+1
+end_operator
+begin_operator
+drive-truck tru2 apt2 pos2 cit2
+0
+1
+0 0 0 1
+1
+end_operator
+begin_operator
+drive-truck tru2 pos2 apt2 cit2
+0
+1
+0 0 1 0
+1
+end_operator
+begin_operator
+fly-airplane apn1 apt1 apt2
+0
+1
+0 2 0 1
+1
+end_operator
+begin_operator
+fly-airplane apn1 apt2 apt1
+0
+1
+0 2 1 0
+1
+end_operator
+begin_operator
+load-airplane obj11 apn1 apt1
+1
+2 0
+1
+0 8 0 4
+1
+end_operator
+begin_operator
+load-airplane obj11 apn1 apt2
+1
+2 1
+1
+0 8 1 4
+1
+end_operator
+begin_operator
+load-airplane obj12 apn1 apt1
+1
+2 0
+1
+0 7 0 4
+1
+end_operator
+begin_operator
+load-airplane obj12 apn1 apt2
+1
+2 1
+1
+0 7 1 4
+1
+end_operator
+begin_operator
+load-airplane obj13 apn1 apt1
+1
+2 0
+1
+0 6 0 4
+1
+end_operator
+begin_operator
+load-airplane obj13 apn1 apt2
+1
+2 1
+1
+0 6 1 4
+1
+end_operator
+begin_operator
+load-airplane obj21 apn1 apt1
+1
+2 0
+1
+0 5 0 4
+1
+end_operator
+begin_operator
+load-airplane obj21 apn1 apt2
+1
+2 1
+1
+0 5 1 4
+1
+end_operator
+begin_operator
+load-airplane obj22 apn1 apt1
+1
+2 0
+1
+0 4 0 4
+1
+end_operator
+begin_operator
+load-airplane obj22 apn1 apt2
+1
+2 1
+1
+0 4 1 4
+1
+end_operator
+begin_operator
+load-airplane obj23 apn1 apt1
+1
+2 0
+1
+0 3 0 4
+1
+end_operator
+begin_operator
+load-airplane obj23 apn1 apt2
+1
+2 1
+1
+0 3 1 4
+1
+end_operator
+begin_operator
+load-truck obj11 tru1 apt1
+1
+1 0
+1
+0 8 0 5
+1
+end_operator
+begin_operator
+load-truck obj11 tru1 pos1
+1
+1 1
+1
+0 8 2 5
+1
+end_operator
+begin_operator
+load-truck obj11 tru2 apt2
+1
+0 0
+1
+0 8 1 6
+1
+end_operator
+begin_operator
+load-truck obj11 tru2 pos2
+1
+0 1
+1
+0 8 3 6
+1
+end_operator
+begin_operator
+load-truck obj12 tru1 apt1
+1
+1 0
+1
+0 7 0 5
+1
+end_operator
+begin_operator
+load-truck obj12 tru1 pos1
+1
+1 1
+1
+0 7 2 5
+1
+end_operator
+begin_operator
+load-truck obj12 tru2 apt2
+1
+0 0
+1
+0 7 1 6
+1
+end_operator
+begin_operator
+load-truck obj12 tru2 pos2
+1
+0 1
+1
+0 7 3 6
+1
+end_operator
+begin_operator
+load-truck obj13 tru1 apt1
+1
+1 0
+1
+0 6 0 5
+1
+end_operator
+begin_operator
+load-truck obj13 tru1 pos1
+1
+1 1
+1
+0 6 2 5
+1
+end_operator
+begin_operator
+load-truck obj13 tru2 apt2
+1
+0 0
+1
+0 6 1 6
+1
+end_operator
+begin_operator
+load-truck obj13 tru2 pos2
+1
+0 1
+1
+0 6 3 6
+1
+end_operator
+begin_operator
+load-truck obj21 tru1 apt1
+1
+1 0
+1
+0 5 0 5
+1
+end_operator
+begin_operator
+load-truck obj21 tru1 pos1
+1
+1 1
+1
+0 5 2 5
+1
+end_operator
+begin_operator
+load-truck obj21 tru2 apt2
+1
+0 0
+1
+0 5 1 6
+1
+end_operator
+begin_operator
+load-truck obj21 tru2 pos2
+1
+0 1
+1
+0 5 3 6
+1
+end_operator
+begin_operator
+load-truck obj22 tru1 apt1
+1
+1 0
+1
+0 4 0 5
+1
+end_operator
+begin_operator
+load-truck obj22 tru1 pos1
+1
+1 1
+1
+0 4 2 5
+1
+end_operator
+begin_operator
+load-truck obj22 tru2 apt2
+1
+0 0
+1
+0 4 1 6
+1
+end_operator
+begin_operator
+load-truck obj22 tru2 pos2
+1
+0 1
+1
+0 4 3 6
+1
+end_operator
+begin_operator
+load-truck obj23 tru1 apt1
+1
+1 0
+1
+0 3 0 5
+1
+end_operator
+begin_operator
+load-truck obj23 tru1 pos1
+1
+1 1
+1
+0 3 2 5
+1
+end_operator
+begin_operator
+load-truck obj23 tru2 apt2
+1
+0 0
+1
+0 3 1 6
+1
+end_operator
+begin_operator
+load-truck obj23 tru2 pos2
+1
+0 1
+1
+0 3 3 6
+1
+end_operator
+begin_operator
+unload-airplane obj11 apn1 apt1
+1
+2 0
+1
+0 8 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj11 apn1 apt2
+1
+2 1
+1
+0 8 4 1
+1
+end_operator
+begin_operator
+unload-airplane obj12 apn1 apt1
+1
+2 0
+1
+0 7 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj12 apn1 apt2
+1
+2 1
+1
+0 7 4 1
+1
+end_operator
+begin_operator
+unload-airplane obj13 apn1 apt1
+1
+2 0
+1
+0 6 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj13 apn1 apt2
+1
+2 1
+1
+0 6 4 1
+1
+end_operator
+begin_operator
+unload-airplane obj21 apn1 apt1
+1
+2 0
+1
+0 5 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj21 apn1 apt2
+1
+2 1
+1
+0 5 4 1
+1
+end_operator
+begin_operator
+unload-airplane obj22 apn1 apt1
+1
+2 0
+1
+0 4 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj22 apn1 apt2
+1
+2 1
+1
+0 4 4 1
+1
+end_operator
+begin_operator
+unload-airplane obj23 apn1 apt1
+1
+2 0
+1
+0 3 4 0
+1
+end_operator
+begin_operator
+unload-airplane obj23 apn1 apt2
+1
+2 1
+1
+0 3 4 1
+1
+end_operator
+begin_operator
+unload-truck obj11 tru1 apt1
+1
+1 0
+1
+0 8 5 0
+1
+end_operator
+begin_operator
+unload-truck obj11 tru1 pos1
+1
+1 1
+1
+0 8 5 2
+1
+end_operator
+begin_operator
+unload-truck obj11 tru2 apt2
+1
+0 0
+1
+0 8 6 1
+1
+end_operator
+begin_operator
+unload-truck obj11 tru2 pos2
+1
+0 1
+1
+0 8 6 3
+1
+end_operator
+begin_operator
+unload-truck obj12 tru1 apt1
+1
+1 0
+1
+0 7 5 0
+1
+end_operator
+begin_operator
+unload-truck obj12 tru1 pos1
+1
+1 1
+1
+0 7 5 2
+1
+end_operator
+begin_operator
+unload-truck obj12 tru2 apt2
+1
+0 0
+1
+0 7 6 1
+1
+end_operator
+begin_operator
+unload-truck obj12 tru2 pos2
+1
+0 1
+1
+0 7 6 3
+1
+end_operator
+begin_operator
+unload-truck obj13 tru1 apt1
+1
+1 0
+1
+0 6 5 0
+1
+end_operator
+begin_operator
+unload-truck obj13 tru1 pos1
+1
+1 1
+1
+0 6 5 2
+1
+end_operator
+begin_operator
+unload-truck obj13 tru2 apt2
+1
+0 0
+1
+0 6 6 1
+1
+end_operator
+begin_operator
+unload-truck obj13 tru2 pos2
+1
+0 1
+1
+0 6 6 3
+1
+end_operator
+begin_operator
+unload-truck obj21 tru1 apt1
+1
+1 0
+1
+0 5 5 0
+1
+end_operator
+begin_operator
+unload-truck obj21 tru1 pos1
+1
+1 1
+1
+0 5 5 2
+1
+end_operator
+begin_operator
+unload-truck obj21 tru2 apt2
+1
+0 0
+1
+0 5 6 1
+1
+end_operator
+begin_operator
+unload-truck obj21 tru2 pos2
+1
+0 1
+1
+0 5 6 3
+1
+end_operator
+begin_operator
+unload-truck obj22 tru1 apt1
+1
+1 0
+1
+0 4 5 0
+1
+end_operator
+begin_operator
+unload-truck obj22 tru1 pos1
+1
+1 1
+1
+0 4 5 2
+1
+end_operator
+begin_operator
+unload-truck obj22 tru2 apt2
+1
+0 0
+1
+0 4 6 1
+1
+end_operator
+begin_operator
+unload-truck obj22 tru2 pos2
+1
+0 1
+1
+0 4 6 3
+1
+end_operator
+begin_operator
+unload-truck obj23 tru1 apt1
+1
+1 0
+1
+0 3 5 0
+1
+end_operator
+begin_operator
+unload-truck obj23 tru1 pos1
+1
+1 1
+1
+0 3 5 2
+1
+end_operator
+begin_operator
+unload-truck obj23 tru2 apt2
+1
+0 0
+1
+0 3 6 1
+1
+end_operator
+begin_operator
+unload-truck obj23 tru2 pos2
+1
+0 1
+1
+0 3 6 3
+1
+end_operator
+0
+end_sas
+0
+state
+1 1 0 3 3 3 2 2 2 
+0
+result
+-1
+14
+0
+pool
+72
+state
+1 1 0 3 3 3 5 2 2 
+72
+result
+-1
+16
+121
+state
+1 0 0 3 6 3 5 2 2 
+121
+result
+1
+13
+2
+state
+1 0 0 3 3 3 5 2 2 
+2
+result
+1
+14
+441
+state
+0 0 0 3 3 3 5 2 2 
+441
+result
+1
+15
+440
+state
+0 0 1 3 3 3 5 2 2 
+440
+result
+1
+16
+439
+state
+0 1 1 3 3 3 5 2 2 
+439
+result
+1
+17
+438
+state
+0 1 1 3 3 3 2 2 2 
+438
+result
+1
+18
+1
+state
+0 0 1 3 3 3 2 2 2 
+1
+result
+1
+19
+439
+result
+3
+15
+438
+result
+3
+16
+1
+result
+3
+17
+1
+pool
+2
+pool
+3
+state
+1 1 1 3 3 3 2 2 2 
+3
+result
+-1
+15
+3
+pool
+457
+state
+1 0 0 6 1 3 5 0 2 
+457
+result
+-1
+11
+456
+state
+1 0 0 6 1 3 5 5 2 
+456
+result
+-1
+12
+455
+state
+0 0 0 6 1 3 5 5 2 
+455
+result
+-1
+13
+454
+state
+0 0 0 6 6 3 5 5 2 
+454
+result
+-1
+14
+131
+state
+1 0 0 6 6 3 5 5 2 
+131
+result
+-1
+15
+453
+state
+1 0 0 6 3 3 5 5 2 
+453
+result
+-1
+16
+452
+state
+1 1 0 6 3 3 5 5 2 
+452
+result
+-1
+17
+13
+state
+1 1 0 6 3 3 5 2 2 
+13
+result
+-1
+18
+4
+state
+1 1 0 6 3 3 2 2 2 
+4
+result
+-1
+19
+4
+pool
+464
+state
+1 1 0 6 1 3 5 5 2 
+464
+result
+-1
+13
+463
+state
+1 1 0 6 1 3 5 2 2 
+463
+result
+-1
+14
+462
+state
+1 0 0 6 1 3 5 2 2 
+462
+result
+-1
+15
+461
+state
+0 0 0 6 1 3 5 2 2 
+461
+result
+-1
+16
+17
+state
+0 0 0 6 6 3 5 2 2 
+17
+result
+-1
+17
+460
+state
+1 0 0 6 6 3 5 2 2 
+460
+result
+-1
+18
+459
+state
+1 0 1 6 6 3 5 2 2 
+459
+result
+-1
+19
+458
+state
+1 0 1 6 3 3 5 2 2 
+458
+result
+-1
+20
+99
+state
+1 1 1 6 3 3 5 2 2 
+99
+result
+-1
+21
+5
+state
+1 1 1 6 3 3 2 2 2 
+5
+result
+-1
+22
+5
+pool
+6
+state
+0 1 1 3 6 6 2 2 2 
+6
+result
+-1
+16
+6
+pool
+584
+state
+1 1 1 6 1 3 5 2 2 
+584
+result
+-1
+13
+583
+state
+0 1 1 6 1 3 5 2 2 
+583
+result
+-1
+14
+582
+state
+0 1 1 6 1 3 2 2 2 
+582
+result
+-1
+15
+581
+state
+0 1 1 1 1 3 2 2 2 
+581
+result
+-1
+16
+53
+state
+0 1 1 1 6 3 2 2 2 
+53
+result
+-1
+17
+7
+state
+0 0 1 1 6 3 2 2 2 
+7
+result
+-1
+18
+7
+pool
+8
+state
+0 0 1 1 1 3 2 2 2 
+8
+result
+-1
+17
+8
+pool
+108
+state
+0 0 0 3 1 6 5 0 2 
+108
+result
+-1
+14
+107
+state
+1 0 0 3 1 6 5 0 2 
+107
+result
+-1
+15
+106
+state
+1 0 0 3 1 6 5 5 2 
+106
+result
+-1
+16
+105
+state
+0 0 0 3 1 6 5 5 2 
+105
+result
+-1
+17
+468
+state
+1 1 0 3 1 6 5 5 2 
+468
+result
+-1
+17
+104
+state
+0 0 0 3 6 6 5 5 2 
+104
+result
+-1
+18
+467
+state
+1 1 0 3 1 6 5 2 2 
+467
+result
+-1
+18
+103
+state
+1 0 0 3 6 6 5 5 2 
+103
+result
+-1
+19
+466
+state
+0 1 0 3 1 6 5 2 2 
+466
+result
+-1
+19
+588
+state
+1 0 0 3 1 6 5 2 2 
+588
+result
+-1
+19
+102
+state
+1 0 0 3 3 6 5 5 2 
+102
+result
+-1
+20
+465
+state
+0 1 1 3 1 6 5 2 2 
+465
+result
+-1
+20
+587
+state
+0 0 0 3 1 6 5 2 2 
+587
+result
+-1
+20
+101
+state
+1 1 0 3 3 6 5 5 2 
+101
+result
+-1
+21
+57
+state
+0 1 1 3 1 6 2 2 2 
+57
+result
+-1
+21
+586
+state
+0 0 0 3 6 6 5 2 2 
+586
+result
+-1
+21
+100
+state
+1 1 0 3 3 6 5 2 2 
+100
+result
+-1
+22
+585
+state
+1 0 0 3 6 6 5 2 2 
+585
+result
+-1
+22
+9
+state
+1 0 1 3 6 6 5 2 2 
+9
+result
+-1
+23
+9
+pool
+591
+state
+0 1 0 6 1 3 5 2 2 
+591
+result
+-1
+13
+590
+state
+0 1 0 6 1 3 2 2 2 
+590
+result
+-1
+14
+589
+state
+0 1 0 1 1 3 2 2 2 
+589
+result
+-1
+15
+34
+state
+0 0 0 1 1 3 2 2 2 
+34
+result
+-1
+16
+10
+state
+1 0 0 1 1 3 2 2 2 
+10
+result
+-1
+17
+10
+pool
+11
+state
+1 1 0 3 3 6 2 2 2 
+11
+result
+-1
+21
+11
+pool
+592
+state
+0 1 0 3 6 6 5 2 2 
+592
+result
+-1
+18
+120
+state
+1 1 0 3 6 6 5 2 2 
+120
+result
+-1
+19
+12
+state
+1 1 0 3 6 6 2 2 2 
+12
+result
+-1
+20
+12
+pool
+13
+pool
+14
+state
+0 1 1 3 1 1 2 2 2 
+14
+result
+-1
+20
+14
+pool
+15
+state
+1 0 1 3 3 3 2 2 2 
+15
+result
+-1
+16
+15
+pool
+263
+state
+1 1 1 3 1 3 3 5 2 
+263
+result
+1
+2
+451
+state
+1 1 1 3 1 3 6 5 2 
+451
+result
+1
+3
+450
+state
+0 1 1 3 1 3 6 5 2 
+450
+result
+1
+4
+449
+state
+0 1 1 3 1 3 1 5 2 
+449
+result
+1
+5
+448
+state
+0 1 1 3 1 3 4 5 2 
+448
+result
+1
+6
+447
+state
+0 1 0 3 1 3 4 5 2 
+447
+result
+1
+7
+446
+state
+0 1 0 3 1 3 4 2 2 
+446
+result
+1
+8
+445
+state
+0 0 0 3 1 3 4 2 2 
+445
+result
+1
+9
+444
+state
+0 0 0 3 1 3 0 2 2 
+444
+result
+1
+10
+443
+state
+0 0 0 3 1 3 5 2 2 
+443
+result
+1
+11
+442
+state
+0 0 0 3 6 3 5 2 2 
+442
+result
+1
+12
+16
+state
+0 1 0 3 3 6 2 2 2 
+16
+result
+1
+15
+16
+pool
+17
+pool
+685
+state
+0 0 0 6 3 3 5 5 2 
+685
+result
+-1
+15
+684
+state
+0 1 0 6 3 3 5 5 2 
+684
+result
+-1
+16
+683
+state
+0 1 0 6 3 3 5 2 2 
+683
+result
+-1
+17
+78
+state
+0 1 1 6 3 3 5 2 2 
+78
+result
+-1
+18
+682
+state
+0 1 1 6 3 3 2 2 2 
+682
+result
+-1
+19
+18
+state
+0 0 1 6 3 3 2 2 2 
+18
+result
+-1
+20
+440
+result
+2
+15
+441
+result
+2
+14
+439
+result
+4
+14
+438
+result
+4
+15
+1
+result
+4
+16
+18
+pool
+688
+state
+1 0 1 3 3 6 5 2 2 
+688
+result
+-1
+18
+687
+state
+1 1 1 3 3 6 5 2 2 
+687
+result
+-1
+19
+686
+state
+1 1 1 3 3 6 2 2 2 
+686
+result
+-1
+20
+19
+state
+1 1 1 6 3 6 2 2 2 
+19
+result
+-1
+21
+19
+pool
+20
+state
+0 1 0 6 3 3 2 5 2 
+20
+result
+-1
+14
+20
+pool
+689
+state
+0 1 1 6 6 3 2 2 2 
+689
+result
+-1
+15
+21
+state
+1 1 1 6 6 3 2 2 2 
+21
+result
+-1
+16
+21
+pool
+125
+state
+1 1 0 6 6 3 5 5 2 
+125
+result
+-1
+12
+23
+state
+1 1 0 6 6 3 2 5 2 
+23
+result
+-1
+13
+23
+pool
+24
+state
+0 1 1 6 3 1 2 5 2 
+24
+result
+1
+17
+24
+pool
+25
+state
+0 1 1 3 6 6 2 2 5 
+25
+result
+-1
+17
+25
+pool
+26
+state
+1 1 0 6 3 3 2 2 5 
+26
+result
+-1
+16
+26
+pool
+27
+state
+1 0 0 6 3 3 5 2 2 
+27
+result
+-1
+15
+27
+pool
+28
+state
+0 1 1 6 3 3 2 5 2 
+28
+result
+-1
+15
+28
+pool
+787
+state
+0 0 0 6 1 3 5 0 2 
+787
+result
+-1
+10
+786
+state
+0 0 0 6 6 3 5 0 2 
+786
+result
+-1
+11
+785
+state
+1 0 0 6 6 3 5 0 2 
+785
+result
+-1
+12
+784
+state
+1 0 0 6 3 3 5 0 2 
+784
+result
+-1
+13
+783
+state
+1 1 0 6 3 3 5 0 2 
+783
+result
+-1
+14
+782
+state
+1 1 0 6 3 3 2 0 2 
+782
+result
+-1
+15
+29
+state
+1 0 0 6 3 3 2 0 2 
+29
+result
+-1
+16
+29
+pool
+594
+state
+0 1 0 3 3 6 5 5 2 
+594
+result
+1
+13
+593
+state
+0 1 0 3 3 6 5 2 2 
+593
+result
+1
+14
+734
+state
+0 1 0 6 3 6 5 5 2 
+734
+result
+1
+14
+790
+state
+0 1 0 6 3 6 5 2 2 
+790
+result
+1
+15
+789
+state
+0 1 0 6 3 6 2 2 2 
+789
+result
+1
+16
+788
+state
+0 1 0 1 3 6 2 2 2 
+788
+result
+1
+17
+30
+state
+0 1 0 1 3 6 2 2 5 
+30
+result
+1
+18
+30
+pool
+31
+state
+1 1 1 3 6 6 2 2 2 
+31
+result
+-1
+16
+31
+pool
+32
+state
+1 0 0 3 3 3 2 2 2 
+32
+result
+-1
+15
+32
+pool
+791
+state
+1 1 0 3 3 6 2 5 2 
+791
+result
+-1
+15
+33
+state
+1 1 1 3 3 6 2 5 2 
+33
+result
+-1
+16
+33
+pool
+34
+pool
+803
+state
+1 1 0 3 0 6 4 0 2 
+803
+result
+-1
+10
+802
+state
+1 0 0 3 0 6 4 0 2 
+802
+result
+-1
+11
+801
+state
+0 0 0 3 0 6 4 0 2 
+801
+result
+-1
+12
+800
+state
+0 0 0 3 0 6 0 0 2 
+800
+result
+-1
+13
+799
+state
+0 0 0 3 0 6 5 0 2 
+799
+result
+-1
+14
+798
+state
+0 0 0 3 4 6 5 0 2 
+798
+result
+-1
+15
+797
+state
+0 0 0 3 4 6 5 5 2 
+797
+result
+-1
+16
+796
+state
+0 1 0 3 4 6 5 5 2 
+796
+result
+-1
+17
+795
+state
+0 1 0 3 4 6 5 2 2 
+795
+result
+-1
+18
+794
+state
+0 1 0 3 4 6 2 2 2 
+794
+result
+-1
+19
+793
+state
+0 1 0 3 4 6 2 2 5 
+793
+result
+-1
+20
+792
+state
+0 0 0 3 4 6 2 2 5 
+792
+result
+-1
+21
+35
+state
+0 0 0 3 4 1 2 2 5 
+35
+result
+-1
+22
+35
+pool
+807
+state
+0 1 0 6 1 3 5 0 2 
+807
+result
+-1
+10
+806
+state
+0 1 0 6 1 3 2 0 2 
+806
+result
+-1
+11
+805
+state
+0 0 0 6 1 3 2 0 2 
+805
+result
+-1
+12
+804
+state
+0 0 0 6 6 3 2 0 2 
+804
+result
+-1
+13
+36
+state
+1 0 0 6 6 3 2 0 2 
+36
+result
+-1
+14
+36
+pool
+37
+state
+1 1 1 1 6 3 2 2 2 
+37
+result
+-1
+17
+37
+pool
+38
+state
+1 1 1 6 6 6 2 2 2 
+38
+result
+-1
+16
+38
+pool
+821
+state
+1 1 0 3 0 6 4 0 5 
+821
+result
+-1
+11
+820
+state
+0 1 0 3 0 6 4 0 5 
+820
+result
+-1
+12
+819
+state
+0 0 0 3 0 6 4 0 5 
+819
+result
+-1
+13
+818
+state
+0 0 0 3 0 6 4 0 0 
+818
+result
+-1
+14
+817
+state
+0 0 0 3 0 6 0 0 0 
+817
+result
+-1
+15
+816
+state
+0 0 0 3 0 6 5 0 0 
+816
+result
+-1
+16
+815
+state
+0 0 0 3 0 6 5 5 0 
+815
+result
+-1
+17
+814
+state
+0 0 0 3 4 6 5 5 0 
+814
+result
+-1
+18
+813
+state
+0 1 0 3 4 6 5 5 0 
+813
+result
+-1
+19
+812
+state
+0 1 0 3 4 6 2 5 0 
+812
+result
+-1
+20
+811
+state
+0 1 0 3 4 6 2 2 0 
+811
+result
+-1
+21
+810
+state
+0 0 0 3 4 6 2 2 0 
+810
+result
+-1
+22
+809
+state
+0 0 1 3 4 6 2 2 0 
+809
+result
+-1
+23
+808
+state
+0 0 1 3 4 1 2 2 0 
+808
+result
+-1
+24
+39
+state
+1 0 1 3 4 1 2 2 0 
+39
+result
+-1
+25
+39
+pool
+40
+state
+1 0 0 6 3 3 2 2 2 
+40
+result
+-1
+16
+40
+pool
+477
+state
+0 1 0 3 1 6 2 2 2 
+477
+result
+-1
+12
+840
+state
+0 1 0 3 1 6 2 2 5 
+840
+result
+-1
+13
+839
+state
+0 0 0 3 1 6 2 2 5 
+839
+result
+-1
+14
+838
+state
+0 0 1 3 1 6 2 2 5 
+838
+result
+-1
+15
+837
+state
+0 0 1 3 1 1 2 2 5 
+837
+result
+-1
+16
+42
+state
+1 0 1 3 1 1 2 2 5 
+42
+result
+-1
+17
+42
+pool
+844
+state
+0 1 1 3 6 3 4 5 2 
+844
+result
+1
+7
+843
+state
+1 1 1 3 6 3 4 5 2 
+843
+result
+1
+8
+842
+state
+1 1 1 3 3 3 4 5 2 
+842
+result
+1
+9
+841
+state
+1 1 0 3 3 3 4 5 2 
+841
+result
+1
+10
+43
+state
+1 1 0 3 3 3 4 2 2 
+43
+result
+1
+11
+43
+pool
+848
+state
+0 1 0 3 6 3 4 5 2 
+848
+result
+1
+8
+847
+state
+0 1 0 3 6 3 4 2 2 
+847
+result
+1
+9
+846
+state
+0 1 0 3 6 3 4 2 5 
+846
+result
+1
+10
+845
+state
+1 1 0 3 6 3 4 2 5 
+845
+result
+1
+11
+44
+state
+1 1 0 3 3 3 4 2 5 
+44
+result
+1
+12
+44
+pool
+571
+state
+1 1 1 3 1 6 3 5 2 
+571
+result
+1
+3
+914
+state
+1 1 1 3 1 6 6 5 2 
+914
+result
+1
+4
+913
+state
+0 1 1 3 1 6 6 5 2 
+913
+result
+1
+5
+912
+state
+0 1 1 3 1 6 1 5 2 
+912
+result
+1
+6
+911
+state
+0 1 1 3 1 6 4 5 2 
+911
+result
+1
+7
+910
+state
+0 1 1 3 6 6 4 5 2 
+910
+result
+1
+8
+909
+state
+1 1 1 3 6 6 4 5 2 
+909
+result
+1
+9
+908
+state
+1 1 0 3 6 6 4 5 2 
+908
+result
+1
+10
+47
+state
+1 1 0 3 6 6 4 2 2 
+47
+result
+1
+11
+47
+pool
+48
+state
+0 1 1 6 3 1 2 5 5 
+48
+result
+1
+18
+48
+pool
+599
+state
+0 0 1 3 3 6 4 0 2 
+599
+result
+1
+8
+598
+state
+0 0 0 3 3 6 4 0 2 
+598
+result
+1
+9
+709
+state
+0 0 1 6 3 6 4 0 2 
+709
+result
+1
+9
+708
+state
+0 0 0 6 3 6 4 0 2 
+708
+result
+1
+10
+707
+state
+0 0 0 6 3 6 0 0 2 
+707
+result
+1
+11
+706
+state
+0 0 0 6 3 6 5 0 2 
+706
+result
+1
+12
+705
+state
+0 0 0 6 3 6 5 5 2 
+705
+result
+1
+13
+704
+state
+0 0 0 6 3 1 5 5 2 
+704
+result
+1
+14
+703
+state
+0 1 0 6 3 1 5 5 2 
+703
+result
+1
+15
+702
+state
+0 1 0 6 3 1 2 5 2 
+702
+result
+1
+16
+597
+state
+0 0 0 3 3 6 0 0 2 
+597
+result
+1
+10
+596
+state
+0 0 0 3 3 6 5 0 2 
+596
+result
+1
+11
+595
+state
+0 0 0 3 3 6 5 5 2 
+595
+result
+1
+12
+469
+state
+0 1 1 3 6 1 2 2 2 
+469
+result
+-1
+15
+51
+state
+0 0 1 3 6 1 2 2 2 
+51
+result
+-1
+16
+51
+pool
+1023
+state
+1 0 0 6 1 3 5 2 5 
+1023
+result
+-1
+14
+1022
+state
+0 0 0 6 1 3 5 2 5 
+1022
+result
+-1
+15
+1021
+state
+0 0 0 6 1 3 0 2 5 
+1021
+result
+-1
+16
+1020
+state
+0 0 0 6 6 3 0 2 5 
+1020
+result
+-1
+17
+1019
+state
+1 0 0 6 6 3 0 2 5 
+1019
+result
+-1
+18
+1018
+state
+1 0 0 6 3 3 0 2 5 
+1018
+result
+-1
+19
+52
+state
+1 0 0 6 3 3 5 2 5 
+52
+result
+-1
+20
+52
+pool
+53
+pool
+1028
+state
+0 0 0 6 3 3 5 0 2 
+1028
+result
+-1
+12
+1027
+state
+0 1 0 6 3 3 5 0 2 
+1027
+result
+-1
+13
+1026
+state
+0 1 0 6 3 3 2 0 2 
+1026
+result
+-1
+14
+1025
+state
+0 0 0 6 3 3 2 0 2 
+1025
+result
+-1
+15
+1024
+state
+0 0 1 6 3 3 2 0 2 
+1024
+result
+-1
+16
+54
+state
+0 0 1 6 3 3 2 5 2 
+54
+result
+-1
+17
+54
+pool
+55
+state
+1 1 1 3 3 6 2 5 5 
+55
+result
+-1
+16
+55
+pool
+1029
+state
+1 0 0 6 6 3 2 5 2 
+1029
+result
+-1
+14
+56
+state
+1 0 1 6 6 3 2 5 2 
+56
+result
+-1
+15
+56
+pool
+57
+pool
+90
+state
+1 1 0 6 6 3 2 2 2 
+90
+result
+-1
+14
+58
+state
+1 0 0 6 6 3 2 2 2 
+58
+result
+-1
+15
+58
+pool
+1041
+state
+0 1 0 1 6 3 2 2 2 
+1041
+result
+-1
+14
+83
+state
+0 0 0 1 6 3 2 2 2 
+83
+result
+-1
+15
+60
+state
+1 0 0 1 6 3 2 2 2 
+60
+result
+-1
+16
+60
+pool
+61
+state
+1 1 1 6 6 3 2 5 2 
+61
+result
+-1
+14
+61
+pool
+1074
+state
+0 0 1 3 4 6 2 2 5 
+1074
+result
+-1
+16
+62
+state
+0 0 1 3 4 1 2 2 5 
+62
+result
+-1
+17
+62
+pool
+488
+state
+0 0 1 3 1 6 5 5 2 
+488
+result
+-1
+10
+482
+state
+0 1 1 3 1 6 5 5 2 
+482
+result
+-1
+11
+475
+state
+0 1 1 3 1 6 2 5 2 
+475
+result
+-1
+12
+63
+state
+0 1 1 3 6 6 2 5 2 
+63
+result
+-1
+13
+63
+pool
+1079
+state
+0 1 0 3 1 6 5 0 2 
+1079
+result
+-1
+9
+1078
+state
+0 1 0 3 1 6 2 0 2 
+1078
+result
+-1
+10
+1077
+state
+0 0 0 3 1 6 2 0 2 
+1077
+result
+-1
+11
+1076
+state
+0 0 1 3 1 6 2 0 2 
+1076
+result
+-1
+12
+1075
+state
+0 0 1 3 6 6 2 0 2 
+1075
+result
+-1
+13
+64
+state
+1 0 1 3 6 6 2 0 2 
+64
+result
+-1
+14
+64
+pool
+1080
+state
+0 1 0 6 3 1 5 2 2 
+1080
+result
+1
+16
+65
+state
+0 1 1 6 3 1 5 2 2 
+65
+result
+1
+17
+65
+pool
+66
+state
+1 1 1 6 3 6 2 2 5 
+66
+result
+-1
+18
+66
+pool
+1081
+state
+0 1 1 1 3 6 2 2 2 
+1081
+result
+1
+18
+67
+state
+0 1 1 1 3 6 2 2 5 
+67
+result
+1
+19
+67
+pool
+1179
+state
+1 1 0 6 1 3 5 0 2 
+1179
+result
+-1
+10
+901
+state
+1 1 1 6 1 3 5 0 2 
+901
+result
+-1
+11
+1178
+state
+0 1 1 6 1 3 5 0 2 
+1178
+result
+-1
+12
+1177
+state
+0 1 1 6 1 3 2 0 2 
+1177
+result
+-1
+13
+1176
+state
+0 1 1 6 6 3 2 0 2 
+1176
+result
+-1
+14
+1175
+state
+1 1 1 6 6 3 2 0 2 
+1175
+result
+-1
+15
+1174
+state
+1 1 1 6 6 3 2 0 5 
+1174
+result
+-1
+16
+69
+state
+1 1 1 6 6 6 2 0 5 
+69
+result
+-1
+17
+69
+pool
+70
+state
+1 0 1 3 4 1 2 2 5 
+70
+result
+-1
+18
+70
+pool
+72
+pool
+1244
+state
+0 0 0 3 1 1 5 2 2 
+1244
+result
+-1
+13
+73
+state
+0 0 0 3 6 1 5 2 2 
+73
+result
+-1
+14
+73
+pool
+1045
+state
+0 0 1 6 1 3 2 2 2 
+1045
+result
+-1
+14
+75
+state
+0 0 1 6 6 3 2 2 2 
+75
+result
+-1
+15
+75
+pool
+78
+pool
+80
+state
+0 1 0 6 3 1 2 5 5 
+80
+result
+1
+17
+80
+pool
+81
+state
+1 1 1 3 3 6 2 2 5 
+81
+result
+-1
+17
+81
+pool
+1319
+state
+1 1 1 6 1 3 6 5 2 
+1319
+result
+1
+4
+1318
+state
+0 1 1 6 1 3 6 5 2 
+1318
+result
+1
+5
+1317
+state
+0 1 1 6 1 3 1 5 2 
+1317
+result
+1
+6
+1316
+state
+0 1 1 6 1 3 4 5 2 
+1316
+result
+1
+7
+1315
+state
+0 1 1 6 6 3 4 5 2 
+1315
+result
+1
+8
+1314
+state
+1 1 1 6 6 3 4 5 2 
+1314
+result
+1
+9
+1313
+state
+1 1 0 6 6 3 4 5 2 
+1313
+result
+1
+10
+82
+state
+1 1 0 6 6 3 4 2 2 
+82
+result
+1
+11
+82
+pool
+83
+pool
+1320
+state
+0 1 0 6 6 3 5 2 2 
+1320
+result
+-1
+12
+119
+state
+1 1 0 6 6 3 5 2 2 
+119
+result
+-1
+13
+84
+state
+1 1 0 6 6 3 5 2 5 
+84
+result
+-1
+14
+84
+pool
+1323
+state
+0 0 0 1 3 6 5 5 2 
+1323
+result
+1
+14
+1322
+state
+0 1 0 1 3 6 5 5 2 
+1322
+result
+1
+15
+1321
+state
+0 1 0 1 3 1 5 5 2 
+1321
+result
+1
+16
+85
+state
+0 1 0 1 3 1 5 5 5 
+85
+result
+1
+17
+85
+pool
+1325
+state
+0 1 0 6 1 3 5 5 2 
+1325
+result
+-1
+10
+1324
+state
+0 1 0 6 1 3 2 5 2 
+1324
+result
+-1
+11
+957
+state
+0 1 0 1 1 3 2 5 2 
+957
+result
+-1
+12
+86
+state
+1 1 0 1 1 3 2 5 2 
+86
+result
+-1
+13
+86
+pool
+87
+state
+0 0 0 6 1 1 2 2 0 
+87
+result
+1
+17
+87
+pool
+1355
+state
+1 1 1 3 3 3 4 2 2 
+1355
+result
+1
+10
+89
+state
+1 1 1 3 3 3 4 2 5 
+89
+result
+1
+11
+89
+pool
+90
+pool
+1357
+state
+1 0 0 1 6 6 5 5 5 
+1357
+result
+2
+15
+1356
+state
+1 0 0 1 3 6 5 5 5 
+1356
+result
+2
+16
+91
+state
+0 0 0 1 3 6 5 5 5 
+91
+result
+2
+17
+91
+pool
+91
+result
+3
+16
+1372
+state
+0 0 0 3 4 6 5 2 5 
+1372
+result
+-1
+14
+1371
+state
+0 0 0 3 0 6 5 2 5 
+1371
+result
+-1
+15
+1370
+state
+1 0 0 3 0 6 5 2 5 
+1370
+result
+-1
+16
+92
+state
+1 1 0 3 0 6 5 2 5 
+92
+result
+-1
+17
+92
+pool
+1374
+state
+1 1 0 6 3 3 2 5 2 
+1374
+result
+-1
+14
+1373
+state
+1 1 1 6 3 3 2 5 2 
+1373
+result
+-1
+15
+93
+state
+1 1 1 6 3 3 2 5 5 
+93
+result
+-1
+16
+93
+pool
+963
+state
+0 1 0 1 1 3 5 5 2 
+963
+result
+-1
+11
+959
+state
+1 1 0 1 1 3 5 5 2 
+959
+result
+-1
+12
+96
+state
+1 1 0 1 1 3 5 5 5 
+96
+result
+-1
+13
+96
+pool
+1378
+state
+1 1 0 3 3 6 2 2 5 
+1378
+result
+-1
+16
+97
+state
+1 0 0 3 3 6 2 2 5 
+97
+result
+-1
+17
+97
+pool
+98
+state
+1 1 1 6 3 3 5 2 5 
+98
+result
+-1
+16
+98
+pool
+99
+pool

@@ -1,0 +1,4367 @@
+begin_sas
+begin_version
+3
+end_version
+begin_metric
+1
+end_metric
+36
+begin_variable
+var0
+-1
+36
+Atom at-robot(loc-x0-y0)
+Atom at-robot(loc-x0-y1)
+Atom at-robot(loc-x0-y2)
+Atom at-robot(loc-x0-y3)
+Atom at-robot(loc-x0-y4)
+Atom at-robot(loc-x0-y5)
+Atom at-robot(loc-x1-y0)
+Atom at-robot(loc-x1-y1)
+Atom at-robot(loc-x1-y2)
+Atom at-robot(loc-x1-y3)
+Atom at-robot(loc-x1-y4)
+Atom at-robot(loc-x1-y5)
+Atom at-robot(loc-x2-y0)
+Atom at-robot(loc-x2-y1)
+Atom at-robot(loc-x2-y2)
+Atom at-robot(loc-x2-y3)
+Atom at-robot(loc-x2-y4)
+Atom at-robot(loc-x2-y5)
+Atom at-robot(loc-x3-y0)
+Atom at-robot(loc-x3-y1)
+Atom at-robot(loc-x3-y2)
+Atom at-robot(loc-x3-y3)
+Atom at-robot(loc-x3-y4)
+Atom at-robot(loc-x3-y5)
+Atom at-robot(loc-x4-y0)
+Atom at-robot(loc-x4-y1)
+Atom at-robot(loc-x4-y2)
+Atom at-robot(loc-x4-y3)
+Atom at-robot(loc-x4-y4)
+Atom at-robot(loc-x4-y5)
+Atom at-robot(loc-x5-y0)
+Atom at-robot(loc-x5-y1)
+Atom at-robot(loc-x5-y2)
+Atom at-robot(loc-x5-y3)
+Atom at-robot(loc-x5-y4)
+Atom at-robot(loc-x5-y5)
+end_variable
+begin_variable
+var1
+-1
+2
+Atom visited(loc-x5-y5)
+<none of those>
+end_variable
+begin_variable
+var2
+-1
+2
+Atom visited(loc-x5-y4)
+<none of those>
+end_variable
+begin_variable
+var3
+-1
+2
+Atom visited(loc-x5-y3)
+<none of those>
+end_variable
+begin_variable
+var4
+-1
+2
+Atom visited(loc-x5-y2)
+<none of those>
+end_variable
+begin_variable
+var5
+-1
+2
+Atom visited(loc-x5-y1)
+<none of those>
+end_variable
+begin_variable
+var6
+-1
+2
+Atom visited(loc-x5-y0)
+<none of those>
+end_variable
+begin_variable
+var7
+-1
+2
+Atom visited(loc-x4-y5)
+<none of those>
+end_variable
+begin_variable
+var8
+-1
+2
+Atom visited(loc-x4-y4)
+<none of those>
+end_variable
+begin_variable
+var9
+-1
+2
+Atom visited(loc-x4-y3)
+<none of those>
+end_variable
+begin_variable
+var10
+-1
+2
+Atom visited(loc-x4-y2)
+<none of those>
+end_variable
+begin_variable
+var11
+-1
+2
+Atom visited(loc-x4-y1)
+<none of those>
+end_variable
+begin_variable
+var12
+-1
+2
+Atom visited(loc-x4-y0)
+<none of those>
+end_variable
+begin_variable
+var13
+-1
+2
+Atom visited(loc-x3-y5)
+<none of those>
+end_variable
+begin_variable
+var14
+-1
+2
+Atom visited(loc-x3-y4)
+<none of those>
+end_variable
+begin_variable
+var15
+-1
+2
+Atom visited(loc-x3-y2)
+<none of those>
+end_variable
+begin_variable
+var16
+-1
+2
+Atom visited(loc-x3-y1)
+<none of those>
+end_variable
+begin_variable
+var17
+-1
+2
+Atom visited(loc-x3-y0)
+<none of those>
+end_variable
+begin_variable
+var18
+-1
+2
+Atom visited(loc-x2-y5)
+<none of those>
+end_variable
+begin_variable
+var19
+-1
+2
+Atom visited(loc-x2-y4)
+<none of those>
+end_variable
+begin_variable
+var20
+-1
+2
+Atom visited(loc-x2-y3)
+<none of those>
+end_variable
+begin_variable
+var21
+-1
+2
+Atom visited(loc-x2-y2)
+<none of those>
+end_variable
+begin_variable
+var22
+-1
+2
+Atom visited(loc-x2-y1)
+<none of those>
+end_variable
+begin_variable
+var23
+-1
+2
+Atom visited(loc-x2-y0)
+<none of those>
+end_variable
+begin_variable
+var24
+-1
+2
+Atom visited(loc-x1-y5)
+<none of those>
+end_variable
+begin_variable
+var25
+-1
+2
+Atom visited(loc-x1-y4)
+<none of those>
+end_variable
+begin_variable
+var26
+-1
+2
+Atom visited(loc-x1-y3)
+<none of those>
+end_variable
+begin_variable
+var27
+-1
+2
+Atom visited(loc-x1-y2)
+<none of those>
+end_variable
+begin_variable
+var28
+-1
+2
+Atom visited(loc-x1-y1)
+<none of those>
+end_variable
+begin_variable
+var29
+-1
+2
+Atom visited(loc-x1-y0)
+<none of those>
+end_variable
+begin_variable
+var30
+-1
+2
+Atom visited(loc-x0-y5)
+<none of those>
+end_variable
+begin_variable
+var31
+-1
+2
+Atom visited(loc-x0-y4)
+<none of those>
+end_variable
+begin_variable
+var32
+-1
+2
+Atom visited(loc-x0-y3)
+<none of those>
+end_variable
+begin_variable
+var33
+-1
+2
+Atom visited(loc-x0-y2)
+<none of those>
+end_variable
+begin_variable
+var34
+-1
+2
+Atom visited(loc-x0-y1)
+<none of those>
+end_variable
+begin_variable
+var35
+-1
+2
+Atom visited(loc-x0-y0)
+<none of those>
+end_variable
+1
+begin_mutex_group
+36
+0 0
+0 1
+0 2
+0 3
+0 4
+0 5
+0 6
+0 7
+0 8
+0 9
+0 10
+0 11
+0 12
+0 13
+0 14
+0 15
+0 16
+0 17
+0 18
+0 19
+0 20
+0 21
+0 22
+0 23
+0 24
+0 25
+0 26
+0 27
+0 28
+0 29
+0 30
+0 31
+0 32
+0 33
+0 34
+0 35
+end_mutex_group
+begin_state
+21
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+end_state
+begin_goal
+35
+1 0
+2 0
+3 0
+4 0
+5 0
+6 0
+7 0
+8 0
+9 0
+10 0
+11 0
+12 0
+13 0
+14 0
+15 0
+16 0
+17 0
+18 0
+19 0
+20 0
+21 0
+22 0
+23 0
+24 0
+25 0
+26 0
+27 0
+28 0
+29 0
+30 0
+31 0
+32 0
+33 0
+34 0
+35 0
+end_goal
+120
+begin_operator
+move loc-x0-y0 loc-x0-y1
+0
+2
+0 0 0 1
+0 34 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y0 loc-x1-y0
+0
+2
+0 0 0 6
+0 29 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y1 loc-x0-y0
+0
+2
+0 0 1 0
+0 35 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y1 loc-x0-y2
+0
+2
+0 0 1 2
+0 33 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y1 loc-x1-y1
+0
+2
+0 0 1 7
+0 28 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y2 loc-x0-y1
+0
+2
+0 0 2 1
+0 34 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y2 loc-x0-y3
+0
+2
+0 0 2 3
+0 32 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y2 loc-x1-y2
+0
+2
+0 0 2 8
+0 27 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y3 loc-x0-y2
+0
+2
+0 0 3 2
+0 33 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y3 loc-x0-y4
+0
+2
+0 0 3 4
+0 31 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y3 loc-x1-y3
+0
+2
+0 0 3 9
+0 26 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y4 loc-x0-y3
+0
+2
+0 0 4 3
+0 32 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y4 loc-x0-y5
+0
+2
+0 0 4 5
+0 30 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y4 loc-x1-y4
+0
+2
+0 0 4 10
+0 25 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y5 loc-x0-y4
+0
+2
+0 0 5 4
+0 31 -1 0
+1
+end_operator
+begin_operator
+move loc-x0-y5 loc-x1-y5
+0
+2
+0 0 5 11
+0 24 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y0 loc-x0-y0
+0
+2
+0 0 6 0
+0 35 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y0 loc-x1-y1
+0
+2
+0 0 6 7
+0 28 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y0 loc-x2-y0
+0
+2
+0 0 6 12
+0 23 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y1 loc-x0-y1
+0
+2
+0 0 7 1
+0 34 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y1 loc-x1-y0
+0
+2
+0 0 7 6
+0 29 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y1 loc-x1-y2
+0
+2
+0 0 7 8
+0 27 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y1 loc-x2-y1
+0
+2
+0 0 7 13
+0 22 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y2 loc-x0-y2
+0
+2
+0 0 8 2
+0 33 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y2 loc-x1-y1
+0
+2
+0 0 8 7
+0 28 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y2 loc-x1-y3
+0
+2
+0 0 8 9
+0 26 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y2 loc-x2-y2
+0
+2
+0 0 8 14
+0 21 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y3 loc-x0-y3
+0
+2
+0 0 9 3
+0 32 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y3 loc-x1-y2
+0
+2
+0 0 9 8
+0 27 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y3 loc-x1-y4
+0
+2
+0 0 9 10
+0 25 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y3 loc-x2-y3
+0
+2
+0 0 9 15
+0 20 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y4 loc-x0-y4
+0
+2
+0 0 10 4
+0 31 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y4 loc-x1-y3
+0
+2
+0 0 10 9
+0 26 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y4 loc-x1-y5
+0
+2
+0 0 10 11
+0 24 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y4 loc-x2-y4
+0
+2
+0 0 10 16
+0 19 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y5 loc-x0-y5
+0
+2
+0 0 11 5
+0 30 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y5 loc-x1-y4
+0
+2
+0 0 11 10
+0 25 -1 0
+1
+end_operator
+begin_operator
+move loc-x1-y5 loc-x2-y5
+0
+2
+0 0 11 17
+0 18 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y0 loc-x1-y0
+0
+2
+0 0 12 6
+0 29 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y0 loc-x2-y1
+0
+2
+0 0 12 13
+0 22 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y0 loc-x3-y0
+0
+2
+0 0 12 18
+0 17 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y1 loc-x1-y1
+0
+2
+0 0 13 7
+0 28 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y1 loc-x2-y0
+0
+2
+0 0 13 12
+0 23 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y1 loc-x2-y2
+0
+2
+0 0 13 14
+0 21 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y1 loc-x3-y1
+0
+2
+0 0 13 19
+0 16 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y2 loc-x1-y2
+0
+2
+0 0 14 8
+0 27 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y2 loc-x2-y1
+0
+2
+0 0 14 13
+0 22 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y2 loc-x2-y3
+0
+2
+0 0 14 15
+0 20 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y2 loc-x3-y2
+0
+2
+0 0 14 20
+0 15 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y3 loc-x1-y3
+0
+2
+0 0 15 9
+0 26 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y3 loc-x2-y2
+0
+2
+0 0 15 14
+0 21 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y3 loc-x2-y4
+0
+2
+0 0 15 16
+0 19 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y3 loc-x3-y3
+0
+1
+0 0 15 21
+1
+end_operator
+begin_operator
+move loc-x2-y4 loc-x1-y4
+0
+2
+0 0 16 10
+0 25 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y4 loc-x2-y3
+0
+2
+0 0 16 15
+0 20 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y4 loc-x2-y5
+0
+2
+0 0 16 17
+0 18 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y4 loc-x3-y4
+0
+2
+0 0 16 22
+0 14 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y5 loc-x1-y5
+0
+2
+0 0 17 11
+0 24 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y5 loc-x2-y4
+0
+2
+0 0 17 16
+0 19 -1 0
+1
+end_operator
+begin_operator
+move loc-x2-y5 loc-x3-y5
+0
+2
+0 0 17 23
+0 13 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y0 loc-x2-y0
+0
+2
+0 0 18 12
+0 23 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y0 loc-x3-y1
+0
+2
+0 0 18 19
+0 16 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y0 loc-x4-y0
+0
+2
+0 0 18 24
+0 12 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y1 loc-x2-y1
+0
+2
+0 0 19 13
+0 22 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y1 loc-x3-y0
+0
+2
+0 0 19 18
+0 17 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y1 loc-x3-y2
+0
+2
+0 0 19 20
+0 15 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y1 loc-x4-y1
+0
+2
+0 0 19 25
+0 11 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y2 loc-x2-y2
+0
+2
+0 0 20 14
+0 21 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y2 loc-x3-y1
+0
+2
+0 0 20 19
+0 16 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y2 loc-x3-y3
+0
+1
+0 0 20 21
+1
+end_operator
+begin_operator
+move loc-x3-y2 loc-x4-y2
+0
+2
+0 0 20 26
+0 10 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y3 loc-x2-y3
+0
+2
+0 0 21 15
+0 20 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y3 loc-x3-y2
+0
+2
+0 0 21 20
+0 15 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y3 loc-x3-y4
+0
+2
+0 0 21 22
+0 14 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y3 loc-x4-y3
+0
+2
+0 0 21 27
+0 9 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y4 loc-x2-y4
+0
+2
+0 0 22 16
+0 19 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y4 loc-x3-y3
+0
+1
+0 0 22 21
+1
+end_operator
+begin_operator
+move loc-x3-y4 loc-x3-y5
+0
+2
+0 0 22 23
+0 13 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y4 loc-x4-y4
+0
+2
+0 0 22 28
+0 8 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y5 loc-x2-y5
+0
+2
+0 0 23 17
+0 18 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y5 loc-x3-y4
+0
+2
+0 0 23 22
+0 14 -1 0
+1
+end_operator
+begin_operator
+move loc-x3-y5 loc-x4-y5
+0
+2
+0 0 23 29
+0 7 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y0 loc-x3-y0
+0
+2
+0 0 24 18
+0 17 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y0 loc-x4-y1
+0
+2
+0 0 24 25
+0 11 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y0 loc-x5-y0
+0
+2
+0 0 24 30
+0 6 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y1 loc-x3-y1
+0
+2
+0 0 25 19
+0 16 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y1 loc-x4-y0
+0
+2
+0 0 25 24
+0 12 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y1 loc-x4-y2
+0
+2
+0 0 25 26
+0 10 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y1 loc-x5-y1
+0
+2
+0 0 25 31
+0 5 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y2 loc-x3-y2
+0
+2
+0 0 26 20
+0 15 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y2 loc-x4-y1
+0
+2
+0 0 26 25
+0 11 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y2 loc-x4-y3
+0
+2
+0 0 26 27
+0 9 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y2 loc-x5-y2
+0
+2
+0 0 26 32
+0 4 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y3 loc-x3-y3
+0
+1
+0 0 27 21
+1
+end_operator
+begin_operator
+move loc-x4-y3 loc-x4-y2
+0
+2
+0 0 27 26
+0 10 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y3 loc-x4-y4
+0
+2
+0 0 27 28
+0 8 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y3 loc-x5-y3
+0
+2
+0 0 27 33
+0 3 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y4 loc-x3-y4
+0
+2
+0 0 28 22
+0 14 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y4 loc-x4-y3
+0
+2
+0 0 28 27
+0 9 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y4 loc-x4-y5
+0
+2
+0 0 28 29
+0 7 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y4 loc-x5-y4
+0
+2
+0 0 28 34
+0 2 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y5 loc-x3-y5
+0
+2
+0 0 29 23
+0 13 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y5 loc-x4-y4
+0
+2
+0 0 29 28
+0 8 -1 0
+1
+end_operator
+begin_operator
+move loc-x4-y5 loc-x5-y5
+0
+2
+0 0 29 35
+0 1 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y0 loc-x4-y0
+0
+2
+0 0 30 24
+0 12 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y0 loc-x5-y1
+0
+2
+0 0 30 31
+0 5 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y1 loc-x4-y1
+0
+2
+0 0 31 25
+0 11 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y1 loc-x5-y0
+0
+2
+0 0 31 30
+0 6 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y1 loc-x5-y2
+0
+2
+0 0 31 32
+0 4 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y2 loc-x4-y2
+0
+2
+0 0 32 26
+0 10 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y2 loc-x5-y1
+0
+2
+0 0 32 31
+0 5 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y2 loc-x5-y3
+0
+2
+0 0 32 33
+0 3 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y3 loc-x4-y3
+0
+2
+0 0 33 27
+0 9 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y3 loc-x5-y2
+0
+2
+0 0 33 32
+0 4 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y3 loc-x5-y4
+0
+2
+0 0 33 34
+0 2 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y4 loc-x4-y4
+0
+2
+0 0 34 28
+0 8 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y4 loc-x5-y3
+0
+2
+0 0 34 33
+0 3 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y4 loc-x5-y5
+0
+2
+0 0 34 35
+0 1 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y5 loc-x4-y5
+0
+2
+0 0 35 29
+0 7 -1 0
+1
+end_operator
+begin_operator
+move loc-x5-y5 loc-x5-y4
+0
+2
+0 0 35 34
+0 2 -1 0
+1
+end_operator
+0
+end_sas
+0
+state
+21 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0
+result
+1
+35
+0
+pool
+1
+state
+29 1 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1
+result
+2
+33
+1
+pool
+621
+state
+8 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 
+621
+result
+1
+33
+620
+state
+9 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+620
+result
+1
+34
+619
+state
+15 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+619
+result
+1
+35
+26
+state
+14 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+26
+result
+1
+36
+18
+state
+20 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+18
+result
+1
+37
+618
+state
+26 1 1 1 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+618
+result
+1
+38
+14
+state
+27 1 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+14
+result
+1
+39
+2
+state
+28 1 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2
+result
+1
+40
+18
+result
+2
+36
+618
+result
+2
+37
+14
+result
+2
+38
+2
+result
+2
+39
+14
+result
+4
+36
+2
+result
+4
+37
+2
+pool
+618
+result
+4
+35
+2
+result
+6
+35
+14
+result
+5
+35
+3
+state
+34 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3
+result
+1
+31
+3
+pool
+618
+result
+5
+34
+657
+state
+27 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+657
+result
+1
+29
+656
+state
+33 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+656
+result
+1
+30
+5
+state
+26 0 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5
+result
+1
+28
+5
+pool
+378
+state
+23 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+378
+result
+1
+33
+6
+state
+23 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6
+result
+1
+31
+6
+pool
+380
+state
+16 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+380
+result
+1
+31
+379
+state
+17 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+379
+result
+1
+32
+1257
+state
+17 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1257
+result
+1
+30
+7
+state
+16 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7
+result
+1
+29
+7
+pool
+8
+state
+29 0 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8
+result
+1
+32
+8
+pool
+18
+result
+3
+35
+9
+state
+32 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+9
+result
+1
+27
+9
+pool
+11
+state
+28 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+11
+result
+1
+30
+11
+pool
+620
+result
+6
+29
+619
+result
+6
+30
+26
+result
+6
+31
+18
+result
+6
+32
+618
+result
+6
+33
+14
+result
+6
+34
+13
+state
+29 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+13
+result
+1
+30
+13
+pool
+14
+pool
+15
+state
+35 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+15
+result
+1
+31
+15
+pool
+41
+state
+20 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+41
+result
+1
+28
+16
+state
+21 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+16
+result
+3
+27
+16
+pool
+2582
+state
+29 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2582
+result
+1
+30
+2581
+state
+35 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2581
+result
+1
+31
+17
+state
+34 1 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+17
+result
+1
+32
+17
+pool
+18
+pool
+19
+state
+26 1 1 1 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+19
+result
+1
+30
+19
+pool
+20
+state
+14 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+20
+result
+1
+27
+20
+pool
+624
+state
+19 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 
+624
+result
+1
+30
+623
+state
+13 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 
+623
+result
+1
+31
+622
+state
+7 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 1 1 1 1 1 
+622
+result
+1
+32
+2401
+state
+15 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2401
+result
+2
+25
+1513
+state
+14 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1513
+result
+2
+26
+41
+result
+2
+27
+84
+state
+34 0 0 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+84
+result
+1
+31
+22
+state
+35 0 1 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+22
+result
+1
+32
+2
+result
+7
+34
+22
+pool
+3159
+state
+10 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 1 1 1 1 1 
+3159
+result
+2
+11
+3158
+state
+16 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 
+3158
+result
+2
+12
+3157
+state
+15 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 
+3157
+result
+2
+13
+3156
+state
+9 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 
+3156
+result
+2
+14
+3155
+state
+8 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 
+3155
+result
+2
+15
+3154
+state
+7 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 0 1 1 1 1 1 1 
+3154
+result
+2
+16
+3153
+state
+6 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 
+3153
+result
+2
+17
+3152
+state
+12 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 
+3152
+result
+2
+18
+3151
+state
+13 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3151
+result
+2
+19
+3150
+state
+14 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3150
+result
+2
+20
+3149
+state
+20 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3149
+result
+2
+21
+3148
+state
+19 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3148
+result
+2
+22
+3147
+state
+18 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3147
+result
+2
+23
+3146
+state
+24 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3146
+result
+2
+24
+3145
+state
+30 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3145
+result
+2
+25
+3144
+state
+31 0 0 0 0 0 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3144
+result
+2
+26
+23
+state
+25 0 0 0 0 1 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+23
+result
+2
+27
+23
+pool
+621
+result
+3
+31
+24
+state
+21 1 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+24
+result
+1
+35
+24
+pool
+3222
+state
+7 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 
+3222
+result
+1
+17
+3221
+state
+1 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 0 1 
+3221
+result
+1
+18
+3220
+state
+2 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+3220
+result
+1
+19
+3219
+state
+3 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 1 
+3219
+result
+1
+20
+3218
+state
+4 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 1 1 1 1 
+3218
+result
+1
+21
+3217
+state
+5 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 1 1 1 1 1 
+3217
+result
+1
+22
+3216
+state
+11 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 
+3216
+result
+1
+23
+3215
+state
+10 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 
+3215
+result
+1
+24
+3214
+state
+9 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 
+3214
+result
+1
+25
+3213
+state
+8 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+3213
+result
+1
+26
+3212
+state
+14 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3212
+result
+1
+27
+3211
+state
+15 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3211
+result
+1
+28
+3210
+state
+16 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3210
+result
+1
+29
+3209
+state
+17 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3209
+result
+1
+30
+80
+state
+23 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+80
+result
+1
+31
+25
+state
+22 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+25
+result
+1
+32
+25
+pool
+26
+pool
+28
+state
+10 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+28
+result
+1
+28
+28
+pool
+2593
+state
+19 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2593
+result
+1
+19
+2592
+state
+25 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2592
+result
+1
+20
+2591
+state
+31 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2591
+result
+1
+21
+2590
+state
+32 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2590
+result
+1
+22
+2589
+state
+26 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2589
+result
+1
+23
+2588
+state
+20 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2588
+result
+1
+24
+2587
+state
+14 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2587
+result
+1
+25
+2586
+state
+15 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2586
+result
+1
+26
+2585
+state
+16 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2585
+result
+1
+27
+2584
+state
+17 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2584
+result
+1
+28
+2583
+state
+23 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2583
+result
+1
+29
+3866
+state
+3 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+3866
+result
+1
+20
+3865
+state
+4 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+3865
+result
+1
+21
+3864
+state
+5 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+3864
+result
+1
+22
+3863
+state
+4 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 1 1 
+3863
+result
+1
+23
+3862
+state
+3 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 0 0 1 1 
+3862
+result
+1
+24
+3861
+state
+2 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 0 1 1 
+3861
+result
+1
+25
+3860
+state
+8 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 
+3860
+result
+1
+26
+3859
+state
+9 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 
+3859
+result
+1
+27
+3858
+state
+10 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 1 1 1 1 1 1 1 1 1 1 
+3858
+result
+1
+28
+3857
+state
+11 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 
+3857
+result
+1
+29
+3856
+state
+17 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3856
+result
+1
+30
+3855
+state
+23 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3855
+result
+1
+31
+3854
+state
+22 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3854
+result
+1
+32
+30
+state
+21 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+30
+result
+1
+33
+30
+pool
+31
+state
+14 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+31
+result
+1
+24
+31
+pool
+36
+state
+23 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+36
+result
+1
+29
+33
+state
+17 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+33
+result
+1
+28
+33
+pool
+4058
+state
+15 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4058
+result
+2
+28
+4057
+state
+14 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4057
+result
+2
+29
+4056
+state
+20 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4056
+result
+2
+30
+37
+state
+26 0 1 1 1 1 1 0 0 0 0 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+37
+result
+2
+31
+34
+state
+27 0 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+34
+result
+2
+32
+34
+pool
+36
+pool
+37
+pool
+39
+state
+18 0 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+39
+result
+2
+28
+39
+pool
+4552
+state
+13 0 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4552
+result
+2
+21
+4551
+state
+19 0 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4551
+result
+2
+22
+4550
+state
+25 0 1 1 1 1 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4550
+result
+2
+23
+4549
+state
+26 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4549
+result
+2
+24
+4548
+state
+27 0 1 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4548
+result
+2
+25
+40
+state
+21 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+40
+result
+2
+26
+40
+pool
+41
+pool
+4782
+state
+25 1 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4782
+result
+2
+15
+4781
+state
+31 1 1 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4781
+result
+2
+16
+4780
+state
+32 1 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4780
+result
+2
+17
+4779
+state
+33 1 1 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4779
+result
+2
+18
+4778
+state
+27 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4778
+result
+2
+19
+4777
+state
+26 1 1 1 1 1 1 0 0 1 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4777
+result
+2
+20
+4776
+state
+20 1 1 1 1 1 1 0 0 1 1 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4776
+result
+2
+21
+4775
+state
+19 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4775
+result
+2
+22
+4774
+state
+13 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4774
+result
+2
+23
+4773
+state
+7 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 
+4773
+result
+2
+24
+4772
+state
+1 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 0 1 
+4772
+result
+2
+25
+4771
+state
+2 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+4771
+result
+2
+26
+4770
+state
+8 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 1 
+4770
+result
+2
+27
+4769
+state
+14 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 1 
+4769
+result
+2
+28
+4768
+state
+15 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 
+4768
+result
+2
+29
+4767
+state
+9 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 
+4767
+result
+2
+30
+4766
+state
+3 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 1 
+4766
+result
+2
+31
+4765
+state
+4 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 
+4765
+result
+2
+32
+4764
+state
+5 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 
+4764
+result
+2
+33
+43
+state
+4 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 
+43
+result
+2
+34
+4780
+result
+4
+15
+4779
+result
+4
+16
+4778
+result
+4
+17
+4777
+result
+4
+18
+4776
+result
+4
+19
+4775
+result
+4
+20
+4774
+result
+4
+21
+4773
+result
+4
+22
+4772
+result
+4
+23
+4771
+result
+4
+24
+4770
+result
+4
+25
+4769
+result
+4
+26
+4768
+result
+4
+27
+4767
+result
+4
+28
+4766
+result
+4
+29
+4765
+result
+4
+30
+4764
+result
+4
+31
+43
+result
+4
+32
+4779
+result
+6
+14
+4778
+result
+6
+15
+4777
+result
+6
+16
+4776
+result
+6
+17
+4775
+result
+6
+18
+4774
+result
+6
+19
+4773
+result
+6
+20
+4772
+result
+6
+21
+4771
+result
+6
+22
+4770
+result
+6
+23
+4769
+result
+6
+24
+4768
+result
+6
+25
+4767
+result
+6
+26
+4766
+result
+6
+27
+4765
+result
+6
+28
+4764
+result
+6
+29
+43
+result
+6
+30
+43
+pool
+3286
+state
+32 0 0 0 0 1 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+3286
+result
+2
+27
+44
+state
+26 0 0 0 1 1 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+44
+result
+2
+28
+44
+pool
+1510
+state
+26 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1510
+result
+2
+28
+4814
+state
+32 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4814
+result
+2
+29
+75
+state
+33 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+75
+result
+2
+30
+46
+state
+34 0 0 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+46
+result
+2
+31
+46
+pool
+4992
+state
+20 0 1 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+4992
+result
+2
+25
+48
+state
+21 0 1 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+48
+result
+2
+26
+48
+pool
+49
+state
+10 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+49
+result
+1
+27
+49
+pool
+50
+state
+27 1 0 0 1 1 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+50
+result
+2
+31
+50
+pool
+5257
+state
+33 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5257
+result
+1
+23
+5256
+state
+34 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5256
+result
+1
+24
+5255
+state
+33 0 1 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5255
+result
+1
+25
+5254
+state
+27 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5254
+result
+1
+26
+65
+state
+26 0 1 1 1 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+65
+result
+1
+27
+51
+state
+20 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+51
+result
+1
+28
+5254
+result
+2
+25
+65
+result
+2
+26
+51
+result
+2
+27
+51
+pool
+5277
+state
+7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 1 1 1 1 1 1 1 
+5277
+result
+2
+11
+5276
+state
+13 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 1 1 1 
+5276
+result
+2
+12
+5275
+state
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 1 1 1 1 1 1 1 1 1 
+5275
+result
+2
+13
+5274
+state
+18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5274
+result
+2
+14
+5273
+state
+24 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5273
+result
+2
+15
+5272
+state
+30 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5272
+result
+2
+16
+5271
+state
+31 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5271
+result
+2
+17
+5270
+state
+32 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5270
+result
+2
+18
+5269
+state
+33 0 0 0 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5269
+result
+2
+19
+5268
+state
+34 0 0 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5268
+result
+2
+20
+5267
+state
+35 0 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5267
+result
+2
+21
+5266
+state
+29 1 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5266
+result
+2
+22
+5265
+state
+23 1 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5265
+result
+2
+23
+5264
+state
+17 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5264
+result
+2
+24
+5263
+state
+16 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5263
+result
+2
+25
+5262
+state
+10 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+5262
+result
+2
+26
+5261
+state
+9 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+5261
+result
+2
+27
+5260
+state
+15 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5260
+result
+2
+28
+5259
+state
+14 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5259
+result
+2
+29
+5258
+state
+20 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+5258
+result
+2
+30
+52
+state
+19 1 1 1 1 1 1 0 0 0 0 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+52
+result
+2
+31
+52
+pool
+625
+state
+18 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 
+625
+result
+3
+27
+624
+result
+3
+28
+623
+result
+3
+29
+622
+result
+3
+30
+623
+result
+4
+28
+622
+result
+4
+29
+621
+result
+4
+30
+53
+state
+13 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+53
+result
+1
+28
+53
+pool
+634
+state
+16 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 
+634
+result
+4
+17
+633
+state
+10 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 
+633
+result
+4
+18
+632
+state
+4 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 
+632
+result
+4
+19
+631
+state
+3 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 
+631
+result
+4
+20
+630
+state
+2 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 
+630
+result
+4
+21
+629
+state
+1 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 0 0 
+629
+result
+4
+22
+628
+state
+0 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 0 
+628
+result
+4
+23
+627
+state
+6 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 
+627
+result
+4
+24
+626
+state
+12 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 
+626
+result
+4
+25
+625
+result
+4
+26
+624
+result
+4
+27
+55
+state
+15 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+55
+result
+1
+25
+55
+pool
+57
+state
+9 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 
+57
+result
+3
+23
+57
+pool
+6028
+state
+9 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 
+6028
+result
+2
+26
+6027
+state
+8 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 
+6027
+result
+2
+27
+6026
+state
+14 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6026
+result
+2
+28
+6025
+state
+15 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6025
+result
+2
+29
+58
+state
+16 0 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+58
+result
+2
+30
+6026
+result
+3
+27
+6025
+result
+3
+28
+58
+result
+3
+29
+58
+pool
+6061
+state
+27 0 0 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6061
+result
+1
+24
+6060
+state
+26 0 0 1 1 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6060
+result
+1
+25
+6059
+state
+20 0 0 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6059
+result
+1
+26
+6058
+state
+14 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6058
+result
+1
+27
+6057
+state
+15 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6057
+result
+1
+28
+6056
+state
+16 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6056
+result
+1
+29
+6055
+state
+17 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6055
+result
+1
+30
+6054
+state
+23 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6054
+result
+1
+31
+59
+state
+22 0 0 1 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+59
+result
+1
+32
+59
+pool
+61
+state
+19 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+61
+result
+2
+29
+61
+pool
+6542
+state
+25 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6542
+result
+1
+24
+6541
+state
+31 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6541
+result
+1
+25
+6540
+state
+32 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6540
+result
+1
+26
+6539
+state
+33 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6539
+result
+1
+27
+6538
+state
+34 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6538
+result
+1
+28
+6537
+state
+33 0 1 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6537
+result
+1
+29
+6536
+state
+27 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6536
+result
+1
+30
+6535
+state
+26 0 1 1 1 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+6535
+result
+1
+31
+62
+state
+20 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 
+62
+result
+1
+32
+6541
+result
+3
+23
+6540
+result
+3
+24
+6539
+result
+3
+25
+6538
+result
+3
+26
+6537
+result
+3
+27
+6536
+result
+3
+28
+6535
+result
+3
+29
+62
+result
+3
+30
+62
+pool
+6566
+state
+20 1 1 1 1 1 1 0 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6566
+result
+1
+35
+6565
+state
+14 1 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6565
+result
+1
+36
+63
+state
+15 1 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+63
+result
+1
+37
+6565
+result
+3
+34
+63
+result
+3
+35
+63
+pool
+6603
+state
+27 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6603
+result
+1
+24
+6602
+state
+33 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6602
+result
+1
+25
+6601
+state
+34 0 0 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6601
+result
+1
+26
+64
+state
+28 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+64
+result
+1
+27
+64
+pool
+65
+pool
+6541
+result
+4
+22
+6542
+result
+2
+23
+6540
+result
+4
+23
+6539
+result
+4
+24
+6538
+result
+4
+25
+6537
+result
+4
+26
+6536
+result
+4
+27
+6535
+result
+4
+28
+62
+result
+4
+29
+2592
+result
+2
+19
+2591
+result
+2
+20
+2590
+result
+2
+21
+2589
+result
+2
+22
+5257
+result
+2
+22
+2588
+result
+2
+23
+6603
+result
+2
+23
+5256
+result
+2
+23
+6061
+result
+2
+23
+2587
+result
+2
+24
+6602
+result
+2
+24
+5255
+result
+2
+24
+6060
+result
+2
+24
+2586
+result
+2
+25
+6601
+result
+2
+25
+6059
+result
+2
+25
+2585
+result
+2
+26
+64
+result
+2
+26
+6058
+result
+2
+26
+2584
+result
+2
+27
+6057
+result
+2
+27
+2583
+result
+2
+28
+6056
+result
+2
+28
+2582
+result
+2
+29
+6055
+result
+2
+29
+2581
+result
+2
+30
+6054
+result
+2
+30
+17
+result
+2
+31
+59
+result
+2
+31
+7234
+state
+31 0 1 1 0 0 1 0 0 1 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7234
+result
+1
+26
+69
+state
+32 0 1 1 0 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+69
+result
+1
+27
+69
+pool
+69
+result
+3
+25
+71
+state
+25 0 1 1 1 0 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+71
+result
+4
+28
+71
+pool
+7714
+state
+25 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7714
+result
+1
+19
+7713
+state
+31 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7713
+result
+1
+20
+7712
+state
+32 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7712
+result
+1
+21
+7711
+state
+33 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7711
+result
+1
+22
+7710
+state
+34 0 0 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7710
+result
+1
+23
+7709
+state
+35 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7709
+result
+1
+24
+7708
+state
+29 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7708
+result
+1
+25
+7707
+state
+23 1 1 1 1 1 1 1 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7707
+result
+1
+26
+7706
+state
+17 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7706
+result
+1
+27
+7705
+state
+16 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7705
+result
+1
+28
+7704
+state
+10 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+7704
+result
+1
+29
+7703
+state
+9 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+7703
+result
+1
+30
+7702
+state
+15 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7702
+result
+1
+31
+7701
+state
+14 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7701
+result
+1
+32
+7700
+state
+20 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7700
+result
+1
+33
+7699
+state
+26 1 1 1 1 1 1 1 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7699
+result
+1
+34
+7698
+state
+27 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+7698
+result
+1
+35
+72
+state
+28 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+72
+result
+1
+36
+72
+pool
+75
+pool
+8023
+state
+31 0 1 1 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8023
+result
+1
+23
+8022
+state
+32 0 1 1 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8022
+result
+1
+24
+8021
+state
+26 0 1 1 1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8021
+result
+1
+25
+8020
+state
+27 0 1 1 1 1 1 0 0 0 1 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8020
+result
+1
+26
+76
+state
+21 0 1 1 1 1 1 0 0 1 1 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+76
+result
+1
+27
+8022
+result
+3
+22
+8021
+result
+3
+23
+8020
+result
+3
+24
+76
+result
+3
+25
+76
+pool
+6566
+result
+5
+31
+6565
+result
+5
+32
+63
+result
+5
+33
+8212
+state
+13 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8212
+result
+2
+25
+8211
+state
+19 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8211
+result
+2
+26
+8210
+state
+20 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8210
+result
+2
+27
+8209
+state
+14 0 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8209
+result
+2
+28
+8208
+state
+15 0 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8208
+result
+2
+29
+78
+state
+21 0 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+78
+result
+2
+30
+8211
+result
+3
+25
+8210
+result
+3
+26
+8209
+result
+3
+27
+8208
+result
+3
+28
+78
+result
+3
+29
+8209
+result
+4
+26
+8208
+result
+4
+27
+78
+result
+4
+28
+78
+pool
+8225
+state
+26 0 0 0 0 1 1 0 0 0 0 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8225
+result
+1
+27
+8224
+state
+32 0 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8224
+result
+1
+28
+8223
+state
+33 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8223
+result
+1
+29
+79
+state
+34 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+79
+result
+1
+30
+79
+pool
+80
+pool
+8245
+state
+15 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8245
+result
+1
+21
+8244
+state
+16 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8244
+result
+1
+22
+8243
+state
+17 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8243
+result
+1
+23
+8242
+state
+23 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8242
+result
+1
+24
+8241
+state
+29 0 0 0 0 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8241
+result
+1
+25
+8240
+state
+35 0 0 0 0 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8240
+result
+1
+26
+8239
+state
+34 1 0 0 0 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8239
+result
+1
+27
+8238
+state
+28 1 1 0 0 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8238
+result
+1
+28
+81
+state
+27 1 1 0 0 1 1 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+81
+result
+1
+29
+81
+pool
+84
+pool
+8625
+state
+29 1 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8625
+result
+2
+31
+85
+state
+28 1 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+85
+result
+2
+32
+85
+pool
+8628
+state
+15 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 
+8628
+result
+2
+25
+8627
+state
+14 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 
+8627
+result
+2
+26
+8626
+state
+13 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 
+8626
+result
+2
+27
+86
+state
+12 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+86
+result
+2
+28
+86
+pool
+2403
+state
+8 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 
+2403
+result
+1
+24
+8630
+state
+8 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 1 1 1 1 1 1 1 1 
+8630
+result
+1
+24
+8629
+state
+9 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 1 1 1 1 1 1 1 1 1 
+8629
+result
+1
+25
+2402
+state
+9 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+2402
+result
+1
+25
+8630
+result
+2
+23
+2403
+result
+2
+23
+2402
+result
+2
+24
+8629
+result
+2
+24
+87
+state
+8 0 0 0 0 1 1 0 0 0 0 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 
+87
+result
+1
+23
+87
+pool
+8834
+state
+35 0 0 0 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+8834
+result
+2
+30
+88
+state
+34 1 0 0 1 1 1 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+88
+result
+2
+31
+14
+result
+7
+33
+7698
+result
+3
+33
+72
+result
+3
+34
+88
+pool
+8255
+state
+13 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 1 
+8255
+result
+1
+11
+8254
+state
+7 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 1 
+8254
+result
+1
+12
+8253
+state
+8 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+8253
+result
+1
+13
+8252
+state
+2 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 0 1 1 
+8252
+result
+1
+14
+8251
+state
+3 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 1 1 
+8251
+result
+1
+15
+8250
+state
+4 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 1 1 1 1 
+8250
+result
+1
+16
+8249
+state
+5 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 1 1 1 1 1 
+8249
+result
+1
+17
+8248
+state
+11 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 
+8248
+result
+1
+18
+8247
+state
+10 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+8247
+result
+1
+19
+8246
+state
+9 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+8246
+result
+1
+20
+90
+state
+25 1 1 1 1 1 1 1 1 1 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+90
+result
+2
+32
+90
+pool
+95
+state
+14 0 1 1 1 1 1 0 0 1 1 1 1 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+95
+result
+2
+29
+95
+pool
+8255
+result
+2
+10
+8254
+result
+2
+11
+8253
+result
+2
+12
+8252
+result
+2
+13
+8251
+result
+2
+14
+8250
+result
+2
+15
+8249
+result
+2
+16
+8248
+result
+2
+17
+8247
+result
+2
+18
+8246
+result
+2
+19
+8245
+result
+2
+20
+8244
+result
+2
+21
+8243
+result
+2
+22
+8242
+result
+2
+23
+8241
+result
+2
+24
+8240
+result
+2
+25
+8239
+result
+2
+26
+8238
+result
+2
+27
+81
+result
+2
+28
+394
+state
+33 1 1 0 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+394
+result
+1
+17
+393
+state
+27 1 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+393
+result
+1
+18
+392
+state
+26 1 1 1 1 1 1 0 0 1 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+392
+result
+1
+19
+391
+state
+20 1 1 1 1 1 1 0 0 1 1 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+391
+result
+1
+20
+390
+state
+14 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+390
+result
+1
+21
+389
+state
+8 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 0 1 1 0 0 0 0 1 1 
+389
+result
+1
+22
+388
+state
+2 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 0 1 1 
+388
+result
+1
+23
+387
+state
+3 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 
+387
+result
+1
+24
+386
+state
+4 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 
+386
+result
+1
+25
+385
+state
+5 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 1 1 1 1 1 
+385
+result
+1
+26
+384
+state
+11 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 
+384
+result
+1
+27
+383
+state
+10 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 
+383
+result
+1
+28
+382
+state
+9 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+382
+result
+1
+29
+381
+state
+15 1 1 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+381
+result
+1
+30
+9915
+state
+9 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 1 1 1 1 1 1 
+9915
+result
+1
+12
+9914
+state
+15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9914
+result
+1
+13
+9913
+state
+16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9913
+result
+1
+14
+9912
+state
+17 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9912
+result
+1
+15
+9911
+state
+23 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9911
+result
+1
+16
+9910
+state
+29 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9910
+result
+1
+17
+9909
+state
+35 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9909
+result
+1
+18
+9908
+state
+34 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9908
+result
+1
+19
+9907
+state
+33 1 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9907
+result
+1
+20
+9906
+state
+32 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9906
+result
+1
+21
+9905
+state
+31 1 1 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9905
+result
+1
+22
+9904
+state
+30 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9904
+result
+1
+23
+9903
+state
+24 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9903
+result
+1
+24
+9902
+state
+25 1 1 1 1 1 1 0 0 0 0 0 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9902
+result
+1
+25
+9901
+state
+19 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9901
+result
+1
+26
+9900
+state
+18 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 0 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+9900
+result
+1
+27
+97
+state
+12 1 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 1 1 1 0 0 0 1 1 1 1 0 1 1 1 1 1 1 1 
+97
+result
+1
+28
+97
+pool
+6568
+state
+13 1 1 1 1 1 1 0 0 0 1 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6568
+result
+4
+30
+6567
+state
+19 1 1 1 1 1 1 0 0 0 1 1 1 1 0 0 0 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+6567
+result
+4
+31
