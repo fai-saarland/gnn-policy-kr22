@@ -58,6 +58,7 @@ def load_bugs(path):
         _, pddl_problem = plan.setup_translation(setup_args)
         translated_bugs = []
         for bug in bugs:
+            # print(bug)
             encoded_pddl = plan.translate_pddl(bug.state_vals)
             collated, encoded = plan.translate(bug.state_vals)
             label = torch.tensor([bug.cost_bound])

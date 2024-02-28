@@ -1,5 +1,7 @@
 import argparse
 import logging
+
+import numpy as np
 from termcolor import colored
 import pytorch_lightning as pl
 import torch
@@ -27,18 +29,29 @@ from bugfile_parser import parse_bug_file
 
 
 class Oracle:
-    def __init__(self, collate, logdir, train_states, bugs=None):
+    def __init__(self, collate, logdir, train_states, bugs=None, val_bugs=None, val_states=None):
         self.collate = collate
         self.logdir = logdir
         self.max_bugs_per_iteration = len(train_states)  # TODO: HOW TO CHOOSE THIS WHEN DOING ITERATIVE DEBUGGING?
         self.bugs = bugs
+        self.val_bugs = val_bugs
         self.train_states = train_states
+        self.val_states = val_states
+        if self.val_states is not None:
+            self.max_val_bugs_per_iteration = len(val_states)
+        else:
+            self.max_val_bugs_per_iteration = 0
 
     def get_bug_states(self):
         if self.bugs is None:  # TODO: Rather implement it such that it always looks for bugfiles in a directory with a given name
             raise NotImplementedError
         else:
             return self.translate_bug_states(self.bugs)
+    def get_val_bug_states(self):
+        if self.val_bugs is None:
+            raise NotImplementedError
+        else:
+            return self.translate_val_bug_states(self.val_bugs)
 
     def translate_bug_states(self, path):
         # store bug and sas files in a new directory
@@ -48,6 +61,65 @@ class Oracle:
         bug_files = glob.glob(str(path) + "/*.bugfile")
         print("\n")
         print("BUG FILES: ", bug_files)
+        print("\n")
+        translated_bugs = []
+        for bug_file in bug_files:
+            bug_file_name = bug_file.split("/")[-1].split(".")[0]
+            # copy bugfile to directory of the currently trained policy
+            os.system(f"cp {bug_file} {bug_dir}/{bug_file_name + '.bugfile'}")
+
+            bugs, sas = parse_bug_file(bug_file)
+            print(len(bugs))
+            sas_file = Path(str(bug_dir) + "/" + bug_file_name + ".sas")
+            with open(sas_file, "w") as f:
+                f.write(sas)
+            pddl_directory = "/" + str(path).split("/")[-1] + "/"
+            domain_file = Path('data/pddl/' + str(args.domain) + pddl_directory + '/domain.pddl')
+            print(domain_file)
+            problem_file = Path("data/pddl/" + str(args.domain) + pddl_directory + bug_file_name + ".pddl")
+            print(problem_file)
+
+            setup_args = f"--domain {domain_file} --problem {problem_file} --model {None} --sas {sas_file}"
+            plan.setup_translation(setup_args)
+            for bug in bugs:
+                collated, encoded = plan.translate(bug.state_vals)
+                label = torch.tensor([bug.cost_bound])
+                solvable_label = torch.tensor([True] * len(encoded))
+                if len(encoded) == 1:
+                    print("\n")
+                    print("BUG HAS NO SUCCESSORS")
+                    print(bug_file_name)
+                    print(bug)
+                    print("\n")
+                    continue
+                # only need to look at the first state, which is the current one
+                if (state_to_string(encoded[0]) in self.train_states):
+                    print("\n")
+                    print("STATE ALREADY IN TRAIN SET")
+                    print(bug_file_name)
+                    print(bug)
+                    print("\n")
+                    continue
+                translated_bugs.append(((label, encoded, solvable_label), bug.bug_value if bug.bug_value != -1 else float('inf')))
+
+        # sort the bugs according to their bug value
+        translated_bugs.sort(key=lambda x: x[1], reverse=True)
+        # only keep the first max_bugs_per_iteration bugs and remove bug value
+        n = min(len(translated_bugs), self.max_bugs_per_iteration)
+        translated_bugs = [x[0] for x in translated_bugs[:n]]
+        print(f"Selected {n} bugs for re-training")
+
+        return translated_bugs
+
+
+    def translate_val_bug_states(self, path):
+        # store bug and sas files in a new directory
+        bug_dir = Path(self.logdir + "/" + "bugfiles")
+        bug_dir.mkdir(parents=True, exist_ok=True)
+
+        bug_files = glob.glob(str(path) + "/*.bugfile")
+        print("\n")
+        print("VALIDATION BUG FILES: ", bug_files)
         print("\n")
         translated_bugs = []
         for bug_file in bug_files:
@@ -79,9 +151,9 @@ class Oracle:
                     print("\n")
                     continue
                 # only need to look at the first state, which is the current one
-                if state_to_string(encoded[0]) in self.train_states:
+                if (state_to_string(encoded[0]) in self.val_states):
                     print("\n")
-                    print("STATE ALREADY IN TRAIN SET")
+                    print("STATE ALREADY IN VALIDATION SET")
                     print(bug_file_name)
                     print(bug)
                     print("\n")
@@ -91,9 +163,9 @@ class Oracle:
         # sort the bugs according to their bug value
         translated_bugs.sort(key=lambda x: x[1], reverse=True)
         # only keep the first max_bugs_per_iteration bugs and remove bug value
-        n = min(len(translated_bugs), self.max_bugs_per_iteration)
+        n = min(len(translated_bugs), self.max_val_bugs_per_iteration)
         translated_bugs = [x[0] for x in translated_bugs[:n]]
-        print(f"Selected {n} bugs for re-training")
+        print(f"Selected {n} val bugs for re-training")
 
         return translated_bugs
 
@@ -165,6 +237,8 @@ def _parse_arguments():
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--bugs', required=True, type=Path, help='path to bug dataset')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
+
+    parser.add_argument('--val_bugs', default=None, type=Path, help='path to validation bug dataset')
 
     # when using an existing trained policy
     parser.add_argument('--policy', default=None, type=Path, help='path to policy (.ckpt) for re-training')
@@ -438,11 +512,12 @@ def planning(args, policy, domain_file, problem_file, device):
     return result_string, action_trace, is_solution
 
 # writes results of a planning run ato a csv file
-def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning_results):
+def save_results(results, policy_type, policy_path, val_loss, bug_loss, val_bug_loss, planning_results):
     results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
     results["val_loss"].append(val_loss)
     results["bug_loss"].append(bug_loss)
+    results["val_bug_loss"].append(val_bug_loss)
     results["instances"].append(planning_results["instances"])
     results["max_coverage"].append(planning_results["max_coverage"])
     results["min_coverage"].append(planning_results["min_coverage"])
@@ -461,7 +536,10 @@ def _main(args):
 
     # we will use this to check whether a bug is already in the training set
     train_states = set([state_to_string(labeled_state[1]) for labeled_state in train_dataset.get_states()])
-    #train_states = None
+    if args.val_bugs is not None:
+        val_states = set([state_to_string(labeled_state[1]) for labeled_state in validation_dataset.get_states()])
+    else:
+        val_states = None
 
     loader_params = {
         "batch_size": args.batch_size,
@@ -536,7 +614,7 @@ def _main(args):
             model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
             trainer = load_trainer(args, logdir=retrain_logdir)
             checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
-            oracle = Oracle(bugs=args.bugs, collate=collate, logdir=checkpoint_path, train_states=train_states)
+            oracle = Oracle(bugs=args.bugs, val_bugs=args.val_bugs, collate=collate, logdir=checkpoint_path, train_states=train_states, val_states=val_states)
             model.initialize(oracle, checkpoint_path, args.update_interval, args.no_bug_loss_weight, args.no_bug_counts)
 
             print('Re-training model...')
@@ -585,35 +663,42 @@ def _main(args):
             # bug_path = path.parent.parent / "bugfiles" # TODO: Change this for iterative debugging
             bug_path = args.bugs
             bugs = load_bugs(bug_path)
-            retrained_bug_losses = []
-            trained_bug_losses = []
-            with torch.no_grad():
-                for bug in bugs:
-                    try:
-                        labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
 
-                        retrained_output = retrained_model(collated_states_with_object_counts)
-                        retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels,
-                                                                                           state_counts, device)
-                        retrained_bug_losses.append(retrained_loss.item())
+            if len(bugs) == 0:
+                best_retrained_bug_loss = np.inf
+                best_trained_bug_loss = np.inf
+                best_retrained_policy = policy_paths[0]
 
-                        trained_output = trained_model(collated_states_with_object_counts)
-                        trained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(trained_output, labels, state_counts,
-                                                                                         device)
-                        trained_bug_losses.append(trained_loss.item())
-                    except:
-                        print(f"Error processing bug {bug}!")
-                        continue
+            else:
+                retrained_bug_losses = []
+                trained_bug_losses = []
+                with torch.no_grad():
+                    for bug in bugs:
+                        try:
+                            labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
 
-                avg_retrained_bug_loss = sum(retrained_bug_losses) / len(retrained_bug_losses)
-                avg_trained_bug_loss = sum(trained_bug_losses) / len(trained_bug_losses)
-                # we compute the relative improvement on bug states because different retrained policies use different bug states, so we can't just compare the losses
-                delta = avg_trained_bug_loss - avg_retrained_bug_loss
-                if delta > max_delta:
-                    max_delta = delta
-                    best_retrained_policy = path
-                    best_retrained_bug_loss = avg_retrained_bug_loss
-                    best_trained_bug_loss = avg_trained_bug_loss
+                            retrained_output = retrained_model(collated_states_with_object_counts)
+                            retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels,
+                                                                                               state_counts, device)
+                            retrained_bug_losses.append(retrained_loss.item())
+
+                            trained_output = trained_model(collated_states_with_object_counts)
+                            trained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(trained_output, labels, state_counts,
+                                                                                             device)
+                            trained_bug_losses.append(trained_loss.item())
+                        except:
+                            print(f"Error processing bug {bug}!")
+                            continue
+
+                    avg_retrained_bug_loss = sum(retrained_bug_losses) / len(retrained_bug_losses)
+                    avg_trained_bug_loss = sum(trained_bug_losses) / len(trained_bug_losses)
+                    # we compute the relative improvement on bug states because different retrained policies use different bug states, so we can't just compare the losses
+                    delta = avg_trained_bug_loss - avg_retrained_bug_loss
+                    if delta > max_delta:
+                        max_delta = delta
+                        best_retrained_policy = path
+                        best_retrained_bug_loss = avg_retrained_bug_loss
+                        best_trained_bug_loss = avg_trained_bug_loss
 
         best_retrained_val_loss = float(re.search("validation_loss=(.*?).ckpt", str(best_retrained_policy)).group(1))
 
@@ -633,7 +718,53 @@ def _main(args):
         os.system("cp " + str(best_retrained_policy) + " " + str(best_retrained_policy_path))
         os.system("cp -r " + str(best_retrained_policy.parent.parent / "bugfiles") + " " + str(best_retrained_policy_dir))
 
-    # TODO: STEP 6: CONTINUE TRAINING
+        # TODO: STEP 6: EVALUATE TRAINED & RETRAINED MODELS ON VALIDATION BUGS
+        if args.val_bugs is not None:
+            print(colored('Evaluating performance of trained and retrained models on validation bug set', 'red', attrs=['bold']))
+            trained_model = load_model(args, predicates, path=best_trained_policy_path)
+            retrained_model = load_model(args, predicates, path=best_retrained_policy_path, retrain=False)
+
+            val_bug_path = args.val_bugs
+            val_bugs = load_bugs(val_bug_path)
+            if len(val_bugs) == 0:
+                trained_val_bug_loss = np.inf
+                retrained_val_bug_loss = np.inf
+
+            else:
+                with torch.no_grad():
+                    trained_val_bug_losses = []
+                    retrained_val_bug_losses = []
+                    for val_bug in val_bugs:
+                        try:
+                            labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([val_bug])
+
+                            trained_output = trained_model(collated_states_with_object_counts)
+                            trained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(trained_output, labels,
+                                                                                               state_counts,
+                                                                                               device)
+                            trained_val_bug_losses.append(trained_loss.item())
+
+                            retrained_output = retrained_model(collated_states_with_object_counts)
+                            retrained_loss = selfsupervised_suboptimal_loss_no_solvable_labels(retrained_output, labels,
+                                                                                             state_counts,
+                                                                                             device)
+                            retrained_val_bug_losses.append(retrained_loss.item())
+                        except:
+                            print(f"Error processing val bug")
+                            print(val_bug)
+                            continue
+
+                    trained_val_bug_loss = sum(trained_val_bug_losses) / len(trained_val_bug_losses)
+                    print(f"Trained model's loss on val bug states: {trained_val_bug_loss}")
+                    print("\n")
+                    retrained_val_bug_loss = sum(retrained_val_bug_losses) / len(retrained_val_bug_losses)
+                    print(f"Retrained model's loss on val bug states: {retrained_val_bug_loss}")
+                    print("\n")
+        else:
+            trained_val_bug_loss = np.inf
+            retrained_val_bug_loss = np.inf
+
+    # TODO: STEP 7: CONTINUE TRAINING
     if (not args.no_continue) and (not args.no_retrain):
         print(colored('Continuing training of trained policy for same number of epochs as best re-trained policy', 'red', attrs=['bold']))
         continue_logdir = args.logdir / "continued"
@@ -646,7 +777,7 @@ def _main(args):
             print(type(model).__name__)
             trainer.fit(model, train_loader, validation_loader)
 
-        # TODO: STEP 7: FIND BEST CONTINUED POLICY
+        # TODO: STEP 8: FIND BEST CONTINUED POLICY
         print(colored('Determining best continued policy', 'red', attrs=['bold']))
         best_continued_val_loss = float('inf')
         best_continued_policy = None
@@ -673,31 +804,67 @@ def _main(args):
         os.system("cp " + str(best_continued_policy) + " " + str(best_continued_policy_path))
 
 
-        # TODO: STEP 8: EVALUATE CONTINUED MODEL ON BUGS
-        print(colored('Evaluating performance of continued policy bug dataset', 'red', attrs=['bold']))
+        # TODO: STEP 9: EVALUATE CONTINUED MODEL ON BUGS
+        print(colored('Evaluating performance of continued policy on bug dataset', 'red', attrs=['bold']))
         continued_model = load_model(args, predicates, path=best_continued_policy_path, retrain=False)
 
         # bug_path = Path(best_retrained_policy_path).parent / "bugfiles"  # TODO: Change this for iterative debugging
         bug_path = args.bugs
         bugs = load_bugs(bug_path)
-        with torch.no_grad():
-            continued_bug_losses = []
-            for bug in bugs:
-                try:
-                    labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
+        if len(bugs) == 0:
+            continued_bug_loss = np.inf
 
-                    continued_output = continued_model(collated_states_with_object_counts)
-                    continued_loss = selfsupervised_suboptimal_loss_no_solvable_labels(continued_output, labels, state_counts,
-                                                                    device)
-                    continued_bug_losses.append(continued_loss.item())
-                except:
-                    print(f"Error processing bug")
-                    print(bug)
-                    continue
+        else:
+            with torch.no_grad():
+                continued_bug_losses = []
+                for bug in bugs:
+                    try:
+                        labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
 
-            continued_bug_loss = sum(continued_bug_losses) / len(continued_bug_losses)
-            print(f"Continued model's loss on bug states: {continued_bug_loss}")
-            print("\n")
+                        continued_output = continued_model(collated_states_with_object_counts)
+                        continued_loss = selfsupervised_suboptimal_loss_no_solvable_labels(continued_output, labels, state_counts,
+                                                                        device)
+                        continued_bug_losses.append(continued_loss.item())
+                    except:
+                        print(f"Error processing bug")
+                        print(bug)
+                        continue
+
+                continued_bug_loss = sum(continued_bug_losses) / len(continued_bug_losses)
+                print(f"Continued model's loss on bug states: {continued_bug_loss}")
+                print("\n")
+
+        if args.val_bugs is not None:
+            print(colored('Evaluating performance of continued policy on validation bug dataset', 'red', attrs=['bold']))
+            continued_model = load_model(args, predicates, path=best_continued_policy_path, retrain=False)
+
+            val_bug_path = args.val_bugs
+            val_bugs = load_bugs(val_bug_path)
+            if len(val_bugs) == 0:
+                continued_val_bug_loss = np.inf
+
+            else:
+                with torch.no_grad():
+                    continued_val_bug_losses = []
+                    for val_bug in val_bugs:
+                        try:
+                            labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([val_bug])
+
+                            continued_output = continued_model(collated_states_with_object_counts)
+                            continued_loss = selfsupervised_suboptimal_loss_no_solvable_labels(continued_output, labels,
+                                                                                               state_counts,
+                                                                                               device)
+                            continued_val_bug_losses.append(continued_loss.item())
+                        except:
+                            print(f"Error processing bug")
+                            print(val_bug)
+                            continue
+
+                    continued_val_bug_loss = sum(continued_val_bug_losses) / len(continued_val_bug_losses)
+                    print(f"Continued model's loss on val bug states: {continued_val_bug_loss}")
+                    print("\n")
+        else:
+            continued_val_bug_loss = np.inf
 
     # TODO: STEP 9: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))
@@ -722,6 +889,7 @@ def _main(args):
         "policy_path": [],
         "val_loss": [],
         "bug_loss": [],
+        "val_bug_loss": [],
         "instances": [],
         "max_coverage": [],
         "min_coverage": [],
@@ -731,8 +899,8 @@ def _main(args):
     }
     for policy_type, policy, directory in policies_and_directories:
         # load files for planning
-        domain_file = Path('data/pddl/' + args.domain + '/train/domain.pddl')
-        problem_files = glob.glob(str('data/pddl/' + args.domain + '/train/' + '*.pddl'))
+        domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
+        problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
         # initialize metrics
         best_coverage = 0
         best_plan_quality = float('inf')
@@ -794,13 +962,13 @@ def _main(args):
         # save results of the best run
         if policy_type == "trained":
             save_results(results, policy_type, best_trained_policy_path, best_trained_val_loss,
-                                  best_trained_bug_loss, planning_results)
+                                  best_trained_bug_loss, trained_val_bug_loss, planning_results)
         elif policy_type == "retrained":
             save_results(results, policy_type, best_retrained_policy_path, best_retrained_val_loss,
-                                  best_retrained_bug_loss, planning_results)
+                                  best_retrained_bug_loss, retrained_val_bug_loss, planning_results)
         elif policy_type == "continued":
             save_results(results, policy_type, best_continued_policy_path, best_continued_val_loss,
-                                  continued_bug_loss, planning_results)
+                                  continued_bug_loss, continued_val_bug_loss, planning_results)
 
 
     print(colored('Storing results', 'red', attrs=['bold']))
