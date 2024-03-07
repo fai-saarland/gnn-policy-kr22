@@ -1,4 +1,6 @@
 import argparse
+from typing import Dict
+
 from termcolor import colored
 import pytorch_lightning as pl
 import torch
@@ -9,35 +11,34 @@ import plan
 import glob
 import pandas as pd
 import json
-from architecture import set_suboptimal_factor, set_loss_constants
 from helpers import ValidationLossLogging
 from pathlib import Path
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
-from torch.utils.data.dataloader import DataLoader
 from pytorch_lightning.loggers import TensorBoardLogger
-from datasets     import g_dataset_methods
-from architecture import g_model_classes
-from generators import load_pddl_problem_with_augmented_states, compute_traces_with_augmented_states
+from datasets import g_dataset_methods
+from generators import load_pddl_problem_with_augmented_states
 
-from torch_geometric.data import Data
+from torch_geometric.data import Data, Batch
 from torch_geometric.loader import DataLoader as GraphDataLoader
-from torch_geometric.data import Dataset as GraphDataset
+
+from gnns import create_GNN
+from gnns import GraphConvolutionNetwork, GraphAttentionNetwork
+from gnns import mse_loss
+from torch_geometric.nn import global_add_pool
+model_classes = {
+    ("GCN", "ADD", "MSE"): create_GNN(GraphConvolutionNetwork, global_add_pool, mse_loss),
+    ("GAT", "ADD", "MSE"): create_GNN(GraphAttentionNetwork, global_add_pool, mse_loss),
+}
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # default values for arguments
-    default_aggregation = 'max'
-    default_size = 64
-    default_iterations = 30
     default_batch_size = 64  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
-    default_loss_constants = None
     default_learning_rate = 0.0002
-    default_suboptimal_factor = 2.0
-    default_l1 = 0.0
     default_weight_decay = 0.0
     default_gradient_accumulation = 1
     default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
@@ -47,23 +48,29 @@ def _parse_arguments():
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 5
-    default_update_interval = -1
-    default_loss = "selfsupervised_suboptimal"
-    # default_max_bugs_per_iteration = 9000  # TODO: HOW TO CHOOSE THIS WHEN DOING ITERATIVE DEBUGGING?
     default_max_epochs = None
     default_train_indices = None
     default_val_indices = None
 
     # TODO: COMPUTE PATHS AUTOMATICALLY FROM DOMAIN NAME?
-    # required arguments
+    # arguments for training
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--rounds', required=True, type=int, help='how often training is repeated with a newly sampled training set')
     parser.add_argument('--seeds', required=True, type=int, help='number of random seeds used for training')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
+    # arguments for the architecture
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GAT'], help=f'aggregation function')
+    parser.add_argument('--readout', required=True, choices=['ADD'], help=f'readout function')
+    parser.add_argument('--loss', required=True, choices=['MSE'], help=f'loss function')
+
+    parser.add_argument('--hidden_sizes', required=True, type=int, nargs='+', help='hidden sizes of GNN layers')
+    parser.add_argument('--dropout', required=True, type=float, help='percentage of randomly deactivated neurons in each layer')
+    parser.add_argument('--heads', default=1, type=int, help='number of attention heads')
+
     # when using an existing trained policy
-    parser.add_argument('--policy', default=None, type=Path, help='path to policy (.ckpt) for re-training')
+    #parser.add_argument('--policy', default=None, type=Path, help='path to policy (.ckpt) for re-training')
 
     # specifying which states should be selected for training and validation sets
     parser.add_argument('--train_indices', default=default_train_indices, type=str, help=f'indices of states to use for training (default={default_train_indices})')
@@ -73,23 +80,10 @@ def _parse_arguments():
     parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
     # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
-    parser.add_argument('--loss', default=default_loss, nargs='?',
-                        choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
-                                 'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
-                                 'online_optimal', "mean_squared_error"])
-    parser.add_argument('--update_interval', default=default_update_interval, type=int,
-                        help=f'frequency at which new bugs are collected (default={default_update_interval})')
-    parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention', 'planformer'], help=f'readout aggregation function (default={default_aggregation})')
-    parser.add_argument('--size', default=default_size, type=int, help=f'number of features per object (default={default_size})')
-    parser.add_argument('--iterations', default=default_iterations, type=int, help=f'number of convolutions (default={default_iterations})')
-    parser.add_argument('--readout', action='store_true', help=f'use global readout at each iteration')
     parser.add_argument('--batch_size', default=default_batch_size, type=int, help=f'maximum size of batches (default={default_batch_size})')
     parser.add_argument('--gpus', default=default_gpus, type=int, help=f'number of GPUs to use (default={default_gpus})')
     parser.add_argument('--num_workers', default=default_num_workers, type=int, help=f'number of workers for the data loader (use 0 on Windows) (default={default_num_workers})')
-    parser.add_argument('--loss_constants', default=default_loss_constants, type=str, help=f'constants (multipliers) in loss function (default={default_loss_constants})')
     parser.add_argument('--learning_rate', default=default_learning_rate, type=float, help=f'learning rate of training session (default={default_learning_rate})')
-    parser.add_argument('--suboptimal_factor', default=default_suboptimal_factor, type=float, help=f'approximation factor of suboptimal learning (default={default_suboptimal_factor})')
-    parser.add_argument('--l1', default=default_l1, type=float, help=f'strength of L1 regularization (default={default_l1})')
     parser.add_argument('--weight_decay', default=default_weight_decay, type=float, help=f'strength of weight decay regularization (default={default_weight_decay})')
     parser.add_argument('--gradient_accumulation', default=default_gradient_accumulation, type=int, help=f'number of gradients to accumulate before step (default={default_gradient_accumulation})')
     parser.add_argument('--max_samples_per_file', default=default_max_samples_per_file, type=int, help=f'maximum number of states per dataset (default={default_max_samples_per_file})')
@@ -104,16 +98,6 @@ def _parse_arguments():
     # logging and saving models
     parser.add_argument('--logname', default=None, type=str, help='if provided, versions are stored in folder with this name inside logdir')
     parser.add_argument('--save_top_k', default=default_save_top_k, type=int, help=f'number of top-k models to save (default={default_save_top_k})')
-
-    # arguments for continuing the training of the original policy after re-training
-    parser.add_argument('--resume', default=None, type=Path, help='path to model (.ckpt) for resuming training')
-
-    # arguments for PlanFormer (GNN + Transformer)
-    parser.add_argument('--d_model', default=64, type=int, help=f'number of input tokens (default=128)')
-    parser.add_argument('--d_ff', default=64, type=int, help=f'number of feedforward network hidden units (default=128)')
-    parser.add_argument('--n_heads', default=2, type=int, help=f'number of attention heads (default=4)')
-    parser.add_argument('--n_layers', default=2, type=int, help=f'number of transformer layers (default=4)')
-    parser.add_argument('--drop', default=0.1, type=float, help=f'dropout probability (default=0.1)')
 
     default_debug_level = 0
     default_cycles = 'avoid'
@@ -145,25 +129,10 @@ def _parse_arguments():
     args = parser.parse_args()
     return args
 
-def _process_args(args):
-    if (not hasattr(args, 'readout')) or (args.readout is None): args.readout = False
-    if (not hasattr(args, 'verbose')) or (args.verbose is None): args.verbose = False
-    if not torch.cuda.is_available(): args.gpus = 0  # Ignore GPUs if there is no CUDA capable device.
-    if args.max_samples_per_file <= 0: args.max_samples_per_file = None
-    set_suboptimal_factor(args.suboptimal_factor)
-
-    # check whether loss constants are properly defined
-    if args.loss_constants:
-        loss_constants = [ float(c) for c in args.loss_constants.split(',') ]
-        if len(loss_constants) != 4 or min(loss_constants) < 0:
-            print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
-        else:
-            set_loss_constants(loss_constants)
-
 def load_datasets(args):
     print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
     try:
-        load_dataset, collate = g_dataset_methods[args.loss]
+        load_dataset, collate = g_dataset_methods["selfsupervised_suboptimal"]
     except KeyError:
         raise NotImplementedError(f"Loss function '{args.loss}'")
 
@@ -185,38 +154,27 @@ def load_datasets(args):
     print(f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([ f"{name}/{arity}" for name, arity in predicates ])} ]')
     return predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states
 
-def load_model(args, predicates, path=None):
+def load_model(args, path=None):
     print(colored('Loading model', 'green', attrs = [ 'bold' ]))
     model_params = {
-        #"predicates": predicates,
-        "hidden_size": args.size,
-        "iterations": args.iterations,
+        "hidden_sizes": args.hidden_sizes,
+        "dropout": args.dropout,
         "learning_rate": args.learning_rate,
-        "weight_decay": args.weight_decay,
-        #"l1_factor": args.l1,
+        "heads": args.heads,
+        #"weight_decay": args.weight_decay,
         #"gradient_accumulation": args.gradient_accumulation,
-        "loss": args.loss,
-        #"loss_constants": args.loss_constants,
-        #"suboptimal_factor": args.suboptimal_factor,
-        "aggregation": args.aggregation,
         "batch_size": args.batch_size,
         "max_samples_per_file": args.max_samples_per_file,
         "max_samples": args.max_samples,
         "patience": args.patience,
-        "gradient_clip": args.gradient_clip,
+        #"gradient_clip": args.gradient_clip,
     }
 
-    if args.aggregation == 'planformer':
-        model_params["d_model"] = args.d_model
-        model_params["d_ff"] = args.d_ff
-        model_params["n_heads"] = args.n_heads
-        model_params["n_layers"] = args.n_layers
-        model_params["drop"] = args.drop
-
     try:
-        Model = g_model_classes[(args.aggregation, args.readout, args.loss)]
+        #Model = g_model_classes[(args.aggregation, args.readout, args.loss)]
+        Model = model_classes[(args.aggregation, args.readout, args.loss)]
     except KeyError:
-        raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, 'base')} combination")
+        raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, args.loss)} combination")
 
     if path is None:
         model = Model(**model_params)
@@ -240,31 +198,20 @@ def load_trainer(args, logdir, path=None):
 
     max_epochs = args.max_epochs
     patience = args.patience
-    # the training of the original policy will be continued for at most the number of epochs the re-trained policy was trained for
-    if path is not None:
-        # use regex to extract epoch from checkpoint path, may have one, two, or three digits
-        max_epochs = int(re.search(r'epoch=(\d{1,3})', str(path)).group(1)) + 1
-        patience = max_epochs
-
-        print(f"Continuing training for {max_epochs} epochs")
 
     callbacks = []
     if not args.verbose: callbacks.append(ValidationLossLogging())
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=patience))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss',
                                      filename='{epoch}-{step}-{validation_loss}'))
-    #if args.aggregation == 'planformer':
-        # add learning rate finder
-        #callbacks.append(pl.callbacks.LearningRateFinder(num_training_steps=200, update_attr=True, attr_name="learning_rate"))  # TODO: CHANGED THIS
-        # add learning rate monitor
-        #callbacks.append(pl.callbacks.LearningRateMonitor(logging_interval='step'))
+    callbacks.append(pl.callbacks.LearningRateMonitor())
 
     trainer_params = {
         "num_sanity_val_steps": 0,
         "callbacks": callbacks,
         "profiler": args.profiler,
-        "accumulate_grad_batches": args.gradient_accumulation,
-        "gradient_clip_val": args.gradient_clip,
+        #"accumulate_grad_batches": args.gradient_accumulation,
+        #"gradient_clip_val": args.gradient_clip,
         "check_val_every_n_epoch": args.validation_frequency,
         "max_epochs": max_epochs,
     }
@@ -277,12 +224,12 @@ def load_trainer(args, logdir, path=None):
     trainer = pl.Trainer(**trainer_params)
     return trainer
 
-def planning(args, policy, domain_file, problem_file, device):
+def planning(predicate_dict, predicate_ids, max_arity, args, policy, domain_file, problem_file, device):
     start_time = timer()
     result_string = ""
 
     # load model
-    Model = plan._load_model(args)
+    Model = load_model(args, policy)
     try:
         model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
     except:
@@ -292,6 +239,9 @@ def planning(args, policy, domain_file, problem_file, device):
         except:
             model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
                                                map_location=torch.device('cpu')).to(device)
+    # deactivate dropout!
+    model.training = False
+
     elapsed_time = timer() - start_time
 
     result_string = result_string + f"Model '{policy}' loaded in {elapsed_time:.3f} second(s)"
@@ -307,11 +257,11 @@ def planning(args, policy, domain_file, problem_file, device):
     result_string = result_string + f'Executing policy (max_length={args.max_length})'
     result_string = result_string + "\n"
     start_time = timer()
-    is_spanner = args.spanner and 'spanner' in str(domain_file)
     unsolvable_weight = 0.0 if args.ignore_unsolvable else 100000.0
     action_trace, state_trace, value_trace, is_solution, num_evaluations = compute_traces_with_augmented_states(
-        model=model, cycles=args.cycles, max_trace_length=args.max_length, unsolvable_weight=unsolvable_weight,
-        logger=None, is_spanner=is_spanner, **pddl_problem)
+        predicate_dict=predicate_dict, predicate_ids=predicate_ids, max_arity=max_arity,
+        model=model, cycles=args.cycles, max_trace_length=args.max_length,
+        unsolvable_weight=unsolvable_weight, logger=None, **pddl_problem)
     elapsed_time = timer() - start_time
     result_string = result_string + f'{len(action_trace)} executed action(s) and {num_evaluations} state evaluations(s) in {elapsed_time:.3f} second(s)'
     result_string = result_string + "\n"
@@ -332,6 +282,89 @@ def planning(args, policy, domain_file, problem_file, device):
 
     return result_string, action_trace, is_solution
 
+from generators.plan import create_object_encoding
+from generators.plan import _get_goal_denotation, _to_input, _get_successor_states, _get_applicable_actions, _spanner_unsolvable, _spanner_solved
+def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arity, actions, initial, goal, language, model: pl.LightningModule, augment_fn = None, cycles: str = 'avoid', max_trace_length: int = 500, unsolvable_weight: float = 100000.0, logger = None):
+    objects = language.constants()
+    obj_encoding = create_object_encoding(objects)
+    if logger: logger.info(f'{len(objects)} object(s), obj_encoding={obj_encoding}')
+
+    with torch.no_grad():
+        device = model.device
+        closed_states = set()
+        action_trace = []
+
+        # calculate denotation of goal atoms that is equal for every state
+        if logger: logger.info(f'goals={goal}')
+        goal_denotation = _get_goal_denotation(goal, obj_encoding)
+
+        # set initial state and value trace
+        current_state = initial
+        collated_input, encoded_states = _to_input([current_state], goal_denotation, obj_encoding, augment_fn, language,
+                                                   device, logger)
+        state_trace = [encoded_states[0]]
+        state_graph = state_to_graph(encoded_states[0], predicate_dict, predicate_ids, max_arity)
+        initial_values = model(state_graph)
+        value_trace = [initial_values[0]]
+        if logger: logger.debug(f'initial_state={current_state}')
+
+        # calculate greedy trace
+        step, num_evaluations = 1, 1
+        while (not current_state[goal]) and (len(state_trace) < max_trace_length):
+            if cycles == 'detect' and current_state in closed_states:
+                if logger:
+                    logger.info(colored(f"Cycle detected after last action '{action_trace[-1]}'", 'magenta'))
+                break
+            closed_states.add(current_state)
+            if logger: logger.debug(f'**** STEP {step + 1}')
+            step += 1
+
+            # explore current state (avoid loops by removing already visited successors)
+            successor_candidates = [transition for transition in _get_successor_states(current_state, actions)]
+            if cycles == 'avoid':
+                successor_candidates = [transition for transition in successor_candidates if
+                                        transition[1] not in closed_states]
+
+            if len(successor_candidates) == 0:
+                if logger: logger.info(
+                    f'No applicable action that yields unvisited state for current_state={current_state}')
+                if logger: logger.info(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+                print(f'No applicable action that yields unvisited state for current_state')
+                print(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+                break
+
+            successor_actions = [candidate[0] for candidate in successor_candidates]
+            successor_states = [candidate[1] for candidate in successor_candidates]
+            if logger: logger.debug(f'#actions={len(successor_actions)}, actions={successor_actions}')
+
+            # calculate values for successors and best successor
+            collated_input, encoded_states = _to_input(successor_states, goal_denotation, obj_encoding, augment_fn,
+                                                       language, device, logger)
+            state_graphs = [state_to_graph(encoded_state, predicate_dict, predicate_ids, max_arity) for encoded_state in encoded_states]
+            state_graphs_batch = Batch.from_data_list(state_graphs)  # TODO: DEVICE????
+
+            output_values = model(state_graphs_batch)
+            best_successor_index = torch.argmin(output_values)
+            num_evaluations += len(successor_actions)
+            if logger:
+                logger.debug(f'     values=[' + ", ".join([f'{x[0]:.3f}' for x in output_values]) + ']')
+                logger.debug(f'best_action={successor_actions[best_successor_index]} (index={best_successor_index})\n')
+
+            # extend traces and set next current state
+            value_trace.append(output_values[best_successor_index])
+            state_trace.append(encoded_states[best_successor_index])
+            action_trace.append(successor_actions[best_successor_index])
+            current_state = successor_states[best_successor_index]
+
+            if logger:
+                logger.debug(f'current_state={current_state}')
+                logger.debug('')
+
+        reached_goal = current_state[goal]
+        if logger: logger.debug(f'status={1 if reached_goal else 0}')
+        return action_trace, state_trace, value_trace, reached_goal, num_evaluations
+
+
 # writes results of a planning run ato a csv file
 def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning_results):
     results["type"].append(policy_type)
@@ -345,6 +378,7 @@ def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning
     results["best_plan_quality"].append(planning_results["best_plan_quality"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
+    results["hidden_sizes"] = " ".join([str(x) for x in args.hidden_sizes])
 
 
 def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
@@ -412,30 +446,83 @@ def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
 
         nodes_x = torch.stack(nodes_x).float()
         edge_index = torch.tensor(edge_index).long()
+        label = label.float()
         graph_state = Data(x=nodes_x, edge_index=edge_index, y=label, num_nodes=len(objects) + len(atoms))
         graph_state.validate(raise_on_error=True)
         graph_states.append(graph_state)
 
     return graph_states
 
-class CustomGraphDataset(GraphDataset):
-    def __init__(self, root, transform=None, pre_transform=None):
-        super(CustomGraphDataset, self).__init__(root, transform, pre_transform)
+def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
+    atoms = []
+    max_id = 0
+    # the states only have one entry for each predicate, so to get the individual atoms we need to split according
+    # to the arity of the predicate
+    for predicate in state.keys():
+        arity = predicate_dict[predicate]
+        arguments = state[predicate]
+        # keep track of the object with the highest id such that we now how many objects there are
+        for arg in arguments:
+            if arg > max_id:
+                max_id = arg
+        split_arguments = [arguments[i:i + arity] for i in range(0, len(arguments), arity)]
+        for argument in split_arguments:
+            atoms.append((predicate, argument))
 
-    def len(self):
-        return len(self.data)
+    objects = list(range(max_id + 1))
 
-    def get(self, idx):
-        return self.data[idx]
 
-    def get_states(self):
-        return self.data
+    nodes_x = []
+    edge_index = [[], []]
+    # create nodes for objects
+    for i in range(len(objects)):
+        obj = objects[i]
+        # create tensor for object node's feature
+        object_node = torch.ones(3 + max_arity) * -1
+        # first feature is the id of the node
+        object_node[0] = i
+        # second feature indicates that this is an object node
+        object_node[1] = 0
+        # third feature is the id of the object
+        object_node[2] = obj
+
+        nodes_x.append(object_node)
+
+    # create nodes for atoms and add edges between objects and atoms
+    for i in range(len(atoms)):
+        predicate, arguments = atoms[i]
+        # create tensor for relation node's feature
+        atom_node = torch.ones(3 + max_arity) * -1
+        # first feature is the id of the node
+        atom_node[0] = i + len(objects)
+        # second feature indicates that this is an atom node
+        atom_node[1] = 1
+        # third feature is the id of the predicate
+        atom_node[2] = predicate_ids[predicate]
+        # next features are the object ids of the arguments
+        for x, argument in enumerate(arguments):
+            atom_node[x + 3] = argument.item()
+
+        nodes_x.append(atom_node)
+
+        # connect atom node to corresponding object nodes
+        for x, argument in enumerate(arguments):
+            edge_index[0].append(i + len(objects))
+            edge_index[1].append(argument.item())
+            edge_index[0].append(argument.item())
+            edge_index[1].append(i + len(objects))
+
+    nodes_x = torch.stack(nodes_x).float()
+    edge_index = torch.tensor(edge_index).long()
+    graph_state = Data(x=nodes_x, edge_index=edge_index,num_nodes=len(objects) + len(atoms))
+    graph_state.validate(raise_on_error=True)
+
+    return graph_state
 
 
 def _main(args):
     # TODO: STEP 1: INITIALIZE
     print(colored('Initializing datasets and loaders', 'red', attrs=['bold']))
-    _process_args(args)
     args.logdir.mkdir(parents=True, exist_ok=True)
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
 
@@ -453,14 +540,6 @@ def _main(args):
             f.write(json.dumps(train_indices_selected_states, sort_keys=True, indent=4))
         with open(round_dir / "validation_indices_selected_states.json", "w") as f:
             f.write(json.dumps(validation_indices_selected_states, sort_keys=True, indent=4))
-
-        loader_params = {
-            "batch_size": args.batch_size,
-            "drop_last": False,
-            "collate_fn": collate,
-            "pin_memory": True,
-            "num_workers": args.num_workers,
-        }
 
         # store the arities, ids and maximum arity of the predicates for creating the graphs later
         predicate_dict = {}
@@ -487,14 +566,10 @@ def _main(args):
         print(colored('Training policies from scratch', 'red', attrs=['bold']))
         # SEEDS FOR DATA SETS
         for _ in range(args.seeds):
-            model = load_model(args, predicates)
+            model = load_model(args)
             trainer = load_trainer(args, logdir=round_dir)
             print(colored('Training model...', 'green', attrs = [ 'bold' ]))
             print(type(model).__name__)
-            #if args.aggregation == 'planformer':
-                # add learning rate finder
-            #   tuner = pl.tuner.Tuner(trainer)
-            #   tuner.lr_find(model, train_dataloaders=train_loader, val_dataloaders=validation_loader)
             trainer.fit(model, train_loader, validation_loader)
 
     # TODO: STEP 3: FIND BEST TRAINED MODEL
@@ -530,7 +605,7 @@ def _main(args):
     os.system("cp " + str(best_trained_policy.parent.parent.parent / "train_indices_selected_states.json") + " " + str(best_trained_policy_dir))
     os.system("cp " + str(best_trained_policy.parent.parent.parent / "validation_indices_selected_states.json") + " " + str(best_trained_policy_dir))
 
-    # TODO: STEP 9: PLANNING
+    # TODO: STEP 3: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))
     policies_and_directories = []
 
@@ -579,7 +654,7 @@ def _main(args):
                 # logger.info(f'Call: {" ".join(argv)}')  # TODO: KEEP THIS?
 
                 # run planning
-                result_string, action_trace, is_solution = planning(args, policy, domain_file, problem_file, device)
+                result_string, action_trace, is_solution = planning(predicate_dict, predicate_ids, max_arity, args, policy, domain_file, problem_file, device)
 
                 # store results
                 with open(log_file, "w") as f:
