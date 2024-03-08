@@ -1,6 +1,6 @@
 import pytorch_lightning as pl
 import torch
-from typing import List
+import numpy as np
 import json
 
 
@@ -10,22 +10,20 @@ def mse_loss(predicted, target):
 
 def create_GNN(base: pl.LightningModule, pool, loss):
     class GNN(base):
-        def __init__(self, hidden_sizes: List[int], dropout: int, learning_rate: float, heads: int, **kwargs):
-            super().__init__(hidden_sizes=hidden_sizes, dropout=dropout, pool=pool, heads=heads, **kwargs)
-            self.save_hyperparameters('hidden_sizes', 'dropout', 'learning_rate')
+        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, **kwargs):
+            super().__init__(num_layers=num_layers, hidden_size=hidden_size, dropout=dropout, pool=pool, heads=heads, **kwargs)
+            self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads')
             self.learning_rate = learning_rate
 
             self.train_losses = []
             self.validation_losses = []
 
+        def set_checkpoint_path(self, checkpoint_path):
+            self.checkpoint_path = checkpoint_path
+
         def configure_optimizers(self):
             optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr))#weight_decay=self.weight_decay)
-            # print("\n")
-            # print("learning rate")
-            # print(self.learning_rate)
-            # print(self.lr)
-            # TODO: ADD SCHEDULER!
-            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=True)
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25, verbose=True)
 
             optimize = {
                 'optimizer': optimizer,
@@ -67,21 +65,21 @@ def create_GNN(base: pl.LightningModule, pool, loss):
         #        self.validation_losses.clear()
 
         # store information about training, and validation losses
-        #def on_train_end(self):
-        #    with open(self.checkpoint_path + "losses.train", "w") as f:
-        #        f.write(json.dumps(self.all_train_losses))
-        #    with open(self.checkpoint_path + "losses.val", "w") as f:
-        #        f.write(json.dumps(self.all_val_losses))
+        def on_train_end(self):
+            with open(self.checkpoint_path + "losses.train", "w") as f:
+                f.write(json.dumps(self.all_train_losses))
+            with open(self.checkpoint_path + "losses.val", "w") as f:
+                f.write(json.dumps(self.all_val_losses))
 
     return GNN
 
 from torch_geometric.nn import GCNConv
-from torch_geometric.nn import BatchNorm
+from torch_geometric.nn import GraphNorm
 import torch.nn.functional as F
 class GraphConvolutionNetwork(pl.LightningModule):
-    def __init__(self, hidden_sizes: List[int], dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = hidden_sizes
+        self.hidden_sizes = [5] + [hidden_size] * (num_layers)
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.norms = torch.nn.ModuleList()
@@ -90,16 +88,18 @@ class GraphConvolutionNetwork(pl.LightningModule):
 
         for i in range(len(self.hidden_sizes)-1):
             self.layers.append(GCNConv(self.hidden_sizes[i], self.hidden_sizes[i+1]))
-            self.norms.append(BatchNorm(self.hidden_sizes[i+1]))
-        self.out = torch.nn.Linear(hidden_sizes[-1], 1)
+            self.norms.append(GraphNorm(self.hidden_sizes[i+1]))
+        self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
     def forward(self, data):
-        x = data.x
-        edge_index = data.edge_index
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
         batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
 
         for i in range(len(self.layers)):
             x = self.layers[i](x, edge_index)
-            x = self.norms[i](x)
+            x = self.norms[i](x, batch)
             x = F.relu(x)
             x = F.dropout(x, p=self.dropout, training=self.training)
 
@@ -108,11 +108,89 @@ class GraphConvolutionNetwork(pl.LightningModule):
 
         return x
 
+from torch_geometric.nn import GCN2Conv
+# TODO: HOW TO CONSTRUCT THIS?
+class GraphConvolutionNetworkV2(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.norms = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        for i in range(len(self.hidden_sizes)-1):
+            self.layers.append(GCN2Conv(self.hidden_sizes[i], self.hidden_sizes[i+1]))
+            self.norms.append(GraphNorm(self.hidden_sizes[i+1]))
+        self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        for i in range(len(self.layers)):
+            x = self.layers[i](x, edge_index)
+            x = self.norms[i](x, batch)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+
+        x = self.pool(x, batch)
+        x = self.out(x)
+
+        return x
+
+from torch_geometric.nn import GINConv
+class GraphIsomorphismNetwork(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        for i in range(len(self.hidden_sizes)-1):
+            self.layers.append(GINConv(torch.nn.Sequential(torch.nn.Linear(self.hidden_sizes[i], self.hidden_sizes[i+1]),
+                                                           torch.nn.BatchNorm1d(self.hidden_sizes[i+1]),
+                                                           torch.nn.ReLU(),
+                                                           torch.nn.Linear(self.hidden_sizes[i+1], self.hidden_sizes[i+1]),
+                                                           torch.nn.ReLU())))
+        lin_dim = (self.hidden_sizes[-1]*(len(self.hidden_sizes)-1)) + self.hidden_sizes[0]
+        self.lin1 = torch.nn.Linear(lin_dim, lin_dim)
+        self.lin2 = torch.nn.Linear(lin_dim, 1)
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        node_embeddings = []
+        node_embeddings.append(x)
+        for i in range(len(self.layers)):
+            prev_h = node_embeddings[-1]
+            new_h = self.layers[i](prev_h, edge_index)
+            new_h = F.dropout(new_h, p=self.dropout, training=self.training)
+            node_embeddings.append(new_h)
+
+        layer_readouts = [self.pool(h, batch) for h in node_embeddings]
+        h = torch.cat(layer_readouts, dim=1)
+
+        h = self.lin1(h)
+        h = F.relu(h)
+        h = F.dropout(h, p=self.dropout, training=self.training)
+        h = self.lin2(h)
+
+        return h
+
 from torch_geometric.nn import GATConv
 class GraphAttentionNetwork(pl.LightningModule):
-    def __init__(self, hidden_sizes: List[int], dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = hidden_sizes
+        self.hidden_sizes = [5] + [hidden_size] * num_layers
         self.dropout = dropout
         self.heads = heads
         self.layers = torch.nn.ModuleList()
@@ -121,17 +199,67 @@ class GraphAttentionNetwork(pl.LightningModule):
         self.training = True
 
         for i in range(len(self.hidden_sizes)-1):
-            self.layers.append(GATConv(self.hidden_sizes[i], self.hidden_sizes[i+1], heads=self.heads))#, concat=False))
-            self.norms.append(BatchNorm(self.hidden_sizes[i+1]))
-        self.out = torch.nn.Linear(hidden_sizes[-1], 1)
+            if i == 0:
+                self.layers.append(GATConv(self.hidden_sizes[i], self.hidden_sizes[i+1], heads=self.heads))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1] * self.heads))
+            elif i > 0 and i < len(self.hidden_sizes)-2:
+                self.layers.append(GATConv(self.hidden_sizes[i]*self.heads, self.hidden_sizes[i+1], heads=self.heads))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1] * self.heads))
+            elif i == len(self.hidden_sizes)-2:
+                self.layers.append(GATConv(self.hidden_sizes[i]*self.heads, self.hidden_sizes[i+1], heads=self.heads, concat=False))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1]))
+        self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
     def forward(self, data):
-        x = data.x
-        edge_index = data.edge_index
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
         batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
 
         for i in range(len(self.layers)):
             x = self.layers[i](x, edge_index)
-            x = self.norms[i](x)
+            x = self.norms[i](x, batch)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+
+        x = self.pool(x, batch)
+        x = self.out(x)
+
+        return x
+
+from torch_geometric.nn import GATv2Conv
+class GraphAttentionNetworkV2(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.dropout = dropout
+        self.heads = heads
+        self.layers = torch.nn.ModuleList()
+        self.norms = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        for i in range(len(self.hidden_sizes)-1):
+            if i == 0:
+                self.layers.append(GATv2Conv(self.hidden_sizes[i], self.hidden_sizes[i+1], heads=self.heads))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1] * self.heads))
+            elif i > 0 and i < len(self.hidden_sizes)-2:
+                self.layers.append(GATv2Conv(self.hidden_sizes[i]*self.heads, self.hidden_sizes[i+1], heads=self.heads))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1] * self.heads))
+            elif i == len(self.hidden_sizes)-2:
+                self.layers.append(GATv2Conv(self.hidden_sizes[i]*self.heads, self.hidden_sizes[i+1], heads=self.heads, concat=False))
+                self.norms.append(GraphNorm(self.hidden_sizes[i + 1]))
+        self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        for i in range(len(self.layers)):
+            x = self.layers[i](x, edge_index)
+            x = self.norms[i](x, batch)
             x = F.relu(x)
             x = F.dropout(x, p=self.dropout, training=self.training)
 

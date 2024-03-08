@@ -23,12 +23,15 @@ from torch_geometric.data import Data, Batch
 from torch_geometric.loader import DataLoader as GraphDataLoader
 
 from gnns import create_GNN
-from gnns import GraphConvolutionNetwork, GraphAttentionNetwork
+from gnns import GraphConvolutionNetwork, GraphConvolutionNetworkV2, GraphAttentionNetwork, GraphAttentionNetworkV2, GraphIsomorphismNetwork
 from gnns import mse_loss
 from torch_geometric.nn import global_add_pool
 model_classes = {
     ("GCN", "ADD", "MSE"): create_GNN(GraphConvolutionNetwork, global_add_pool, mse_loss),
+    ("GCNV2", "ADD", "MSE"): create_GNN(GraphConvolutionNetworkV2, global_add_pool, mse_loss),
     ("GAT", "ADD", "MSE"): create_GNN(GraphAttentionNetwork, global_add_pool, mse_loss),
+    ("GATV2", "ADD", "MSE"): create_GNN(GraphAttentionNetworkV2, global_add_pool, mse_loss),
+    ("GIN", "ADD", "MSE"): create_GNN(GraphIsomorphismNetwork, global_add_pool, mse_loss),
 }
 
 def _parse_arguments():
@@ -61,11 +64,12 @@ def _parse_arguments():
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GAT'], help=f'aggregation function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN'], help=f'aggregation function')
     parser.add_argument('--readout', required=True, choices=['ADD'], help=f'readout function')
     parser.add_argument('--loss', required=True, choices=['MSE'], help=f'loss function')
 
-    parser.add_argument('--hidden_sizes', required=True, type=int, nargs='+', help='hidden sizes of GNN layers')
+    parser.add_argument('--num_layers', required=True, type=int, help='number of GNN layers')
+    parser.add_argument('--hidden_size', required=True, type=int, help='hidden size of GNN layers')
     parser.add_argument('--dropout', required=True, type=float, help='percentage of randomly deactivated neurons in each layer')
     parser.add_argument('--heads', default=1, type=int, help='number of attention heads')
 
@@ -157,7 +161,8 @@ def load_datasets(args):
 def load_model(args, path=None):
     print(colored('Loading model', 'green', attrs = [ 'bold' ]))
     model_params = {
-        "hidden_sizes": args.hidden_sizes,
+        "num_layers": args.num_layers,
+        "hidden_size": args.hidden_size,
         "dropout": args.dropout,
         "learning_rate": args.learning_rate,
         "heads": args.heads,
@@ -171,13 +176,13 @@ def load_model(args, path=None):
     }
 
     try:
-        #Model = g_model_classes[(args.aggregation, args.readout, args.loss)]
         Model = model_classes[(args.aggregation, args.readout, args.loss)]
     except KeyError:
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, args.loss)} combination")
 
     if path is None:
-        model = Model(**model_params)
+        device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
+        model = Model(**model_params).to(device)
     else:
         print(f"Loading policy {path}")
         try:
@@ -378,7 +383,6 @@ def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning
     results["best_plan_quality"].append(planning_results["best_plan_quality"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
-    results["hidden_sizes"] = " ".join([str(x) for x in args.hidden_sizes])
 
 
 def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
@@ -524,6 +528,7 @@ def _main(args):
     # TODO: STEP 1: INITIALIZE
     print(colored('Initializing datasets and loaders', 'red', attrs=['bold']))
     args.logdir.mkdir(parents=True, exist_ok=True)
+    if not torch.cuda.is_available(): args.gpus = 0
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
 
     train_logdir = args.logdir / "trained"
@@ -568,6 +573,7 @@ def _main(args):
         for _ in range(args.seeds):
             model = load_model(args)
             trainer = load_trainer(args, logdir=round_dir)
+            model.set_checkpoint_path(f"{round_dir}/version_{trainer.logger.version}/")
             print(colored('Training model...', 'green', attrs = [ 'bold' ]))
             print(type(model).__name__)
             trainer.fit(model, train_loader, validation_loader)
