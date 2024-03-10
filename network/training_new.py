@@ -1,13 +1,10 @@
 import argparse
-from typing import Dict
-
 from termcolor import colored
 import pytorch_lightning as pl
 import torch
 import os
 import re
 from timeit import default_timer as timer
-import plan
 import glob
 import pandas as pd
 import json
@@ -41,7 +38,7 @@ def _parse_arguments():
     default_batch_size = 64  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
-    default_learning_rate = 0.0002
+    default_learning_rate = 0.001
     default_weight_decay = 0.0
     default_gradient_accumulation = 1
     default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
@@ -166,7 +163,7 @@ def load_model(args, path=None):
         "dropout": args.dropout,
         "learning_rate": args.learning_rate,
         "heads": args.heads,
-        #"weight_decay": args.weight_decay,
+        "weight_decay": args.weight_decay,
         #"gradient_accumulation": args.gradient_accumulation,
         "batch_size": args.batch_size,
         "max_samples_per_file": args.max_samples_per_file,
@@ -180,9 +177,9 @@ def load_model(args, path=None):
     except KeyError:
         raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, args.loss)} combination")
 
+    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
     if path is None:
-        device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
-        model = Model(**model_params).to(device)
+        model = Model(**model_params)
     else:
         print(f"Loading policy {path}")
         try:
@@ -195,10 +192,12 @@ def load_model(args, path=None):
                 model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
                                                    map_location=torch.device('cpu'))
 
+    model = model.to(device)
+
     return model
 
 
-def load_trainer(args, logdir, path=None):
+def load_trainer(args, logdir):
     print(colored('Initializing trainer', 'green', attrs = [ 'bold' ]))
 
     max_epochs = args.max_epochs
@@ -229,21 +228,21 @@ def load_trainer(args, logdir, path=None):
     trainer = pl.Trainer(**trainer_params)
     return trainer
 
-def planning(predicate_dict, predicate_ids, max_arity, args, policy, domain_file, problem_file, device):
+def planning(predicate_dict, predicate_ids, max_arity, args, policy, model, domain_file, problem_file, device):
     start_time = timer()
     result_string = ""
 
     # load model
-    Model = load_model(args, policy)
-    try:
-        model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
-    except:
-        try:
-            model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
-                                               map_location=torch.device('cuda')).to(device)
-        except:
-            model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
-                                               map_location=torch.device('cpu')).to(device)
+    #Model = load_model(args, policy)
+    #try:
+    #    model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
+    #except:
+    #    try:
+    #        model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
+    #                                           map_location=torch.device('cuda')).to(device)
+    #    except:
+    #        model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
+    #                                           map_location=torch.device('cpu')).to(device)
     # deactivate dropout!
     model.training = False
 
@@ -569,7 +568,6 @@ def _main(args):
 
         # TODO: STEP 2: TRAIN
         print(colored('Training policies from scratch', 'red', attrs=['bold']))
-        # SEEDS FOR DATA SETS
         for _ in range(args.seeds):
             model = load_model(args)
             trainer = load_trainer(args, logdir=round_dir)
@@ -635,6 +633,22 @@ def _main(args):
         # load files for planning
         domain_file = Path('data/pddl/' + args.domain + '/test/domain.pddl')
         problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
+
+        # load model
+        Model = load_model(args, policy)
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
+        except:
+            try:
+                model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
+                                                   map_location=torch.device('cuda')).to(device)
+            except:
+                model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
+                                                   map_location=torch.device('cpu')).to(device)
+        # deactivate dropout!
+        model.training = False
+        model = model.to(device)
+
         # initialize metrics
         best_coverage = 0
         best_plan_quality = float('inf')
@@ -660,7 +674,7 @@ def _main(args):
                 # logger.info(f'Call: {" ".join(argv)}')  # TODO: KEEP THIS?
 
                 # run planning
-                result_string, action_trace, is_solution = planning(predicate_dict, predicate_ids, max_arity, args, policy, domain_file, problem_file, device)
+                result_string, action_trace, is_solution = planning(predicate_dict, predicate_ids, max_arity, args, policy, model, domain_file, problem_file, device)
 
                 # store results
                 with open(log_file, "w") as f:

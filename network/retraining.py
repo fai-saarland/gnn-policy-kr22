@@ -212,7 +212,7 @@ def _parse_arguments():
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_loss_constants = None
-    default_learning_rate = 0.0002
+    default_learning_rate = 0.001
     default_suboptimal_factor = 2.0
     default_l1 = 0.0
     default_weight_decay = 0.0

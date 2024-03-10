@@ -10,10 +10,11 @@ def mse_loss(predicted, target):
 
 def create_GNN(base: pl.LightningModule, pool, loss):
     class GNN(base):
-        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, **kwargs):
+        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, weight_decay: float, **kwargs):
             super().__init__(num_layers=num_layers, hidden_size=hidden_size, dropout=dropout, pool=pool, heads=heads, **kwargs)
-            self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads')
+            self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads', 'weight_decay')
             self.learning_rate = learning_rate
+            self.weight_decay = weight_decay
 
             self.train_losses = []
             self.validation_losses = []
@@ -22,7 +23,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             self.checkpoint_path = checkpoint_path
 
         def configure_optimizers(self):
-            optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr))#weight_decay=self.weight_decay)
+            optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25, verbose=True)
 
             optimize = {
@@ -37,11 +38,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             out = self(train_batch)
             train_loss = loss(out, train_batch.y)
             self.log('train_loss', train_loss, prog_bar=True, on_step=False, on_epoch=True, batch_size=train_batch.num_graphs)
-            # l1 = l1_regularization(self, self.l1_factor)
-            # self.log('l1_loss', l1)
-            # total = train + l1
-            # self.log('total_loss', total)
-            self.train_losses.append(train_loss)
+            self.train_losses.append(train_loss.item())
             return train_loss
 
         def validation_step(self, validation_batch, batch_index):
@@ -49,7 +46,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             out = self(validation_batch)
             validation_loss = loss(out, validation_batch.y)
             self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
-            self.validation_losses.append(validation_loss)
+            self.validation_losses.append(validation_loss.item())
             self.training = True
 
         #def on_train_epoch_end(self):
@@ -67,9 +64,9 @@ def create_GNN(base: pl.LightningModule, pool, loss):
         # store information about training, and validation losses
         def on_train_end(self):
             with open(self.checkpoint_path + "losses.train", "w") as f:
-                f.write(json.dumps(self.all_train_losses))
+                f.write(json.dumps(self.train_losses))
             with open(self.checkpoint_path + "losses.val", "w") as f:
-                f.write(json.dumps(self.all_val_losses))
+                f.write(json.dumps(self.validation_losses))
 
     return GNN
 
