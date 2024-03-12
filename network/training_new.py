@@ -21,14 +21,25 @@ from torch_geometric.loader import DataLoader as GraphDataLoader
 
 from gnns import create_GNN
 from gnns import GraphConvolutionNetwork, GraphConvolutionNetworkV2, GraphAttentionNetwork, GraphAttentionNetworkV2, GraphIsomorphismNetwork
-from gnns import mse_loss
-from torch_geometric.nn import global_add_pool
+from gnns import GCNGraphTransformer, GCNGPS
+from gnns import mse_loss, mae_loss
+from torch_geometric.nn import global_add_pool, global_max_pool
 model_classes = {
     ("GCN", "ADD", "MSE"): create_GNN(GraphConvolutionNetwork, global_add_pool, mse_loss),
     ("GCNV2", "ADD", "MSE"): create_GNN(GraphConvolutionNetworkV2, global_add_pool, mse_loss),
     ("GAT", "ADD", "MSE"): create_GNN(GraphAttentionNetwork, global_add_pool, mse_loss),
     ("GATV2", "ADD", "MSE"): create_GNN(GraphAttentionNetworkV2, global_add_pool, mse_loss),
     ("GIN", "ADD", "MSE"): create_GNN(GraphIsomorphismNetwork, global_add_pool, mse_loss),
+
+    ("GCN", "MAX", "MSE"): create_GNN(GraphConvolutionNetwork, global_max_pool, mse_loss),
+    ("GCNV2", "MAX", "MSE"): create_GNN(GraphConvolutionNetworkV2, global_max_pool, mse_loss),
+    ("GAT", "MAX", "MSE"): create_GNN(GraphAttentionNetwork, global_max_pool, mse_loss),
+    ("GATV2", "MAX", "MSE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mse_loss),
+    ("GIN", "MAX", "MSE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mse_loss),
+
+    ("GCNGT", "ADD", "MSE"): create_GNN(GCNGraphTransformer, global_add_pool, mse_loss),
+    ("GCNGPS", "ADD", "MSE"): create_GNN(GCNGPS, global_add_pool, mse_loss),
+    ("GCNGPS", "ADD", "MAE"): create_GNN(GCNGPS, global_add_pool, mae_loss),
 }
 
 def _parse_arguments():
@@ -61,9 +72,9 @@ def _parse_arguments():
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN'], help=f'aggregation function')
-    parser.add_argument('--readout', required=True, choices=['ADD'], help=f'readout function')
-    parser.add_argument('--loss', required=True, choices=['MSE'], help=f'loss function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'GCNGT', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
+    parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 
     parser.add_argument('--num_layers', required=True, type=int, help='number of GNN layers')
     parser.add_argument('--hidden_size', required=True, type=int, help='hidden size of GNN layers')
@@ -394,6 +405,10 @@ def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
         # to the arity of the predicate
         for predicate in state.keys():
             arity = predicate_dict[predicate]
+            # some atoms may have no arguments!
+            if arity == 0:
+                atoms.append((predicate, []))
+                continue
             arguments = state[predicate]
             # keep track of the object with the highest id such that we now how many objects there are
             for arg in arguments:
@@ -440,12 +455,20 @@ def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
 
             nodes_x.append(atom_node)
 
-            # connect atom node to corresponding object nodes
-            for x, argument in enumerate(arguments):
-                edge_index[0].append(i + len(objects))
-                edge_index[1].append(argument.item())
-                edge_index[0].append(argument.item())
-                edge_index[1].append(i + len(objects))
+            # if the atom takes no arguments we connect the atom node to all object nodes
+            if len(arguments) == 0:
+                for x in range(len(objects)):
+                    edge_index[0].append(i + len(objects))
+                    edge_index[1].append(x)
+                    edge_index[0].append(x)
+                    edge_index[1].append(i + len(objects))
+            else:
+                # connect atom node to corresponding object nodes
+                for x, argument in enumerate(arguments):
+                    edge_index[0].append(i + len(objects))
+                    edge_index[1].append(argument.item())
+                    edge_index[0].append(argument.item())
+                    edge_index[1].append(i + len(objects))
 
         nodes_x = torch.stack(nodes_x).float()
         edge_index = torch.tensor(edge_index).long()
@@ -463,6 +486,10 @@ def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
     # to the arity of the predicate
     for predicate in state.keys():
         arity = predicate_dict[predicate]
+        # some atoms may have no arguments!
+        if arity == 0:
+            atoms.append((predicate, []))
+            continue
         arguments = state[predicate]
         # keep track of the object with the highest id such that we now how many objects there are
         for arg in arguments:
@@ -508,12 +535,20 @@ def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
 
         nodes_x.append(atom_node)
 
-        # connect atom node to corresponding object nodes
-        for x, argument in enumerate(arguments):
-            edge_index[0].append(i + len(objects))
-            edge_index[1].append(argument.item())
-            edge_index[0].append(argument.item())
-            edge_index[1].append(i + len(objects))
+        # if the atom takes no arguments we connect the atom node to all object nodes
+        if len(arguments) == 0:
+            for x in range(len(objects)):
+                edge_index[0].append(i + len(objects))
+                edge_index[1].append(x)
+                edge_index[0].append(x)
+                edge_index[1].append(i + len(objects))
+        else:
+            # connect atom node to corresponding object nodes
+            for x, argument in enumerate(arguments):
+                edge_index[0].append(i + len(objects))
+                edge_index[1].append(argument.item())
+                edge_index[0].append(argument.item())
+                edge_index[1].append(i + len(objects))
 
     nodes_x = torch.stack(nodes_x).float()
     edge_index = torch.tensor(edge_index).long()
@@ -563,7 +598,10 @@ def _main(args):
         train_loader = GraphDataLoader(train_graphs, batch_size=args.batch_size, shuffle=True, drop_last=False, num_workers=args.num_workers, pin_memory=True)
         validation_loader = GraphDataLoader(validation_graphs, batch_size=args.batch_size, shuffle=False, drop_last=False, num_workers=args.num_workers, pin_memory=True)
 
-        # assert True == False
+        #for graph in train_graphs:
+        #    print(graph)
+
+        #assert True == False
 
 
         # TODO: STEP 2: TRAIN

@@ -8,6 +8,10 @@ def mse_loss(predicted, target):
     target = target.view(-1, 1)
     return torch.nn.MSELoss()(predicted, target)
 
+def mae_loss(predicted, target):
+    target = target.view(-1, 1)
+    return torch.nn.L1Loss()(predicted, target)
+
 def create_GNN(base: pl.LightningModule, pool, loss):
     class GNN(base):
         def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, weight_decay: float, **kwargs):
@@ -34,6 +38,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             return optimize
 
         def training_step(self, train_batch, batch_index):
+            self.train()
             assert self.training == True
             out = self(train_batch)
             train_loss = loss(out, train_batch.y)
@@ -43,23 +48,12 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
         def validation_step(self, validation_batch, batch_index):
             self.training = False
+            self.eval()
             out = self(validation_batch)
             validation_loss = loss(out, validation_batch.y)
             self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
             self.validation_losses.append(validation_loss.item())
             self.training = True
-
-        #def on_train_epoch_end(self):
-        #    with torch.no_grad():
-        #        # compute average loss on training samples during the last epoch
-        #        train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
-        #        print(f'epoch train loss: {train_loss}')
-        #        self.train_losses.clear()
-        #
-        #        # compute average loss on validation samples during the last epoch
-        #        validation_loss = sum(l.mean() for l in self.validation_losses) / len(self.validation_losses)
-        #        print(f'epoch validation loss: {validation_loss}')
-        #        self.validation_losses.clear()
 
         # store information about training, and validation losses
         def on_train_end(self):
@@ -263,4 +257,83 @@ class GraphAttentionNetworkV2(pl.LightningModule):
         x = self.pool(x, batch)
         x = self.out(x)
 
+        return x
+
+from torch.nn import TransformerEncoderLayer, TransformerEncoder
+class GCNGraphTransformer(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.norms = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        for i in range(len(self.hidden_sizes) - 1):
+            self.layers.append(GCNConv(self.hidden_sizes[i], self.hidden_sizes[i + 1]))
+            self.norms.append(GraphNorm(self.hidden_sizes[i + 1]))
+
+        self.trans_dim = 2 * self.hidden_sizes[-1]
+        self.gnn2transformer = torch.nn.Linear(self.hidden_sizes[-1], self.trans_dim)
+        self.transformer_layer = TransformerEncoderLayer(d_model=self.trans_dim, nhead=heads, batch_first=True,
+                                                         dim_feedforward=self.trans_dim, dropout=dropout)
+        self.encoder_norm = torch.nn.LayerNorm(self.trans_dim)
+        self.transformer_encoder = TransformerEncoder(self.transformer_layer, num_layers=num_layers, norm=self.encoder_norm)
+        self.input_norm = torch.nn.LayerNorm(self.trans_dim)
+
+
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        for i in range(len(self.layers)):
+            x = self.layers[i](x, edge_index)
+            x = self.norms[i](x, batch)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+
+        print("node embeddings: ", x.shape)
+        tokens = self.gnn2transformer(x)
+        tokens = self.input_norm(tokens)
+        print("tokens: ", tokens.shape)
+
+        x = self.transformer_encoder(tokens)
+        print("transformer output: ", x.shape)
+
+        return x
+
+from torch_geometric.nn import GPSConv
+class GCNGPS(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [hidden_size] * (num_layers)
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.norms = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        self.node_embedding = torch.nn.Linear(5, hidden_size)
+        for i in range(len(self.hidden_sizes) - 1):
+            conv = GCNConv(self.hidden_sizes[i], self.hidden_sizes[i + 1])
+            self.layers.append(GPSConv(self.hidden_sizes[i], conv, heads=heads, attn_type='performer', dropout=dropout))
+        self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
+
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        x = self.node_embedding(x)
+        for i in range(len(self.layers)):
+            x = self.layers[i](x=x, edge_index=edge_index, batch=batch)
+
+        x = self.pool(x, batch)
+        x = self.out(x)
         return x

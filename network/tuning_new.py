@@ -45,9 +45,9 @@ def _parse_arguments():
     parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN'], help=f'aggregation function')
-    parser.add_argument('--readout', required=True, choices=['ADD'], help=f'readout function')
-    parser.add_argument('--loss', required=True, choices=['MSE'], help=f'loss function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'GCNGT', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
+    parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 
     parser.add_argument('--num_layers', default=2, type=int, help='number of GNN layers')
     parser.add_argument('--hidden_size', default=256, type=int, help='hidden size of GNN layers')
@@ -64,7 +64,6 @@ def _parse_arguments():
     # arguments with meaningful default values
     parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
     parser.add_argument('--max_epochs', default=default_max_epochs, type=int, help=f'maximum number of epochs (default={default_max_epochs})')
-    # parser.add_argument('--max_bugs_per_iteration', default=default_max_bugs_per_iteration, type=int, help=f'maximum number of bugs per iteration (default={default_max_bugs_per_iteration})')
     parser.add_argument('--batch_size', default=default_batch_size, type=int, help=f'maximum size of batches (default={default_batch_size})')
     parser.add_argument('--gpus', default=default_gpus, type=int, help=f'number of GPUs to use (default={default_gpus})')
     parser.add_argument('--num_workers', default=default_num_workers, type=int, help=f'number of workers for the data loader (use 0 on Windows) (default={default_num_workers})')
@@ -344,10 +343,10 @@ def _main(args):
             # save results of the best run
             save_results(results, best_trained_policy_path, best_trained_val_loss, planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
 
-    print(colored('Storing results', 'red', attrs=['bold']))
-    print(results)
-    results = pd.DataFrame(results)
-    results.to_csv(args.logdir / "results.csv")
+            print(colored('Storing results', 'red', attrs=['bold']))
+            print(results)
+            results_df = pd.DataFrame(results)
+            results_df.to_csv(args.logdir / "results.csv")
 
 
 if __name__ == "__main__":
