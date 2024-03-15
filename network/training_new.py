@@ -37,9 +37,17 @@ model_classes = {
     ("GATV2", "MAX", "MSE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mse_loss),
     ("GIN", "MAX", "MSE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mse_loss),
 
+    ("GCN", "MAX", "MAE"): create_GNN(GraphConvolutionNetwork, global_max_pool, mae_loss),
+    ("GCNV2", "MAX", "MAE"): create_GNN(GraphConvolutionNetworkV2, global_max_pool, mae_loss),
+    ("GAT", "MAX", "MAE"): create_GNN(GraphAttentionNetwork, global_max_pool, mae_loss),
+    ("GATV2", "MAX", "MAE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mae_loss),
+    ("GIN", "MAX", "MAE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mae_loss),
+
     ("GCNGT", "ADD", "MSE"): create_GNN(GCNGraphTransformer, global_add_pool, mse_loss),
     ("GCNGPS", "ADD", "MSE"): create_GNN(GCNGPS, global_add_pool, mse_loss),
     ("GCNGPS", "ADD", "MAE"): create_GNN(GCNGPS, global_add_pool, mae_loss),
+
+    ("GCNGPS", "MAX", "MSE"): create_GNN(GCNGPS, global_add_pool, mse_loss),
 }
 
 def _parse_arguments():
@@ -243,18 +251,8 @@ def planning(predicate_dict, predicate_ids, max_arity, args, policy, model, doma
     start_time = timer()
     result_string = ""
 
-    # load model
-    #Model = load_model(args, policy)
-    #try:
-    #    model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
-    #except:
-    #    try:
-    #        model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
-    #                                           map_location=torch.device('cuda')).to(device)
-    #    except:
-    #        model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False,
-    #                                           map_location=torch.device('cpu')).to(device)
     # deactivate dropout!
+    model.eval()
     model.training = False
 
     elapsed_time = timer() - start_time
