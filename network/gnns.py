@@ -14,9 +14,9 @@ def mae_loss(predicted, target):
 
 def create_GNN(base: pl.LightningModule, pool, loss):
     class GNN(base):
-        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, weight_decay: float, **kwargs):
-            super().__init__(num_layers=num_layers, hidden_size=hidden_size, dropout=dropout, pool=pool, heads=heads, **kwargs)
-            self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads', 'weight_decay')
+        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, max_arity: int, weight_decay: float, **kwargs):
+            super().__init__(num_layers=num_layers, hidden_size=hidden_size, dropout=dropout, pool=pool, heads=heads, max_arity=max_arity, **kwargs)
+            self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads', 'max_arity', 'weight_decay')
             self.learning_rate = learning_rate
             self.weight_decay = weight_decay
 
@@ -68,9 +68,9 @@ from torch_geometric.nn import GCNConv
 from torch_geometric.nn import GraphNorm
 import torch.nn.functional as F
 class GraphConvolutionNetwork(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * (num_layers)
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * (num_layers)
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.norms = torch.nn.ModuleList()
@@ -102,9 +102,9 @@ class GraphConvolutionNetwork(pl.LightningModule):
 from torch_geometric.nn import GCN2Conv
 # TODO: HOW TO CONSTRUCT THIS?
 class GraphConvolutionNetworkV2(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.norms = torch.nn.ModuleList()
@@ -135,9 +135,9 @@ class GraphConvolutionNetworkV2(pl.LightningModule):
 
 from torch_geometric.nn import GINConv
 class GraphIsomorphismNetwork(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.pool = pool
@@ -179,9 +179,9 @@ class GraphIsomorphismNetwork(pl.LightningModule):
 
 from torch_geometric.nn import GATConv
 class GraphAttentionNetwork(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
         self.dropout = dropout
         self.heads = heads
         self.layers = torch.nn.ModuleList()
@@ -220,9 +220,9 @@ class GraphAttentionNetwork(pl.LightningModule):
 
 from torch_geometric.nn import GATv2Conv
 class GraphAttentionNetworkV2(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int,  pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
         self.dropout = dropout
         self.heads = heads
         self.layers = torch.nn.ModuleList()
@@ -261,9 +261,9 @@ class GraphAttentionNetworkV2(pl.LightningModule):
 
 from torch.nn import TransformerEncoderLayer, TransformerEncoder
 class GCNGraphTransformer(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [5] + [hidden_size] * num_layers
+        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.norms = torch.nn.ModuleList()
@@ -296,28 +296,25 @@ class GCNGraphTransformer(pl.LightningModule):
             x = F.relu(x)
             x = F.dropout(x, p=self.dropout, training=self.training)
 
-        print("node embeddings: ", x.shape)
         tokens = self.gnn2transformer(x)
         tokens = self.input_norm(tokens)
-        print("tokens: ", tokens.shape)
 
         x = self.transformer_encoder(tokens)
-        print("transformer output: ", x.shape)
 
         return x
 
 from torch_geometric.nn import GPSConv
 class GCNGPS(pl.LightningModule):
-    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, pool, **kwargs):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
         self.hidden_sizes = [hidden_size] * (num_layers)
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
-        self.norms = torch.nn.ModuleList()
         self.pool = pool
         self.training = True
 
-        self.node_embedding = torch.nn.Linear(5, hidden_size)
+        self.node_embedding = torch.nn.Linear(max_arity+3, hidden_size)
+        self.input_norm = torch.nn.LayerNorm(hidden_size)
         for i in range(len(self.hidden_sizes) - 1):
             conv = GCNConv(self.hidden_sizes[i], self.hidden_sizes[i + 1])
             self.layers.append(GPSConv(self.hidden_sizes[i], conv, heads=heads, attn_type='performer', dropout=dropout))
@@ -331,6 +328,7 @@ class GCNGPS(pl.LightningModule):
             batch = batch.to(self.device)
 
         x = self.node_embedding(x)
+        x = self.input_norm(x)
         for i in range(len(self.layers)):
             x = self.layers[i](x=x, edge_index=edge_index, batch=batch)
 

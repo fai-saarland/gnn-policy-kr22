@@ -216,7 +216,7 @@ def _main(args):
             # TODO: STEP 2: TRAIN
             print(colored('Training policies from scratch', 'red', attrs=['bold']))
             for _ in range(args.seeds):
-                model = load_model(args)
+                model = load_model(args, max_arity=max_arity)
                 trainer = load_trainer(args, logdir=round_dir)
                 model.set_checkpoint_path(f"{round_dir}/version_{trainer.logger.version}/")
                 print(colored('Training model...', 'green', attrs = [ 'bold' ]))
@@ -269,7 +269,7 @@ def _main(args):
             problem_files = glob.glob(str('data/pddl/' + args.domain + '/test/' + '*.pddl'))
 
             # load model
-            Model = load_model(args, policy)
+            Model = load_model(args, max_arity=max_arity, path=policy)
             try:
                 model = Model.load_from_checkpoint(checkpoint_path=str(policy), strict=False).to(device)
             except:
