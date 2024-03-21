@@ -45,7 +45,7 @@ def _parse_arguments():
     parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'GCNGT', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Transformer', 'GCNGPS'], help=f'aggregation function')
     parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
     parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 

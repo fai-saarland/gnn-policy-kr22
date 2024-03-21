@@ -21,7 +21,7 @@ from torch_geometric.loader import DataLoader as GraphDataLoader
 
 from gnns import create_GNN
 from gnns import GraphConvolutionNetwork, GraphConvolutionNetworkV2, GraphAttentionNetwork, GraphAttentionNetworkV2, GraphIsomorphismNetwork
-from gnns import GCNGraphTransformer, GCNGPS
+from gnns import Transformer, GCNGPS
 from gnns import mse_loss, mae_loss
 from torch_geometric.nn import global_add_pool, global_max_pool
 model_classes = {
@@ -43,7 +43,7 @@ model_classes = {
     ("GATV2", "MAX", "MAE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mae_loss),
     ("GIN", "MAX", "MAE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mae_loss),
 
-    ("GCNGT", "ADD", "MSE"): create_GNN(GCNGraphTransformer, global_add_pool, mse_loss),
+    ("Transformer", "ADD", "MSE"): create_GNN(Transformer, global_add_pool, mse_loss),
     ("GCNGPS", "ADD", "MSE"): create_GNN(GCNGPS, global_add_pool, mse_loss),
     ("GCNGPS", "ADD", "MAE"): create_GNN(GCNGPS, global_add_pool, mae_loss),
 
@@ -80,7 +80,7 @@ def _parse_arguments():
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'GCNGT', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Transformer', 'GCNGPS'], help=f'aggregation function')
     parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
     parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 

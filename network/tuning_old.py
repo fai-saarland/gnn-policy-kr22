@@ -45,7 +45,7 @@ def _parse_arguments():
     parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'GCNGT', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Transformer', 'GCNGPS'], help=f'aggregation function')
     parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
     parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 
@@ -264,9 +264,6 @@ def _main(args):
         best_trained_policy_name = os.path.basename(best_trained_policy)
         best_trained_policy_path = os.path.join(best_trained_policy_dir, best_trained_policy_name)
         os.system("cp " + str(best_trained_policy) + " " + str(best_trained_policy_path))
-        # copy train_indices_selected_states.json and validation_indices_selected_states.json to the new directory
-        os.system("cp " + str(best_trained_policy.parent.parent.parent / "train_indices_selected_states.json") + " " + str(best_trained_policy_dir))
-        os.system("cp " + str(best_trained_policy.parent.parent.parent / "validation_indices_selected_states.json") + " " + str(best_trained_policy_dir))
 
         print(colored('Running policies on test instances', 'red', attrs=['bold']))
         policies_and_directories = []

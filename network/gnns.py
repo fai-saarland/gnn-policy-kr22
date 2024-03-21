@@ -260,47 +260,108 @@ class GraphAttentionNetworkV2(pl.LightningModule):
         return x
 
 from torch.nn import TransformerEncoderLayer, TransformerEncoder
-class GCNGraphTransformer(pl.LightningModule):
+from torch_geometric.nn.attention import PerformerAttention
+from torch_geometric.utils import to_dense_batch
+from torch.nn import Dropout, Sequential, Linear
+from torch.nn import LayerNorm, ReLU
+
+# TODO: THIS DOES NOT WORK!!!
+class Transformer2(pl.LightningModule):
     def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [max_arity+3] + [hidden_size] * num_layers
+        self.hidden_sizes = [hidden_size] * num_layers
         self.dropout = dropout
-        self.layers = torch.nn.ModuleList()
-        self.norms = torch.nn.ModuleList()
+        self.attention_layers = torch.nn.ModuleList()
+        self.attention_norms = torch.nn.ModuleList()
+        self.mlp_layers = torch.nn.ModuleList()
+        self.mlp_norms = torch.nn.ModuleList()
         self.pool = pool
         self.training = True
 
-        for i in range(len(self.hidden_sizes) - 1):
-            self.layers.append(GCNConv(self.hidden_sizes[i], self.hidden_sizes[i + 1]))
-            self.norms.append(GraphNorm(self.hidden_sizes[i + 1]))
+        self.node2token = Linear(max_arity+3, self.hidden_sizes[0])
+        self.input_norm = LayerNorm(self.hidden_sizes[0])
 
-        self.trans_dim = 2 * self.hidden_sizes[-1]
-        self.gnn2transformer = torch.nn.Linear(self.hidden_sizes[-1], self.trans_dim)
-        self.transformer_layer = TransformerEncoderLayer(d_model=self.trans_dim, nhead=heads, batch_first=True,
-                                                         dim_feedforward=self.trans_dim, dropout=dropout)
-        self.encoder_norm = torch.nn.LayerNorm(self.trans_dim)
-        self.transformer_encoder = TransformerEncoder(self.transformer_layer, num_layers=num_layers, norm=self.encoder_norm)
-        self.input_norm = torch.nn.LayerNorm(self.trans_dim)
+        for i in range(len(self.hidden_sizes) - 1):
+            self.attention_layers.append(PerformerAttention(self.hidden_sizes[i], heads=heads))
+            self.attention_norms.append(LayerNorm(self.hidden_sizes[i]))
+            self.mlp_layers.append(Sequential(Linear(self.hidden_sizes[i], self.hidden_sizes[i]*2),
+                                              ReLU(),
+                                              Dropout(self.dropout),
+                                              Linear(self.hidden_sizes[i]*2, self.hidden_sizes[i])
+                                              ))
+            self.mlp_norms.append(LayerNorm(self.hidden_sizes[i]))
+
+        self.out = Sequential(Linear(self.hidden_sizes[-1], self.hidden_sizes[-1]*2),
+                              ReLU(),
+                              Dropout(self.dropout),
+                              Linear(self.hidden_sizes[-1]*2, 1))
 
 
     def forward(self, data):
+        nodes, mask = to_dense_batch(data.x, data.batch)
+
+        h = self.node2token(nodes)
+        h = self.input_norm(h)
+        for i in range(len(self.hidden_sizes) - 1):
+            # Performer self-attention
+            _h = h
+            h = self.attention_layers[i](h, mask)
+            #h = h[mask]
+            # Add and norm
+            h = F.dropout(h, p=self.dropout, training=self.training)
+            h = self.attention_norms[i](h + _h)
+            # Position-wise FFN
+            _h = h
+            h = self.mlp_layers[i](h)
+            # Add and norm
+            h = F.dropout(h, p=self.dropout, training=self.training)
+            h = self.mlp_norms[i](h + _h)
+
+        h = self.pool(h, data.batch)
+        out = self.out(h)
+
+        return out
+
+from torch_geometric.transforms import AddLaplacianEigenvectorPE
+class Transformer(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [hidden_size] * (num_layers)
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        self.node_embedding = torch.nn.Linear(max_arity+3, hidden_size)
+        self.input_norm = torch.nn.LayerNorm(hidden_size)
+        #self.pe_embedding = torch.nn.Linear(5, hidden_size)
+        #self.pe_norm = torch.nn.BatchNorm1d(hidden_size)
+        for i in range(len(self.hidden_sizes) - 1):
+            self.layers.append(GPSConv(self.hidden_sizes[i], None, heads=heads, attn_type='performer', dropout=dropout))
+        self.out = torch.nn.Sequential(torch.nn.Linear(self.hidden_sizes[-1], self.hidden_sizes[-1]*2),
+                                      torch.nn.ReLU(),
+                                      torch.nn.Dropout(dropout),
+                                      torch.nn.Linear(self.hidden_sizes[-1]*2, 1))
+
+    def forward(self, data):
+        #data = AddLaplacianEigenvectorPE(k=5, attr_name='pe')(data)
         x = data.x.to(self.device)
         edge_index = data.edge_index.to(self.device)
+        #pe = data.pe.to(self.device)
         batch = data.batch
         if batch is not None:
             batch = batch.to(self.device)
 
+        x = self.node_embedding(x)
+        x = self.input_norm(x)
+        #pe = self.pe_embedding(pe)
+        #pe = self.pe_norm(pe)
+        #x = x + pe
         for i in range(len(self.layers)):
-            x = self.layers[i](x, edge_index)
-            x = self.norms[i](x, batch)
-            x = F.relu(x)
-            x = F.dropout(x, p=self.dropout, training=self.training)
+            x = self.layers[i](x=x, edge_index=edge_index, batch=batch)
 
-        tokens = self.gnn2transformer(x)
-        tokens = self.input_norm(tokens)
-
-        x = self.transformer_encoder(tokens)
-
+        x = self.pool(x, batch)
+        x = self.out(x)
         return x
 
 from torch_geometric.nn import GPSConv
