@@ -695,6 +695,17 @@ def _main(args):
         train_graphs = states_to_graphs2(train_samples, predicate_dict, predicate_ids, max_arity)
         validation_graphs = states_to_graphs2(validation_samples, predicate_dict, predicate_ids, max_arity)
 
+        #max_train_graph_size = max([graph.num_nodes for graph in train_graphs])
+        #min_train_graph_size = min([graph.num_nodes for graph in train_graphs])
+        #print("min train graph size: ", min_train_graph_size)
+        #print("max train graph size", max_train_graph_size)
+        #max_validation_graph_size = max([graph.num_nodes for graph in validation_graphs])
+        #min_validation_graph_size = min([graph.num_nodes for graph in validation_graphs])
+        #print("min validation graph size: ", min_validation_graph_size)
+        #print("max validation graph size", max_validation_graph_size)
+
+        #assert True == False
+
         #for graph in validation_graphs:
         #    print(graph)
         #assert True == False

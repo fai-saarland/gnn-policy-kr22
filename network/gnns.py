@@ -14,7 +14,7 @@ def mae_loss(predicted, target):
 
 def create_GNN(base: pl.LightningModule, pool, loss):
     class GNN(base):
-        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, max_arity: int, weight_decay: float, **kwargs):
+        def __init__(self, num_layers: int, hidden_size: int, dropout: int, learning_rate: float, heads: int, weight_decay: float, max_arity=2, **kwargs):
             super().__init__(num_layers=num_layers, hidden_size=hidden_size, dropout=dropout, pool=pool, heads=heads, max_arity=max_arity, **kwargs)
             self.save_hyperparameters('num_layers', 'hidden_size', 'dropout', 'learning_rate', 'heads', 'max_arity', 'weight_decay')
             self.learning_rate = learning_rate

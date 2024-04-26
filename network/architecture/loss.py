@@ -241,3 +241,39 @@ def mean_squared_error_loss(output, labels, solvable_labels, state_counts, devic
                 loss += torch.pow(value_prediction - value_label, 2)
         offset += state_count
     return loss / len(state_counts)
+
+def distillation_loss(retrain_output, train_output, labels, solvable_labels, state_counts, device):
+    global g_suboptimal_factor
+    loss = 0.0
+    offset = 0
+    values, solvables = retrain_output
+    train_values, train_solvables = train_output
+    for index, state_count in enumerate(state_counts):
+        value_prediction = values[offset][0]
+        #print("value_prediction: ", value_prediction)
+        solvable_prediction = solvables[offset][0]
+        #print("solvable_prediction: ", solvable_prediction)
+        train_value_prediction = train_values[offset][0]
+        #print("train_value_prediction: ", train_value_prediction)
+        train_solvable_prediction = train_solvables[offset][0]
+        #print("train_solvable_prediction: ", train_solvable_prediction)
+        value_label = labels[index]
+        #print("value_label: ", value_label)
+        is_solvable = value_label < 2000000000
+        solvable_label = torch.round(torch.sigmoid(train_solvable_prediction))
+        #print("solvable_label: ", solvable_label)
+        loss += torch.binary_cross_entropy_with_logits(solvable_prediction, solvable_label)
+        #print("solvable_loss: ", loss)
+        if is_solvable:  # Is a solvable state, apply loss on value prediction
+            if value_label == 0:
+                loss += torch.pow(value_prediction - train_value_prediction, 2)
+                assert state_count == 1
+            else:
+                # compute MSE:
+                loss += torch.pow(value_prediction - train_value_prediction, 2)
+                #print("value loss:", loss)
+        offset += state_count
+    #assert True == False
+    return loss / len(state_counts)
+
+

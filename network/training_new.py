@@ -299,6 +299,10 @@ def planning(predicate_dict, predicate_ids, max_arity, args, policy, model, doma
 from generators.plan import create_object_encoding
 from generators.plan import _get_goal_denotation, _to_input, _get_successor_states, _get_applicable_actions, _spanner_unsolvable, _spanner_solved
 def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arity, actions, initial, goal, language, model: pl.LightningModule, augment_fn = None, cycles: str = 'avoid', max_trace_length: int = 500, unsolvable_weight: float = 100000.0, logger = None):
+    max_test_graph_size = 0
+    min_test_graph_size = 1000000000
+    logger = False
+
     objects = language.constants()
     obj_encoding = create_object_encoding(objects)
     if logger: logger.info(f'{len(objects)} object(s), obj_encoding={obj_encoding}')
@@ -357,6 +361,13 @@ def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arit
             state_graphs = [state_to_graph(encoded_state, predicate_dict, predicate_ids, max_arity) for encoded_state in encoded_states]
             state_graphs_batch = Batch.from_data_list(state_graphs)  # TODO: DEVICE????
 
+            if state_graphs[0].num_nodes > max_test_graph_size:
+                max_test_graph_size = state_graphs[0].num_nodes
+            if state_graphs[0].num_nodes < min_test_graph_size:
+                min_test_graph_size = state_graphs[0].num_nodes
+
+            assert model.training == False
+
             output_values = model(state_graphs_batch)
             best_successor_index = torch.argmin(output_values)
             num_evaluations += len(successor_actions)
@@ -376,6 +387,10 @@ def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arit
 
         reached_goal = current_state[goal]
         if logger: logger.debug(f'status={1 if reached_goal else 0}')
+
+        print(f'Max test graph size: {max_test_graph_size}')
+        print(f'Min test graph size: {min_test_graph_size}')
+
         return action_trace, state_trace, value_trace, reached_goal, num_evaluations
 
 
@@ -551,7 +566,7 @@ def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
 
     nodes_x = torch.stack(nodes_x).float()
     edge_index = torch.tensor(edge_index).long()
-    graph_state = Data(x=nodes_x, edge_index=edge_index,num_nodes=len(objects) + len(atoms))
+    graph_state = Data(x=nodes_x, edge_index=edge_index, num_nodes=len(objects) + len(atoms))
     graph_state.validate(raise_on_error=True)
 
     return graph_state
