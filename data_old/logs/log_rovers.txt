@@ -1,0 +1,583 @@
+[21:57] Input: p21_0.pddl
+Parsing: 6996 ms.
+(START)
+(S) navigate(rover5, waypoint10, waypoint23); 2.97085
+(S) sample_soil(rover5, rover5store, waypoint23); 1.94300
+(S) navigate(rover5, waypoint23, waypoint14); 1.01760
+(S) communicate_soil_data(rover5, general, waypoint23, waypoint14, waypoint31); -0.00817
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.67330
+(END)
+=> The instance is solvable.  [Real time: 00:00:40.2979295, or CPU time: 00:00:34.2031250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover5, waypoint10, waypoint23)
+sample_soil(rover5, rover5store, waypoint23)
+navigate(rover5, waypoint23, waypoint14)
+communicate_soil_data(rover5, general, waypoint23, waypoint14, waypoint31)
+[21:58] Input: p21_1.pddl
+Parsing: 6355 ms.
+(START)
+(S) navigate(rover1, waypoint20, waypoint18); 2.95317
+(S) sample_soil(rover1, rover1store, waypoint18); 1.94065
+(S) navigate(rover1, waypoint18, waypoint20); 1.01610
+(S) communicate_soil_data(rover1, general, waypoint18, waypoint20, waypoint31); -0.00974
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.86252
+(END)
+=> The instance is solvable.  [Real time: 00:01:50.7064208, or CPU time: 00:01:44.5937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover1, waypoint20, waypoint18)
+sample_soil(rover1, rover1store, waypoint18)
+navigate(rover1, waypoint18, waypoint20)
+communicate_soil_data(rover1, general, waypoint18, waypoint20, waypoint31)
+[22:00] Input: p22_0.pddl
+Parsing: 7775 ms.
+(START)
+(S) navigate(rover3, waypoint4, waypoint12); 3.01975
+(S) navigate(rover3, waypoint12, waypoint17); 1.96901
+(S) sample_soil(rover3, rover3store, waypoint17); 1.04255
+(S) communicate_soil_data(rover3, general, waypoint17, waypoint17, waypoint2); -0.00983
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.98345
+(END)
+=> The instance is solvable.  [Real time: 00:01:04.1188103, or CPU time: 00:00:57.6718750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover3, waypoint4, waypoint12)
+navigate(rover3, waypoint12, waypoint17)
+sample_soil(rover3, rover3store, waypoint17)
+communicate_soil_data(rover3, general, waypoint17, waypoint17, waypoint2)
+[22:01] Input: p22_1.pddl
+Parsing: 8171 ms.
+(START)
+(S) navigate(rover0, waypoint4, waypoint22); 4.23015
+(S) navigate(rover0, waypoint22, waypoint38); 2.96280
+(S) sample_soil(rover0, rover0store, waypoint38); 1.93813
+(S) navigate(rover0, waypoint38, waypoint22); 1.95919
+(S) navigate(rover0, waypoint22, waypoint4); 1.94950
+(S) navigate(rover0, waypoint4, waypoint13); 1.93383
+(S) navigate(rover0, waypoint13, waypoint25); 1.02941
+(S) communicate_soil_data(rover0, general, waypoint38, waypoint25, waypoint2); -0.01555
+(P) Actual 8; Expected 5; Ratio 1.60000
+(R) Suboptimal
+(T) 10.17262
+(END)
+=> The instance is solvable.  [Real time: 00:01:25.7401383, or CPU time: 00:01:15.9843750]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+navigate(rover0, waypoint4, waypoint22)
+navigate(rover0, waypoint22, waypoint38)
+sample_soil(rover0, rover0store, waypoint38)
+navigate(rover0, waypoint38, waypoint22)
+navigate(rover0, waypoint22, waypoint4)
+navigate(rover0, waypoint4, waypoint13)
+navigate(rover0, waypoint13, waypoint25)
+communicate_soil_data(rover0, general, waypoint38, waypoint25, waypoint2)
+[22:03] Input: p23_0.pddl
+Parsing: 11107 ms.
+(START)
+(S) navigate(rover0, waypoint28, waypoint34); 3.12822
+(S) sample_soil(rover0, rover0store, waypoint34); 2.05623
+(S) navigate(rover0, waypoint34, waypoint28); 2.06121
+(S) navigate(rover0, waypoint28, waypoint4); 2.02348
+(S) navigate(rover0, waypoint4, waypoint31); 1.06792
+(S) communicate_soil_data(rover0, general, waypoint34, waypoint31, waypoint35); -0.02077
+(P) Actual 6; Expected 5; Ratio 1.20000
+(R) Suboptimal
+(T) 9.48341
+(END)
+=> The instance is solvable.  [Real time: 00:01:37.0007174, or CPU time: 00:01:28.6406250]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+navigate(rover0, waypoint28, waypoint34)
+sample_soil(rover0, rover0store, waypoint34)
+[NNP] [Out] Server started... 
+navigate(rover0, waypoint34, waypoint28)
+navigate(rover0, waypoint28, waypoint4)
+navigate(rover0, waypoint4, waypoint31)
+communicate_soil_data(rover0, general, waypoint34, waypoint31, waypoint35)
+[22:04] Input: p23_1.pddl
+Parsing: 12571 ms.
+(START)
+(S) navigate(rover0, waypoint28, waypoint21); 3.06123
+(S) sample_soil(rover0, rover0store, waypoint21); 2.03251
+(S) navigate(rover0, waypoint21, waypoint22); 1.08031
+(S) communicate_soil_data(rover0, general, waypoint21, waypoint22, waypoint35); -0.01578
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.50628
+(END)
+=> The instance is solvable.  [Real time: 00:03:52.0107576, or CPU time: 00:03:44.1875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover0, waypoint28, waypoint21)
+sample_soil(rover0, rover0store, waypoint21)
+navigate(rover0, waypoint21, waypoint22)
+communicate_soil_data(rover0, general, waypoint21, waypoint22, waypoint35)
+[22:08] Input: p24_0.pddl
+Parsing: 8388 ms.
+(START)
+(S) navigate(rover5, waypoint29, waypoint35); 3.00629
+(S) navigate(rover5, waypoint35, waypoint39); 1.95155
+(S) sample_soil(rover5, rover5store, waypoint39); 1.04356
+(S) communicate_soil_data(rover5, general, waypoint39, waypoint39, waypoint3); -0.01630
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.42999
+(END)
+=> The instance is solvable.  [Real time: 00:01:55.4172363, or CPU time: 00:01:46.8437500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover5, waypoint29, waypoint35)
+navigate(rover5, waypoint35, waypoint39)
+sample_soil(rover5, rover5store, waypoint39)
+communicate_soil_data(rover5, general, waypoint39, waypoint39, waypoint3)
+[22:11] Input: p24_1.pddl
+Parsing: 8954 ms.
+(START)
+(S) sample_soil(rover7, rover7store, waypoint34); 1.90447
+(S) navigate(rover7, waypoint34, waypoint24); 1.02766
+(S) communicate_soil_data(rover7, general, waypoint34, waypoint24, waypoint3); -0.00998
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 7.78147
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:55.8145190, or CPU time: 00:00:48.6250000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+sample_soil(rover7, rover7store, waypoint34)
+navigate(rover7, waypoint34, waypoint24)
+communicate_soil_data(rover7, general, waypoint34, waypoint24, waypoint3)
+[22:12] Input: p25_0.pddl
+Parsing: 6989 ms.
+(START)
+(S) sample_soil(rover2, rover2store, waypoint14); 1.96288
+(S) navigate(rover2, waypoint14, waypoint13); 1.06278
+(S) communicate_soil_data(rover2, general, waypoint14, waypoint13, waypoint9); -0.00842
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 7.01977
+(END)
+=> The instance is solvable.  [Real time: 00:01:25.2178321, or CPU time: 00:01:18.1406250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+sample_soil(rover2, rover2store, waypoint14)
+navigate(rover2, waypoint14, waypoint13)
+communicate_soil_data(rover2, general, waypoint14, waypoint13, waypoint9)
+[22:13] Input: p25_1.pddl
+Parsing: 6965 ms.
+(START)
+(S) sample_soil(rover8, rover8store, waypoint16); 1.05173
+(S) communicate_soil_data(rover8, general, waypoint16, waypoint16, waypoint9); -0.00805
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 6.22130
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:22.2972408, or CPU time: 00:00:16.1562500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+sample_soil(rover8, rover8store, waypoint16)
+communicate_soil_data(rover8, general, waypoint16, waypoint16, waypoint9)
+[22:14] Input: p26_0.pddl
+Parsing: 5796 ms.
+(START)
+(S) navigate(rover9, waypoint9, waypoint24); 1.99885
+(S) sample_soil(rover9, rover9store, waypoint24); 1.06211
+(S) communicate_soil_data(rover9, general, waypoint24, waypoint24, waypoint27); -0.01444
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 6.99396
+(END)
+=> The instance is solvable.  [Real time: 00:00:46.4387096, or CPU time: 00:00:39.4062500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+navigate(rover9, waypoint9, waypoint24)
+sample_soil(rover9, rover9store, waypoint24)
+communicate_soil_data(rover9, general, waypoint24, waypoint24, waypoint27)
+[22:15] Input: p26_1.pddl
+Parsing: 5724 ms.
+(START)
+(S) navigate(rover2, waypoint16, waypoint11); 3.02384
+(S) sample_soil(rover2, rover2store, waypoint11); 1.99313
+(S) navigate(rover2, waypoint11, waypoint16); 1.99203
+(S) navigate(rover2, waypoint16, waypoint18); 1.05922
+(S) communicate_soil_data(rover2, general, waypoint11, waypoint18, waypoint27); -0.01413
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 8.78958
+(END)
+=> The instance is solvable.  [Real time: 00:00:16.8792617, or CPU time: 00:00:08.2500000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+navigate(rover2, waypoint16, waypoint11)
+sample_soil(rover2, rover2store, waypoint11)
+navigate(rover2, waypoint11, waypoint16)
+navigate(rover2, waypoint16, waypoint18)
+communicate_soil_data(rover2, general, waypoint11, waypoint18, waypoint27)
+[22:15] Input: p27_0.pddl
+Parsing: 8962 ms.
+(START)
+(S) navigate(rover4, waypoint23, waypoint33); 3.91920
+(S) navigate(rover4, waypoint33, waypoint3); 2.94622
+(S) sample_soil(rover4, rover4store, waypoint3); 1.92902
+(S) sample_soil(rover7, rover7store, waypoint6); 1.94656
+(S) navigate(rover7, waypoint6, waypoint29); 1.91336
+(S) navigate(rover9, waypoint20, waypoint24); 1.07246
+(S) calibrate(rover3, camera1, objective6, waypoint17); 1.07248
+(S) navigate(rover1, waypoint19, waypoint16); 1.07221
+(S) navigate(rover7, waypoint29, waypoint27); 1.07067
+(S) navigate(rover0, waypoint22, waypoint8); 1.07258
+(S) navigate(rover1, waypoint16, waypoint19); 1.07188
+(S) navigate(rover3, waypoint17, waypoint34); 1.07108
+(S) navigate(rover1, waypoint19, waypoint22); 1.07200
+(S) navigate(rover4, waypoint3, waypoint33); 1.07157
+(S) navigate(rover7, waypoint27, waypoint29); 1.86226
+(S) drop(rover7, rover7store); 1.06785
+(S) navigate(rover6, waypoint9, waypoint11); 1.06869
+(S) navigate(rover1, waypoint22, waypoint17); 1.06894
+(S) navigate(rover2, waypoint32, waypoint30); 1.06873
+(S) navigate(rover2, waypoint30, waypoint31); 1.06765
+(S) navigate(rover0, waypoint8, waypoint4); 1.06768
+(S) navigate(rover5, waypoint20, waypoint19); 1.06813
+(S) navigate(rover2, waypoint31, waypoint30); 1.06809
+(S) navigate(rover4, waypoint33, waypoint23); 1.04879
+(S) navigate(rover4, waypoint23, waypoint0); 1.04478
+(S) communicate_soil_data(rover4, general, waypoint3, waypoint0, waypoint6); -0.01758
+(P) Actual 26; Expected 5; Ratio 5.20000
+(R) Suboptimal
+(T) 31.16330
+(END)
+=> The instance is solvable.  [Real time: 00:02:18.8699312, or CPU time: 00:01:47.2187500]
+
+
+The following plan solves the problem: (length: 26, cost: 26)
+navigate(rover4, waypoint23, waypoint33)
+navigate(rover4, waypoint33, waypoint3)
+sample_soil(rover4, rover4store, waypoint3)
+sample_soil(rover7, rover7store, waypoint6)
+navigate(rover7, waypoint6, waypoint29)
+navigate(rover9, waypoint20, waypoint24)
+calibrate(rover3, camera1, objective6, waypoint17)
+navigate(rover1, waypoint19, waypoint16)
+navigate(rover7, waypoint29, waypoint27)
+navigate(rover0, waypoint22, waypoint8)
+navigate(rover1, waypoint16, waypoint19)
+navigate(rover3, waypoint17, waypoint34)
+navigate(rover1, waypoint19, waypoint22)
+navigate(rover4, waypoint3, waypoint33)
+navigate(rover7, waypoint27, waypoint29)
+drop(rover7, rover7store)
+navigate(rover6, waypoint9, waypoint11)
+navigate(rover1, waypoint22, waypoint17)
+navigate(rover2, waypoint32, waypoint30)
+navigate(rover2, waypoint30, waypoint31)
+navigate(rover0, waypoint8, waypoint4)
+navigate(rover5, waypoint20, waypoint19)
+navigate(rover2, waypoint31, waypoint30)
+navigate(rover4, waypoint33, waypoint23)
+navigate(rover4, waypoint23, waypoint0)
+communicate_soil_data(rover4, general, waypoint3, waypoint0, waypoint6)
+[22:17] Input: p27_1.pddl
+Parsing: 9161 ms.
+(START)
+(S) navigate(rover0, waypoint22, waypoint8); 2.92606
+(S) sample_soil(rover0, rover0store, waypoint8); 1.93304
+(S) navigate(rover0, waypoint8, waypoint0); 1.06725
+(S) communicate_soil_data(rover0, general, waypoint8, waypoint0, waypoint6); -0.01414
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 9.17105
+(END)
+=> The instance is solvable.  [Real time: 00:03:03.1863155, or CPU time: 00:02:53.6562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover0, waypoint22, waypoint8)
+sample_soil(rover0, rover0store, waypoint8)
+navigate(rover0, waypoint8, waypoint0)
+communicate_soil_data(rover0, general, waypoint8, waypoint0, waypoint6)
+[22:21] Input: p28_0.pddl
+Parsing: 18922 ms.
+(START)
+(S) sample_soil(rover8, rover8store, waypoint28); 2.02378
+(S) navigate(rover8, waypoint28, waypoint11); 1.06717
+(S) communicate_soil_data(rover8, general, waypoint28, waypoint11, waypoint29); -0.01315
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 8.46590
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:52.3926704, or CPU time: 00:00:45.1718750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+sample_soil(rover8, rover8store, waypoint28)
+navigate(rover8, waypoint28, waypoint11)
+communicate_soil_data(rover8, general, waypoint28, waypoint11, waypoint29)
+[22:22] Input: p28_1.pddl
+Parsing: 19127 ms.
+(START)
+(S) navigate(rover4, waypoint11, waypoint10); 2.98210
+(S) sample_soil(rover4, rover4store, waypoint10); 1.98182
+(S) navigate(rover4, waypoint10, waypoint11); 1.05390
+(S) communicate_soil_data(rover4, general, waypoint10, waypoint11, waypoint29); -0.01006
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 10.21968
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:01:36.1858990, or CPU time: 00:01:26.2031250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover4, waypoint11, waypoint10)
+sample_soil(rover4, rover4store, waypoint10)
+navigate(rover4, waypoint10, waypoint11)
+communicate_soil_data(rover4, general, waypoint10, waypoint11, waypoint29)
+[22:24] Input: p29_0.pddl
+Parsing: 18973 ms.
+(START)
+(S) sample_soil(rover1, rover1store, waypoint9); 1.08192
+(S) communicate_soil_data(rover1, general, waypoint9, waypoint9, waypoint3); -0.01133
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 8.34472
+(END)
+=> The instance is solvable.  [Real time: 00:05:36.6771210, or CPU time: 00:05:27.4375000]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+sample_soil(rover1, rover1store, waypoint9)
+communicate_soil_data(rover1, general, waypoint9, waypoint9, waypoint3)
+[22:30] Input: p29_1.pddl
+Parsing: 19135 ms.
+(START)
+(S) navigate(rover8, waypoint20, waypoint26); 2.90278
+(S) sample_soil(rover8, rover8store, waypoint26); 1.93935
+(S) navigate(rover8, waypoint26, waypoint20); 1.95975
+(S) navigate(rover8, waypoint20, waypoint4); 1.93162
+(S) navigate(rover8, waypoint4, waypoint9); 1.05949
+(S) communicate_soil_data(rover8, general, waypoint26, waypoint9, waypoint3); -0.01683
+(P) Actual 6; Expected 5; Ratio 1.20000
+(R) Suboptimal
+(T) 16.97341
+(END)
+=> The instance is solvable.  [Real time: 00:01:08.9086496, or CPU time: 00:00:52.7343750]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+navigate(rover8, waypoint20, waypoint26)
+sample_soil(rover8, rover8store, waypoint26)
+navigate(rover8, waypoint26, waypoint20)
+navigate(rover8, waypoint20, waypoint4)
+navigate(rover8, waypoint4, waypoint9)
+communicate_soil_data(rover8, general, waypoint26, waypoint9, waypoint3)
+[22:31] Input: p30_0.pddl
+Parsing: 27470 ms.
+(START)
+(S) navigate(rover5, waypoint37, waypoint36); 2.95243
+(S) navigate(rover5, waypoint36, waypoint18); 1.91177
+(S) sample_soil(rover5, rover5store, waypoint18); 1.07929
+(S) communicate_soil_data(rover5, general, waypoint18, waypoint18, waypoint36); -0.01643
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 11.88718
+(END)
+=> The instance is solvable.  [Real time: 00:03:43.5864485, or CPU time: 00:03:32.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover5, waypoint37, waypoint36)
+navigate(rover5, waypoint36, waypoint18)
+sample_soil(rover5, rover5store, waypoint18)
+communicate_soil_data(rover5, general, waypoint18, waypoint18, waypoint36)
+[22:35] Input: p30_1.pddl
+Parsing: 27754 ms.
+(START)
+(S) navigate(rover8, waypoint13, waypoint1); 3.97903
+(S) navigate(rover8, waypoint1, waypoint24); 2.90815
+(S) sample_soil(rover8, rover8store, waypoint24); 1.92753
+(S) navigate(rover8, waypoint24, waypoint2); 1.06899
+(S) communicate_soil_data(rover8, general, waypoint24, waypoint2, waypoint36); -0.01711
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 14.89124
+(END)
+=> The instance is solvable.  [Real time: 00:11:34.8834287, or CPU time: 00:11:20.0312500]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+navigate(rover8, waypoint13, waypoint1)
+navigate(rover8, waypoint1, waypoint24)
+sample_soil(rover8, rover8store, waypoint24)
+navigate(rover8, waypoint24, waypoint2)
+communicate_soil_data(rover8, general, waypoint24, waypoint2, waypoint36)
+[22:47] Input: p31_0.pddl
+Parsing: 26091 ms.
+(START)
+(S) navigate(rover4, waypoint40, waypoint1); 2.90394
+(S) sample_soil(rover4, rover4store, waypoint1); 1.92661
+(S) navigate(rover4, waypoint1, waypoint3); 1.06836
+(S) communicate_soil_data(rover4, general, waypoint1, waypoint3, waypoint48); -0.01475
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 12.71923
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:02:26.7507893, or CPU time: 00:02:14.0937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+navigate(rover4, waypoint40, waypoint1)
+sample_soil(rover4, rover4store, waypoint1)
+navigate(rover4, waypoint1, waypoint3)
+communicate_soil_data(rover4, general, waypoint1, waypoint3, waypoint48)
+[22:50] Input: p31_1.pddl
+Parsing: 26798 ms.
+(START)
+(S) navigate(rover1, waypoint24, waypoint0); 4.88667
+(S) navigate(rover1, waypoint0, waypoint39); 3.82453
+(S) sample_soil(rover1, rover1store, waypoint39); 1.95146
+(S) navigate(rover1, waypoint39, waypoint0); 1.95285
+(S) navigate(rover1, waypoint0, waypoint24); 1.93298
+(S) navigate(rover1, waypoint24, waypoint53); 1.06338
+(S) communicate_soil_data(rover1, general, waypoint39, waypoint53, waypoint48); -0.02124
+(P) Actual 7; Expected 6; Ratio 1.16667
+(R) Suboptimal
+(T) 19.62334
+(END)
+=> The instance is solvable.  [Real time: 00:01:36.8010912, or CPU time: 00:01:17.4843750]
+
+
+The following plan solves the problem: (length: 7, cost: 7)
+navigate(rover1, waypoint24, waypoint0)
+navigate(rover1, waypoint0, waypoint39)
+sample_soil(rover1, rover1store, waypoint39)
+navigate(rover1, waypoint39, waypoint0)
+navigate(rover1, waypoint0, waypoint24)
+navigate(rover1, waypoint24, waypoint53)
+communicate_soil_data(rover1, general, waypoint39, waypoint53, waypoint48)
+[22:52] Input: p32_0.pddl
+Parsing: 43271 ms.
+(START)
+(S) navigate(rover10, waypoint42, waypoint34); 2.88002
+(S) sample_soil(rover10, rover10store, waypoint34); 1.95234
+(S) navigate(rover10, waypoint34, waypoint42); 1.95994
+(S) navigate(rover10, waypoint42, waypoint18); 1.10456
+(S) communicate_soil_data(rover10, general, waypoint34, waypoint18, waypoint26); -0.02446
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 16.87223
+(END)
+=> The instance is solvable.  [Real time: 00:10:04.8613927, or CPU time: 00:09:48.9218750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+navigate(rover10, waypoint42, waypoint34)
+sample_soil(rover10, rover10store, waypoint34)
+navigate(rover10, waypoint34, waypoint42)
+navigate(rover10, waypoint42, waypoint18)
+communicate_soil_data(rover10, general, waypoint34, waypoint18, waypoint26)
+[23:03] Input: p32_1.pddl
+Parsing: 44498 ms.
+(START)
+(S) navigate(rover10, waypoint42, waypoint27); 3.97190
+(S) navigate(rover10, waypoint27, waypoint59); 2.89357
+(S) sample_soil(rover10, rover10store, waypoint59); 1.95076
+(S) navigate(rover10, waypoint59, waypoint27); 1.97905
+(S) navigate(rover10, waypoint27, waypoint42); 1.94773
+(S) navigate(rover10, waypoint42, waypoint18); 1.10986
+(S) communicate_soil_data(rover10, general, waypoint59, waypoint18, waypoint26); -0.03057
+(P) Actual 7; Expected 6; Ratio 1.16667
+(R) Suboptimal
+(T) 22.40957
+(END)
+=> The instance is solvable.  [Real time: 00:27:46.7706615, or CPU time: 00:27:21.0625000]
+
+
+The following plan solves the problem: (length: 7, cost: 7)
+navigate(rover10, waypoint42, waypoint27)
+navigate(rover10, waypoint27, waypoint59)
+sample_soil(rover10, rover10store, waypoint59)
+navigate(rover10, waypoint59, waypoint27)
+navigate(rover10, waypoint27, waypoint42)
+navigate(rover10, waypoint42, waypoint18)
+communicate_soil_data(rover10, general, waypoint59, waypoint18, waypoint26)
+[23:32] Input: p33_0.pddl
+Parsing: 47975 ms.
+(START)
+(S) navigate(rover8, waypoint21, waypoint32); 4.01771
+(S) navigate(rover8, waypoint32, waypoint42); 2.87716
+(S) sample_soil(rover8, rover8store, waypoint42); 1.93094
+(S) navigate(rover8, waypoint42, waypoint32); 1.94174
+(S) navigate(rover8, waypoint32, waypoint21); 1.06497
+(S) communicate_soil_data(rover8, general, waypoint42, waypoint21, waypoint63); -0.01825
+(P) Actual 6; Expected 6; Ratio 1.00000
+(R) Optimal
+(T) 18.98421
+(END)
+=> The instance is solvable.  [Real time: 00:27:03.2886012, or CPU time: 00:26:42.5468750]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+navigate(rover8, waypoint21, waypoint32)
+navigate(rover8, waypoint32, waypoint42)
+sample_soil(rover8, rover8store, waypoint42)
+navigate(rover8, waypoint42, waypoint32)
+navigate(rover8, waypoint32, waypoint21)
+communicate_soil_data(rover8, general, waypoint42, waypoint21, waypoint63)
+[23:59] Input: p33_1.pddl
+Parsing: 44363 ms.
+(START)
+(S) navigate(rover8, waypoint21, waypoint23); 3.95141
+(S) navigate(rover8, waypoint23, waypoint10); 2.85738
+(S) sample_soil(rover8, rover8store, waypoint10); 1.91066
+(S) navigate(rover8, waypoint10, waypoint23); 1.94217
+(S) navigate(rover8, waypoint23, waypoint21); 1.06637
+(S) communicate_soil_data(rover8, general, waypoint10, waypoint21, waypoint63); -0.01926
+(P) Actual 6; Expected 6; Ratio 1.00000
+(R) Optimal
+(T) 17.54976
+(END)
+=> The instance is solvable.  [Real time: 00:08:31.7076519, or CPU time: 00:08:15.4062500]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+navigate(rover8, waypoint21, waypoint23)
+navigate(rover8, waypoint23, waypoint10)
+sample_soil(rover8, rover8store, waypoint10)
+navigate(rover8, waypoint10, waypoint23)
+navigate(rover8, waypoint23, waypoint21)
+communicate_soil_data(rover8, general, waypoint10, waypoint21, waypoint63)
+[Total real time: 02:11:36.9934917, or total CPU time: 02:08:03.6250000]

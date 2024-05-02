@@ -1,0 +1,536 @@
+[20:21] Input: p_18_10-02-opt14_0.pddl
+Parsing: 6913 ms.
+(START)
+(S) move-car-to-curb(car_05, car_00, curb_9); 1.99429
+(S) move-car-to-car(car_17, car_15, car_00); 0.88056
+(S) move-curb-to-car(car_15, curb_7, car_05); 0.03465
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.23223
+(END)
+=> The instance is solvable.  [Real time: 00:01:01.0152269, or CPU time: 00:00:58.0468750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_05, car_00, curb_9)
+move-car-to-car(car_17, car_15, car_00)
+move-curb-to-car(car_15, curb_7, car_05)
+[20:22] Input: p_18_10-02-opt14_1.pddl
+Parsing: 6201 ms.
+(START)
+(S) move-car-to-curb(car_05, car_00, curb_9); 1.00252
+(S) move-car-to-car(car_10, car_12, car_00); 0.02666
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.38433
+(END)
+=> The instance is solvable.  [Real time: 00:00:14.6669704, or CPU time: 00:00:12.4218750]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_05, car_00, curb_9)
+move-car-to-car(car_10, car_12, car_00)
+[20:23] Input: p_18_10-03-opt14_0.pddl
+Parsing: 6285 ms.
+(START)
+(S) move-car-to-curb(car_05, car_15, curb_9); 0.99054
+(S) move-curb-to-car(car_15, curb_4, car_05); 0.03450
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.42248
+(END)
+=> The instance is solvable.  [Real time: 00:00:29.6920302, or CPU time: 00:00:26.9062500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_05, car_15, curb_9)
+move-curb-to-car(car_15, curb_4, car_05)
+[20:23] Input: p_18_10-03-opt14_1.pddl
+Parsing: 6212 ms.
+(START)
+(S) move-car-to-curb(car_00, car_14, curb_9); 1.99424
+(S) move-car-to-car(car_13, car_10, car_14); 0.88063
+(S) move-curb-to-car(car_10, curb_1, car_00); 0.03471
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.44377
+(END)
+=> The instance is solvable.  [Real time: 00:00:49.5265735, or CPU time: 00:00:46.7031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_00, car_14, curb_9)
+move-car-to-car(car_13, car_10, car_14)
+move-curb-to-car(car_10, curb_1, car_00)
+[20:24] Input: p_18_10-04-opt14_0.pddl
+Parsing: 6586 ms.
+(START)
+(S) move-car-to-car(car_03, car_05, car_04); 1.00220
+(S) move-car-to-car(car_15, car_02, car_05); 0.02676
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.40897
+(END)
+=> The instance is solvable.  [Real time: 00:00:14.9652593, or CPU time: 00:00:12.7656250]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-car(car_03, car_05, car_04)
+move-car-to-car(car_15, car_02, car_05)
+[NNP] [Out] Server started... 
+[20:25] Input: p_18_10-04-opt14_1.pddl
+Parsing: 6574 ms.
+(START)
+(S) move-car-to-car(car_09, car_10, car_04); 2.97798
+(S) move-curb-to-car(car_01, curb_9, car_01); 2.00536
+(S) move-car-to-curb(car_00, car_08, curb_9); 0.98755
+(S) move-curb-to-car(car_10, curb_3, car_00); 0.04000
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 3.64093
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:01:03.5294837, or CPU time: 00:01:00.5312500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+move-car-to-car(car_09, car_10, car_04)
+move-curb-to-car(car_01, curb_9, car_01)
+move-car-to-curb(car_00, car_08, curb_9)
+move-curb-to-car(car_10, curb_3, car_00)
+[20:26] Input: p_20_11-01-opt14_0.pddl
+Parsing: 11032 ms.
+(START)
+(P) Actual 0; Expected 0; Ratio NaN
+(R) Optimal
+(T) 0.00000
+(END)
+=> The instance is solvable.  [Real time: 00:00:02.7227548, or CPU time: 00:00:03.6406250]
+
+
+The following plan solves the problem: (length: 0, cost: 0)
+[20:26] Input: p_20_11-01-opt14_1.pddl
+Parsing: 10993 ms.
+(START)
+(S) move-car-to-curb(car_08, car_03, curb_10); 1.00240
+(S) move-car-to-car(car_14, car_06, car_03); 0.02916
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.00868
+(END)
+=> The instance is solvable.  [Real time: 00:00:29.9312979, or CPU time: 00:00:27.7187500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_08, car_03, curb_10)
+move-car-to-car(car_14, car_06, car_03)
+[20:27] Input: p_20_11-02-opt14_0.pddl
+Parsing: 11024 ms.
+(START)
+(S) move-car-to-curb(car_00, car_18, curb_10); 1.99328
+(S) move-car-to-car(car_14, car_11, car_18); 0.87747
+(S) move-curb-to-car(car_11, curb_02, car_00); 0.04177
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.09381
+(END)
+=> The instance is solvable.  [Real time: 00:01:20.2491422, or CPU time: 00:01:18.1406250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_00, car_18, curb_10)
+move-car-to-car(car_14, car_11, car_18)
+move-curb-to-car(car_11, curb_02, car_00)
+[20:28] Input: p_20_11-02-opt14_1.pddl
+Parsing: 11046 ms.
+(START)
+(S) move-car-to-curb(car_03, car_05, curb_10); 0.98976
+(S) move-car-to-car(car_14, car_11, car_03); 0.02856
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.02280
+(END)
+=> The instance is solvable.  [Real time: 00:00:30.1345958, or CPU time: 00:00:28.3437500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_03, car_05, curb_10)
+move-car-to-car(car_14, car_11, car_03)
+[20:29] Input: p_20_11-03-opt14_0.pddl
+Parsing: 10843 ms.
+(START)
+(S) move-car-to-curb(car_19, car_00, curb_10); 1.99463
+(S) move-car-to-car(car_03, car_11, car_19); 0.87763
+(S) move-curb-to-car(car_11, curb_06, car_00); 0.04161
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.11113
+(END)
+=> The instance is solvable.  [Real time: 00:00:42.3121264, or CPU time: 00:00:40.9843750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_19, car_00, curb_10)
+move-car-to-car(car_03, car_11, car_19)
+move-curb-to-car(car_11, curb_06, car_00)
+[20:30] Input: p_20_11-03-opt14_1.pddl
+Parsing: 10991 ms.
+(START)
+(S) move-car-to-curb(car_03, car_11, curb_10); 1.99372
+(S) move-car-to-car(car_01, car_14, car_11); 0.87782
+(S) move-curb-to-car(car_14, curb_05, car_03); 0.04159
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.14916
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:01:20.0300569, or CPU time: 00:01:18.1875000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_03, car_11, curb_10)
+move-car-to-car(car_01, car_14, car_11)
+move-curb-to-car(car_14, curb_05, car_03)
+[20:31] Input: p_20_11-04-opt14_0.pddl
+Parsing: 10910 ms.
+(START)
+(S) move-car-to-curb(car_00, car_17, curb_10); 0.98999
+(S) move-car-to-car(car_11, car_12, car_00); 0.02920
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.03704
+(END)
+=> The instance is solvable.  [Real time: 00:00:51.0391677, or CPU time: 00:00:48.8125000]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_00, car_17, curb_10)
+move-car-to-car(car_11, car_12, car_00)
+[20:32] Input: p_20_11-04-opt14_1.pddl
+Parsing: 10898 ms.
+(START)
+(P) Actual 0; Expected 0; Ratio NaN
+(R) Optimal
+(T) 0.00000
+(END)
+=> The instance is solvable.  [Real time: 00:00:02.5709520, or CPU time: 00:00:03.5312500]
+
+
+The following plan solves the problem: (length: 0, cost: 0)
+[20:32] Input: pfile06-022-opt11_0.pddl
+Parsing: 6590 ms.
+(START)
+(S) move-car-to-car(car_13, car_05, car_12); 1.00210
+(S) move-car-to-car(car_15, car_04, car_05); 0.02667
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.34391
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:24.8950933, or CPU time: 00:00:23.1562500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-car(car_13, car_05, car_12)
+move-car-to-car(car_15, car_04, car_05)
+[20:33] Input: pfile06-022-opt11_1.pddl
+Parsing: 6599 ms.
+(START)
+(S) move-curb-to-car(car_01, curb_8, car_12); 2.00395
+(S) move-car-to-curb(car_00, car_17, curb_8); 0.98970
+(S) move-car-to-car(car_10, car_06, car_00); 0.02666
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.47387
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:52.2914288, or CPU time: 00:00:49.5312500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-curb-to-car(car_01, curb_8, car_12)
+move-car-to-curb(car_00, car_17, curb_8)
+move-car-to-car(car_10, car_06, car_00)
+[20:34] Input: pfile06-023-opt11_0.pddl
+Parsing: 6600 ms.
+(START)
+(S) move-curb-to-car(car_14, curb_8, car_08); 2.00351
+(S) move-car-to-curb(car_05, car_00, curb_8); 0.98917
+(S) move-car-to-car(car_15, car_02, car_05); 0.02661
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.42979
+(END)
+=> The instance is solvable.  [Real time: 00:00:54.5513850, or CPU time: 00:00:52.2343750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-curb-to-car(car_14, curb_8, car_08)
+move-car-to-curb(car_05, car_00, curb_8)
+move-car-to-car(car_15, car_02, car_05)
+[20:35] Input: pfile06-023-opt11_1.pddl
+Parsing: 6553 ms.
+(START)
+(S) move-car-to-car(car_05, car_00, car_14); 1.99565
+(S) move-car-to-car(car_04, car_10, car_08); 0.88080
+(S) move-curb-to-car(car_10, curb_5, car_00); 0.03451
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.38228
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:46.4410302, or CPU time: 00:00:43.5625000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-car(car_05, car_00, car_14)
+move-car-to-car(car_04, car_10, car_08)
+move-curb-to-car(car_10, curb_5, car_00)
+[20:36] Input: pfile06-024-opt11_0.pddl
+Parsing: 6603 ms.
+(START)
+(S) move-car-to-car(car_17, car_05, car_03); 1.00271
+(S) move-car-to-car(car_15, car_13, car_05); 0.02675
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.28347
+(END)
+=> The instance is solvable.  [Real time: 00:00:09.9631897, or CPU time: 00:00:07.2187500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-car(car_17, car_05, car_03)
+move-car-to-car(car_15, car_13, car_05)
+[20:36] Input: pfile06-024-opt11_1.pddl
+Parsing: 6602 ms.
+(START)
+(S) move-car-to-car(car_04, car_10, car_03); 0.88051
+(S) move-curb-to-car(car_10, curb_4, car_00); 0.03480
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.38950
+(END)
+=> The instance is solvable.  [Real time: 00:00:39.9322718, or CPU time: 00:00:37.3125000]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-car(car_04, car_10, car_03)
+move-curb-to-car(car_10, curb_4, car_00)
+[20:37] Input: pfile07-025-opt11_0.pddl
+Parsing: 10848 ms.
+(START)
+(S) move-car-to-curb(car_17, car_00, curb_10); 1.00258
+(S) move-car-to-car(car_11, car_01, car_00); 0.02860
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.14012
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:50.5737298, or CPU time: 00:00:49.2500000]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_17, car_00, curb_10)
+move-car-to-car(car_11, car_01, car_00)
+[20:38] Input: pfile07-025-opt11_1.pddl
+Parsing: 10822 ms.
+(START)
+(S) move-car-to-curb(car_03, car_09, curb_10); 0.98996
+(S) move-car-to-car(car_14, car_12, car_03); 0.02912
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 2.91258
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:42.1975747, or CPU time: 00:00:40.6718750]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_03, car_09, curb_10)
+move-car-to-car(car_14, car_12, car_03)
+[20:39] Input: pfile07-026-opt11_0.pddl
+Parsing: 10994 ms.
+(START)
+(S) move-car-to-curb(car_16, car_00, curb_10); 1.00279
+(S) move-car-to-car(car_11, car_13, car_00); 0.02839
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.10211
+(END)
+=> The instance is solvable.  [Real time: 00:00:17.5647155, or CPU time: 00:00:14.7812500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_16, car_00, curb_10)
+move-car-to-car(car_11, car_13, car_00)
+[20:39] Input: pfile07-026-opt11_1.pddl
+Parsing: 10964 ms.
+(START)
+(S) move-car-to-curb(car_03, car_01, curb_10); 0.98969
+(S) move-car-to-car(car_14, car_17, car_03); 0.02937
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 2.99303
+(END)
+=> The instance is solvable.  [Real time: 00:00:30.3072830, or CPU time: 00:00:29.2812500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_03, car_01, curb_10)
+move-car-to-car(car_14, car_17, car_03)
+[20:40] Input: pfile07-027-opt11_0.pddl
+Parsing: 11816 ms.
+(START)
+(S) move-car-to-car(car_18, car_11, car_17); 2.98001
+(S) move-curb-to-car(car_01, curb_09, car_01); 2.05122
+(S) move-car-to-curb(car_00, car_10, curb_09); 0.98782
+(S) move-curb-to-car(car_11, curb_04, car_00); 0.04693
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 3.31766
+(END)
+=> The instance is solvable.  [Real time: 00:01:52.9754953, or CPU time: 00:01:51.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+move-car-to-car(car_18, car_11, car_17)
+move-curb-to-car(car_01, curb_09, car_01)
+move-car-to-curb(car_00, car_10, curb_09)
+move-curb-to-car(car_11, curb_04, car_00)
+[20:42] Input: pfile07-027-opt11_1.pddl
+Parsing: 11699 ms.
+(START)
+(S) move-curb-to-car(car_01, curb_09, car_17); 2.05397
+(S) move-car-to-curb(car_03, car_16, curb_09); 0.98977
+(S) move-car-to-car(car_14, car_19, car_03); 0.02916
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.27006
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:01:33.9932630, or CPU time: 00:01:31.5312500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-curb-to-car(car_01, curb_09, car_17)
+move-car-to-curb(car_03, car_16, curb_09)
+move-car-to-car(car_14, car_19, car_03)
+[20:44] Input: pfile07-028-opt11_0.pddl
+Parsing: 11990 ms.
+(START)
+(S) move-curb-to-car(car_14, curb_09, car_13); 2.05449
+(S) move-car-to-curb(car_00, car_16, curb_09); 0.98990
+(S) move-car-to-car(car_11, car_03, car_00); 0.02922
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.38405
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:01:37.4942036, or CPU time: 00:01:35.7031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-curb-to-car(car_14, curb_09, car_13)
+move-car-to-curb(car_00, car_16, curb_09)
+move-car-to-car(car_11, car_03, car_00)
+[20:46] Input: pfile07-028-opt11_1.pddl
+Parsing: 11847 ms.
+(START)
+(S) move-car-to-car(car_11, car_03, car_13); 1.00133
+(S) move-curb-to-car(car_14, curb_09, car_03); 0.04162
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.59888
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:27.6620171, or CPU time: 00:00:25.8593750]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-car(car_11, car_03, car_13)
+move-curb-to-car(car_14, curb_09, car_03)
+[20:46] Input: pfile08-029-opt11_0.pddl
+Parsing: 19261 ms.
+(START)
+(S) move-car-to-curb(car_05, car_08, curb_11); 1.99240
+(S) move-car-to-car(car_09, car_17, car_08); 0.87493
+(S) move-curb-to-car(car_17, curb_09, car_05); 0.04943
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.14477
+(END)
+=> The instance is solvable.  [Real time: 00:01:49.4861354, or CPU time: 00:01:46.4843750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-curb(car_05, car_08, curb_11)
+move-car-to-car(car_09, car_17, car_08)
+move-curb-to-car(car_17, curb_09, car_05)
+[20:48] Input: pfile08-029-opt11_1.pddl
+Parsing: 19682 ms.
+(START)
+(S) move-car-to-curb(car_01, car_00, curb_11); 1.00350
+(S) move-car-to-car(car_12, car_10, car_00); 0.03141
+(P) Actual 2; Expected 2; Ratio 1.00000
+(R) Optimal
+(T) 3.08313
+(END)
+=> The instance is solvable.  [Real time: 00:00:50.3797133, or CPU time: 00:00:48.2187500]
+
+
+The following plan solves the problem: (length: 2, cost: 2)
+move-car-to-curb(car_01, car_00, curb_11)
+move-car-to-car(car_12, car_10, car_00)
+[20:50] Input: pfile08-030-opt11_0.pddl
+Parsing: 20892 ms.
+(START)
+(S) move-car-to-car(car_11, car_05, car_13); 1.99373
+(S) move-car-to-car(car_04, car_17, car_08); 0.87488
+(S) move-curb-to-car(car_17, curb_06, car_05); 0.04943
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.21000
+(END)
+=> The instance is solvable.  [Real time: 00:02:06.9758270, or CPU time: 00:02:04.5625000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-car(car_11, car_05, car_13)
+move-car-to-car(car_04, car_17, car_08)
+move-curb-to-car(car_17, curb_06, car_05)
+[20:52] Input: pfile08-030-opt11_1.pddl
+Parsing: 20821 ms.
+(START)
+(S) move-car-to-car(car_03, car_00, car_13); 1.99373
+(S) move-car-to-car(car_19, car_12, car_08); 0.87461
+(S) move-curb-to-car(car_12, curb_01, car_00); 0.04939
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 3.17546
+(END)
+=> The instance is solvable.  [Real time: 00:03:26.2954374, or CPU time: 00:03:22.2812500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move-car-to-car(car_03, car_00, car_13)
+move-car-to-car(car_19, car_12, car_08)
+move-curb-to-car(car_12, curb_01, car_00)
+[Total real time: 00:34:46.8755228, or total CPU time: 00:34:14.0156250]

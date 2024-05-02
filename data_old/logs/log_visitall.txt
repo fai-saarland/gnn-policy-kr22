@@ -1,0 +1,334 @@
+[01:30] Input: p-1-13_0.pddl
+Parsing: 1089 ms.
+(START)
+(S) move(loc-x6-y6, loc-x5-y6); 8.02100
+(S) move(loc-x5-y6, loc-x4-y6); 6.74276
+(S) move(loc-x4-y6, loc-x3-y6); 6.00184
+(S) move(loc-x3-y6, loc-x3-y7); 5.31746
+(S) move(loc-x3-y7, loc-x3-y8); 4.10113
+(S) move(loc-x3-y8, loc-x3-y9); 2.98548
+(S) move(loc-x3-y9, loc-x3-y10); 2.11140
+(S) move(loc-x3-y10, loc-x3-y11); 0.99447
+(S) move(loc-x3-y11, loc-x3-y12); -0.01001
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.79412
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.5773384, or CPU time: 00:00:01.8437500]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+move(loc-x6-y6, loc-x5-y6)
+move(loc-x5-y6, loc-x4-y6)
+move(loc-x4-y6, loc-x3-y6)
+move(loc-x3-y6, loc-x3-y7)
+move(loc-x3-y7, loc-x3-y8)
+move(loc-x3-y8, loc-x3-y9)
+move(loc-x3-y9, loc-x3-y10)
+move(loc-x3-y10, loc-x3-y11)
+move(loc-x3-y11, loc-x3-y12)
+[01:30] Input: p-1-13_1.pddl
+Parsing: 764 ms.
+(START)
+(S) move(loc-x6-y6, loc-x5-y6); 10.13975
+(S) move(loc-x5-y6, loc-x4-y6); 9.08833
+(S) move(loc-x4-y6, loc-x3-y6); 7.98668
+(S) move(loc-x3-y6, loc-x2-y6); 6.71461
+(S) move(loc-x2-y6, loc-x1-y6); 5.99290
+(S) move(loc-x1-y6, loc-x1-y7); 5.24685
+(S) move(loc-x1-y7, loc-x1-y8); 4.03124
+(S) move(loc-x1-y8, loc-x1-y9); 2.95932
+(S) move(loc-x1-y9, loc-x1-y10); 2.11208
+(S) move(loc-x1-y10, loc-x1-y11); 0.98594
+(S) move(loc-x1-y11, loc-x1-y12); 0.02764
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.04174
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.1914404, or CPU time: 00:00:02.1718750]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+move(loc-x6-y6, loc-x5-y6)
+move(loc-x5-y6, loc-x4-y6)
+move(loc-x4-y6, loc-x3-y6)
+move(loc-x3-y6, loc-x2-y6)
+move(loc-x2-y6, loc-x1-y6)
+move(loc-x1-y6, loc-x1-y7)
+[NNP] [Out] Server started... 
+move(loc-x1-y7, loc-x1-y8)
+move(loc-x1-y8, loc-x1-y9)
+move(loc-x1-y9, loc-x1-y10)
+move(loc-x1-y10, loc-x1-y11)
+move(loc-x1-y11, loc-x1-y12)
+[01:31] Input: p-1-14_0.pddl
+Parsing: 1009 ms.
+(START)
+(S) move(loc-x7-y7, loc-x6-y7); 8.08714
+(S) move(loc-x6-y7, loc-x5-y7); 6.78193
+(S) move(loc-x5-y7, loc-x4-y7); 5.79342
+(S) move(loc-x4-y7, loc-x4-y6); 5.13356
+(S) move(loc-x4-y6, loc-x4-y5); 3.99975
+(S) move(loc-x4-y5, loc-x4-y4); 2.98570
+(S) move(loc-x4-y4, loc-x4-y3); 2.11867
+(S) move(loc-x4-y3, loc-x4-y2); 1.00870
+(S) move(loc-x4-y2, loc-x4-y1); -0.05084
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.83870
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:08.6730325, or CPU time: 00:00:03.9218750]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+move(loc-x7-y7, loc-x6-y7)
+move(loc-x6-y7, loc-x5-y7)
+move(loc-x5-y7, loc-x4-y7)
+move(loc-x4-y7, loc-x4-y6)
+move(loc-x4-y6, loc-x4-y5)
+move(loc-x4-y5, loc-x4-y4)
+move(loc-x4-y4, loc-x4-y3)
+move(loc-x4-y3, loc-x4-y2)
+move(loc-x4-y2, loc-x4-y1)
+[01:31] Input: p-1-14_1.pddl
+Parsing: 982 ms.
+(START)
+(S) move(loc-x7-y7, loc-x7-y8); 8.06301
+(S) move(loc-x7-y8, loc-x7-y9); 6.70659
+(S) move(loc-x7-y9, loc-x7-y10); 5.85856
+(S) move(loc-x7-y10, loc-x8-y10); 5.15829
+(S) move(loc-x8-y10, loc-x9-y10); 3.98509
+(S) move(loc-x9-y10, loc-x10-y10); 2.97224
+(S) move(loc-x10-y10, loc-x11-y10); 2.10626
+(S) move(loc-x11-y10, loc-x12-y10); 0.98553
+(S) move(loc-x12-y10, loc-x13-y10); 0.02898
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.87391
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.0315300, or CPU time: 00:00:01.5937500]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+move(loc-x7-y7, loc-x7-y8)
+move(loc-x7-y8, loc-x7-y9)
+move(loc-x7-y9, loc-x7-y10)
+move(loc-x7-y10, loc-x8-y10)
+move(loc-x8-y10, loc-x9-y10)
+move(loc-x9-y10, loc-x10-y10)
+move(loc-x10-y10, loc-x11-y10)
+move(loc-x11-y10, loc-x12-y10)
+move(loc-x12-y10, loc-x13-y10)
+[01:31] Input: p-1-15_0.pddl
+Parsing: 1370 ms.
+(START)
+(S) move(loc-x7-y7, loc-x6-y7); 6.44739
+(S) move(loc-x6-y7, loc-x5-y7); 5.56930
+(S) move(loc-x5-y7, loc-x5-y6); 4.91188
+(S) move(loc-x5-y6, loc-x5-y5); 3.98121
+(S) move(loc-x5-y5, loc-x5-y4); 2.96913
+(S) move(loc-x5-y4, loc-x5-y3); 2.11049
+(S) move(loc-x5-y3, loc-x5-y2); 0.99390
+(S) move(loc-x5-y2, loc-x5-y1); -0.01579
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 4.84775
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:09.6040549, or CPU time: 00:00:04.7968750]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+move(loc-x7-y7, loc-x6-y7)
+move(loc-x6-y7, loc-x5-y7)
+move(loc-x5-y7, loc-x5-y6)
+move(loc-x5-y6, loc-x5-y5)
+move(loc-x5-y5, loc-x5-y4)
+move(loc-x5-y4, loc-x5-y3)
+move(loc-x5-y3, loc-x5-y2)
+move(loc-x5-y2, loc-x5-y1)
+[01:31] Input: p-1-15_1.pddl
+Parsing: 1358 ms.
+(START)
+(S) move(loc-x7-y7, loc-x7-y6); 2.09661
+(S) move(loc-x7-y6, loc-x8-y6); 1.00389
+(S) move(loc-x8-y6, loc-x9-y6); -0.07168
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.33165
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:05.0028162, or CPU time: 00:00:00.7187500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+move(loc-x7-y7, loc-x7-y6)
+move(loc-x7-y6, loc-x8-y6)
+move(loc-x8-y6, loc-x9-y6)
+[01:31] Input: p-1-16_0.pddl
+Parsing: 1969 ms.
+(START)
+(S) move(loc-x8-y8, loc-x8-y7); 7.61306
+(S) move(loc-x8-y7, loc-x9-y7); 6.04440
+(S) move(loc-x9-y7, loc-x9-y6); 5.40962
+(S) move(loc-x9-y6, loc-x9-y5); 4.93122
+(S) move(loc-x9-y5, loc-x9-y4); 3.95769
+(S) move(loc-x9-y4, loc-x9-y3); 2.95415
+(S) move(loc-x9-y3, loc-x9-y2); 2.07544
+(S) move(loc-x9-y2, loc-x9-y1); 0.97127
+(S) move(loc-x9-y1, loc-x9-y0); 0.05965
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.97065
+(END)
+=> The instance is solvable.  [Real time: 00:00:11.1374059, or CPU time: 00:00:06.2343750]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+move(loc-x8-y8, loc-x8-y7)
+move(loc-x8-y7, loc-x9-y7)
+move(loc-x9-y7, loc-x9-y6)
+move(loc-x9-y6, loc-x9-y5)
+move(loc-x9-y5, loc-x9-y4)
+move(loc-x9-y4, loc-x9-y3)
+move(loc-x9-y3, loc-x9-y2)
+move(loc-x9-y2, loc-x9-y1)
+move(loc-x9-y1, loc-x9-y0)
+[01:31] Input: p-1-16_1.pddl
+Parsing: 1966 ms.
+(START)
+(S) move(loc-x8-y8, loc-x8-y7); 4.84396
+(S) move(loc-x8-y7, loc-x8-y6); 3.95609
+(S) move(loc-x8-y6, loc-x9-y6); 2.95925
+(S) move(loc-x9-y6, loc-x10-y6); 2.09308
+(S) move(loc-x10-y6, loc-x11-y6); 1.00993
+(S) move(loc-x11-y6, loc-x12-y6); -0.07410
+(P) Actual 6; Expected 6; Ratio 1.00000
+(R) Optimal
+(T) 4.70557
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:06.7791560, or CPU time: 00:00:02.1406250]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+move(loc-x8-y8, loc-x8-y7)
+move(loc-x8-y7, loc-x8-y6)
+move(loc-x8-y6, loc-x9-y6)
+move(loc-x9-y6, loc-x10-y6)
+move(loc-x10-y6, loc-x11-y6)
+move(loc-x11-y6, loc-x12-y6)
+[01:31] Input: p-1-17_0.pddl
+Parsing: 2709 ms.
+(START)
+(S) move(loc-x8-y8, loc-x8-y7); 7.46243
+(S) move(loc-x8-y7, loc-x8-y6); 5.85221
+(S) move(loc-x8-y6, loc-x9-y6); 5.30848
+(S) move(loc-x9-y6, loc-x10-y6); 4.94528
+(S) move(loc-x10-y6, loc-x11-y6); 3.97029
+(S) move(loc-x11-y6, loc-x12-y6); 2.95695
+(S) move(loc-x12-y6, loc-x13-y6); 2.08770
+(S) move(loc-x13-y6, loc-x14-y6); 0.98850
+(S) move(loc-x14-y6, loc-x15-y6); 0.06559
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.95558
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:08.8668145, or CPU time: 00:00:04.2343750]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+move(loc-x8-y8, loc-x8-y7)
+move(loc-x8-y7, loc-x8-y6)
+move(loc-x8-y6, loc-x9-y6)
+move(loc-x9-y6, loc-x10-y6)
+move(loc-x10-y6, loc-x11-y6)
+move(loc-x11-y6, loc-x12-y6)
+move(loc-x12-y6, loc-x13-y6)
+move(loc-x13-y6, loc-x14-y6)
+move(loc-x14-y6, loc-x15-y6)
+[01:32] Input: p-1-17_1.pddl
+Parsing: 2692 ms.
+(START)
+(S) move(loc-x8-y8, loc-x8-y7); 6.34894
+(S) move(loc-x8-y7, loc-x8-y6); 5.43635
+(S) move(loc-x8-y6, loc-x8-y5); 4.87179
+(S) move(loc-x8-y5, loc-x7-y5); 3.96933
+(S) move(loc-x7-y5, loc-x7-y4); 2.95398
+(S) move(loc-x7-y4, loc-x6-y4); 2.09156
+(S) move(loc-x6-y4, loc-x5-y4); 1.00346
+(S) move(loc-x5-y4, loc-x4-y4); -0.01196
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 4.93163
+(END)
+=> The instance is solvable.  [Real time: 00:00:14.7006756, or CPU time: 00:00:09.8281250]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+move(loc-x8-y8, loc-x8-y7)
+move(loc-x8-y7, loc-x8-y6)
+move(loc-x8-y6, loc-x8-y5)
+move(loc-x8-y5, loc-x7-y5)
+move(loc-x7-y5, loc-x7-y4)
+move(loc-x7-y4, loc-x6-y4)
+move(loc-x6-y4, loc-x5-y4)
+move(loc-x5-y4, loc-x4-y4)
+[01:32] Input: p-1-18_0.pddl
+Parsing: 3586 ms.
+(START)
+(S) move(loc-x9-y9, loc-x10-y9); 6.05118
+(S) move(loc-x10-y9, loc-x11-y9); 5.36130
+(S) move(loc-x11-y9, loc-x12-y9); 4.94012
+(S) move(loc-x12-y9, loc-x12-y10); 3.97117
+(S) move(loc-x12-y10, loc-x12-y11); 2.95316
+(S) move(loc-x12-y11, loc-x12-y12); 2.08909
+(S) move(loc-x12-y12, loc-x12-y13); 0.98740
+(S) move(loc-x12-y13, loc-x12-y14); 0.02419
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 5.04075
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:10.5905547, or CPU time: 00:00:05.8437500]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+move(loc-x9-y9, loc-x10-y9)
+move(loc-x10-y9, loc-x11-y9)
+move(loc-x11-y9, loc-x12-y9)
+move(loc-x12-y9, loc-x12-y10)
+move(loc-x12-y10, loc-x12-y11)
+move(loc-x12-y11, loc-x12-y12)
+move(loc-x12-y12, loc-x12-y13)
+move(loc-x12-y13, loc-x12-y14)
+[01:32] Input: p-1-18_1.pddl
+Parsing: 3555 ms.
+(START)
+(S) move(loc-x9-y9, loc-x8-y9); 3.00119
+(S) move(loc-x8-y9, loc-x7-y9); 2.07060
+(S) move(loc-x7-y9, loc-x7-y8); 0.97425
+(S) move(loc-x7-y8, loc-x7-y7); -0.05236
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.55292
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:10.0614282, or CPU time: 00:00:05.5625000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+move(loc-x9-y9, loc-x8-y9)
+move(loc-x8-y9, loc-x7-y9)
+move(loc-x7-y9, loc-x7-y8)
+move(loc-x7-y8, loc-x7-y7)
+[Total real time: 00:02:08.7570298, or total CPU time: 00:01:16.0781250]

@@ -1,0 +1,710 @@
+[20:06] Input: prob08_0.pddl
+Parsing: 121 ms.
+(START)
+(S) pick(ball18, rooma, left); 2.08201
+(S) move(rooma, roomb); 1.00289
+(S) drop(ball18, roomb, left); -0.00696
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.19860
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3431832, or CPU time: 00:00:00.2187500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball18, rooma, left)
+move(rooma, roomb)
+drop(ball18, roomb, left)
+[20:06] Input: prob08_1.pddl
+Parsing: 29 ms.
+(START)
+(S) pick(ball17, rooma, right); 2.08201
+(S) move(rooma, roomb); 1.00269
+(S) drop(ball17, roomb, right); -0.00683
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.22833
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.2640894, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball17, rooma, right)
+move(rooma, roomb)
+drop(ball17, roomb, right)
+[20:06] Input: prob08_2.pddl
+Parsing: 17 ms.
+(START)
+(S) pick(ball16, rooma, left); 2.08201
+(S) move(rooma, roomb); 1.00268
+(S) drop(ball16, roomb, left); -0.00681
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.24754
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.2790879, or CPU time: 00:00:00.0781250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball16, rooma, left)
+move(rooma, roomb)
+drop(ball16, roomb, left)
+[20:06] Input: prob09_0.pddl
+Parsing: 21 ms.
+(START)
+(S) pick(ball20, rooma, left); 2.08344
+(S) move(rooma, roomb); 1.01853
+(S) drop(ball20, roomb, left); -0.00215
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.38636
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4305903, or CPU time: 00:00:00.1250000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball20, rooma, left)
+move(rooma, roomb)
+drop(ball20, roomb, left)
+[NNP] [Out] Server started... 
+[20:06] Input: prob09_1.pddl
+Parsing: 28 ms.
+(START)
+(S) pick(ball19, rooma, right); 2.08349
+(S) move(rooma, roomb); 1.01852
+(S) drop(ball19, roomb, right); -0.00225
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.42606
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4672518, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball19, rooma, right)
+move(rooma, roomb)
+drop(ball19, roomb, right)
+[20:06] Input: prob09_2.pddl
+Parsing: 18 ms.
+(START)
+(S) pick(ball18, rooma, right); 2.08320
+(S) move(rooma, roomb); 1.01852
+(S) drop(ball18, roomb, right); -0.00226
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.30736
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3474076, or CPU time: 00:00:00.0468750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball18, rooma, right)
+move(rooma, roomb)
+drop(ball18, roomb, right)
+[20:06] Input: prob10_0.pddl
+Parsing: 21 ms.
+(START)
+(S) pick(ball22, rooma, left); 2.08428
+(S) move(rooma, roomb); 1.03408
+(S) drop(ball22, roomb, left); 0.00330
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.26581
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3196203, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball22, rooma, left)
+move(rooma, roomb)
+drop(ball22, roomb, left)
+[20:06] Input: prob10_1.pddl
+Parsing: 21 ms.
+(START)
+(S) pick(ball21, rooma, left); 2.08398
+(S) move(rooma, roomb); 1.03454
+(S) drop(ball21, roomb, left); 0.00329
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.29507
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.3479060, or CPU time: 00:00:00.1250000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball21, rooma, left)
+move(rooma, roomb)
+drop(ball21, roomb, left)
+[20:07] Input: prob10_2.pddl
+Parsing: 21 ms.
+(START)
+(S) pick(ball20, rooma, right); 2.08431
+(S) move(rooma, roomb); 1.03441
+(S) drop(ball20, roomb, right); 0.00307
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.42039
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4713788, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball20, rooma, right)
+move(rooma, roomb)
+drop(ball20, roomb, right)
+[20:07] Input: prob11_0.pddl
+Parsing: 24 ms.
+(START)
+(S) pick(ball24, rooma, right); 2.08497
+(S) move(rooma, roomb); 1.04970
+(S) drop(ball24, roomb, right); 0.00803
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.44137
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:04.5083514, or CPU time: 00:00:00.1250000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball24, rooma, right)
+move(rooma, roomb)
+drop(ball24, roomb, right)
+[20:07] Input: prob11_1.pddl
+Parsing: 24 ms.
+(START)
+(S) pick(ball23, rooma, left); 2.08495
+(S) move(rooma, roomb); 1.04973
+(S) drop(ball23, roomb, left); 0.00774
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.27709
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3427505, or CPU time: 00:00:00.1250000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball23, rooma, left)
+move(rooma, roomb)
+drop(ball23, roomb, left)
+[20:07] Input: prob11_2.pddl
+Parsing: 23 ms.
+(START)
+(S) pick(ball22, rooma, left); 2.08483
+(S) move(rooma, roomb); 1.04973
+(S) drop(ball22, roomb, left); 0.00787
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.31042
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3728236, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball22, rooma, left)
+move(rooma, roomb)
+drop(ball22, roomb, left)
+[20:07] Input: prob12_0.pddl
+Parsing: 26 ms.
+(START)
+(S) pick(ball26, rooma, left); 2.08667
+(S) move(rooma, roomb); 1.06592
+(S) drop(ball26, roomb, left); 0.01768
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.32967
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4098968, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball26, rooma, left)
+move(rooma, roomb)
+drop(ball26, roomb, left)
+[20:07] Input: prob12_1.pddl
+Parsing: 27 ms.
+(START)
+(S) pick(ball25, rooma, right); 2.08593
+(S) move(rooma, roomb); 1.06579
+(S) drop(ball25, roomb, right); 0.01747
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.31655
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3949569, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball25, rooma, right)
+move(rooma, roomb)
+drop(ball25, roomb, right)
+[20:07] Input: prob12_2.pddl
+Parsing: 38 ms.
+(START)
+(S) pick(ball24, rooma, right); 2.08593
+(S) move(rooma, roomb); 1.06593
+(S) drop(ball24, roomb, right); 0.01749
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36661
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:04.4624334, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball24, rooma, right)
+move(rooma, roomb)
+drop(ball24, roomb, right)
+[20:07] Input: prob13_0.pddl
+Parsing: 32 ms.
+(START)
+(S) pick(ball28, rooma, left); 2.08732
+(S) move(rooma, roomb); 1.08145
+(S) drop(ball28, roomb, left); 0.02951
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.46486
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:04.5671803, or CPU time: 00:00:00.3125000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball28, rooma, left)
+move(rooma, roomb)
+drop(ball28, roomb, left)
+[20:07] Input: prob13_1.pddl
+Parsing: 32 ms.
+(START)
+(S) pick(ball27, rooma, left); 2.08729
+(S) move(rooma, roomb); 1.08145
+(S) drop(ball27, roomb, left); 0.02950
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.42370
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5207258, or CPU time: 00:00:00.1718750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball27, rooma, left)
+move(rooma, roomb)
+drop(ball27, roomb, left)
+[20:07] Input: prob13_2.pddl
+Parsing: 29 ms.
+(START)
+(S) pick(ball26, rooma, right); 2.08565
+(S) move(rooma, roomb); 1.08145
+(S) drop(ball26, roomb, right); 0.02949
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.29407
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.3865194, or CPU time: 00:00:00.1875000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball26, rooma, right)
+move(rooma, roomb)
+drop(ball26, roomb, right)
+[20:07] Input: prob14_0.pddl
+Parsing: 38 ms.
+(START)
+(S) pick(ball30, rooma, left); 2.08707
+(S) move(rooma, roomb); 1.09722
+(S) drop(ball30, roomb, left); 0.04134
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.35064
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4735426, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball30, rooma, left)
+move(rooma, roomb)
+drop(ball30, roomb, left)
+[20:07] Input: prob14_1.pddl
+Parsing: 32 ms.
+(START)
+(S) pick(ball29, rooma, left); 2.08709
+(S) move(rooma, roomb); 1.09707
+(S) drop(ball29, roomb, left); 0.04090
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.33248
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4447192, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball29, rooma, left)
+move(rooma, roomb)
+drop(ball29, roomb, left)
+[20:07] Input: prob14_2.pddl
+Parsing: 32 ms.
+(START)
+(S) pick(ball28, rooma, left); 2.08707
+(S) move(rooma, roomb); 1.09723
+(S) drop(ball28, roomb, left); 0.04090
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36014
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4700271, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball28, rooma, left)
+move(rooma, roomb)
+drop(ball28, roomb, left)
+[20:07] Input: prob15_0.pddl
+Parsing: 35 ms.
+(START)
+(S) pick(ball32, rooma, left); 2.08789
+(S) move(rooma, roomb); 1.11168
+(S) drop(ball32, roomb, left); 0.05360
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.38273
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5193871, or CPU time: 00:00:00.1718750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball32, rooma, left)
+move(rooma, roomb)
+drop(ball32, roomb, left)
+[20:08] Input: prob15_1.pddl
+Parsing: 53 ms.
+(START)
+(S) pick(ball31, rooma, right); 2.08795
+(S) move(rooma, roomb); 1.11215
+(S) drop(ball31, roomb, right); 0.05351
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.40113
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:04.5355502, or CPU time: 00:00:00.2343750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball31, rooma, right)
+move(rooma, roomb)
+drop(ball31, roomb, right)
+[20:08] Input: prob15_2.pddl
+Parsing: 37 ms.
+(START)
+(S) pick(ball30, rooma, left); 2.08797
+(S) move(rooma, roomb); 1.11257
+(S) drop(ball30, roomb, left); 0.05352
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.50951
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:04.6400746, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball30, rooma, left)
+move(rooma, roomb)
+drop(ball30, roomb, left)
+[20:08] Input: prob16_0.pddl
+Parsing: 39 ms.
+(START)
+(S) pick(ball34, rooma, right); 2.08958
+(S) move(rooma, roomb); 1.12731
+(S) drop(ball34, roomb, right); 0.06532
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.45241
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.6158804, or CPU time: 00:00:00.2812500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball34, rooma, right)
+move(rooma, roomb)
+drop(ball34, roomb, right)
+[20:08] Input: prob16_1.pddl
+Parsing: 39 ms.
+(START)
+(S) pick(ball33, rooma, right); 2.08973
+(S) move(rooma, roomb); 1.12724
+(S) drop(ball33, roomb, right); 0.06529
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.28994
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.4466820, or CPU time: 00:00:00.2812500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball33, rooma, right)
+move(rooma, roomb)
+drop(ball33, roomb, right)
+[20:08] Input: prob16_2.pddl
+Parsing: 39 ms.
+(START)
+(S) pick(ball32, rooma, left); 2.08932
+(S) move(rooma, roomb); 1.12781
+(S) drop(ball32, roomb, left); 0.06493
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36166
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5147464, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball32, rooma, left)
+move(rooma, roomb)
+drop(ball32, roomb, left)
+[20:08] Input: prob17_0.pddl
+Parsing: 44 ms.
+(START)
+(S) pick(ball36, rooma, left); 2.09363
+(S) move(rooma, roomb); 1.14409
+(S) drop(ball36, roomb, left); 0.07710
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.37481
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:04.5650152, or CPU time: 00:00:00.3437500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball36, rooma, left)
+move(rooma, roomb)
+drop(ball36, roomb, left)
+[20:08] Input: prob17_1.pddl
+Parsing: 44 ms.
+(START)
+(S) pick(ball35, rooma, right); 2.09417
+(S) move(rooma, roomb); 1.14459
+(S) drop(ball35, roomb, right); 0.07651
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.47090
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6676510, or CPU time: 00:00:00.2187500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball35, rooma, right)
+move(rooma, roomb)
+drop(ball35, roomb, right)
+[20:08] Input: prob17_2.pddl
+Parsing: 44 ms.
+(START)
+(S) pick(ball34, rooma, left); 2.09435
+(S) move(rooma, roomb); 1.14421
+(S) drop(ball34, roomb, left); 0.07666
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.32949
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:04.5110294, or CPU time: 00:00:00.3125000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball34, rooma, left)
+move(rooma, roomb)
+drop(ball34, roomb, left)
+[20:08] Input: prob18_0.pddl
+Parsing: 48 ms.
+(START)
+(S) pick(ball38, rooma, left); 2.11048
+(S) move(rooma, roomb); 1.15940
+(S) drop(ball38, roomb, left); 0.08868
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.33638
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:04.5522878, or CPU time: 00:00:00.4687500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball38, rooma, left)
+move(rooma, roomb)
+drop(ball38, roomb, left)
+[20:08] Input: prob18_1.pddl
+Parsing: 48 ms.
+(START)
+(S) pick(ball37, rooma, left); 2.11012
+(S) move(rooma, roomb); 1.15943
+(S) drop(ball37, roomb, left); 0.08856
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.37215
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5830985, or CPU time: 00:00:00.2968750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball37, rooma, left)
+move(rooma, roomb)
+drop(ball37, roomb, left)
+[20:08] Input: prob18_2.pddl
+Parsing: 48 ms.
+(START)
+(S) pick(ball36, rooma, left); 2.11048
+(S) move(rooma, roomb); 1.15999
+(S) drop(ball36, roomb, left); 0.08821
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36590
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5751054, or CPU time: 00:00:00.3437500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball36, rooma, left)
+move(rooma, roomb)
+drop(ball36, roomb, left)
+[20:08] Input: prob19_0.pddl
+Parsing: 52 ms.
+(START)
+(S) pick(ball40, rooma, right); 2.12731
+(S) move(rooma, roomb); 1.17533
+(S) drop(ball40, roomb, right); 0.10129
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.35574
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:04.6098585, or CPU time: 00:00:00.3750000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball40, rooma, right)
+move(rooma, roomb)
+drop(ball40, roomb, right)
+[20:08] Input: prob19_1.pddl
+Parsing: 53 ms.
+(START)
+(S) pick(ball39, rooma, right); 2.12727
+(S) move(rooma, roomb); 1.17476
+(S) drop(ball39, roomb, right); 0.10100
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.38490
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6296804, or CPU time: 00:00:00.4062500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball39, rooma, right)
+move(rooma, roomb)
+drop(ball39, roomb, right)
+[20:09] Input: prob19_2.pddl
+Parsing: 52 ms.
+(START)
+(S) pick(ball38, rooma, left); 2.12681
+(S) move(rooma, roomb); 1.17475
+(S) drop(ball38, roomb, left); 0.10140
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36883
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6080140, or CPU time: 00:00:00.4062500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball38, rooma, left)
+move(rooma, roomb)
+drop(ball38, roomb, left)
+[20:09] Input: prob20_0.pddl
+Parsing: 60 ms.
+(START)
+(S) pick(ball42, rooma, right); 2.14509
+(S) move(rooma, roomb); 1.19181
+(S) drop(ball42, roomb, right); 0.12182
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.40914
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:04.7080846, or CPU time: 00:00:00.4375000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball42, rooma, right)
+move(rooma, roomb)
+drop(ball42, roomb, right)
+[20:09] Input: prob20_1.pddl
+Parsing: 77 ms.
+(START)
+(S) pick(ball41, rooma, right); 2.14485
+(S) move(rooma, roomb); 1.19181
+(S) drop(ball41, roomb, right); 0.12249
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.36382
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:04.6438719, or CPU time: 00:00:00.4218750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball41, rooma, right)
+move(rooma, roomb)
+drop(ball41, roomb, right)
+[20:09] Input: prob20_2.pddl
+Parsing: 57 ms.
+(START)
+(S) pick(ball40, rooma, left); 2.14500
+(S) move(rooma, roomb); 1.19163
+(S) drop(ball40, roomb, left); 0.12197
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.44218
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:04.7147162, or CPU time: 00:00:00.3750000]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+pick(ball40, rooma, left)
+move(rooma, roomb)
+drop(ball40, roomb, left)
+[Total real time: 00:02:57.3553725, or total CPU time: 00:00:13.3281250]

@@ -1,0 +1,432 @@
+[20:04] Input: test_on_probBLOCKS-12-0.pddl
+Parsing: 227 ms.
+(START)
+(S) unstack(h, a); 11.01790
+(S) stack(h, j); 10.00900
+(S) unstack(a, g); 9.00203
+(S) stack(a, l); 7.98984
+(S) unstack(g, k); 6.99370
+(S) putdown(g); 5.99072
+(S) unstack(k, e); 4.99418
+(S) putdown(k); 3.98682
+(S) unstack(e, b); 3.01461
+(S) putdown(e); 1.99960
+(S) unstack(a, l); 1.02255
+(S) stack(a, b); -0.00604
+(P) Actual 12; Expected 12; Ratio 1.00000
+(R) Optimal
+(T) 4.49720
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.6777211, or CPU time: 00:00:01.2031250]
+
+
+The following plan solves the problem: (length: 12, cost: 12)
+unstack(h, a)
+stack(h, j)
+unstack(a, g)
+stack(a, l)
+unstack(g, k)
+putdown(g)
+unstack(k, e)
+putdown(k)
+unstack(e, b)
+putdown(e)
+unstack(a, l)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-12-1.pddl
+Parsing: 141 ms.
+(START)
+(S) unstack(c, g); 13.01498
+(S) stack(c, k); 12.01089
+(S) unstack(g, h); 11.01291
+(S) putdown(g); 10.00303
+(S) unstack(h, i); 9.01310
+(S) putdown(h); 8.00160
+(S) unstack(i, f); 7.00680
+(S) putdown(i); 5.99955
+(S) unstack(f, b); 5.00750
+(S) putdown(f); 3.99882
+(S) unstack(b, a); 3.01671
+(S) stack(b, c); 1.98614
+(S) unstack(a, l); 1.02232
+(S) stack(a, b); -0.00606
+(P) Actual 14; Expected 14; Ratio 1.00000
+(R) Optimal
+(T) 4.81524
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.0010564, or CPU time: 00:00:01.3593750]
+
+
+The following plan solves the problem: (length: 14, cost: 14)
+unstack(c, g)
+stack(c, k)
+unstack(g, h)
+putdown(g)
+unstack(h, i)
+putdown(h)
+unstack(i, f)
+putdown(i)
+[NNP] [Out] Server started... 
+unstack(f, b)
+putdown(f)
+unstack(b, a)
+stack(b, c)
+unstack(a, l)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-13-0.pddl
+Parsing: 133 ms.
+(START)
+(S) unstack(b, f); 11.01027
+(S) stack(b, m); 10.00287
+(S) unstack(f, d); 9.00512
+(S) stack(f, i); 7.99678
+(S) unstack(d, c); 6.99974
+(S) putdown(d); 5.99454
+(S) unstack(c, j); 4.99755
+(S) putdown(c); 3.99191
+(S) unstack(j, a); 3.01175
+(S) putdown(j); 1.99314
+(S) unstack(a, e); 1.01668
+(S) stack(a, b); -0.00657
+(P) Actual 12; Expected 12; Ratio 1.00000
+(R) Optimal
+(T) 4.54199
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.1732552, or CPU time: 00:00:01.6875000]
+
+
+The following plan solves the problem: (length: 12, cost: 12)
+unstack(b, f)
+stack(b, m)
+unstack(f, d)
+stack(f, i)
+unstack(d, c)
+putdown(d)
+unstack(c, j)
+putdown(c)
+unstack(j, a)
+putdown(j)
+unstack(a, e)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-13-1.pddl
+Parsing: 137 ms.
+(START)
+(S) unstack(j, e); 9.00499
+(S) putdown(j); 7.99800
+(S) unstack(e, d); 6.99945
+(S) putdown(e); 5.99370
+(S) unstack(d, c); 4.99725
+(S) putdown(d); 3.99195
+(S) unstack(c, a); 3.00647
+(S) putdown(c); 1.99322
+(S) unstack(a, l); 1.01642
+(S) stack(a, b); -0.00736
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 4.42711
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.4728571, or CPU time: 00:00:01.0468750]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+unstack(j, e)
+putdown(j)
+unstack(e, d)
+putdown(e)
+unstack(d, c)
+putdown(d)
+unstack(c, a)
+putdown(c)
+unstack(a, l)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-14-0.pddl
+Parsing: 163 ms.
+(START)
+(S) unstack(a, j); 15.00482
+(S) stack(a, f); 14.00452
+(S) unstack(j, h); 13.00224
+(S) stack(j, g); 11.99894
+(S) unstack(h, m); 10.99931
+(S) putdown(h); 9.99077
+(S) unstack(m, k); 9.00212
+(S) putdown(m); 7.99224
+(S) unstack(k, c); 6.99663
+(S) putdown(k); 5.98873
+(S) unstack(c, l); 4.99424
+(S) putdown(c); 3.98629
+(S) unstack(l, b); 3.03116
+(S) putdown(l); 1.98550
+(S) unstack(a, f); 1.00858
+(S) stack(a, b); -0.00695
+(P) Actual 16; Expected 16; Ratio 1.00000
+(R) Optimal
+(T) 4.81469
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:07.4987366, or CPU time: 00:00:02.6875000]
+
+
+The following plan solves the problem: (length: 16, cost: 16)
+unstack(a, j)
+stack(a, f)
+unstack(j, h)
+stack(j, g)
+unstack(h, m)
+putdown(h)
+unstack(m, k)
+putdown(m)
+unstack(k, c)
+putdown(k)
+unstack(c, l)
+putdown(c)
+unstack(l, b)
+putdown(l)
+unstack(a, f)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-14-1.pddl
+Parsing: 144 ms.
+(START)
+(S) unstack(h, f); 9.02081
+(S) putdown(h); 8.00891
+(S) unstack(f, a); 7.01648
+(S) stack(f, c); 6.00913
+(S) unstack(a, k); 5.04658
+(S) stack(a, g); 4.02481
+(S) unstack(k, b); 3.05072
+(S) putdown(k); 1.98986
+(S) unstack(a, g); 1.00973
+(S) stack(a, b); -0.00755
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 4.45957
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.3322516, or CPU time: 00:00:01.8750000]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+unstack(h, f)
+putdown(h)
+unstack(f, a)
+stack(f, c)
+unstack(a, k)
+stack(a, g)
+unstack(k, b)
+putdown(k)
+unstack(a, g)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-15-0.pddl
+Parsing: 201 ms.
+(START)
+(S) unstack(b, a); 3.01795
+(S) stack(b, f); 1.96506
+(S) unstack(a, o); 1.00288
+(S) stack(a, b); -0.01398
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.14326
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.0685408, or CPU time: 00:00:00.9531250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+unstack(b, a)
+stack(b, f)
+unstack(a, o)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-15-1.pddl
+Parsing: 226 ms.
+(START)
+(S) unstack(g, l); 21.03312
+(S) stack(g, o); 20.01625
+(S) unstack(l, f); 19.02808
+(S) putdown(l); 18.00945
+(S) unstack(f, c); 17.01704
+(S) stack(f, g); 16.01097
+(S) unstack(c, n); 15.02421
+(S) stack(c, f); 14.00552
+(S) unstack(n, e); 13.01299
+(S) stack(n, l); 12.00432
+(S) unstack(e, h); 11.01568
+(S) putdown(e); 10.00699
+(S) unstack(h, d); 9.01219
+(S) putdown(h); 8.00451
+(S) unstack(d, a); 7.01062
+(S) stack(d, h); 6.00425
+(S) unstack(a, k); 5.03561
+(S) stack(a, n); 4.01748
+(S) unstack(k, b); 3.04905
+(S) putdown(k); 1.97748
+(S) unstack(a, n); 1.00282
+(S) stack(a, b); -0.01416
+(P) Actual 22; Expected 22; Ratio 1.00000
+(R) Optimal
+(T) 4.98993
+(END)
+=> The instance is solvable.  [Real time: 00:00:11.2527688, or CPU time: 00:00:06.2812500]
+
+
+The following plan solves the problem: (length: 22, cost: 22)
+unstack(g, l)
+stack(g, o)
+unstack(l, f)
+putdown(l)
+unstack(f, c)
+stack(f, g)
+unstack(c, n)
+stack(c, f)
+unstack(n, e)
+stack(n, l)
+unstack(e, h)
+putdown(e)
+unstack(h, d)
+putdown(h)
+unstack(d, a)
+stack(d, h)
+unstack(a, k)
+stack(a, n)
+unstack(k, b)
+putdown(k)
+unstack(a, n)
+stack(a, b)
+[20:05] Input: test_on_probBLOCKS-16-1.pddl
+Parsing: 290 ms.
+(START)
+(S) unstack(f, l); 23.02477
+(S) stack(f, o); 22.02771
+(S) unstack(l, m); 21.02453
+(S) stack(l, h); 20.02923
+(S) unstack(m, j); 19.03014
+(S) putdown(m); 18.02328
+(S) unstack(j, p); 17.01996
+(S) stack(j, m); 16.01392
+(S) unstack(p, n); 15.02451
+(S) putdown(p); 14.01695
+(S) unstack(n, i); 13.01795
+(S) putdown(n); 12.01063
+(S) unstack(i, b); 11.02234
+(S) putdown(i); 10.01530
+(S) unstack(b, d); 9.00643
+(S) stack(b, n); 7.99714
+(S) unstack(d, c); 7.00149
+(S) stack(d, p); 5.99487
+(S) unstack(c, k); 5.00073
+(S) putdown(c); 3.99168
+(S) unstack(k, a); 3.02485
+(S) putdown(k); 1.96931
+(S) pickup(a); 0.99440
+(S) stack(a, b); -0.02377
+(P) Actual 24; Expected 24; Ratio 1.00000
+(R) Optimal
+(T) 5.11200
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:14.3530368, or CPU time: 00:00:09.1718750]
+
+
+The following plan solves the problem: (length: 24, cost: 24)
+unstack(f, l)
+stack(f, o)
+unstack(l, m)
+stack(l, h)
+unstack(m, j)
+putdown(m)
+unstack(j, p)
+stack(j, m)
+unstack(p, n)
+putdown(p)
+unstack(n, i)
+putdown(n)
+unstack(i, b)
+putdown(i)
+unstack(b, d)
+stack(b, n)
+unstack(d, c)
+stack(d, p)
+unstack(c, k)
+putdown(c)
+unstack(k, a)
+putdown(k)
+pickup(a)
+stack(a, b)
+[20:06] Input: test_on_probBLOCKS-16-2.pddl
+Parsing: 310 ms.
+(START)
+(S) unstack(e, f); 15.01725
+(S) putdown(e); 14.01689
+(S) unstack(f, h); 13.02253
+(S) putdown(f); 12.01305
+(S) unstack(h, b); 11.01488
+(S) putdown(h); 10.00560
+(S) unstack(b, c); 9.00680
+(S) stack(b, l); 7.99549
+(S) unstack(c, m); 7.00033
+(S) stack(c, h); 5.99306
+(S) unstack(m, d); 4.99791
+(S) putdown(m); 3.99004
+(S) unstack(d, a); 3.02797
+(S) putdown(d); 1.96660
+(S) unstack(a, p); 0.99489
+(S) stack(a, b); -0.02358
+(P) Actual 16; Expected 16; Ratio 1.00000
+(R) Optimal
+(T) 4.88291
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.5487576, or CPU time: 00:00:05.6718750]
+
+
+The following plan solves the problem: (length: 16, cost: 16)
+unstack(e, f)
+putdown(e)
+unstack(f, h)
+putdown(f)
+unstack(h, b)
+putdown(h)
+unstack(b, c)
+stack(b, l)
+unstack(c, m)
+stack(c, h)
+unstack(m, d)
+putdown(m)
+unstack(d, a)
+putdown(d)
+unstack(a, p)
+stack(a, b)
+[20:06] Input: test_on_probBLOCKS-17-0.pddl
+Parsing: 309 ms.
+(START)
+(S) unstack(q, a); 9.01328
+(S) putdown(q); 8.00528
+(S) unstack(a, j); 6.99493
+(S) stack(a, h); 5.98930
+(S) unstack(j, i); 4.99309
+(S) putdown(j); 3.98664
+(S) unstack(i, b); 3.01396
+(S) putdown(i); 1.95561
+(S) unstack(a, h); 0.98679
+(S) stack(a, b); -0.03305
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 4.41111
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:07.6935779, or CPU time: 00:00:03.2812500]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+unstack(q, a)
+putdown(q)
+unstack(a, j)
+stack(a, h)
+unstack(j, i)
+putdown(j)
+unstack(i, b)
+putdown(i)
+unstack(a, h)
+stack(a, b)
+[Total real time: 00:01:28.6213810, or total CPU time: 00:00:38.2656250]

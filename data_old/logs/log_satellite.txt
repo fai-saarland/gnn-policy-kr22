@@ -1,0 +1,424 @@
+[03:59] Input: p16-pfile16_0.pddl
+Parsing: 1273 ms.
+(START)
+(S) switch_on(instrument15, satellite6); 3.93780
+(S) turn_to(satellite6, groundstation4, planet11); 2.95356
+(S) calibrate(satellite6, instrument15, groundstation4); 2.00183
+(S) turn_to(satellite6, planet22, groundstation4); 0.97248
+(S) take_image(satellite6, planet22, instrument15, image2); -0.03800
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 7.28495
+(END)
+=> The instance is solvable.  [Real time: 00:01:20.3744676, or CPU time: 00:01:13.5781250]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument15, satellite6)
+turn_to(satellite6, groundstation4, planet11)
+calibrate(satellite6, instrument15, groundstation4)
+turn_to(satellite6, planet22, groundstation4)
+take_image(satellite6, planet22, instrument15, image2)
+[04:00] Input: p16-pfile16_1.pddl
+Parsing: 915 ms.
+(START)
+(S) switch_on(instrument17, satellite7); 3.93415
+(S) turn_to(satellite7, groundstation4, planet11); 2.94974
+(S) calibrate(satellite7, instrument17, groundstation4); 1.99416
+(S) turn_to(satellite7, planet10, groundstation4); 0.96353
+(S) take_image(satellite7, planet10, instrument17, image0); -0.03832
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 7.32950
+(END)
+=> The instance is solvable.  [Real time: 00:00:29.8867001, or CPU time: 00:00:23.2031250]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument17, satellite7)
+turn_to(satellite7, groundstation4, planet11)
+calibrate(satellite7, instrument17, groundstation4)
+turn_to(satellite7, planet10, groundstation4)
+take_image(satellite7, planet10, instrument17, image0)
+[NNP] [Out] Server started... 
+[04:00] Input: p17-pfile17_0.pddl
+Parsing: 1144 ms.
+(START)
+(S) switch_on(instrument0, satellite0); 3.95132
+(S) turn_to(satellite0, groundstation0, planet5); 2.95700
+(S) calibrate(satellite0, instrument0, groundstation0); 2.01158
+(S) turn_to(satellite0, phenomenon24, groundstation0); 0.97409
+(S) take_image(satellite0, phenomenon24, instrument0, infrared3); -0.03268
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 8.00560
+(END)
+=> The instance is solvable.  [Real time: 00:02:09.2467236, or CPU time: 00:02:01.8437500]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument0, satellite0)
+turn_to(satellite0, groundstation0, planet5)
+calibrate(satellite0, instrument0, groundstation0)
+turn_to(satellite0, phenomenon24, groundstation0)
+take_image(satellite0, phenomenon24, instrument0, infrared3)
+[04:03] Input: p17-pfile17_1.pddl
+Parsing: 1139 ms.
+(START)
+(S) switch_on(instrument21, satellite10); 3.95325
+(S) turn_to(satellite10, star1, star22); 2.96371
+(S) calibrate(satellite10, instrument21, star1); 2.00124
+(S) turn_to(satellite10, star21, star1); 0.96744
+(S) take_image(satellite10, star21, instrument21, thermograph1); -0.03756
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 8.04219
+(END)
+=> The instance is solvable.  [Real time: 00:02:03.1779087, or CPU time: 00:01:55.3750000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument21, satellite10)
+turn_to(satellite10, star1, star22)
+calibrate(satellite10, instrument21, star1)
+turn_to(satellite10, star21, star1)
+take_image(satellite10, star21, instrument21, thermograph1)
+[04:05] Input: p18-pfile18_0.pddl
+Parsing: 316 ms.
+(START)
+(S) switch_on(instrument2, satellite0); 3.97011
+(S) turn_to(satellite0, star4, star8); 2.97734
+(S) calibrate(satellite0, instrument2, star4); 2.02890
+(S) turn_to(satellite0, star9, star4); 0.99559
+(S) take_image(satellite0, star9, instrument2, image1); -0.02328
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 5.44363
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:23.8477506, or CPU time: 00:00:18.4531250]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument2, satellite0)
+turn_to(satellite0, star4, star8)
+calibrate(satellite0, instrument2, star4)
+turn_to(satellite0, star9, star4)
+take_image(satellite0, star9, instrument2, image1)
+[04:05] Input: p18-pfile18_1.pddl
+Parsing: 339 ms.
+(START)
+(S) switch_on(instrument2, satellite0); 3.96133
+(S) turn_to(satellite0, star4, star8); 2.98586
+(S) calibrate(satellite0, instrument2, star4); 2.02449
+(S) turn_to(satellite0, phenomenon21, star4); 0.99306
+(S) take_image(satellite0, phenomenon21, instrument2, image1); -0.02411
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 5.46690
+(END)
+=> The instance is solvable.  [Real time: 00:00:22.9173058, or CPU time: 00:00:17.5000000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument2, satellite0)
+turn_to(satellite0, star4, star8)
+calibrate(satellite0, instrument2, star4)
+turn_to(satellite0, phenomenon21, star4)
+take_image(satellite0, phenomenon21, instrument2, image1)
+[04:05] Input: p19-pfile19_0.pddl
+Parsing: 573 ms.
+(START)
+(S) switch_on(instrument22, satellite4); 4.00134
+(S) turn_to(satellite4, star2, star14); 3.01185
+(S) calibrate(satellite4, instrument22, star2); 2.05160
+(S) turn_to(satellite4, planet21, star2); 1.01430
+(S) take_image(satellite4, planet21, instrument22, image5); -0.01275
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 5.96646
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:34.5066951, or CPU time: 00:00:29.0468750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument22, satellite4)
+turn_to(satellite4, star2, star14)
+calibrate(satellite4, instrument22, star2)
+turn_to(satellite4, planet21, star2)
+take_image(satellite4, planet21, instrument22, image5)
+[04:06] Input: p19-pfile19_1.pddl
+Parsing: 583 ms.
+(START)
+(S) switch_on(instrument7, satellite1); 3.99722
+(S) turn_to(satellite1, star2, planet21); 3.00417
+(S) calibrate(satellite1, instrument7, star2); 2.04635
+(S) turn_to(satellite1, phenomenon7, star2); 1.01641
+(S) take_image(satellite1, phenomenon7, instrument7, thermograph1); -0.01705
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 5.89632
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:36.6339986, or CPU time: 00:00:30.7500000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument7, satellite1)
+turn_to(satellite1, star2, planet21)
+calibrate(satellite1, instrument7, star2)
+turn_to(satellite1, phenomenon7, star2)
+take_image(satellite1, phenomenon7, instrument7, thermograph1)
+[04:07] Input: p20-pfile20_0.pddl
+Parsing: 707 ms.
+(START)
+(S) switch_on(instrument7, satellite0); 3.04685
+(S) calibrate(satellite0, instrument7, groundstation1); 2.07797
+(S) turn_to(satellite0, star6, groundstation1); 1.03002
+(S) take_image(satellite0, star6, instrument7, spectrograph6); -0.01142
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.57989
+(END)
+=> The instance is solvable.  [Real time: 00:00:34.4133975, or CPU time: 00:00:29.3750000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+switch_on(instrument7, satellite0)
+calibrate(satellite0, instrument7, groundstation1)
+turn_to(satellite0, star6, groundstation1)
+take_image(satellite0, star6, instrument7, spectrograph6)
+[04:07] Input: p20-pfile20_1.pddl
+Parsing: 703 ms.
+(START)
+(S) switch_on(instrument9, satellite0); 4.00062
+(S) turn_to(satellite0, star4, groundstation1); 3.04215
+(S) calibrate(satellite0, instrument9, star4); 2.07621
+(S) turn_to(satellite0, phenomenon14, star4); 1.03874
+(S) take_image(satellite0, phenomenon14, instrument9, thermograph7); -0.00496
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 6.03721
+(END)
+=> The instance is solvable.  [Real time: 00:00:34.6716072, or CPU time: 00:00:28.6875000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument9, satellite0)
+turn_to(satellite0, star4, groundstation1)
+calibrate(satellite0, instrument9, star4)
+turn_to(satellite0, phenomenon14, star4)
+take_image(satellite0, phenomenon14, instrument9, thermograph7)
+[04:08] Input: p21-HC-pfile1_0.pddl
+Parsing: 857 ms.
+(START)
+(S) switch_on(instrument4, satellite1); 3.94652
+(S) turn_to(satellite1, groundstation2, planet11); 2.95294
+(S) calibrate(satellite1, instrument4, groundstation2); 1.98940
+(S) turn_to(satellite1, phenomenon40, groundstation2); 0.93344
+(S) take_image(satellite1, phenomenon40, instrument4, thermograph0); -0.07638
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 6.10170
+(END)
+=> The instance is solvable.  [Real time: 00:00:19.0993496, or CPU time: 00:00:13.0937500]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument4, satellite1)
+turn_to(satellite1, groundstation2, planet11)
+calibrate(satellite1, instrument4, groundstation2)
+turn_to(satellite1, phenomenon40, groundstation2)
+take_image(satellite1, phenomenon40, instrument4, thermograph0)
+[04:08] Input: p21-HC-pfile1_1.pddl
+Parsing: 885 ms.
+(START)
+(S) switch_on(instrument9, satellite4); 3.94672
+(S) turn_to(satellite4, groundstation2, planet19); 2.95253
+(S) calibrate(satellite4, instrument9, groundstation2); 1.98889
+(S) turn_to(satellite4, planet37, groundstation2); 0.93154
+(S) take_image(satellite4, planet37, instrument9, thermograph0); -0.07521
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 6.16672
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:19.6848434, or CPU time: 00:00:13.6406250]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument9, satellite4)
+turn_to(satellite4, groundstation2, planet19)
+calibrate(satellite4, instrument9, groundstation2)
+turn_to(satellite4, planet37, groundstation2)
+take_image(satellite4, planet37, instrument9, thermograph0)
+[04:09] Input: p22-HC-pfile2_0.pddl
+Parsing: 1388 ms.
+(START)
+(S) switch_on(instrument9, satellite4); 3.97657
+(S) turn_to(satellite4, groundstation1, planet8); 2.96534
+(S) calibrate(satellite4, instrument9, groundstation1); 1.98692
+(S) turn_to(satellite4, planet39, groundstation1); 0.91924
+(S) take_image(satellite4, planet39, instrument9, infrared0); -0.08544
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 6.44698
+(END)
+=> The instance is solvable.  [Real time: 00:02:36.6835770, or CPU time: 00:02:30.6093750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument9, satellite4)
+turn_to(satellite4, groundstation1, planet8)
+calibrate(satellite4, instrument9, groundstation1)
+turn_to(satellite4, planet39, groundstation1)
+take_image(satellite4, planet39, instrument9, infrared0)
+[04:11] Input: p22-HC-pfile2_1.pddl
+Parsing: 1399 ms.
+(START)
+(S) switch_on(instrument8, satellite4); 3.96999
+(S) turn_to(satellite4, groundstation2, planet8); 2.96219
+(S) calibrate(satellite4, instrument8, groundstation2); 1.98403
+(S) turn_to(satellite4, planet45, groundstation2); 0.92160
+(S) take_image(satellite4, planet45, instrument8, image2); -0.08616
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 6.87494
+(END)
+=> The instance is solvable.  [Real time: 00:02:33.2184757, or CPU time: 00:02:26.8125000]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument8, satellite4)
+turn_to(satellite4, groundstation2, planet8)
+calibrate(satellite4, instrument8, groundstation2)
+turn_to(satellite4, planet45, groundstation2)
+take_image(satellite4, planet45, instrument8, image2)
+[04:14] Input: p23-HC-pfile3_0.pddl
+Parsing: 2456 ms.
+(START)
+(S) switch_on(instrument16, satellite6); 2.95326
+(S) calibrate(satellite6, instrument16, star0); 1.95776
+(S) turn_to(satellite6, planet20, star0); 0.90423
+(S) take_image(satellite6, planet20, instrument16, image1); -0.09993
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.17307
+(END)
+=> The instance is solvable.  [Real time: 00:04:16.3026619, or CPU time: 00:04:10.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+switch_on(instrument16, satellite6)
+calibrate(satellite6, instrument16, star0)
+turn_to(satellite6, planet20, star0)
+take_image(satellite6, planet20, instrument16, image1)
+[04:18] Input: p23-HC-pfile3_1.pddl
+Parsing: 2461 ms.
+(START)
+(S) switch_on(instrument16, satellite6); 2.95466
+(S) calibrate(satellite6, instrument16, star0); 1.95924
+(S) turn_to(satellite6, phenomenon44, star0); 0.90391
+(S) take_image(satellite6, phenomenon44, instrument16, image1); -0.09986
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.15107
+(END)
+=> The instance is solvable.  [Real time: 00:04:01.1261333, or CPU time: 00:03:54.6406250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+switch_on(instrument16, satellite6)
+calibrate(satellite6, instrument16, star0)
+turn_to(satellite6, phenomenon44, star0)
+take_image(satellite6, phenomenon44, instrument16, image1)
+[04:22] Input: p24-HC-pfile4_0.pddl
+Parsing: 5740 ms.
+(START)
+(S) switch_on(instrument1, satellite0); 3.96154
+(S) turn_to(satellite0, star0, planet21); 2.91461
+(S) calibrate(satellite0, instrument1, star0); 1.91005
+(S) turn_to(satellite0, planet32, star0); 0.85430
+(S) take_image(satellite0, planet32, instrument1, thermograph2); -0.13809
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 9.40726
+(END)
+=> The instance is solvable.  [Real time: 00:03:16.2334098, or CPU time: 00:03:09.3281250]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument1, satellite0)
+turn_to(satellite0, star0, planet21)
+calibrate(satellite0, instrument1, star0)
+turn_to(satellite0, planet32, star0)
+take_image(satellite0, planet32, instrument1, thermograph2)
+[04:25] Input: p24-HC-pfile4_1.pddl
+Parsing: 5622 ms.
+(START)
+(S) switch_on(instrument8, satellite4); 3.95821
+(S) turn_to(satellite4, star0, planet24); 2.91093
+(S) calibrate(satellite4, instrument8, star0); 1.90619
+(S) turn_to(satellite4, phenomenon72, star0); 0.85317
+(S) take_image(satellite4, phenomenon72, instrument8, infrared0); -0.13788
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 9.39485
+(END)
+=> The instance is solvable.  [Real time: 00:02:30.3338504, or CPU time: 00:02:22.4687500]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument8, satellite4)
+turn_to(satellite4, star0, planet24)
+calibrate(satellite4, instrument8, star0)
+turn_to(satellite4, phenomenon72, star0)
+take_image(satellite4, phenomenon72, instrument8, infrared0)
+[04:28] Input: p25-HC-pfile5_0.pddl
+Parsing: 7081 ms.
+(START)
+(S) switch_on(instrument0, satellite0); 3.93576
+(S) turn_to(satellite0, groundstation2, star44); 2.89521
+(S) calibrate(satellite0, instrument0, groundstation2); 1.88817
+(S) turn_to(satellite0, star3, groundstation2); 0.84989
+(S) take_image(satellite0, star3, instrument0, thermograph0); -0.14311
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 10.61605
+(END)
+=> The instance is solvable.  [Real time: 00:19:43.6236206, or CPU time: 00:19:35.0468750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument0, satellite0)
+turn_to(satellite0, groundstation2, star44)
+calibrate(satellite0, instrument0, groundstation2)
+turn_to(satellite0, star3, groundstation2)
+take_image(satellite0, star3, instrument0, thermograph0)
+[04:48] Input: p25-HC-pfile5_1.pddl
+Parsing: 7196 ms.
+(START)
+(S) switch_on(instrument0, satellite0); 3.93576
+(S) turn_to(satellite0, groundstation2, star44); 2.89513
+(S) calibrate(satellite0, instrument0, groundstation2); 1.88824
+(S) turn_to(satellite0, planet66, groundstation2); 0.84944
+(S) take_image(satellite0, planet66, instrument0, thermograph0); -0.14243
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 10.95845
+(END)
+=> The instance is solvable.  [Real time: 00:18:01.1068409, or CPU time: 00:17:51.9218750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+switch_on(instrument0, satellite0)
+turn_to(satellite0, groundstation2, star44)
+calibrate(satellite0, instrument0, groundstation2)
+turn_to(satellite0, planet66, groundstation2)
+take_image(satellite0, planet66, instrument0, thermograph0)
+[Total real time: 01:07:30.6179125, or total CPU time: 01:05:27.4062500]

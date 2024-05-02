@@ -1,0 +1,1952 @@
+[20:10] Input: s12-0_0.pddl
+Parsing: 144 ms.
+(START)
+(S) up(f0, f7); 3.00207
+(S) board(f7, p0); 1.99882
+(S) up(f7, f22); 0.98106
+(S) depart(f22, p0); 0.00293
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.55820
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.7088351, or CPU time: 00:00:00.2187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f7)
+board(f7, p0)
+up(f7, f22)
+depart(f22, p0)
+[20:10] Input: s12-1_0.pddl
+Parsing: 57 ms.
+(START)
+(S) up(f0, f8); 3.00354
+(S) board(f8, p0); 1.99948
+(S) down(f8, f5); 0.98104
+(S) depart(f5, p0); 0.00295
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.56232
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.5984958, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f8)
+board(f8, p0)
+down(f8, f5)
+depart(f5, p0)
+[20:10] Input: s12-2_0.pddl
+Parsing: 31 ms.
+(START)
+(S) up(f0, f19); 3.00387
+(S) board(f19, p0); 2.00050
+(S) down(f19, f0); 0.98047
+(S) depart(f0, p0); 0.00288
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.61169
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6553747, or CPU time: 00:00:00.0937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+down(f19, f0)
+depart(f0, p0)
+[20:11] Input: s12-3_0.pddl
+Parsing: 31 ms.
+(START)
+(S) up(f0, f17); 3.00268
+(S) board(f17, p0); 1.99930
+(S) up(f17, f23); 0.98086
+(S) depart(f23, p0); 0.00297
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.63317
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6758452, or CPU time: 00:00:00.0937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f17)
+board(f17, p0)
+up(f17, f23)
+depart(f23, p0)
+[20:11] Input: s12-4_0.pddl
+Parsing: 31 ms.
+(START)
+(S) up(f0, f15); 3.00301
+(S) board(f15, p0); 1.99929
+(S) up(f15, f18); 0.98075
+(S) depart(f18, p0); 0.00292
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.60518
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.6540853, or CPU time: 00:00:00.0468750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f18)
+depart(f18, p0)
+[20:11] Input: s13-0_0.pddl
+Parsing: 36 ms.
+(START)
+(S) up(f0, f13); 3.00274
+(S) board(f13, p0); 1.99978
+(S) up(f13, f22); 0.97477
+(S) depart(f22, p0); 0.00326
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.66444
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.7263338, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f13)
+board(f13, p0)
+up(f13, f22)
+depart(f22, p0)
+[20:11] Input: s13-1_0.pddl
+Parsing: 37 ms.
+(START)
+(S) up(f0, f20); 3.00467
+(S) board(f20, p0); 1.99966
+(S) down(f20, f1); 0.97480
+(S) depart(f1, p0); 0.00323
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.67383
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.7292529, or CPU time: 00:00:00.0781250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f20)
+board(f20, p0)
+down(f20, f1)
+depart(f1, p0)
+[20:11] Input: s13-2_0.pddl
+Parsing: 36 ms.
+(START)
+(S) up(f0, f19); 3.00225
+(S) board(f19, p0); 2.00029
+(S) down(f19, f2); 0.97478
+(S) depart(f2, p0); 0.00324
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.67327
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.7264853, or CPU time: 00:00:00.0625000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+down(f19, f2)
+depart(f2, p0)
+[NNP] [Out] Server started... 
+[20:11] Input: s13-3_0.pddl
+Parsing: 37 ms.
+(START)
+(S) up(f0, f23); 3.00443
+(S) board(f23, p0); 2.00049
+(S) down(f23, f15); 0.97497
+(S) depart(f15, p0); 0.00323
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.66271
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.6973729, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f23)
+board(f23, p0)
+down(f23, f15)
+depart(f15, p0)
+[20:11] Input: s13-4_0.pddl
+Parsing: 36 ms.
+(START)
+(S) up(f0, f5); 3.00441
+(S) board(f5, p0); 1.99941
+(S) up(f5, f7); 0.97486
+(S) depart(f7, p0); 0.00323
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.67441
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:04.7638043, or CPU time: 00:00:00.0625000]
+[NNP] [Out] Received objects
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f5)
+board(f5, p0)
+up(f5, f7)
+depart(f7, p0)
+[20:11] Input: s14-0_0.pddl
+Parsing: 43 ms.
+(START)
+(S) up(f0, f15); 3.00377
+(S) board(f15, p0); 1.99990
+(S) up(f15, f18); 0.96906
+(S) depart(f18, p0); 0.00362
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.78316
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.8811363, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f18)
+depart(f18, p0)
+[20:11] Input: s14-1_0.pddl
+Parsing: 59 ms.
+(START)
+(S) up(f0, f8); 3.00314
+(S) board(f8, p0); 2.00053
+(S) down(f8, f1); 0.96888
+(S) depart(f1, p0); 0.00361
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.77307
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.8408807, or CPU time: 00:00:00.0781250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f8)
+board(f8, p0)
+down(f8, f1)
+depart(f1, p0)
+[20:11] Input: s14-2_0.pddl
+Parsing: 43 ms.
+(START)
+(S) up(f0, f23); 3.00401
+(S) board(f23, p0); 2.00050
+(S) down(f23, f8); 0.96882
+(S) depart(f8, p0); 0.00361
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.88809
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.9428518, or CPU time: 00:00:00.0468750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f23)
+board(f23, p0)
+down(f23, f8)
+depart(f8, p0)
+[20:11] Input: s14-3_0.pddl
+Parsing: 46 ms.
+(START)
+(S) up(f0, f21); 3.00317
+(S) board(f21, p0); 2.00074
+(S) down(f21, f19); 0.96900
+(S) depart(f19, p0); 0.00359
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.02698
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.0609984, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f21)
+board(f21, p0)
+down(f21, f19)
+depart(f19, p0)
+[20:11] Input: s14-4_0.pddl
+Parsing: 44 ms.
+(START)
+(S) up(f0, f19); 3.00330
+(S) board(f19, p0); 2.00030
+(S) up(f19, f27); 0.96898
+(S) depart(f27, p0); 0.00363
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.85670
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:04.9285378, or CPU time: 00:00:00.0625000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+up(f19, f27)
+depart(f27, p0)
+[20:11] Input: s15-0_0.pddl
+Parsing: 49 ms.
+(START)
+(S) up(f0, f13); 3.00296
+(S) board(f13, p0); 2.00067
+(S) up(f13, f16); 0.96287
+(S) depart(f16, p0); 0.00402
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.91654
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.0416440, or CPU time: 00:00:00.2343750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f13)
+board(f13, p0)
+up(f13, f16)
+depart(f16, p0)
+[20:12] Input: s15-1_0.pddl
+Parsing: 49 ms.
+(START)
+(S) up(f0, f20); 3.00424
+(S) board(f20, p0); 2.00086
+(S) down(f20, f11); 0.96267
+(S) depart(f11, p0); 0.00395
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.90465
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.9693145, or CPU time: 00:00:00.0937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f20)
+board(f20, p0)
+down(f20, f11)
+depart(f11, p0)
+[20:12] Input: s15-2_0.pddl
+Parsing: 47 ms.
+(START)
+(S) up(f0, f13); 3.00368
+(S) board(f13, p0); 2.00079
+(S) down(f13, f0); 0.96279
+(S) depart(f0, p0); 0.00394
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.84681
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:04.9375022, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f13)
+board(f13, p0)
+down(f13, f0)
+depart(f0, p0)
+[20:12] Input: s15-3_0.pddl
+Parsing: 48 ms.
+(START)
+(S) up(f0, f23); 3.00411
+(S) board(f23, p0); 2.00125
+(S) down(f23, f5); 0.96264
+(S) depart(f5, p0); 0.00411
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.86432
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.9410208, or CPU time: 00:00:00.0625000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f23)
+board(f23, p0)
+down(f23, f5)
+depart(f5, p0)
+[20:12] Input: s15-4_0.pddl
+Parsing: 47 ms.
+(START)
+(S) up(f0, f15); 3.00294
+(S) board(f15, p0); 2.00030
+(S) up(f15, f21); 0.96291
+(S) depart(f21, p0); 0.00411
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.87639
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.9901322, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f21)
+depart(f21, p0)
+[20:12] Input: s16-0_0.pddl
+Parsing: 55 ms.
+(START)
+(S) up(f0, f7); 3.00404
+(S) board(f7, p0); 2.00042
+(S) down(f7, f6); 0.95703
+(S) depart(f6, p0); 0.00431
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.98061
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:05.0805307, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f7)
+board(f7, p0)
+down(f7, f6)
+depart(f6, p0)
+[20:12] Input: s16-1_0.pddl
+Parsing: 56 ms.
+(START)
+(S) up(f0, f24); 3.00430
+(S) board(f24, p0); 2.00086
+(S) down(f24, f5); 0.95683
+(S) depart(f5, p0); 0.00457
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.04507
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.1425426, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f24)
+board(f24, p0)
+down(f24, f5)
+depart(f5, p0)
+[20:12] Input: s16-2_0.pddl
+Parsing: 55 ms.
+(START)
+(S) up(f0, f11); 3.00299
+(S) board(f11, p0); 2.00048
+(S) up(f11, f16); 0.95678
+(S) depart(f16, p0); 0.00443
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 4.99379
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:05.1529686, or CPU time: 00:00:00.1875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f11)
+board(f11, p0)
+up(f11, f16)
+depart(f16, p0)
+[20:12] Input: s16-3_0.pddl
+Parsing: 59 ms.
+(START)
+(S) up(f0, f1); 3.00406
+(S) board(f1, p0); 2.00019
+(S) up(f1, f15); 0.95714
+(S) depart(f15, p0); 0.00440
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.02276
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.1906108, or CPU time: 00:00:00.2031250]
+
+[NNP] [Out] Server started... 
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f1)
+board(f1, p0)
+up(f1, f15)
+depart(f15, p0)
+[20:12] Input: s16-4_0.pddl
+Parsing: 55 ms.
+(START)
+(S) up(f0, f31); 3.00395
+(S) board(f31, p0); 2.00081
+(S) down(f31, f7); 0.95671
+(S) depart(f7, p0); 0.00451
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.00628
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.1014319, or CPU time: 00:00:00.1406250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f31)
+board(f31, p0)
+down(f31, f7)
+depart(f7, p0)
+[20:12] Input: s17-0_0.pddl
+Parsing: 63 ms.
+(START)
+(S) up(f0, f27); 3.00382
+(S) board(f27, p0); 2.00014
+(S) up(f27, f32); 0.95096
+(S) depart(f32, p0); 0.00487
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.12664
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.2767740, or CPU time: 00:00:00.1718750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f27)
+board(f27, p0)
+up(f27, f32)
+depart(f32, p0)
+[20:12] Input: s17-1_0.pddl
+Parsing: 65 ms.
+(START)
+(S) up(f0, f30); 3.00444
+(S) board(f30, p0); 2.00162
+(S) down(f30, f7); 0.95080
+(S) depart(f7, p0); 0.00487
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.14519
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:05.2614106, or CPU time: 00:00:00.1250000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f30)
+board(f30, p0)
+down(f30, f7)
+depart(f7, p0)
+[20:13] Input: s17-2_0.pddl
+Parsing: 63 ms.
+(START)
+(S) up(f0, f25); 3.00401
+(S) board(f25, p0); 2.00131
+(S) down(f25, f2); 0.95100
+(S) depart(f2, p0); 0.00483
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.15995
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.2958343, or CPU time: 00:00:00.1875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f25)
+board(f25, p0)
+down(f25, f2)
+depart(f2, p0)
+[20:13] Input: s17-3_0.pddl
+Parsing: 62 ms.
+(START)
+(S) up(f0, f3); 3.00429
+(S) board(f3, p0); 2.00049
+(S) up(f3, f13); 0.95126
+(S) depart(f13, p0); 0.00487
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.13136
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.3529916, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f3)
+board(f3, p0)
+up(f3, f13)
+depart(f13, p0)
+[20:13] Input: s17-4_0.pddl
+Parsing: 65 ms.
+(START)
+(S) up(f0, f7); 3.00427
+(S) board(f7, p0); 2.00014
+(S) up(f7, f33); 0.95133
+(S) depart(f33, p0); 0.00487
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.17306
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.3220048, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f7)
+board(f7, p0)
+up(f7, f33)
+depart(f33, p0)
+[20:13] Input: s18-0_0.pddl
+Parsing: 72 ms.
+(START)
+(S) up(f0, f19); 3.00455
+(S) board(f19, p0); 2.00070
+(S) up(f19, f34); 0.94521
+(S) depart(f34, p0); 0.00502
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.29816
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.4972777, or CPU time: 00:00:00.3593750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+up(f19, f34)
+depart(f34, p0)
+[20:13] Input: s18-1_0.pddl
+Parsing: 72 ms.
+(START)
+(S) up(f0, f20); 3.00494
+(S) board(f20, p0); 2.00143
+(S) down(f20, f5); 0.94539
+(S) depart(f5, p0); 0.00496
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.33835
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:05.4970599, or CPU time: 00:00:00.2031250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f20)
+board(f20, p0)
+down(f20, f5)
+depart(f5, p0)
+[20:13] Input: s18-2_0.pddl
+Parsing: 72 ms.
+(START)
+(S) up(f0, f31); 3.00455
+(S) board(f31, p0); 2.00175
+(S) down(f31, f12); 0.94510
+(S) depart(f12, p0); 0.00498
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.31760
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.4440513, or CPU time: 00:00:00.1718750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f31)
+board(f31, p0)
+down(f31, f12)
+depart(f12, p0)
+[20:13] Input: s18-3_0.pddl
+Parsing: 71 ms.
+(START)
+(S) up(f0, f29); 3.00478
+(S) board(f29, p0); 2.00143
+(S) down(f29, f11); 0.94528
+(S) depart(f11, p0); 0.00500
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.30456
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.4366244, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f29)
+board(f29, p0)
+down(f29, f11)
+depart(f11, p0)
+[20:13] Input: s18-4_0.pddl
+Parsing: 79 ms.
+(START)
+(S) up(f0, f27); 3.00426
+(S) board(f27, p0); 2.00144
+(S) down(f27, f15); 0.94512
+(S) depart(f15, p0); 0.00491
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.28533
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:05.3942224, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f27)
+board(f27, p0)
+down(f27, f15)
+depart(f15, p0)
+[20:13] Input: s19-0_0.pddl
+Parsing: 85 ms.
+(START)
+(S) up(f0, f21); 3.00350
+(S) board(f21, p0); 2.00105
+(S) up(f21, f34); 0.93941
+(S) depart(f34, p0); 0.00547
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.50585
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.7450816, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f21)
+board(f21, p0)
+up(f21, f34)
+depart(f34, p0)
+[20:13] Input: s19-1_0.pddl
+Parsing: 83 ms.
+(START)
+(S) up(f0, f30); 3.00459
+(S) board(f30, p0); 2.00100
+(S) up(f30, f37); 0.93892
+(S) depart(f37, p0); 0.00532
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.48978
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:05.7125299, or CPU time: 00:00:00.2812500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f30)
+board(f30, p0)
+up(f30, f37)
+depart(f37, p0)
+[20:13] Input: s19-2_0.pddl
+Parsing: 82 ms.
+(START)
+(S) up(f0, f15); 3.00442
+(S) board(f15, p0); 2.00169
+(S) down(f15, f14); 0.93940
+(S) depart(f14, p0); 0.00536
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.47519
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.6177696, or CPU time: 00:00:00.2343750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+down(f15, f14)
+depart(f14, p0)
+[20:14] Input: s19-3_0.pddl
+Parsing: 80 ms.
+(START)
+(S) up(f0, f29); 3.00563
+(S) board(f29, p0); 2.00251
+(S) down(f29, f1); 0.93944
+(S) depart(f1, p0); 0.00540
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.49912
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:05.7232679, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f29)
+board(f29, p0)
+down(f29, f1)
+depart(f1, p0)
+[20:14] Input: s19-4_0.pddl
+Parsing: 81 ms.
+(START)
+(S) up(f0, f17); 3.00461
+(S) board(f17, p0); 2.00105
+(S) up(f17, f29); 0.93906
+(S) depart(f29, p0); 0.00546
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.46241
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.7297935, or CPU time: 00:00:00.3281250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f17)
+board(f17, p0)
+up(f17, f29)
+depart(f29, p0)
+[20:14] Input: s20-0_0.pddl
+Parsing: 90 ms.
+(START)
+(S) up(f0, f23); 3.00558
+(S) board(f23, p0); 2.00176
+(S) down(f23, f6); 0.93320
+(S) depart(f6, p0); 0.00592
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.63197
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.8572322, or CPU time: 00:00:00.2968750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f23)
+board(f23, p0)
+down(f23, f6)
+depart(f6, p0)
+[20:14] Input: s20-1_0.pddl
+Parsing: 90 ms.
+(START)
+(S) board(f0, p0); 2.00134
+(S) up(f0, f21); 0.93364
+(S) depart(f21, p0); 0.00598
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 5.25816
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.6209952, or CPU time: 00:00:00.3906250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+board(f0, p0)
+up(f0, f21)
+depart(f21, p0)
+[20:14] Input: s20-2_0.pddl
+Parsing: 90 ms.
+(START)
+(S) up(f0, f3); 3.00544
+(S) board(f3, p0); 2.00181
+(S) down(f3, f0); 0.93362
+(S) depart(f0, p0); 0.00600
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.74235
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:06.0240864, or CPU time: 00:00:00.3125000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f3)
+board(f3, p0)
+down(f3, f0)
+depart(f0, p0)
+[20:14] Input: s20-3_0.pddl
+Parsing: 91 ms.
+(START)
+(S) up(f0, f33); 3.00543
+(S) board(f33, p0); 2.00215
+(S) down(f33, f15); 0.93322
+(S) depart(f15, p0); 0.00585
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.65526
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.8268321, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f33)
+board(f33, p0)
+down(f33, f15)
+depart(f15, p0)
+[20:14] Input: s20-4_0.pddl
+Parsing: 90 ms.
+(START)
+(S) up(f0, f15); 3.00542
+(S) board(f15, p0); 2.00122
+(S) up(f15, f31); 0.93316
+(S) depart(f31, p0); 0.00596
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.67245
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.9989043, or CPU time: 00:00:00.3437500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f31)
+depart(f31, p0)
+[20:14] Input: s21-0_0.pddl
+Parsing: 100 ms.
+(START)
+(S) up(f0, f1); 3.00519
+(S) board(f1, p0); 2.00123
+(S) up(f1, f4); 0.92763
+(S) depart(f4, p0); 0.00643
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.91848
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.5006851, or CPU time: 00:00:00.8281250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f1)
+board(f1, p0)
+up(f1, f4)
+depart(f4, p0)
+[20:14] Input: s21-1_0.pddl
+Parsing: 118 ms.
+(START)
+(S) up(f0, f8); 3.00421
+(S) board(f8, p0); 2.00117
+(S) up(f8, f29); 0.92692
+(S) depart(f29, p0); 0.00623
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.88754
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.2872457, or CPU time: 00:00:00.4843750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f8)
+board(f8, p0)
+up(f8, f29)
+depart(f29, p0)
+[20:14] Input: s21-2_0.pddl
+Parsing: 101 ms.
+(START)
+(S) up(f0, f37); 3.00483
+(S) board(f37, p0); 2.00143
+(S) down(f37, f36); 0.92697
+(S) depart(f36, p0); 0.00623
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.88110
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.9575286, or CPU time: 00:00:00.1093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f37)
+board(f37, p0)
+down(f37, f36)
+depart(f36, p0)
+[20:15] Input: s21-3_0.pddl
+Parsing: 100 ms.
+(START)
+(S) up(f0, f35); 3.00519
+(S) board(f35, p0); 2.00298
+(S) down(f35, f5); 0.92715
+(S) depart(f5, p0); 0.00618
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 5.89491
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:06.1844832, or CPU time: 00:00:00.3281250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f35)
+board(f35, p0)
+down(f35, f5)
+depart(f5, p0)
+[20:15] Input: s21-4_0.pddl
+Parsing: 102 ms.
+(START)
+(S) up(f0, f33); 3.00564
+(S) board(f33, p0); 2.00163
+(S) down(f33, f27); 0.92716
+(S) depart(f27, p0); 0.00630
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.01456
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:06.1462508, or CPU time: 00:00:00.1562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f33)
+board(f33, p0)
+down(f33, f27)
+depart(f27, p0)
+[20:15] Input: s22-0_0.pddl
+Parsing: 111 ms.
+(START)
+(S) up(f0, f39); 3.00637
+(S) board(f39, p0); 2.00204
+(S) down(f39, f10); 0.92114
+(S) depart(f10, p0); 0.00640
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.07226
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.3732356, or CPU time: 00:00:00.3593750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f39)
+board(f39, p0)
+down(f39, f10)
+depart(f10, p0)
+[20:15] Input: s22-1_0.pddl
+Parsing: 112 ms.
+(START)
+(S) board(f0, p0); 2.00160
+(S) up(f0, f1); 0.92137
+(S) depart(f1, p0); 0.00635
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 5.56701
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.2809161, or CPU time: 00:00:00.7656250]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+board(f0, p0)
+up(f0, f1)
+depart(f1, p0)
+[20:15] Input: s22-2_0.pddl
+Parsing: 112 ms.
+(START)
+(S) up(f0, f43); 3.00594
+(S) board(f43, p0); 2.00255
+(S) down(f43, f12); 0.92099
+(S) depart(f12, p0); 0.00644
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.09621
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.3758927, or CPU time: 00:00:00.3125000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f43)
+board(f43, p0)
+down(f43, f12)
+depart(f12, p0)
+[20:15] Input: s22-3_0.pddl
+Parsing: 112 ms.
+(START)
+(S) up(f0, f13); 3.00564
+(S) board(f13, p0); 2.00239
+(S) up(f13, f19); 0.92127
+(S) depart(f19, p0); 0.00644
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.10593
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.6770267, or CPU time: 00:00:00.7187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f13)
+board(f13, p0)
+up(f13, f19)
+depart(f19, p0)
+[20:15] Input: s22-4_0.pddl
+Parsing: 115 ms.
+(START)
+(S) up(f0, f15); 3.00532
+(S) board(f15, p0); 2.00194
+(S) up(f15, f31); 0.92137
+(S) depart(f31, p0); 0.00649
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.09714
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:06.5729206, or CPU time: 00:00:00.5468750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f31)
+depart(f31, p0)
+[20:15] Input: s23-0_0.pddl
+Parsing: 124 ms.
+(START)
+(S) up(f0, f11); 3.00602
+(S) board(f11, p0); 2.00303
+(S) down(f11, f0); 0.91602
+(S) depart(f0, p0); 0.00626
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.40183
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:06.8695709, or CPU time: 00:00:00.5468750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f11)
+board(f11, p0)
+down(f11, f0)
+depart(f0, p0)
+[20:15] Input: s23-1_0.pddl
+Parsing: 141 ms.
+(START)
+(S) up(f0, f10); 3.00432
+(S) board(f10, p0); 2.00233
+(S) up(f10, f27); 0.91583
+(S) depart(f27, p0); 0.00630
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.48304
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.1427255, or CPU time: 00:00:00.7187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f10)
+board(f10, p0)
+up(f10, f27)
+depart(f27, p0)
+[20:16] Input: s23-2_0.pddl
+Parsing: 128 ms.
+(START)
+(S) up(f0, f9); 3.00550
+(S) board(f9, p0); 2.00241
+(S) up(f9, f40); 0.91604
+(S) depart(f40, p0); 0.00620
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.61925
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:07.1545087, or CPU time: 00:00:00.6093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f9)
+board(f9, p0)
+up(f9, f40)
+depart(f40, p0)
+[20:16] Input: s23-3_0.pddl
+Parsing: 125 ms.
+(START)
+(S) up(f0, f15); 3.00662
+(S) board(f15, p0); 2.00323
+(S) down(f15, f13); 0.91589
+(S) depart(f13, p0); 0.00617
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.32098
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:06.6503222, or CPU time: 00:00:00.4218750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+down(f15, f13)
+depart(f13, p0)
+[20:16] Input: s23-4_0.pddl
+Parsing: 123 ms.
+(START)
+(S) up(f0, f9); 3.00477
+(S) board(f9, p0); 2.00335
+(S) down(f9, f7); 0.91595
+(S) depart(f7, p0); 0.00624
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.36153
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:06.7434588, or CPU time: 00:00:00.4062500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f9)
+board(f9, p0)
+down(f9, f7)
+depart(f7, p0)
+[20:16] Input: s24-0_0.pddl
+Parsing: 137 ms.
+(START)
+(S) up(f0, f7); 3.00530
+(S) board(f7, p0); 2.00202
+(S) up(f7, f22); 0.90948
+(S) depart(f22, p0); 0.00594
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.63541
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:07.4374641, or CPU time: 00:00:00.8593750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f7)
+board(f7, p0)
+up(f7, f22)
+depart(f22, p0)
+[20:16] Input: s24-1_0.pddl
+Parsing: 146 ms.
+(START)
+(S) up(f0, f8); 3.00446
+(S) board(f8, p0); 2.00215
+(S) down(f8, f5); 0.91005
+(S) depart(f5, p0); 0.00607
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.79025
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.3115308, or CPU time: 00:00:00.5312500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f8)
+board(f8, p0)
+down(f8, f5)
+depart(f5, p0)
+[20:16] Input: s24-2_0.pddl
+Parsing: 139 ms.
+(START)
+(S) up(f0, f43); 3.00671
+(S) board(f43, p0); 2.00294
+(S) down(f43, f0); 0.90930
+(S) depart(f0, p0); 0.00596
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.81956
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:07.3924309, or CPU time: 00:00:00.6093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f43)
+board(f43, p0)
+down(f43, f0)
+depart(f0, p0)
+[20:16] Input: s24-3_0.pddl
+Parsing: 142 ms.
+(START)
+(S) up(f0, f17); 3.00384
+(S) board(f17, p0); 2.00134
+(S) up(f17, f47); 0.90934
+(S) depart(f47, p0); 0.00592
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.66212
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:07.2040854, or CPU time: 00:00:00.8125000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f17)
+board(f17, p0)
+up(f17, f47)
+depart(f47, p0)
+[20:16] Input: s24-4_0.pddl
+Parsing: 138 ms.
+(START)
+(S) up(f0, f15); 3.00415
+(S) board(f15, p0); 2.00190
+(S) up(f15, f39); 0.90975
+(S) depart(f39, p0); 0.00607
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.65260
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.2929212, or CPU time: 00:00:00.6875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f39)
+depart(f39, p0)
+[20:17] Input: s25-0_0.pddl
+Parsing: 150 ms.
+(START)
+(S) up(f0, f33); 3.00648
+(S) board(f33, p0); 2.00243
+(S) up(f33, f36); 0.90304
+(S) depart(f36, p0); 0.00526
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.01456
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.8266838, or CPU time: 00:00:00.8593750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f33)
+board(f33, p0)
+up(f33, f36)
+depart(f36, p0)
+[20:17] Input: s25-1_0.pddl
+Parsing: 161 ms.
+(START)
+(S) up(f0, f40); 3.00579
+(S) board(f40, p0); 2.00323
+(S) down(f40, f1); 0.90335
+(S) depart(f1, p0); 0.00533
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.01109
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:07.6544065, or CPU time: 00:00:00.7187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f40)
+board(f40, p0)
+down(f40, f1)
+depart(f1, p0)
+[20:17] Input: s25-2_0.pddl
+Parsing: 151 ms.
+(START)
+(S) up(f0, f3); 3.00290
+(S) board(f3, p0); 2.00197
+(S) up(f3, f30); 0.90345
+(S) depart(f30, p0); 0.00526
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.01619
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:07.9106903, or CPU time: 00:00:00.9218750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f3)
+board(f3, p0)
+up(f3, f30)
+depart(f30, p0)
+[20:17] Input: s25-3_0.pddl
+Parsing: 164 ms.
+(START)
+(S) up(f0, f3); 3.00466
+(S) board(f3, p0); 2.00178
+(S) up(f3, f35); 0.90406
+(S) depart(f35, p0); 0.00516
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.06362
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:07.8796694, or CPU time: 00:00:00.8750000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f3)
+board(f3, p0)
+up(f3, f35)
+depart(f35, p0)
+[20:17] Input: s25-4_0.pddl
+Parsing: 172 ms.
+(START)
+(S) up(f0, f45); 3.00602
+(S) board(f45, p0); 2.00334
+(S) down(f45, f11); 0.90353
+(S) depart(f11, p0); 0.00533
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 6.94553
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.4874097, or CPU time: 00:00:00.5781250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f45)
+board(f45, p0)
+down(f45, f11)
+depart(f11, p0)
+[20:17] Input: s26-0_0.pddl
+Parsing: 165 ms.
+(START)
+(S) up(f0, f39); 3.00548
+(S) board(f39, p0); 2.00271
+(S) down(f39, f22); 0.89763
+(S) depart(f22, p0); 0.00509
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.23386
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.6937208, or CPU time: 00:00:00.5312500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f39)
+board(f39, p0)
+down(f39, f22)
+depart(f22, p0)
+[20:17] Input: s26-1_0.pddl
+Parsing: 170 ms.
+(START)
+(S) up(f0, f20); 3.00713
+(S) board(f20, p0); 2.00304
+(S) down(f20, f1); 0.89780
+(S) depart(f1, p0); 0.00524
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.28985
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:08.0229873, or CPU time: 00:00:00.7656250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f20)
+board(f20, p0)
+down(f20, f1)
+depart(f1, p0)
+[20:17] Input: s26-2_0.pddl
+Parsing: 174 ms.
+(START)
+(S) up(f0, f19); 3.00507
+(S) board(f19, p0); 2.00277
+(S) up(f19, f28); 0.89737
+(S) depart(f28, p0); 0.00518
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.25871
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:08.3422816, or CPU time: 00:00:01.1250000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+up(f19, f28)
+depart(f28, p0)
+[20:18] Input: s26-3_0.pddl
+Parsing: 165 ms.
+(START)
+(S) up(f0, f49); 3.00585
+(S) board(f49, p0); 2.00330
+(S) down(f49, f15); 0.89741
+(S) depart(f15, p0); 0.00509
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.28159
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:07.8180624, or CPU time: 00:00:00.5937500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f49)
+board(f49, p0)
+down(f49, f15)
+depart(f15, p0)
+[20:18] Input: s26-4_0.pddl
+Parsing: 208 ms.
+(START)
+(S) up(f0, f31); 3.00608
+(S) board(f31, p0); 2.00322
+(S) down(f31, f7); 0.89785
+(S) depart(f7, p0); 0.00527
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.33717
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.9841262, or CPU time: 00:00:00.6875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f31)
+board(f31, p0)
+down(f31, f7)
+depart(f7, p0)
+[20:18] Input: s27-0_0.pddl
+Parsing: 193 ms.
+(START)
+(S) up(f0, f19); 3.00709
+(S) board(f19, p0); 2.00290
+(S) down(f19, f16); 0.89198
+(S) depart(f16, p0); 0.00499
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.63977
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:08.2577459, or CPU time: 00:00:00.6562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f19)
+board(f19, p0)
+down(f19, f16)
+depart(f16, p0)
+[20:18] Input: s27-1_0.pddl
+Parsing: 219 ms.
+(START)
+(S) up(f0, f38); 3.00530
+(S) board(f38, p0); 2.00256
+(S) up(f38, f41); 0.89211
+(S) depart(f41, p0); 0.00507
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.68795
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:08.7770806, or CPU time: 00:00:01.1875000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f38)
+board(f38, p0)
+up(f38, f41)
+depart(f41, p0)
+[20:18] Input: s27-2_0.pddl
+Parsing: 182 ms.
+(START)
+(S) up(f0, f49); 3.00625
+(S) board(f49, p0); 2.00269
+(S) down(f49, f48); 0.89133
+(S) depart(f48, p0); 0.00483
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.82307
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:07.9876869, or CPU time: 00:00:00.2343750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f49)
+board(f49, p0)
+down(f49, f48)
+depart(f48, p0)
+[20:18] Input: s27-3_0.pddl
+Parsing: 233 ms.
+(START)
+(S) up(f0, f29); 3.00446
+(S) board(f29, p0); 2.00270
+(S) up(f29, f47); 0.89179
+(S) depart(f47, p0); 0.00507
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.63808
+(END)
+=> The instance is solvable.  [Real time: 00:00:08.6684447, or CPU time: 00:00:01.0781250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f29)
+board(f29, p0)
+up(f29, f47)
+depart(f47, p0)
+[20:18] Input: s27-4_0.pddl
+Parsing: 179 ms.
+(START)
+(S) up(f0, f9); 3.00409
+(S) board(f9, p0); 2.00173
+(S) up(f9, f51); 0.89210
+(S) depart(f51, p0); 0.00483
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 7.62128
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:08.5381612, or CPU time: 00:00:01.0312500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f9)
+board(f9, p0)
+up(f9, f51)
+depart(f51, p0)
+[20:19] Input: s28-0_0.pddl
+Parsing: 204 ms.
+(START)
+(S) up(f0, f15); 3.00450
+(S) board(f15, p0); 1.99888
+(S) up(f15, f46); 0.88553
+(S) depart(f46, p0); 0.00423
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.02194
+(END)
+=> The instance is solvable.  [Real time: 00:00:09.2643708, or CPU time: 00:00:01.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f46)
+depart(f46, p0)
+[20:19] Input: s28-1_0.pddl
+Parsing: 200 ms.
+(START)
+(S) up(f0, f8); 3.00462
+(S) board(f8, p0); 2.00004
+(S) up(f8, f29); 0.88571
+(S) depart(f29, p0); 0.00423
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.14551
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+[NNP] [Out] Received goals
+=> The instance is solvable.  [Real time: 00:00:09.6234337, or CPU time: 00:00:01.5156250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f8)
+board(f8, p0)
+up(f8, f29)
+depart(f29, p0)
+[20:19] Input: s28-2_0.pddl
+Parsing: 195 ms.
+(START)
+(S) up(f0, f51); 3.00648
+(S) board(f51, p0); 2.00233
+(S) down(f51, f8); 0.88529
+(S) depart(f8, p0); 0.00417
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.01230
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+=> The instance is solvable.  [Real time: 00:00:08.9174857, or CPU time: 00:00:00.9687500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f51)
+board(f51, p0)
+down(f51, f8)
+depart(f8, p0)
+[20:19] Input: s28-3_0.pddl
+Parsing: 235 ms.
+(START)
+(S) up(f0, f49); 3.00598
+(S) board(f49, p0); 2.00062
+(S) down(f49, f47); 0.88564
+(S) depart(f47, p0); 0.00421
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.15223
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:08.3617320, or CPU time: 00:00:00.2500000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f49)
+board(f49, p0)
+down(f49, f47)
+depart(f47, p0)
+[20:19] Input: s28-4_0.pddl
+Parsing: 196 ms.
+(START)
+(S) up(f0, f47); 3.00630
+(S) board(f47, p0); 2.00064
+(S) up(f47, f55); 0.88541
+(S) depart(f55, p0); 0.00428
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.29813
+(END)
+=> The instance is solvable.  [Real time: 00:00:09.4239892, or CPU time: 00:00:01.2187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f47)
+board(f47, p0)
+up(f47, f55)
+depart(f55, p0)
+[20:19] Input: s29-0_0.pddl
+Parsing: 229 ms.
+(START)
+(S) up(f0, f37); 3.00538
+(S) board(f37, p0); 1.99731
+(S) up(f37, f38); 0.87926
+(S) depart(f38, p0); 0.00380
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 9.05765
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:10.6667309, or CPU time: 00:00:01.6718750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f37)
+board(f37, p0)
+up(f37, f38)
+depart(f38, p0)
+[20:20] Input: s29-1_0.pddl
+Parsing: 233 ms.
+(START)
+(S) up(f0, f46); 3.00595
+(S) board(f46, p0); 1.99727
+(S) up(f46, f49); 0.87942
+(S) depart(f49, p0); 0.00377
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 9.16341
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.6138914, or CPU time: 00:00:01.5000000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f46)
+board(f46, p0)
+up(f46, f49)
+depart(f49, p0)
+[20:20] Input: s29-2_0.pddl
+Parsing: 259 ms.
+(START)
+(S) up(f0, f35); 3.00652
+(S) board(f35, p0); 1.99704
+(S) down(f35, f28); 0.87943
+(S) depart(f28, p0); 0.00386
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.78033
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+=> The instance is solvable.  [Real time: 00:00:09.4254833, or CPU time: 00:00:00.7187500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f35)
+board(f35, p0)
+down(f35, f28)
+depart(f28, p0)
+[20:20] Input: s29-3_0.pddl
+Parsing: 278 ms.
+(START)
+(S) up(f0, f39); 3.00606
+(S) board(f39, p0); 1.99667
+(S) down(f39, f33); 0.87944
+(S) depart(f33, p0); 0.00378
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.78757
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:09.3260367, or CPU time: 00:00:00.6093750]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f39)
+board(f39, p0)
+down(f39, f33)
+depart(f33, p0)
+[20:20] Input: s29-4_0.pddl
+Parsing: 219 ms.
+(START)
+(S) up(f0, f17); 3.00667
+(S) board(f17, p0); 1.99756
+(S) down(f17, f15); 0.87916
+(S) depart(f15, p0); 0.00372
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.49298
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+[NNP] [Out] Received facts
+=> The instance is solvable.  [Real time: 00:00:09.4043356, or CPU time: 00:00:01.0156250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f17)
+board(f17, p0)
+down(f17, f15)
+depart(f15, p0)
+[20:20] Input: s30-0_0.pddl
+Parsing: 308 ms.
+(START)
+(S) up(f0, f43); 3.00450
+(S) board(f43, p0); 1.99272
+(S) up(f43, f46); 0.87346
+(S) depart(f46, p0); 0.00376
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.99998
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.6797203, or CPU time: 00:00:01.7656250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f43)
+board(f43, p0)
+up(f43, f46)
+depart(f46, p0)
+[20:20] Input: s30-1_0.pddl
+Parsing: 237 ms.
+(START)
+(S) up(f0, f20); 3.00599
+(S) board(f20, p0); 1.99333
+(S) up(f20, f41); 0.87404
+(S) depart(f41, p0); 0.00377
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.98881
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.7973005, or CPU time: 00:00:01.8906250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f20)
+board(f20, p0)
+up(f20, f41)
+depart(f41, p0)
+[20:21] Input: s30-2_0.pddl
+Parsing: 272 ms.
+(START)
+(S) up(f0, f43); 3.00816
+(S) board(f43, p0); 1.99426
+(S) down(f43, f0); 0.87378
+(S) depart(f0, p0); 0.00364
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 9.14970
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.6169777, or CPU time: 00:00:01.5781250]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f43)
+board(f43, p0)
+down(f43, f0)
+depart(f0, p0)
+[20:21] Input: s30-3_0.pddl
+Parsing: 235 ms.
+(START)
+(S) up(f0, f53); 3.00706
+(S) board(f53, p0); 1.99455
+(S) down(f53, f35); 0.87399
+(S) depart(f35, p0); 0.00376
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 9.03231
+(END)
+=> The instance is solvable.  [Real time: 00:00:09.6357249, or CPU time: 00:00:00.6562500]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f53)
+board(f53, p0)
+down(f53, f35)
+depart(f35, p0)
+[20:21] Input: s30-4_0.pddl
+Parsing: 280 ms.
+(START)
+(S) up(f0, f15); 3.00599
+(S) board(f15, p0); 1.99265
+(S) up(f15, f51); 0.87366
+(S) depart(f51, p0); 0.00376
+(P) Actual 4; Expected 4; Ratio 1.00000
+(R) Optimal
+(T) 8.93212
+(END)
+=> The instance is solvable.  [Real time: 00:00:10.4967702, or CPU time: 00:00:01.6250000]
+
+
+The following plan solves the problem: (length: 4, cost: 4)
+up(f0, f15)
+board(f15, p0)
+up(f15, f51)
+depart(f51, p0)
+[Total real time: 00:10:50.3804357, or total CPU time: 00:01:14.4062500]

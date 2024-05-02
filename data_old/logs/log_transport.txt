@@ -1,0 +1,649 @@
+[05:06] Input: p09-opt08_0.pddl
+Parsing: 2598 ms.
+(START)
+(S) drive(truck-1, city-loc-15, city-loc-23); 6.82964
+(S) drive(truck-1, city-loc-23, city-loc-14); 5.85183
+(S) drive(truck-1, city-loc-14, city-loc-10); 4.87360
+(S) pick-up(truck-1, city-loc-10, package-1, capacity-2, capacity-3); 3.89546
+(S) drive(truck-1, city-loc-10, city-loc-14); 3.02018
+(S) drive(truck-1, city-loc-14, city-loc-23); 1.98625
+(S) drive(truck-1, city-loc-23, city-loc-15); 0.96974
+(S) drop(truck-1, city-loc-15, package-1, capacity-2, capacity-3); -0.00991
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 4.85417
+(END)
+=> The instance is solvable.  [Real time: 00:00:13.9431105, or CPU time: 00:00:09.2031250]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+drive(truck-1, city-loc-15, city-loc-23)
+drive(truck-1, city-loc-23, city-loc-14)
+drive(truck-1, city-loc-14, city-loc-10)
+pick-up(truck-1, city-loc-10, package-1, capacity-2, capacity-3)
+drive(truck-1, city-loc-10, city-loc-14)
+drive(truck-1, city-loc-14, city-loc-23)
+drive(truck-1, city-loc-23, city-loc-15)
+drop(truck-1, city-loc-15, package-1, capacity-2, capacity-3)
+[05:06] Input: p10-opt08_0.pddl
+Parsing: 3464 ms.
+(START)
+(S) drive(truck-1, city-loc-8, city-loc-14); 10.89205
+(S) drive(truck-1, city-loc-14, city-loc-26); 10.04189
+(S) drive(truck-1, city-loc-26, city-loc-27); 8.99961
+(S) drive(truck-1, city-loc-27, city-loc-25); 7.95914
+(S) drive(truck-1, city-loc-25, city-loc-13); 6.96076
+(S) pick-up(truck-1, city-loc-13, package-6, capacity-1, capacity-2); 5.93144
+(S) drive(truck-1, city-loc-13, city-loc-25); 4.95118
+(S) drive(truck-1, city-loc-25, city-loc-27); 3.98446
+(S) drive(truck-1, city-loc-27, city-loc-26); 3.01999
+(S) drive(truck-1, city-loc-26, city-loc-17); 1.99899
+(S) drive(truck-1, city-loc-17, city-loc-5); 0.96133
+(S) drop(truck-1, city-loc-5, package-6, capacity-1, capacity-2); -0.00994
+(P) Actual 12; Expected 12; Ratio 1.00000
+(R) Optimal
+(T) 5.47749
+(END)
+=> The instance is solvable.  [Real time: 00:00:40.4922144, or CPU time: 00:00:35.0625000]
+
+
+The following plan solves the problem: (length: 12, cost: 12)
+drive(truck-1, city-loc-8, city-loc-14)
+drive(truck-1, city-loc-14, city-loc-26)
+drive(truck-1, city-loc-26, city-loc-27)
+drive(truck-1, city-loc-27, city-loc-25)
+drive(truck-1, city-loc-25, city-loc-13)
+pick-up(truck-1, city-loc-13, package-6, capacity-1, capacity-2)
+drive(truck-1, city-loc-13, city-loc-25)
+drive(truck-1, city-loc-25, city-loc-27)
+drive(truck-1, city-loc-27, city-loc-26)
+drive(truck-1, city-loc-26, city-loc-17)
+drive(truck-1, city-loc-17, city-loc-5)
+drop(truck-1, city-loc-5, package-6, capacity-1, capacity-2)
+[05:07] Input: p10-opt14_0.pddl
+Parsing: 875 ms.
+(START)
+(S) drive(truck-3, city-2-loc-5, city-1-loc-3); 8.83950
+(S) drive(truck-3, city-1-loc-3, city-1-loc-9); 7.85675
+(S) pick-up(truck-3, city-1-loc-9, package-1, capacity-2, capacity-3); 6.95673
+(S) drive(truck-3, city-1-loc-9, city-1-loc-3); 5.73462
+(S) drive(truck-3, city-1-loc-3, city-2-loc-5); 4.93368
+(S) drive(truck-3, city-2-loc-5, city-2-loc-13); 4.00886
+(S) drive(truck-3, city-2-loc-13, city-2-loc-7); 3.04078
+(S) drive(truck-3, city-2-loc-7, city-2-loc-11); 1.99816
+(S) drive(truck-3, city-2-loc-11, city-2-loc-8); 0.96819
+(S) drop(truck-3, city-2-loc-8, package-1, capacity-2, capacity-3); -0.00678
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 5.09825
+(END)
+=> The instance is solvable.  [Real time: 00:00:12.9352842, or CPU time: 00:00:07.8906250]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+drive(truck-3, city-2-loc-5, city-1-loc-3)
+drive(truck-3, city-1-loc-3, city-1-loc-9)
+pick-up(truck-3, city-1-loc-9, package-1, capacity-2, capacity-3)
+drive(truck-3, city-1-loc-9, city-1-loc-3)
+drive(truck-3, city-1-loc-3, city-2-loc-5)
+drive(truck-3, city-2-loc-5, city-2-loc-13)
+drive(truck-3, city-2-loc-13, city-2-loc-7)
+drive(truck-3, city-2-loc-7, city-2-loc-11)
+drive(truck-3, city-2-loc-11, city-2-loc-8)
+drop(truck-3, city-2-loc-8, package-1, capacity-2, capacity-3)
+[NNP] [Out] Server started... 
+[05:07] Input: p11-opt14_0.pddl
+Parsing: 1838 ms.
+(START)
+(S) drive(truck-1, city-2-loc-6, city-2-loc-2); 9.97870
+(S) drive(truck-1, city-2-loc-2, city-2-loc-18); 8.96687
+(S) drive(truck-1, city-2-loc-18, city-1-loc-12); 7.90790
+(S) drive(truck-1, city-1-loc-12, city-1-loc-2); 6.93472
+(S) drive(truck-1, city-1-loc-2, city-1-loc-11); 5.90014
+(S) pick-up(truck-1, city-1-loc-11, package-3, capacity-1, capacity-2); 4.93320
+(S) drive(truck-1, city-1-loc-11, city-1-loc-2); 3.97841
+(S) drive(truck-1, city-1-loc-2, city-1-loc-12); 3.01739
+(S) drive(truck-1, city-1-loc-12, city-2-loc-18); 2.00147
+(S) drive(truck-1, city-2-loc-18, city-2-loc-4); 0.96253
+(S) drop(truck-1, city-2-loc-4, package-3, capacity-1, capacity-2); -0.01001
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.25949
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:14.7477723, or CPU time: 00:00:09.5156250]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive(truck-1, city-2-loc-6, city-2-loc-2)
+drive(truck-1, city-2-loc-2, city-2-loc-18)
+drive(truck-1, city-2-loc-18, city-1-loc-12)
+drive(truck-1, city-1-loc-12, city-1-loc-2)
+drive(truck-1, city-1-loc-2, city-1-loc-11)
+pick-up(truck-1, city-1-loc-11, package-3, capacity-1, capacity-2)
+drive(truck-1, city-1-loc-11, city-1-loc-2)
+drive(truck-1, city-1-loc-2, city-1-loc-12)
+drive(truck-1, city-1-loc-12, city-2-loc-18)
+drive(truck-1, city-2-loc-18, city-2-loc-4)
+drop(truck-1, city-2-loc-4, package-3, capacity-1, capacity-2)
+[05:08] Input: p12-opt14_0.pddl
+Parsing: 2904 ms.
+(START)
+(S) drive(truck-3, city-2-loc-16, city-2-loc-1); 13.28673
+(S) drive(truck-3, city-2-loc-1, city-1-loc-6); 12.22959
+(S) drive(truck-3, city-1-loc-6, city-1-loc-12); 12.05600
+(S) drive(truck-3, city-1-loc-12, city-1-loc-14); 11.03069
+(S) drive(truck-3, city-1-loc-14, city-1-loc-10); 9.91101
+(S) drive(truck-3, city-1-loc-10, city-1-loc-16); 9.10680
+(S) pick-up(truck-3, city-1-loc-16, package-3, capacity-2, capacity-3); 8.07051
+(S) drive(truck-3, city-1-loc-16, city-1-loc-17); 6.92577
+(S) drive(truck-3, city-1-loc-17, city-1-loc-14); 5.86765
+(S) drive(truck-3, city-1-loc-14, city-1-loc-12); 4.95668
+(S) drive(truck-3, city-1-loc-12, city-1-loc-6); 3.93929
+(S) drive(truck-3, city-1-loc-6, city-2-loc-1); 2.99248
+(S) drive(truck-3, city-2-loc-1, city-2-loc-16); 1.99335
+(S) drive(truck-3, city-2-loc-16, city-2-loc-9); 0.96047
+(S) drop(truck-3, city-2-loc-9, package-3, capacity-2, capacity-3); -0.01201
+(P) Actual 15; Expected 15; Ratio 1.00000
+(R) Optimal
+(T) 5.87464
+(END)
+=> The instance is solvable.  [Real time: 00:00:49.7365954, or CPU time: 00:00:44.1093750]
+
+
+The following plan solves the problem: (length: 15, cost: 15)
+drive(truck-3, city-2-loc-16, city-2-loc-1)
+drive(truck-3, city-2-loc-1, city-1-loc-6)
+drive(truck-3, city-1-loc-6, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-1-loc-14)
+drive(truck-3, city-1-loc-14, city-1-loc-10)
+drive(truck-3, city-1-loc-10, city-1-loc-16)
+pick-up(truck-3, city-1-loc-16, package-3, capacity-2, capacity-3)
+drive(truck-3, city-1-loc-16, city-1-loc-17)
+drive(truck-3, city-1-loc-17, city-1-loc-14)
+drive(truck-3, city-1-loc-14, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-1-loc-6)
+drive(truck-3, city-1-loc-6, city-2-loc-1)
+drive(truck-3, city-2-loc-1, city-2-loc-16)
+drive(truck-3, city-2-loc-16, city-2-loc-9)
+drop(truck-3, city-2-loc-9, package-3, capacity-2, capacity-3)
+[05:08] Input: p14-opt14_0.pddl
+Parsing: 592 ms.
+(START)
+(S) drive(truck-2, city-2-loc-5, city-2-loc-1); 7.91322
+(S) drive(truck-2, city-2-loc-1, city-2-loc-3); 6.88437
+(S) pick-up(truck-2, city-2-loc-3, package-1, capacity-2, capacity-3); 5.85645
+(S) drive(truck-2, city-2-loc-3, city-2-loc-7); 4.90535
+(S) drive(truck-2, city-2-loc-7, city-2-loc-10); 3.96626
+(S) drive(truck-2, city-2-loc-10, city-1-loc-10); 3.02848
+(S) drive(truck-2, city-1-loc-10, city-3-loc-7); 2.02149
+(S) drive(truck-2, city-3-loc-7, city-3-loc-3); 0.96743
+(S) drop(truck-2, city-3-loc-3, package-1, capacity-2, capacity-3); -0.00803
+(P) Actual 9; Expected 9; Ratio 1.00000
+(R) Optimal
+(T) 4.87132
+(END)
+=> The instance is solvable.  [Real time: 00:00:07.2076654, or CPU time: 00:00:02.3906250]
+
+
+The following plan solves the problem: (length: 9, cost: 9)
+drive(truck-2, city-2-loc-5, city-2-loc-1)
+drive(truck-2, city-2-loc-1, city-2-loc-3)
+pick-up(truck-2, city-2-loc-3, package-1, capacity-2, capacity-3)
+drive(truck-2, city-2-loc-3, city-2-loc-7)
+drive(truck-2, city-2-loc-7, city-2-loc-10)
+drive(truck-2, city-2-loc-10, city-1-loc-10)
+drive(truck-2, city-1-loc-10, city-3-loc-7)
+drive(truck-2, city-3-loc-7, city-3-loc-3)
+drop(truck-2, city-3-loc-3, package-1, capacity-2, capacity-3)
+[05:09] Input: p15-opt14_0.pddl
+Parsing: 802 ms.
+(START)
+(S) pick-up(truck-1, city-2-loc-5, package-1, capacity-3, capacity-4); 4.87294
+(S) drive(truck-1, city-2-loc-5, city-2-loc-1); 3.96781
+(S) drive(truck-1, city-2-loc-1, city-2-loc-10); 3.01281
+(S) drive(truck-1, city-2-loc-10, city-1-loc-6); 2.03771
+(S) drive(truck-1, city-1-loc-6, city-1-loc-11); 0.99953
+(S) drop(truck-1, city-1-loc-11, package-1, capacity-3, capacity-4); -0.00809
+(P) Actual 6; Expected 6; Ratio 1.00000
+(R) Optimal
+(T) 4.59227
+(END)
+=> The instance is solvable.  [Real time: 00:00:06.8771749, or CPU time: 00:00:02.2812500]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+pick-up(truck-1, city-2-loc-5, package-1, capacity-3, capacity-4)
+drive(truck-1, city-2-loc-5, city-2-loc-1)
+drive(truck-1, city-2-loc-1, city-2-loc-10)
+drive(truck-1, city-2-loc-10, city-1-loc-6)
+drive(truck-1, city-1-loc-6, city-1-loc-11)
+drop(truck-1, city-1-loc-11, package-1, capacity-3, capacity-4)
+[05:09] Input: p16-opt08_0.pddl
+Parsing: 1141 ms.
+(START)
+(S) drive(truck-3, city-2-loc-11, city-2-loc-9); 10.95921
+(S) drive(truck-3, city-2-loc-9, city-2-loc-12); 9.88597
+(S) drive(truck-3, city-2-loc-12, city-1-loc-12); 8.76736
+(S) drive(truck-3, city-1-loc-12, city-1-loc-1); 7.83896
+(S) drive(truck-3, city-1-loc-1, city-1-loc-4); 6.87787
+(S) pick-up(truck-3, city-1-loc-4, package-7, capacity-2, capacity-3); 5.84077
+(S) drive(truck-3, city-1-loc-4, city-1-loc-7); 4.96351
+(S) drive(truck-3, city-1-loc-7, city-1-loc-12); 3.96590
+(S) drive(truck-3, city-1-loc-12, city-2-loc-12); 3.00344
+(S) drive(truck-3, city-2-loc-12, city-2-loc-5); 1.97407
+(S) drive(truck-3, city-2-loc-5, city-2-loc-10); 0.97079
+(S) drop(truck-3, city-2-loc-10, package-7, capacity-2, capacity-3); -0.00862
+(P) Actual 12; Expected 12; Ratio 1.00000
+(R) Optimal
+(T) 5.44367
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:11.5317415, or CPU time: 00:00:06.1250000]
+
+
+The following plan solves the problem: (length: 12, cost: 12)
+drive(truck-3, city-2-loc-11, city-2-loc-9)
+drive(truck-3, city-2-loc-9, city-2-loc-12)
+drive(truck-3, city-2-loc-12, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-1-loc-1)
+drive(truck-3, city-1-loc-1, city-1-loc-4)
+pick-up(truck-3, city-1-loc-4, package-7, capacity-2, capacity-3)
+drive(truck-3, city-1-loc-4, city-1-loc-7)
+drive(truck-3, city-1-loc-7, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-2-loc-12)
+drive(truck-3, city-2-loc-12, city-2-loc-5)
+drive(truck-3, city-2-loc-5, city-2-loc-10)
+drop(truck-3, city-2-loc-10, package-7, capacity-2, capacity-3)
+[05:09] Input: p16-opt14_0.pddl
+Parsing: 2387 ms.
+(START)
+(S) drive(truck-1, city-3-loc-9, city-3-loc-7); 9.60219
+(S) drive(truck-1, city-3-loc-7, city-3-loc-13); 8.66288
+(S) pick-up(truck-1, city-3-loc-13, package-1, capacity-2, capacity-3); 7.88779
+(S) drive(truck-1, city-3-loc-13, city-3-loc-7); 6.42537
+(S) drive(truck-1, city-3-loc-7, city-3-loc-14); 5.63885
+(S) drive(truck-1, city-3-loc-14, city-3-loc-8); 4.84593
+(S) drive(truck-1, city-3-loc-8, city-3-loc-1); 3.84512
+(S) drive(truck-1, city-3-loc-1, city-2-loc-11); 2.99426
+(S) drive(truck-1, city-2-loc-11, city-2-loc-7); 1.99822
+(S) drive(truck-1, city-2-loc-7, city-2-loc-13); 0.95546
+(S) drop(truck-1, city-2-loc-13, package-1, capacity-2, capacity-3); -0.01193
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.32242
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:14.7589927, or CPU time: 00:00:09.4687500]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive(truck-1, city-3-loc-9, city-3-loc-7)
+drive(truck-1, city-3-loc-7, city-3-loc-13)
+pick-up(truck-1, city-3-loc-13, package-1, capacity-2, capacity-3)
+drive(truck-1, city-3-loc-13, city-3-loc-7)
+drive(truck-1, city-3-loc-7, city-3-loc-14)
+drive(truck-1, city-3-loc-14, city-3-loc-8)
+drive(truck-1, city-3-loc-8, city-3-loc-1)
+drive(truck-1, city-3-loc-1, city-2-loc-11)
+drive(truck-1, city-2-loc-11, city-2-loc-7)
+drive(truck-1, city-2-loc-7, city-2-loc-13)
+drop(truck-1, city-2-loc-13, package-1, capacity-2, capacity-3)
+[05:09] Input: p17-opt08_0.pddl
+Parsing: 1722 ms.
+(START)
+(S) drive(truck-1, city-2-loc-10, city-2-loc-7); 10.03027
+(S) drive(truck-1, city-2-loc-7, city-2-loc-2); 8.93723
+(S) drive(truck-1, city-2-loc-2, city-1-loc-12); 7.87739
+(S) drive(truck-1, city-1-loc-12, city-1-loc-7); 6.91847
+(S) drive(truck-1, city-1-loc-7, city-1-loc-8); 5.88972
+(S) pick-up(truck-1, city-1-loc-8, package-4, capacity-3, capacity-4); 4.92003
+(S) drive(truck-1, city-1-loc-8, city-1-loc-7); 3.97403
+(S) drive(truck-1, city-1-loc-7, city-1-loc-12); 3.01425
+(S) drive(truck-1, city-1-loc-12, city-2-loc-2); 2.01606
+(S) drive(truck-1, city-2-loc-2, city-2-loc-4); 0.96538
+(S) drop(truck-1, city-2-loc-4, package-4, capacity-3, capacity-4); -0.00956
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.29393
+(END)
+=> The instance is solvable.  [Real time: 00:00:14.7154815, or CPU time: 00:00:09.4375000]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive(truck-1, city-2-loc-10, city-2-loc-7)
+drive(truck-1, city-2-loc-7, city-2-loc-2)
+drive(truck-1, city-2-loc-2, city-1-loc-12)
+drive(truck-1, city-1-loc-12, city-1-loc-7)
+drive(truck-1, city-1-loc-7, city-1-loc-8)
+pick-up(truck-1, city-1-loc-8, package-4, capacity-3, capacity-4)
+drive(truck-1, city-1-loc-8, city-1-loc-7)
+drive(truck-1, city-1-loc-7, city-1-loc-12)
+drive(truck-1, city-1-loc-12, city-2-loc-2)
+drive(truck-1, city-2-loc-2, city-2-loc-4)
+drop(truck-1, city-2-loc-4, package-4, capacity-3, capacity-4)
+[05:10] Input: p17-opt14_0.pddl
+Parsing: 3615 ms.
+(START)
+(S) drive(truck-1, city-3-loc-17, city-3-loc-2); 6.83936
+(S) pick-up(truck-1, city-3-loc-2, package-3, capacity-2, capacity-3); 5.81660
+(S) drive(truck-1, city-3-loc-2, city-3-loc-3); 4.88127
+(S) drive(truck-1, city-3-loc-3, city-3-loc-5); 3.99155
+(S) drive(truck-1, city-3-loc-5, city-1-loc-12); 3.02574
+(S) drive(truck-1, city-1-loc-12, city-2-loc-18); 1.98140
+(S) drive(truck-1, city-2-loc-18, city-2-loc-3); 0.94852
+(S) drop(truck-1, city-2-loc-3, package-3, capacity-2, capacity-3); -0.01277
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 4.98537
+(END)
+=> The instance is solvable.  [Real time: 00:00:18.8640231, or CPU time: 00:00:13.8750000]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+drive(truck-1, city-3-loc-17, city-3-loc-2)
+pick-up(truck-1, city-3-loc-2, package-3, capacity-2, capacity-3)
+drive(truck-1, city-3-loc-2, city-3-loc-3)
+drive(truck-1, city-3-loc-3, city-3-loc-5)
+drive(truck-1, city-3-loc-5, city-1-loc-12)
+drive(truck-1, city-1-loc-12, city-2-loc-18)
+drive(truck-1, city-2-loc-18, city-2-loc-3)
+drop(truck-1, city-2-loc-3, package-3, capacity-2, capacity-3)
+[05:10] Input: p18-opt08_0.pddl
+Parsing: 2493 ms.
+(START)
+(S) drive(truck-2, city-2-loc-10, city-2-loc-12); 12.62317
+(S) drive(truck-2, city-2-loc-12, city-2-loc-15); 11.64071
+(S) drive(truck-2, city-2-loc-15, city-1-loc-12); 10.81519
+(S) drive(truck-2, city-1-loc-12, city-1-loc-1); 9.77046
+(S) drive(truck-2, city-1-loc-1, city-1-loc-4); 8.78126
+(S) drive(truck-2, city-1-loc-4, city-1-loc-5); 7.76455
+(S) pick-up(truck-2, city-1-loc-5, package-5, capacity-2, capacity-3); 6.85293
+(S) drive(truck-2, city-1-loc-5, city-1-loc-14); 5.87732
+(S) drive(truck-2, city-1-loc-14, city-1-loc-1); 4.98572
+(S) drive(truck-2, city-1-loc-1, city-1-loc-12); 3.97301
+(S) drive(truck-2, city-1-loc-12, city-2-loc-15); 3.01013
+(S) drive(truck-2, city-2-loc-15, city-2-loc-4); 1.98525
+(S) drive(truck-2, city-2-loc-4, city-2-loc-2); 0.96886
+(S) drop(truck-2, city-2-loc-2, package-5, capacity-2, capacity-3); -0.00929
+(P) Actual 14; Expected 14; Ratio 1.00000
+(R) Optimal
+(T) 5.81464
+(END)
+=> The instance is solvable.  [Real time: 00:00:19.1541431, or CPU time: 00:00:13.3750000]
+
+
+The following plan solves the problem: (length: 14, cost: 14)
+drive(truck-2, city-2-loc-10, city-2-loc-12)
+drive(truck-2, city-2-loc-12, city-2-loc-15)
+drive(truck-2, city-2-loc-15, city-1-loc-12)
+drive(truck-2, city-1-loc-12, city-1-loc-1)
+drive(truck-2, city-1-loc-1, city-1-loc-4)
+drive(truck-2, city-1-loc-4, city-1-loc-5)
+pick-up(truck-2, city-1-loc-5, package-5, capacity-2, capacity-3)
+drive(truck-2, city-1-loc-5, city-1-loc-14)
+drive(truck-2, city-1-loc-14, city-1-loc-1)
+drive(truck-2, city-1-loc-1, city-1-loc-12)
+drive(truck-2, city-1-loc-12, city-2-loc-15)
+drive(truck-2, city-2-loc-15, city-2-loc-4)
+drive(truck-2, city-2-loc-4, city-2-loc-2)
+drop(truck-2, city-2-loc-2, package-5, capacity-2, capacity-3)
+[05:10] Input: p18-opt14_0.pddl
+Parsing: 5114 ms.
+(START)
+(S) drive(truck-3, city-1-loc-1, city-1-loc-9); 9.99335
+(S) pick-up(truck-3, city-1-loc-9, package-3, capacity-1, capacity-2); 8.83374
+(S) drive(truck-3, city-1-loc-9, city-1-loc-7); 7.86778
+(S) drive(truck-3, city-1-loc-7, city-1-loc-14); 6.61252
+(S) drive(truck-3, city-1-loc-14, city-1-loc-12); 5.81311
+(S) drive(truck-3, city-1-loc-12, city-1-loc-6); 4.90213
+(S) drive(truck-3, city-1-loc-6, city-2-loc-1); 3.91094
+(S) drive(truck-3, city-2-loc-1, city-2-loc-16); 2.98982
+(S) drive(truck-3, city-2-loc-16, city-2-loc-3); 1.98616
+(S) drive(truck-3, city-2-loc-3, city-2-loc-17); 0.94165
+(S) drop(truck-3, city-2-loc-17, package-3, capacity-1, capacity-2); -0.01487
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.39446
+(END)
+=> The instance is solvable.  [Real time: 00:00:57.6795362, or CPU time: 00:00:52.2968750]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive(truck-3, city-1-loc-1, city-1-loc-9)
+pick-up(truck-3, city-1-loc-9, package-3, capacity-1, capacity-2)
+drive(truck-3, city-1-loc-9, city-1-loc-7)
+drive(truck-3, city-1-loc-7, city-1-loc-14)
+drive(truck-3, city-1-loc-14, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-1-loc-6)
+drive(truck-3, city-1-loc-6, city-2-loc-1)
+drive(truck-3, city-2-loc-1, city-2-loc-16)
+drive(truck-3, city-2-loc-16, city-2-loc-3)
+drive(truck-3, city-2-loc-3, city-2-loc-17)
+drop(truck-3, city-2-loc-17, package-3, capacity-1, capacity-2)
+[05:11] Input: p19-opt08_0.pddl
+Parsing: 4390 ms.
+(START)
+(S) drive(truck-2, city-2-loc-6, city-2-loc-5); 11.47037
+(S) drive(truck-2, city-2-loc-5, city-1-loc-12); 10.93391
+(S) drive(truck-2, city-1-loc-12, city-1-loc-3); 9.81028
+(S) drive(truck-2, city-1-loc-3, city-1-loc-10); 8.85929
+(S) drive(truck-2, city-1-loc-10, city-1-loc-9); 7.73939
+(S) pick-up(truck-2, city-1-loc-9, package-1, capacity-3, capacity-4); 6.93398
+(S) drive(truck-2, city-1-loc-9, city-1-loc-10); 5.96544
+(S) drive(truck-2, city-1-loc-10, city-1-loc-3); 4.94390
+(S) drive(truck-2, city-1-loc-3, city-1-loc-12); 3.93184
+(S) drive(truck-2, city-1-loc-12, city-2-loc-5); 2.99116
+(S) drive(truck-2, city-2-loc-5, city-2-loc-6); 1.97810
+(S) drive(truck-2, city-2-loc-6, city-2-loc-3); 0.96080
+(S) drop(truck-2, city-2-loc-3, package-1, capacity-3, capacity-4); -0.01220
+(P) Actual 13; Expected 13; Ratio 1.00000
+(R) Optimal
+(T) 5.78568
+(END)
+=> The instance is solvable.  [Real time: 00:01:13.0465748, or CPU time: 00:01:07.7031250]
+
+
+The following plan solves the problem: (length: 13, cost: 13)
+drive(truck-2, city-2-loc-6, city-2-loc-5)
+drive(truck-2, city-2-loc-5, city-1-loc-12)
+drive(truck-2, city-1-loc-12, city-1-loc-3)
+drive(truck-2, city-1-loc-3, city-1-loc-10)
+drive(truck-2, city-1-loc-10, city-1-loc-9)
+pick-up(truck-2, city-1-loc-9, package-1, capacity-3, capacity-4)
+drive(truck-2, city-1-loc-9, city-1-loc-10)
+drive(truck-2, city-1-loc-10, city-1-loc-3)
+drive(truck-2, city-1-loc-3, city-1-loc-12)
+drive(truck-2, city-1-loc-12, city-2-loc-5)
+drive(truck-2, city-2-loc-5, city-2-loc-6)
+drive(truck-2, city-2-loc-6, city-2-loc-3)
+drop(truck-2, city-2-loc-3, package-1, capacity-3, capacity-4)
+[05:13] Input: p19-opt14_0.pddl
+Parsing: 8213 ms.
+(START)
+(S) drive(truck-2, city-1-loc-7, city-1-loc-14); 8.81242
+(S) drive(truck-2, city-1-loc-14, city-1-loc-12); 7.73340
+(S) pick-up(truck-2, city-1-loc-12, package-7, capacity-1, capacity-2); 6.68066
+(S) drive(truck-2, city-1-loc-12, city-1-loc-6); 5.75418
+(S) drive(truck-2, city-1-loc-6, city-2-loc-1); 4.84020
+(S) drive(truck-2, city-2-loc-1, city-2-loc-16); 3.88682
+(S) drive(truck-2, city-2-loc-16, city-2-loc-9); 2.93189
+(S) drive(truck-2, city-2-loc-9, city-2-loc-13); 1.93574
+(S) drive(truck-2, city-2-loc-13, city-2-loc-10); 0.93394
+(S) drop(truck-2, city-2-loc-10, package-7, capacity-1, capacity-2); -0.01528
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 5.29277
+(END)
+=> The instance is solvable.  [Real time: 00:00:57.5571916, or CPU time: 00:00:52.3281250]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+drive(truck-2, city-1-loc-7, city-1-loc-14)
+drive(truck-2, city-1-loc-14, city-1-loc-12)
+pick-up(truck-2, city-1-loc-12, package-7, capacity-1, capacity-2)
+drive(truck-2, city-1-loc-12, city-1-loc-6)
+drive(truck-2, city-1-loc-6, city-2-loc-1)
+drive(truck-2, city-2-loc-1, city-2-loc-16)
+drive(truck-2, city-2-loc-16, city-2-loc-9)
+drive(truck-2, city-2-loc-9, city-2-loc-13)
+drive(truck-2, city-2-loc-13, city-2-loc-10)
+drop(truck-2, city-2-loc-10, package-7, capacity-1, capacity-2)
+[05:14] Input: p20-opt08_0.pddl
+Parsing: 7361 ms.
+(START)
+(S) drive(truck-3, city-2-loc-15, city-2-loc-4); 12.92928
+(S) drive(truck-3, city-2-loc-4, city-1-loc-12); 11.82549
+(S) drive(truck-3, city-1-loc-12, city-1-loc-3); 10.99702
+(S) drive(truck-3, city-1-loc-3, city-1-loc-10); 9.92841
+(S) drive(truck-3, city-1-loc-10, city-1-loc-17); 8.96004
+(S) drive(truck-3, city-1-loc-17, city-1-loc-15); 7.89202
+(S) pick-up(truck-3, city-1-loc-15, package-6, capacity-2, capacity-3); 6.91528
+(S) drive(truck-3, city-1-loc-15, city-1-loc-17); 5.94270
+(S) drive(truck-3, city-1-loc-17, city-1-loc-10); 4.95855
+(S) drive(truck-3, city-1-loc-10, city-1-loc-3); 3.96433
+(S) drive(truck-3, city-1-loc-3, city-1-loc-12); 3.01928
+(S) drive(truck-3, city-1-loc-12, city-2-loc-4); 2.00789
+(S) drive(truck-3, city-2-loc-4, city-2-loc-12); 0.95772
+(S) drop(truck-3, city-2-loc-12, package-6, capacity-2, capacity-3); -0.01177
+(P) Actual 14; Expected 14; Ratio 1.00000
+(R) Optimal
+(T) 5.65751
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:02:07.5607252, or CPU time: 00:02:02.3125000]
+
+
+The following plan solves the problem: (length: 14, cost: 14)
+drive(truck-3, city-2-loc-15, city-2-loc-4)
+drive(truck-3, city-2-loc-4, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-1-loc-3)
+drive(truck-3, city-1-loc-3, city-1-loc-10)
+drive(truck-3, city-1-loc-10, city-1-loc-17)
+drive(truck-3, city-1-loc-17, city-1-loc-15)
+pick-up(truck-3, city-1-loc-15, package-6, capacity-2, capacity-3)
+drive(truck-3, city-1-loc-15, city-1-loc-17)
+drive(truck-3, city-1-loc-17, city-1-loc-10)
+drive(truck-3, city-1-loc-10, city-1-loc-3)
+drive(truck-3, city-1-loc-3, city-1-loc-12)
+drive(truck-3, city-1-loc-12, city-2-loc-4)
+drive(truck-3, city-2-loc-4, city-2-loc-12)
+drop(truck-3, city-2-loc-12, package-6, capacity-2, capacity-3)
+[05:16] Input: p20-opt14_0.pddl
+Parsing: 8126 ms.
+(START)
+(S) drive(truck-2, city-1-loc-7, city-1-loc-14); 8.83378
+(S) drive(truck-2, city-1-loc-14, city-1-loc-12); 7.72452
+(S) pick-up(truck-2, city-1-loc-12, package-7, capacity-1, capacity-2); 6.67136
+(S) drive(truck-2, city-1-loc-12, city-1-loc-6); 5.73905
+(S) drive(truck-2, city-1-loc-6, city-2-loc-1); 4.84262
+(S) drive(truck-2, city-2-loc-1, city-2-loc-16); 3.88756
+(S) drive(truck-2, city-2-loc-16, city-2-loc-9); 2.93241
+(S) drive(truck-2, city-2-loc-9, city-2-loc-13); 1.93787
+(S) drive(truck-2, city-2-loc-13, city-2-loc-10); 0.93434
+(S) drop(truck-2, city-2-loc-10, package-7, capacity-1, capacity-2); -0.01528
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 5.23658
+(END)
+=> The instance is solvable.  [Real time: 00:00:57.6472655, or CPU time: 00:00:52.4375000]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+drive(truck-2, city-1-loc-7, city-1-loc-14)
+drive(truck-2, city-1-loc-14, city-1-loc-12)
+pick-up(truck-2, city-1-loc-12, package-7, capacity-1, capacity-2)
+drive(truck-2, city-1-loc-12, city-1-loc-6)
+drive(truck-2, city-1-loc-6, city-2-loc-1)
+drive(truck-2, city-2-loc-1, city-2-loc-16)
+drive(truck-2, city-2-loc-16, city-2-loc-9)
+drive(truck-2, city-2-loc-9, city-2-loc-13)
+drive(truck-2, city-2-loc-13, city-2-loc-10)
+drop(truck-2, city-2-loc-10, package-7, capacity-1, capacity-2)
+[05:17] Input: p28-opt08_0.pddl
+Parsing: 1543 ms.
+(START)
+(S) drive(truck-2, city-3-loc-4, city-3-loc-1); 3.94856
+(S) pick-up(truck-2, city-3-loc-1, package-5, capacity-1, capacity-2); 3.02926
+(S) drive(truck-2, city-3-loc-1, city-1-loc-1); 1.98846
+(S) drive(truck-2, city-1-loc-1, city-1-loc-7); 0.96749
+(S) drop(truck-2, city-1-loc-7, package-5, capacity-1, capacity-2); -0.00895
+(P) Actual 5; Expected 5; Ratio 1.00000
+(R) Optimal
+(T) 4.54283
+(END)
+=> The instance is solvable.  [Real time: 00:00:11.7979642, or CPU time: 00:00:07.2968750]
+
+
+The following plan solves the problem: (length: 5, cost: 5)
+drive(truck-2, city-3-loc-4, city-3-loc-1)
+pick-up(truck-2, city-3-loc-1, package-5, capacity-1, capacity-2)
+drive(truck-2, city-3-loc-1, city-1-loc-1)
+drive(truck-2, city-1-loc-1, city-1-loc-7)
+drop(truck-2, city-1-loc-7, package-5, capacity-1, capacity-2)
+[05:17] Input: p29-opt08_0.pddl
+Parsing: 2379 ms.
+(START)
+(S) drive(truck-3, city-2-loc-2, city-2-loc-7); 8.88421
+(S) drive(truck-3, city-2-loc-7, city-2-loc-9); 7.89838
+(S) drive(truck-3, city-2-loc-9, city-2-loc-3); 6.91474
+(S) pick-up(truck-3, city-2-loc-3, package-1, capacity-3, capacity-4); 5.82831
+(S) drive(truck-3, city-2-loc-3, city-2-loc-9); 4.92251
+(S) drive(truck-3, city-2-loc-9, city-2-loc-7); 3.96383
+(S) drive(truck-3, city-2-loc-7, city-2-loc-2); 3.00745
+(S) drive(truck-3, city-2-loc-2, city-3-loc-6); 2.01131
+(S) drive(truck-3, city-3-loc-6, city-3-loc-5); 0.96365
+(S) drop(truck-3, city-3-loc-5, package-1, capacity-3, capacity-4); -0.00823
+(P) Actual 10; Expected 10; Ratio 1.00000
+(R) Optimal
+(T) 5.24465
+(END)
+[NNP] [Out] Server started... 
+[NNP] [Out] Received predicates
+[NNP] [Out] Loaded model
+[NNP] [Out] Received objects
+=> The instance is solvable.  [Real time: 00:00:16.8561921, or CPU time: 00:00:11.6093750]
+
+
+The following plan solves the problem: (length: 10, cost: 10)
+drive(truck-3, city-2-loc-2, city-2-loc-7)
+drive(truck-3, city-2-loc-7, city-2-loc-9)
+drive(truck-3, city-2-loc-9, city-2-loc-3)
+pick-up(truck-3, city-2-loc-3, package-1, capacity-3, capacity-4)
+drive(truck-3, city-2-loc-3, city-2-loc-9)
+drive(truck-3, city-2-loc-9, city-2-loc-7)
+drive(truck-3, city-2-loc-7, city-2-loc-2)
+drive(truck-3, city-2-loc-2, city-3-loc-6)
+drive(truck-3, city-3-loc-6, city-3-loc-5)
+drop(truck-3, city-3-loc-5, package-1, capacity-3, capacity-4)
+[05:18] Input: p30-opt08_0.pddl
+Parsing: 3809 ms.
+(START)
+(S) drive(truck-3, city-1-loc-9, city-1-loc-6); 6.88555
+(S) drive(truck-3, city-1-loc-6, city-1-loc-3); 5.86556
+(S) pick-up(truck-3, city-1-loc-3, package-6, capacity-2, capacity-3); 4.85466
+(S) drive(truck-3, city-1-loc-3, city-1-loc-10); 3.93835
+(S) drive(truck-3, city-1-loc-10, city-3-loc-2); 3.00135
+(S) drive(truck-3, city-3-loc-2, city-3-loc-1); 1.99786
+(S) drive(truck-3, city-3-loc-1, city-3-loc-7); 0.96233
+(S) drop(truck-3, city-3-loc-7, package-6, capacity-2, capacity-3); -0.01105
+(P) Actual 8; Expected 8; Ratio 1.00000
+(R) Optimal
+(T) 4.93230
+(END)
+=> The instance is solvable.  [Real time: 00:00:41.0978292, or CPU time: 00:00:36.2343750]
+
+
+The following plan solves the problem: (length: 8, cost: 8)
+drive(truck-3, city-1-loc-9, city-1-loc-6)
+drive(truck-3, city-1-loc-6, city-1-loc-3)
+pick-up(truck-3, city-1-loc-3, package-6, capacity-2, capacity-3)
+drive(truck-3, city-1-loc-3, city-1-loc-10)
+drive(truck-3, city-1-loc-10, city-3-loc-2)
+drive(truck-3, city-3-loc-2, city-3-loc-1)
+drive(truck-3, city-3-loc-1, city-3-loc-7)
+drop(truck-3, city-3-loc-7, package-6, capacity-2, capacity-3)
+[Total real time: 00:12:14.1971265, or total CPU time: 00:10:36.5937500]

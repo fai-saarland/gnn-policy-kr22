@@ -1,0 +1,187 @@
+[20:09] Input: probLOGISTICS-12-0_0.pddl
+Parsing: 193 ms.
+(START)
+(S) load-truck(obj13, tru1, pos1); 2.01197
+(S) drive-truck(tru1, pos1, apt1, cit1); 1.00209
+(S) unload-truck(obj13, tru1, apt1); 0.00677
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.26748
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.4217501, or CPU time: 00:00:00.2187500]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+load-truck(obj13, tru1, pos1)
+drive-truck(tru1, pos1, apt1, cit1)
+unload-truck(obj13, tru1, apt1)
+[20:09] Input: probLOGISTICS-12-1_0.pddl
+Parsing: 114 ms.
+(START)
+(S) drive-truck(tru1, pos1, apt1, cit1); 9.98486
+(S) fly-airplane(apn1, apt1, apt3); 8.97618
+(S) load-truck(obj31, tru3, pos3); 8.00056
+(S) drive-truck(tru3, pos3, apt3, cit3); 7.00818
+(S) unload-truck(obj31, tru3, apt3); 5.98046
+(S) load-airplane(obj31, apn1, apt3); 5.02087
+(S) fly-airplane(apn1, apt3, apt1); 4.03967
+(S) unload-airplane(obj31, apn1, apt1); 3.01744
+(S) load-truck(obj31, tru1, apt1); 2.01950
+(S) drive-truck(tru1, apt1, pos1, cit1); 0.99925
+(S) unload-truck(obj31, tru1, pos1); 0.00125
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.18091
+(END)
+=> The instance is solvable.  [Real time: 00:00:09.7803189, or CPU time: 00:00:04.7812500]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive-truck(tru1, pos1, apt1, cit1)
+fly-airplane(apn1, apt1, apt3)
+load-truck(obj31, tru3, pos3)
+drive-truck(tru3, pos3, apt3, cit3)
+unload-truck(obj31, tru3, apt3)
+load-airplane(obj31, apn1, apt3)
+fly-airplane(apn1, apt3, apt1)
+unload-airplane(obj31, apn1, apt1)
+load-truck(obj31, tru1, apt1)
+drive-truck(tru1, apt1, pos1, cit1)
+unload-truck(obj31, tru1, pos1)
+[20:09] Input: probLOGISTICS-13-0_0.pddl
+Parsing: 173 ms.
+(START)
+(S) fly-airplane(apn2, apt1, apt3); 6.30907
+(S) load-truck(obj31, tru3, pos3); 5.26500
+(S) drive-truck(tru3, pos3, apt3, cit3); 4.20335
+(S) unload-truck(obj31, tru3, apt3); 3.19377
+(S) load-airplane(obj31, apn2, apt3); 2.11571
+(S) fly-airplane(apn2, apt3, apt1); 1.11481
+(S) unload-airplane(obj31, apn2, apt1); 0.10256
+(P) Actual 7; Expected 7; Ratio 1.00000
+(R) Optimal
+(T) 4.89902
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.9071513, or CPU time: 00:00:01.0468750]
+
+
+The following plan solves the problem: (length: 7, cost: 7)
+fly-airplane(apn2, apt1, apt3)
+load-truck(obj31, tru3, pos3)
+drive-truck(tru3, pos3, apt3, cit3)
+unload-truck(obj31, tru3, apt3)
+load-airplane(obj31, apn2, apt3)
+fly-airplane(apn2, apt3, apt1)
+unload-airplane(obj31, apn2, apt1)
+[NNP] [Out] Server started... 
+[20:09] Input: probLOGISTICS-13-1_0.pddl
+Parsing: 196 ms.
+(START)
+(S) drive-truck(tru2, pos2, apt2, cit2); 10.34543
+(S) fly-airplane(apn2, apt2, apt1); 9.33661
+(S) load-truck(obj12, tru1, pos1); 8.36565
+(S) drive-truck(tru1, pos1, apt1, cit1); 7.37469
+(S) unload-truck(obj12, tru1, apt1); 6.32485
+(S) load-airplane(obj12, apn2, apt1); 5.30817
+(S) fly-airplane(apn2, apt1, apt2); 4.35290
+(S) unload-airplane(obj12, apn2, apt2); 3.26841
+(S) load-truck(obj12, tru2, apt2); 2.23698
+(S) drive-truck(tru2, apt2, pos2, cit2); 1.10867
+(S) unload-truck(obj12, tru2, pos2); 0.09774
+(P) Actual 11; Expected 11; Ratio 1.00000
+(R) Optimal
+(T) 5.38064
+(END)
+=> The instance is solvable.  [Real time: 00:00:41.4318076, or CPU time: 00:00:36]
+
+
+The following plan solves the problem: (length: 11, cost: 11)
+drive-truck(tru2, pos2, apt2, cit2)
+fly-airplane(apn2, apt2, apt1)
+load-truck(obj12, tru1, pos1)
+drive-truck(tru1, pos1, apt1, cit1)
+unload-truck(obj12, tru1, apt1)
+load-airplane(obj12, apn2, apt1)
+fly-airplane(apn2, apt1, apt2)
+unload-airplane(obj12, apn2, apt2)
+load-truck(obj12, tru2, apt2)
+drive-truck(tru2, apt2, pos2, cit2)
+unload-truck(obj12, tru2, pos2)
+[20:10] Input: probLOGISTICS-14-0_0.pddl
+Parsing: 170 ms.
+(START)
+(S) load-truck(obj51, tru5, pos5); 2.06584
+(S) drive-truck(tru5, pos5, apt5, cit5); 1.06637
+(S) unload-truck(obj51, tru5, apt5); 0.08085
+(P) Actual 3; Expected 3; Ratio 1.00000
+(R) Optimal
+(T) 4.49323
+(END)
+=> The instance is solvable.  [Real time: 00:00:04.7924360, or CPU time: 00:00:00.3593750]
+
+
+The following plan solves the problem: (length: 3, cost: 3)
+load-truck(obj51, tru5, pos5)
+drive-truck(tru5, pos5, apt5, cit5)
+unload-truck(obj51, tru5, apt5)
+[20:10] Input: probLOGISTICS-14-1_0.pddl
+Parsing: 159 ms.
+(START)
+(P) Actual 0; Expected 0; Ratio NaN
+(R) Optimal
+(T) 0.00000
+(END)
+=> The instance is solvable.  [Real time: 00:00:00.0252066, or CPU time: 00:00:00.0156250]
+
+
+The following plan solves the problem: (length: 0, cost: 0)
+[20:10] Input: probLOGISTICS-15-0_0.pddl
+Parsing: 158 ms.
+(START)
+(S) load-truck(obj22, tru2, pos2); 5.25851
+(S) drive-truck(tru2, pos2, apt2, cit2); 4.20330
+(S) unload-truck(obj22, tru2, apt2); 3.19594
+(S) load-airplane(obj22, apn2, apt2); 2.11571
+(S) fly-airplane(apn2, apt2, apt4); 1.11479
+(S) unload-airplane(obj22, apn2, apt4); 0.10251
+(P) Actual 6; Expected 6; Ratio 1.00000
+(R) Optimal
+(T) 4.73808
+(END)
+[NNP] [Out] Server started... 
+=> The instance is solvable.  [Real time: 00:00:05.2807894, or CPU time: 00:00:00.6250000]
+
+
+The following plan solves the problem: (length: 6, cost: 6)
+load-truck(obj22, tru2, pos2)
+drive-truck(tru2, pos2, apt2, cit2)
+unload-truck(obj22, tru2, apt2)
+load-airplane(obj22, apn2, apt2)
+fly-airplane(apn2, apt2, apt4)
+unload-airplane(obj22, apn2, apt4)
+[20:10] Input: probLOGISTICS-15-1_0.pddl
+Parsing: 156 ms.
+(START)
+(S) load-truck(obj31, tru3, pos3); 6.28367
+(S) drive-truck(tru3, pos3, apt3, cit3); 5.23945
+(S) unload-truck(obj31, tru3, apt3); 4.09071
+(S) fly-airplane(apn1, apt2, apt3); 3.19410
+(S) load-airplane(obj31, apn1, apt3); 2.11667
+(S) fly-airplane(apn1, apt3, apt4); 1.11466
+(S) unload-airplane(obj31, apn1, apt4); 0.10250
+(P) Actual 7; Expected 7; Ratio 1.00000
+(R) Optimal
+(T) 4.92790
+(END)
+=> The instance is solvable.  [Real time: 00:00:05.9563317, or CPU time: 00:00:01.0468750]
+
+
+The following plan solves the problem: (length: 7, cost: 7)
+load-truck(obj31, tru3, pos3)
+drive-truck(tru3, pos3, apt3, cit3)
+unload-truck(obj31, tru3, apt3)
+fly-airplane(apn1, apt2, apt3)
+load-airplane(obj31, apn1, apt3)
+fly-airplane(apn1, apt3, apt4)
+unload-airplane(obj31, apn1, apt4)
+[Total real time: 00:01:19.1474177, or total CPU time: 00:00:46.4062500]
