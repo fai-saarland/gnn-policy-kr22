@@ -9,7 +9,7 @@ from pathlib import Path
 import pytorch_lightning as pl
 from torch.utils.data.dataset import Dataset
 from torch_geometric.loader import DataLoader as GraphDataLoader
-from training_new import load_model, load_trainer, planning
+from training_new import load_trainer, planning, model_classes
 from torch_geometric.data import Data, Batch
 from timeit import default_timer as timer
 from generators import load_pddl_problem_with_augmented_states
@@ -25,7 +25,7 @@ def _parse_arguments():
     default_learning_rate = 0.001
     default_weight_decay = 0.0
     default_gradient_accumulation = 1
-    default_max_samples_per_file = 1000  # TODO: INCREASE THIS?
+    default_max_samples_per_value = 100  # TODO: INCREASE THIS?
     default_max_samples = None
     default_patience = 50
     default_gradient_clip = 0.1
@@ -71,7 +71,7 @@ def _parse_arguments():
     parser.add_argument('--learning_rate', default=default_learning_rate, type=float, help=f'learning rate of training session (default={default_learning_rate})')
     parser.add_argument('--weight_decay', default=default_weight_decay, type=float, help=f'strength of weight decay regularization (default={default_weight_decay})')
     parser.add_argument('--gradient_accumulation', default=default_gradient_accumulation, type=int, help=f'number of gradients to accumulate before step (default={default_gradient_accumulation})')
-    parser.add_argument('--max_samples_per_file', default=default_max_samples_per_file, type=int, help=f'maximum number of states per dataset (default={default_max_samples_per_file})')
+    parser.add_argument('--max_samples_per_value', default=default_max_samples_per_value, type=int, help=f'maximum number of states per dataset (default={default_max_samples_per_value})')
     parser.add_argument('--max_samples', default=default_max_samples, type=int, help=f'maximum number of states in total (default={default_max_samples})')
     parser.add_argument('--patience', default=default_patience, type=int, help=f'patience for early stopping (default={default_patience})')
     parser.add_argument('--gradient_clip', default=default_gradient_clip, type=float, help=f'gradient clip value (default={default_gradient_clip})')
@@ -113,6 +113,48 @@ def _parse_arguments():
 
     args = parser.parse_args()
     return args
+
+def load_model(args, max_arity, path=None):
+    print(colored('Loading model', 'green', attrs = [ 'bold' ]))
+    model_params = {
+        "max_arity": max_arity,
+        "num_layers": args.num_layers,
+        "hidden_size": args.hidden_size,
+        "dropout": args.dropout,
+        "learning_rate": args.learning_rate,
+        "heads": args.heads,
+        "weight_decay": args.weight_decay,
+        #"gradient_accumulation": args.gradient_accumulation,
+        "batch_size": args.batch_size,
+        "max_samples_per_value": args.max_samples_per_value,
+        "max_samples": args.max_samples,
+        "patience": args.patience,
+        #"gradient_clip": args.gradient_clip,
+    }
+
+    try:
+        Model = model_classes[(args.aggregation, args.readout, args.loss)]
+    except KeyError:
+        raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, args.loss)} combination")
+
+    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
+    if path is None:
+        model = Model(**model_params)
+    else:
+        print(f"Loading policy {path}")
+        try:
+            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False)
+        except:
+            try:
+                model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                                   map_location=torch.device('cuda'))
+            except:
+                model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
+                                                   map_location=torch.device('cpu'))
+
+    model = model.to(device)
+
+    return model
 
 # writes results of a planning run ato a csv file
 def save_results(results, policy_type, policy_path, val_loss, bug_loss, planning_results):
@@ -566,6 +608,7 @@ def planning2(predicate_dict, predicate_ids, max_arity, args, policy, model, dom
 
 from generators.plan import create_object_encoding
 from generators.plan import _get_goal_denotation, _to_input, _get_successor_states, _get_applicable_actions, _spanner_unsolvable, _spanner_solved
+# TODO: IS THIS STILL NEEDED?
 def compute_traces_with_augmented_states2(predicate_dict, predicate_ids, max_arity, actions, initial, goal, language, model: pl.LightningModule, augment_fn = None, cycles: str = 'avoid', max_trace_length: int = 500, unsolvable_weight: float = 100000.0, logger = None):
     objects = language.constants()
     obj_encoding = create_object_encoding(objects)
@@ -661,7 +704,7 @@ def _main(args):
         round_dir = train_logdir / f"round_{round}"
         round_dir.mkdir(parents=True, exist_ok=True)
 
-        train_dataset, predicates, decoded_predicates = load_dataset(args.train, args.max_samples_per_file)
+        train_dataset, predicates, decoded_predicates = load_dataset(args.train, args.max_samples_per_value)
         print(predicates)
         print(decoded_predicates)
 
@@ -669,7 +712,7 @@ def _main(args):
         for i in range(len(predicates)):
             assert predicates[i][1] == decoded_predicates[i][1]
 
-        validation_dataset, _, _ = load_dataset(args.validation, args.max_samples_per_file)
+        validation_dataset, _, _ = load_dataset(args.validation, args.max_samples_per_value)
 
         #assert True == False
 
@@ -758,6 +801,12 @@ def _main(args):
     best_trained_policy_name = os.path.basename(best_trained_policy)
     best_trained_policy_path = os.path.join(best_trained_policy_dir, best_trained_policy_name)
     os.system("cp " + str(best_trained_policy) + " " + str(best_trained_policy_path))
+
+    # copy the losses to the new directory for later visualisation
+    train_losses_path = best_trained_policy.parent.parent / "losses.train"
+    val_losses_path = best_trained_policy.parent.parent / "losses.val"
+    os.system("cp " + str(train_losses_path) + " " + str(best_trained_policy_dir / "losses.train"))
+    os.system("cp " + str(val_losses_path) + " " + str(best_trained_policy_dir / "losses.val"))
 
     # TODO: STEP 3: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))

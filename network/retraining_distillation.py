@@ -258,6 +258,9 @@ def _parse_arguments():
     parser.add_argument('--train_indices', default=default_train_indices, type=str, help=f'indices of states to use for training (default={default_train_indices})')
     parser.add_argument('--val_indices', default=default_val_indices, type=str, help=f'indices of states to use for validation (default={default_val_indices})')
 
+    # initial re-training policy randomly
+    parser.add_argument('--random_init', action='store_true', help='randomly initialize the policy for re-training')
+
     # arguments with meaningful default values
     parser.add_argument('--seeds', type=int, default=1, help='number of random seeds used for training')
     parser.add_argument('--runs', type=int, default=1, help='number of planning runs per instance')
@@ -623,8 +626,10 @@ def _main(args):
         retrain_logdir.mkdir(parents=True, exist_ok=True)
 
         for _ in range(args.seeds):
-            # model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
-            model = load_model(args, predicates, retrain=True)  # TODO: TRAINING FROM SCRATCH!!!
+            if not args.random_init:
+                model = load_model(args, predicates, path=best_trained_policy_path, retrain=True)
+            else:
+                model = load_model(args, predicates, retrain=True)
             trainer = load_trainer(args, logdir=retrain_logdir)
             checkpoint_path = f"{retrain_logdir}/version_{trainer.logger.version}/"
             oracle = Oracle(bugs=args.bugs, val_bugs=args.val_bugs, collate=collate, logdir=checkpoint_path, train_states=train_states, val_states=val_states)
@@ -732,6 +737,18 @@ def _main(args):
         best_retrained_policy_path = os.path.join(best_retrained_policy_dir, best_retrained_policy_name)
         os.system("cp " + str(best_retrained_policy) + " " + str(best_retrained_policy_path))
         os.system("cp -r " + str(best_retrained_policy.parent.parent / "bugfiles") + " " + str(best_retrained_policy_dir))
+
+        # copy the losses to the new directory for later visualisation
+        train_losses_path = best_retrained_policy.parent.parent / "losses.train"
+        val_losses_path = best_retrained_policy.parent.parent / "losses.val"
+        bug_losses_path = best_retrained_policy.parent.parent / "losses.bugs"
+        dist_losses_path = best_retrained_policy.parent.parent / "losses.dist"
+        total_losses_path = best_retrained_policy.parent.parent / "losses.total"
+        os.system("cp " + str(train_losses_path) + " " + str(best_retrained_policy_dir / "losses.train"))
+        os.system("cp " + str(val_losses_path) + " " + str(best_retrained_policy_dir / "losses.val"))
+        os.system("cp " + str(bug_losses_path) + " " + str(best_retrained_policy_dir / "losses.bugs"))
+        os.system("cp " + str(dist_losses_path) + " " + str(best_retrained_policy_dir / "losses.dist"))
+        os.system("cp " + str(total_losses_path) + " " + str(best_retrained_policy_dir / "losses.total"))
 
         # TODO: STEP 6: EVALUATE TRAINED & RETRAINED MODELS ON VALIDATION BUGS
         if args.val_bugs is not None:

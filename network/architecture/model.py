@@ -433,11 +433,15 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             self.train_losses = []
             self.bug_losses = []
             self.val_losses = []
+            self.dist_losses = []
+            self.total_losses = []
             self.val_bug_losses = []
             self.all_train_losses = []
             self.all_bug_losses = []
             self.all_val_losses = []
             self.all_val_bug_losses = []
+            self.all_dist_losses = []
+            self.all_total_losses = []
             self.episode_counter = 0
 
         def configure_optimizers(self):
@@ -460,12 +464,16 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             self.bug_weight = bug_weight
             self.retrain_epochs = retrain_epochs
             self.retrain_weight_decay = retrain_weight_decay
-            self.base_policy = base_policy
             self.oracle = oracle
             self.checkpoint_path = checkpoint_path
             self.update_interval = update_interval
             self.no_bug_loss_weight = no_bug_loss_weight
             self.no_bug_counts = no_bug_counts
+
+            # freeze base policy
+            self.base_policy = base_policy
+            for param in self.base_policy.parameters():
+                param.requires_grad = False
 
         # map a state to a string such that we can check whether we have seen this state before
         def state_to_string(self, state):
@@ -546,10 +554,13 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             #l1 = l1_regularization(self, self.l1_factor)
             #self.log('l1_loss', l1)
             #total = train_loss + l1
-            self.train_losses.append(train_loss)
+
+            self.train_losses.append(train_original_loss)
+            self.dist_losses.append(train_distillation_loss)
 
             if len(self.bug_states) == 0:
                 self.log('train_loss', train_loss, prog_bar=True, on_step=False, on_epoch=True)
+                self.total_losses.append(train_loss)
                 return train_loss
 
             else:
@@ -583,7 +594,7 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                 else:
                     loss = train_loss + bug_loss
                 self.log('train_loss', loss, prog_bar=True, on_step=False, on_epoch=True)
-
+                self.total_losses.append(loss)
                 return loss
 
         # when we load bugs only once at the start of the training
@@ -604,11 +615,15 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                 # compute average loss on training samples during the last epoch
                 train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
                 print(f'epoch train loss: {train_loss}')
-                print(f'min train loss: {self.min_train_loss}')
-                print(f'max train loss: {self.max_train_loss}')
-
+                # print(f'min train loss: {self.min_train_loss}')
+                # print(f'max train loss: {self.max_train_loss}')
                 self.all_train_losses.append(train_loss.item())
                 self.train_losses.clear()
+
+                dist_loss = sum(l.mean() for l in self.dist_losses) / len(self.dist_losses)
+                print(f'epoch distillation loss: {dist_loss}')
+                self.all_dist_losses.append(dist_loss.item())
+                self.dist_losses.clear()
 
                 if len(self.bug_states) != 0:
                     """
@@ -626,7 +641,7 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                     # self.bug_loss_weight = min(self.episode_counter / (self.retrain_epochs/2), 1.0)
                     # TODO: scale bug loss weight linearly from 0 to 1
                     # self.bug_loss_weight = self.episode_counter / self.retrain_epochs
-                    print(f'bug loss weight: {self.bug_weight}')
+                    # print(f'bug loss weight: {self.bug_weight}')
 
                     bug_loss = sum(l.mean() for l in self.bug_losses) / len(self.bug_losses)
                     print(f'epoch bug loss: {bug_loss}')
@@ -647,15 +662,14 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                     self.all_val_bug_losses.append(val_bug_loss.item())
                     self.val_bug_losses.clear()
 
-            print("learning rate: ", self.scheduler.get_last_lr())
+                # print("learning rate: ", self.scheduler.get_last_lr())
 
-            # print parameters of base policy
-            # i = 0
-            # for name, param in self.base_policy.named_parameters():
-            #    print(f'{name}: {param}')
-            #    i += 1
-            #    if i > 2:
-            #        break
+                total_loss = sum(l.mean() for l in self.total_losses) / len(self.total_losses)
+                print(f'epoch total loss: {total_loss}')
+
+                self.all_total_losses.append(total_loss.item())
+                self.total_losses.clear()
+
 
         # store information about training, validation, and bug losses
         def on_train_end(self):
@@ -665,6 +679,10 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                 f.write(json.dumps(self.all_bug_losses))
             with open(self.checkpoint_path + "losses.val", "w") as f:
                 f.write(json.dumps(self.all_val_losses))
+            with open(self.checkpoint_path + "losses.dist", "w") as f:
+                f.write(json.dumps(self.all_dist_losses))
+            with open(self.checkpoint_path + "losses.total", "w") as f:
+                f.write(json.dumps(self.all_total_losses))
 
         def validation_step(self, validation_batch, batch_index):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
