@@ -2,7 +2,8 @@ import pytorch_lightning as pl
 import torch
 import numpy as np
 import json
-
+from pathlib import Path
+from utils_old import planning
 
 def mse_loss(predicted, target):
     target = target.view(-1, 1)
@@ -21,10 +22,23 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             self.weight_decay = weight_decay
 
             self.train_losses = []
+            self.all_train_losses = []
             self.validation_losses = []
+            self.all_validation_losses = []
 
         def set_checkpoint_path(self, checkpoint_path):
             self.checkpoint_path = checkpoint_path
+
+        def enable_coverage_validation(self, validation_instances, decoded_predicate_dict, decoded_predicate_ids, max_arity, args, domain_file):
+            self.validation_instances = validation_instances
+            self.decoded_predicate_dict = decoded_predicate_dict
+            self.decoded_predicate_ids = decoded_predicate_ids
+            self.max_arity = max_arity
+            self.args = args
+            self.domain_file = domain_file
+
+            self.coverage_validation = True
+            self.coverages = []
 
         def configure_optimizers(self):
             optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
@@ -38,8 +52,6 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             return optimize
 
         def training_step(self, train_batch, batch_index):
-            self.train()
-            assert self.training == True
             out = self(train_batch)
             train_loss = loss(out, train_batch.y)
             self.log('train_loss', train_loss, prog_bar=True, on_step=False, on_epoch=True, batch_size=train_batch.num_graphs)
@@ -47,20 +59,46 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             return train_loss
 
         def validation_step(self, validation_batch, batch_index):
-            self.training = False
-            self.eval()
             out = self(validation_batch)
             validation_loss = loss(out, validation_batch.y)
             self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
             self.validation_losses.append(validation_loss.item())
-            self.training = True
+
+            return validation_loss
+
+        # TODO: LOOK AT PLAN QUALITY WHEN COVERAGE HITS 1.0!!!!!!
+        def on_validation_epoch_end(self):
+            avg_train_loss = np.mean(self.train_losses)
+            self.all_train_losses.append(avg_train_loss)
+            self.train_losses.clear()
+            avg_validation_loss = np.mean(self.validation_losses)
+            self.all_validation_losses.append(avg_validation_loss)
+            self.validation_losses.clear()
+
+            if self.coverage_validation:
+                solved = []
+                for validation_instance in self.validation_instances:
+                    result_string, action_trace, is_solution = planning(self.decoded_predicate_dict, self.decoded_predicate_ids,
+                                                                        self.max_arity, self.args, None, self,
+                                                                        self.domain_file, validation_instance, self.device)
+                    if is_solution:
+                        solved.append(1)
+                    else:
+                        solved.append(0)
+
+                coverage = sum(solved) / len(solved)
+                self.coverages.append(coverage)
+                self.log('coverage', coverage, prog_bar=True, on_step=False, on_epoch=True)
 
         # store information about training, and validation losses
         def on_train_end(self):
             with open(self.checkpoint_path + "losses.train", "w") as f:
-                f.write(json.dumps(self.train_losses))
+                f.write(json.dumps(self.all_train_losses))
             with open(self.checkpoint_path + "losses.val", "w") as f:
-                f.write(json.dumps(self.validation_losses))
+                f.write(json.dumps(self.all_validation_losses))
+            if self.coverage_validation:
+                with open(self.checkpoint_path + "losses.coverage", "w") as f:
+                    f.write(json.dumps(self.coverages))
 
     return GNN
 
