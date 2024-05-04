@@ -39,6 +39,9 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
             self.coverage_validation = True
             self.coverages = []
+            self.best_coverage = 0
+            self.best_avg_plan_quality = float('inf')
+            self.policy_quality = 0
 
         def configure_optimizers(self):
             optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
@@ -61,12 +64,11 @@ def create_GNN(base: pl.LightningModule, pool, loss):
         def validation_step(self, validation_batch, batch_index):
             out = self(validation_batch)
             validation_loss = loss(out, validation_batch.y)
-            self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
+            self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True, batch_size=validation_batch.num_graphs)
             self.validation_losses.append(validation_loss.item())
 
             return validation_loss
 
-        # TODO: LOOK AT PLAN QUALITY WHEN COVERAGE HITS 1.0!!!!!!
         def on_validation_epoch_end(self):
             avg_train_loss = np.mean(self.train_losses)
             self.all_train_losses.append(avg_train_loss)
@@ -77,18 +79,34 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
             if self.coverage_validation:
                 solved = []
+                plan_lenghts = []
                 for validation_instance in self.validation_instances:
                     result_string, action_trace, is_solution = planning(self.decoded_predicate_dict, self.decoded_predicate_ids,
                                                                         self.max_arity, self.args, None, self,
                                                                         self.domain_file, validation_instance, self.device)
                     if is_solution:
                         solved.append(1)
+                        plan_lenghts.append(len(action_trace))
                     else:
                         solved.append(0)
 
-                coverage = sum(solved) / len(solved)
+                coverage = round(sum(solved) / len(solved), 3)
+                avg_plan_length = round(sum(plan_lenghts) / len(plan_lenghts), 3)
+
+                if coverage > self.best_coverage:
+                    self.best_coverage = coverage
+                    self.policy_quality += 1
+                elif coverage == self.best_coverage and avg_plan_length < self.best_avg_plan_quality:
+                    self.best_avg_plan_quality = avg_plan_length
+                    self.policy_quality += 1
+
+                # policy quality is incremented whenever the policy improves, allowing us to keep track of the best policies
+                quality = self.policy_quality
+
                 self.coverages.append(coverage)
                 self.log('coverage', coverage, prog_bar=True, on_step=False, on_epoch=True)
+                self.log('avg_plan_length', avg_plan_length, prog_bar=True, on_step=False, on_epoch=True)
+                self.log('quality', quality, prog_bar=True, on_step=False, on_epoch=True)
 
         # store information about training, and validation losses
         def on_train_end(self):

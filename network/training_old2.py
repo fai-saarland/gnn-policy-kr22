@@ -163,8 +163,8 @@ def load_trainer(args, logdir):
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=patience))
     callbacks.append(pl.callbacks.LearningRateMonitor())
     if args.coverage_validation:
-        callbacks.append(pl.callbacks.ModelCheckpoint(monitor='coverage', save_top_k=args.save_top_k, mode='max',
-                                                      filename='{epoch}-{step}-{coverage}'))
+        callbacks.append(pl.callbacks.ModelCheckpoint(monitor='quality', save_top_k=args.save_top_k, mode='max',
+                                                      filename='{epoch}-{coverage}-{avg_plan_length}'))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss',
                                      filename='{epoch}-{step}-{validation_loss}'))
 
@@ -187,10 +187,12 @@ def load_trainer(args, logdir):
     return trainer
 
 # writes results of a planning run ato a csv file
-def save_results(results, policy_type, policy_path, planning_results):
+def save_results(results, policy_type, policy_path, val_loss, val_coverage, planning_results):
     results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
     results["instances"].append(planning_results["instances"])
+    results["val_loss"].append(val_loss)
+    results["val_coverage"].append(val_coverage)
     results["max_coverage"].append(planning_results["max_coverage"])
     results["min_coverage"].append(planning_results["min_coverage"])
     results["avg_coverage"].append(planning_results["avg_coverage"])
@@ -284,6 +286,7 @@ def _main(args):
     print(colored('Determining best trained policy', 'red', attrs=['bold']))
     if args.coverage_validation:
         best_trained_val_coverage = 0
+        best_trained_val_avg_plan_length = float('inf')
         best_trained_val_coverage_policy = None
     best_trained_val_loss = float('inf')
     best_trained_val_loss_policy = None
@@ -293,10 +296,15 @@ def _main(args):
             checkpoint_dir = version_dir / 'checkpoints'
             for checkpoint in checkpoint_dir.glob('*.ckpt'):
                 if re.search("validation_loss=(.*?).ckpt", str(checkpoint)) is None:
-                    val_coverage = float(re.search("coverage=(.*?).ckpt", str(checkpoint)).group(1))
+                    val_coverage, val_avg_plan_length = re.search("coverage=(.*?)-avg_plan_length=(.*?).ckpt", str(checkpoint)).groups()
+                    val_coverage = float(val_coverage)
+                    val_avg_plan_length = float(val_avg_plan_length)
 
                     if val_coverage > best_trained_val_coverage:
                         best_trained_val_coverage = val_coverage
+                        best_trained_val_coverage_policy = checkpoint
+                    elif val_coverage == best_trained_val_coverage and val_avg_plan_length < best_trained_val_avg_plan_length:
+                        best_trained_val_avg_plan_length = val_avg_plan_length
                         best_trained_val_coverage_policy = checkpoint
                 else:
                     val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
@@ -308,9 +316,6 @@ def _main(args):
     print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
     if args.coverage_validation:
         print(f"The best trained policy achieved a coverage of {best_trained_val_coverage}")
-
-    # print("best_trained_val_loss_policy: ", best_trained_val_loss_policy)
-    # print("best_trained_val_coverage_policy: ", best_trained_val_coverage_policy)
 
     best_trained_policy_dir = train_logdir / 'best'
     best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -328,10 +333,11 @@ def _main(args):
 
     if args.coverage_validation:
         best_trained_val_coverage_policy_name = os.path.basename(best_trained_val_coverage_policy)
-        # print("best_trained_val_coverage_policy_name: ", best_trained_val_coverage_policy_name)
         best_trained_val_coverage_policy_path = os.path.join(best_trained_policy_dir, best_trained_val_coverage_policy_name)
-        # print("best_trained_val_coverage_policy_path: ", best_trained_val_coverage_policy_path)
         os.system("cp " + str(best_trained_val_coverage_policy) + " " + str(best_trained_val_coverage_policy_path))
+
+        coverage_losses_path = best_trained_val_coverage_policy.parent.parent / "losses.coverage"
+        os.system("cp " + str(coverage_losses_path) + " " + str(best_trained_policy_dir / "losses.coverage"))
 
     # TODO: STEP 3: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))
@@ -349,6 +355,8 @@ def _main(args):
         "type": [],
         "policy_path": [],
         "instances": [],
+        "val_loss": [],
+        "val_coverage": [],
         "max_coverage": [],
         "min_coverage": [],
         "avg_coverage": [],
@@ -373,6 +381,7 @@ def _main(args):
                                                    map_location=torch.device('cpu')).to(device)
         # deactivate dropout!
         model.training = False
+        model.eval()
         model = model.to(device)
 
         # initialize metrics
@@ -397,7 +406,6 @@ def _main(args):
                 else:
                     logfile_name = problem_name + ".policy"
                 log_file = version_path / logfile_name
-                # logger.info(f'Call: {" ".join(argv)}')  # TODO: KEEP THIS?
 
                 # run planning
                 result_string, action_trace, is_solution = planning(decoded_predicate_dict, decoded_predicate_ids, max_arity, args, policy, model, domain_file, problem_file, device)
@@ -433,9 +441,10 @@ def _main(args):
         print(planning_results)
 
         # save results of the best run
-        save_results(results, policy_type, policy, planning_results)
-
-
+        if policy_type == "loss_validation":
+            save_results(results, policy_type, policy, best_trained_val_loss, None, planning_results)
+        else:
+            save_results(results, policy_type, policy, None, best_trained_val_coverage, planning_results)
 
     print(colored('Storing results', 'red', attrs=['bold']))
     print(results)

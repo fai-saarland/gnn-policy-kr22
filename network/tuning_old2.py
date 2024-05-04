@@ -5,10 +5,10 @@ import os
 import re
 import glob
 import pandas as pd
-import json
 from pathlib import Path
 from torch_geometric.loader import DataLoader as GraphDataLoader
-from training_old2 import load_model, load_trainer, planning, load_dataset, states_to_graphs2
+from training_old2 import load_model, load_trainer
+from utils_old import load_dataset, states_to_graphs, planning
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -20,7 +20,7 @@ def _parse_arguments():
     default_learning_rate = 0.001
     default_weight_decay = 0.0
     default_gradient_accumulation = 1
-    default_max_samples_per_value = 1000  # TODO: INCREASE THIS?
+    default_max_samples_per_value = 100  # TODO: INCREASE THIS?
     default_max_samples = None
     default_patience = 50
     default_gradient_clip = 0.1
@@ -43,6 +43,8 @@ def _parse_arguments():
     parser.add_argument('--hidden_size_range', nargs='+', type=int, help='range of hidden size of GNN layers')
     parser.add_argument('--dropout_range', nargs='+', type=float, help='range of dropout values')
     parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
+
+    parser.add_argument('--coverage_validation', action='store_true', help='computes validation loss as coverage')
 
     # arguments for the architecture
     parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Transformer', 'GCNGPS'], help=f'aggregation function')
@@ -114,10 +116,12 @@ def _parse_arguments():
     return args
 
 # writes results of a planning run ato a csv file
-def save_results(results, policy_path, val_loss, planning_results, num_layers, hidden_size, dropout, heads):
+def save_results(results, policy_type, policy_path, val_loss, val_coverage, planning_results, num_layers, hidden_size, dropout, heads):
+    results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
-    results["val_loss"].append(val_loss)
     results["instances"].append(planning_results["instances"])
+    results["val_loss"].append(val_loss)
+    results["val_coverage"].append(val_coverage)
     results["max_coverage"].append(planning_results["max_coverage"])
     results["min_coverage"].append(planning_results["min_coverage"])
     results["avg_coverage"].append(planning_results["avg_coverage"])
@@ -143,8 +147,10 @@ def _main(args):
                     configs.append((num_layers, hidden_size, dropout, heads))
 
     results = {
+        "type": [],
         "policy_path": [],
         "val_loss": [],
+        "val_coverage": [],
         "instances": [],
         "max_coverage": [],
         "min_coverage": [],
@@ -157,7 +163,7 @@ def _main(args):
         "plans_directory": [],
     }
 
-    # all models should use the same training and validation sets!
+    # TODO: all models should use the same training and validation sets!
     train_dataset, predicates, decoded_predicates = load_dataset(args.train, args.max_samples_per_value)
     validation_dataset, _, _ = load_dataset(args.validation, args.max_samples_per_value)
 
@@ -170,6 +176,7 @@ def _main(args):
         print("CONFIG: ", config)
         print("\n")
         config_count += 1
+
         # set hyperparameters
         args.num_layers = config[0]
         args.hidden_size = config[1]
@@ -188,9 +195,6 @@ def _main(args):
         for round in range(args.rounds):
             round_dir = train_logdir / f"round_{round}"
             round_dir.mkdir(parents=True, exist_ok=True)
-
-            print(predicates)
-            print(decoded_predicates)
 
             # assert arities are same, otherwise the orders could be different
             for i in range(len(predicates)):
@@ -217,20 +221,30 @@ def _main(args):
                 i += 1
 
             train_samples = [train_dataset[i] for i in range(len(train_dataset))]
-            validation_samples = [validation_dataset[i] for i in range(len(validation_dataset))]
-
-            train_graphs = states_to_graphs2(train_samples, predicate_dict, predicate_ids, max_arity)
-            validation_graphs = states_to_graphs2(validation_samples, predicate_dict, predicate_ids, max_arity)
-
+            train_graphs = states_to_graphs(train_samples, predicate_dict, predicate_ids, max_arity)
             train_loader = GraphDataLoader(train_graphs, batch_size=args.batch_size, shuffle=True, drop_last=False,
                                            num_workers=args.num_workers, pin_memory=True)
+
+            validation_dataset, _, _ = load_dataset(args.validation, args.max_samples_per_value)
+            validation_samples = [validation_dataset[i] for i in range(len(validation_dataset))]
+            validation_graphs = states_to_graphs(validation_samples, predicate_dict, predicate_ids, max_arity)
             validation_loader = GraphDataLoader(validation_graphs, batch_size=args.batch_size, shuffle=False,
                                                 drop_last=False, num_workers=args.num_workers, pin_memory=True)
+            if args.coverage_validation:
+                problem_files = glob.glob(str('data_old/pddl/' + args.domain + '/validation/' + '*.pddl'))
+                domain_file = Path('data_old/pddl/' + args.domain + '/validation/domain.pddl')
+                validation_instances = [instance for instance in problem_files if str(Path(instance).stem) != 'domain']
 
             # TODO: STEP 2: TRAIN
             print(colored('Training policies from scratch', 'red', attrs=['bold']))
             for _ in range(args.seeds):
                 model = load_model(args, max_arity=max_arity)
+                if args.coverage_validation:
+                    model.enable_coverage_validation(validation_instances=validation_instances,
+                                                     decoded_predicate_dict=decoded_predicate_dict,
+                                                     decoded_predicate_ids=decoded_predicate_ids, max_arity=max_arity,
+                                                     args=args,
+                                                     domain_file=domain_file)
                 trainer = load_trainer(args, logdir=round_dir)
                 model.set_checkpoint_path(f"{round_dir}/version_{trainer.logger.version}/")
                 print(colored('Training model...', 'green', attrs = [ 'bold' ]))
@@ -239,45 +253,75 @@ def _main(args):
 
         # TODO: STEP 3: FIND BEST TRAINED MODEL
         print(colored('Determining best trained policy', 'red', attrs=['bold']))
+        if args.coverage_validation:
+            best_trained_val_coverage = 0
+            best_trained_val_avg_plan_length = float('inf')
+            best_trained_val_coverage_policy = None
         best_trained_val_loss = float('inf')
-        best_trained_policy = None
+        best_trained_val_loss_policy = None
 
         for round_dir in train_logdir.glob('round_*'):
             for version_dir in round_dir.glob('version_*'):
                 checkpoint_dir = version_dir / 'checkpoints'
                 for checkpoint in checkpoint_dir.glob('*.ckpt'):
-                    try:
-                        # validation losses are stored in the name of the stored policy
+                    if re.search("validation_loss=(.*?).ckpt", str(checkpoint)) is None:
+                        val_coverage, val_avg_plan_length = re.search("coverage=(.*?)-avg_plan_length=(.*?).ckpt",
+                                                                      str(checkpoint)).groups()
+                        val_coverage = float(val_coverage)
+                        val_avg_plan_length = float(val_avg_plan_length)
+
+                        if val_coverage > best_trained_val_coverage:
+                            best_trained_val_coverage = val_coverage
+                            best_trained_val_coverage_policy = checkpoint
+                        elif val_coverage == best_trained_val_coverage and val_avg_plan_length < best_trained_val_avg_plan_length:
+                            best_trained_val_avg_plan_length = val_avg_plan_length
+                            best_trained_val_coverage_policy = checkpoint
+                    else:
                         val_loss = float(re.search("validation_loss=(.*?).ckpt", str(checkpoint)).group(1))
-                    except:
-                        val_loss = float('inf')
-                        print(f"Checkpoint encoding error: {checkpoint}")
-                    if val_loss < best_trained_val_loss:
-                        best_trained_val_loss = val_loss
-                        best_trained_policy = checkpoint
+
+                        if val_loss < best_trained_val_loss:
+                            best_trained_val_loss = val_loss
+                            best_trained_val_loss_policy = checkpoint
 
         print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
+        if args.coverage_validation:
+            print(f"The best trained policy achieved a coverage of {best_trained_val_coverage}")
 
         best_trained_policy_dir = train_logdir / 'best'
         best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
 
         # copy the best policy to the new directory
-        best_trained_policy_name = os.path.basename(best_trained_policy)
-        best_trained_policy_path = os.path.join(best_trained_policy_dir, best_trained_policy_name)
-        os.system("cp " + str(best_trained_policy) + " " + str(best_trained_policy_path))
+        best_trained_val_loss_policy_name = os.path.basename(best_trained_val_loss_policy)
+        best_trained_val_loss_policy_path = os.path.join(best_trained_policy_dir, best_trained_val_loss_policy_name)
+        os.system("cp " + str(best_trained_val_loss_policy) + " " + str(best_trained_val_loss_policy_path))
 
         # copy the losses to the new directory for later visualisation
-        train_losses_path = best_trained_policy.parent.parent / "losses.train"
-        val_losses_path = best_trained_policy.parent.parent / "losses.val"
+        train_losses_path = best_trained_val_loss_policy.parent.parent / "losses.train"
+        val_losses_path = best_trained_val_loss_policy.parent.parent / "losses.val"
         os.system("cp " + str(train_losses_path) + " " + str(best_trained_policy_dir / "losses.train"))
         os.system("cp " + str(val_losses_path) + " " + str(best_trained_policy_dir / "losses.val"))
 
+        if args.coverage_validation:
+            best_trained_val_coverage_policy_name = os.path.basename(best_trained_val_coverage_policy)
+            best_trained_val_coverage_policy_path = os.path.join(best_trained_policy_dir,
+                                                                 best_trained_val_coverage_policy_name)
+            os.system("cp " + str(best_trained_val_coverage_policy) + " " + str(best_trained_val_coverage_policy_path))
+
+            coverage_losses_path = best_trained_val_coverage_policy.parent.parent / "losses.coverage"
+            os.system("cp " + str(coverage_losses_path) + " " + str(best_trained_policy_dir / "losses.coverage"))
+
+        # TODO: STEP 4: RUN POLICY ON TEST INSTANCES
         print(colored('Running policies on test instances', 'red', attrs=['bold']))
         policies_and_directories = []
 
         plans_trained_path = config_dir / "plans_trained"
         plans_trained_path.mkdir(parents=True, exist_ok=True)
-        policies_and_directories.append(("trained", best_trained_policy_path, plans_trained_path))
+        policies_and_directories.append(("loss_validation", best_trained_val_loss_policy_path, plans_trained_path))
+        if args.coverage_validation:
+            plans_trained_coverage_validation_path = config_dir / "plans_trained_coverage_validation"
+            plans_trained_coverage_validation_path.mkdir(parents=True, exist_ok=True)
+            policies_and_directories.append(
+                ("coverage_validation", best_trained_val_coverage_policy_path, plans_trained_coverage_validation_path))
 
         for policy_type, policy, directory in policies_and_directories:
             # load files for planning
@@ -297,6 +341,7 @@ def _main(args):
                                                        map_location=torch.device('cpu')).to(device)
             # deactivate dropout!
             model.training = False
+            model.eval()
             model = model.to(device)
 
             # initialize metrics
@@ -336,7 +381,7 @@ def _main(args):
                     else:
                         print(f"Failed to solve problem {problem_name}")
 
-                    print(result_string)
+                    # print(result_string)
 
                 # compute coverage of this run and check whether it is the best one yet
                 coverage = sum(is_solutions)
@@ -350,14 +395,15 @@ def _main(args):
                     best_plan_quality = plan_quality
                     best_planning_run = str(version_path)
 
-            print(coverages)
             planning_results = dict(instances=len(problem_files)-1, max_coverage=max(coverages),
                                                  min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
                                                  best_plan_quality=best_plan_quality, plans_directory=best_planning_run)
-            print(planning_results)
 
             # save results of the best run
-            save_results(results, best_trained_policy_path, best_trained_val_loss, planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
+            if policy_type == "loss_validation":
+                save_results(results, policy_type, policy, best_trained_val_loss, None, planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
+            else:
+                save_results(results, policy_type, policy, None, best_trained_val_coverage, planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
 
             print(colored('Storing results', 'red', attrs=['bold']))
             print(results)

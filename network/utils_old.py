@@ -242,6 +242,7 @@ def load_dataset(path: Path, max_samples_per_value: int):
     decoded_predicates = datasets[0].decoded_predicates
     return (ExtendedDataset(datasets, 1), predicates, decoded_predicates)
 
+
 def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
     # first we decode the given states such that we have easy access to the label, the relations and the objects
     decoded_states = []
@@ -321,80 +322,7 @@ def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
         graph_states.append(graph_state)
 
     return graph_states
-"""
-def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
-    atoms = []
-    max_id = 0
-    # the states only have one entry for each predicate, so to get the individual atoms we need to split according
-    # to the arity of the predicate
-    for pred, arg in state.items():
-        for a in arg:
-            arguments = [x.item() for x in list(a)]
-            atoms.append((pred, arguments))
 
-            for argument in arguments:
-                if argument > max_id:
-                    max_id = argument
-
-    objects = list(range(max_id + 1))
-
-    # TODO: COMPUTING IT LIKE THIS IS REDUNDANT I GUESS
-    object_ids = random.sample(range(0, 100000), len(objects))
-    object_to_id = {}
-    for i in range(len(objects)):
-        object_to_id[objects[i]] = object_ids[i]
-
-    nodes_x = []
-    edge_index = [[], []]
-    # create nodes for objects
-    for i in range(len(objects)):
-        obj = objects[i]
-        # create tensor for object node's feature
-        object_node = torch.ones(3 + max_arity) * -1
-        # first feature indicates that this is an object node
-        object_node[1] = 0
-        # second feature is the id of the object
-        object_node[2] = object_to_id[obj]  # TODO: RANDOMIZE THIS!!!!
-
-        nodes_x.append(object_node)
-
-    # create nodes for atoms and add edges between objects and atoms
-    for i in range(len(atoms)):
-        predicate, arguments = atoms[i]
-        # create tensor for relation node's feature
-        atom_node = torch.ones(3 + max_arity) * -1
-        # first feature indicates that this is an atom node
-        atom_node[1] = 1
-        # second feature is the id of the predicate
-        atom_node[2] = predicate_ids[predicate]
-        # next features are the object ids of the arguments
-        for x, argument in enumerate(arguments):
-            atom_node[x + 2] = object_to_id[argument]
-
-        nodes_x.append(atom_node)
-
-        # if the atom takes no arguments we connect the atom node to all object nodes
-        if len(arguments) == 0:
-            for x in range(len(objects)):
-                edge_index[0].append(i + len(objects))
-                edge_index[1].append(x)
-                edge_index[0].append(x)
-                edge_index[1].append(i + len(objects))
-        else:
-            # connect atom node to corresponding object nodes
-            for x, argument in enumerate(arguments):
-                edge_index[0].append(i + len(objects))
-                edge_index[1].append(argument)
-                edge_index[0].append(argument)
-                edge_index[1].append(i + len(objects))
-
-    nodes_x = torch.stack(nodes_x).float()
-    edge_index = torch.tensor(edge_index).long()
-    graph_state = Data(x=nodes_x, edge_index=edge_index, num_nodes=len(objects) + len(atoms))
-    graph_state.validate(raise_on_error=True)
-
-    return graph_state
-"""
 
 def state_to_graph(state, predicate_dict, predicate_ids, max_arity):
     atoms = []
@@ -526,6 +454,7 @@ def planning(predicate_dict, predicate_ids, max_arity, args, policy, model, doma
             result_string = result_string + "\n"
 
     return result_string, action_trace, is_solution
+
 
 from generators.plan import create_object_encoding
 from generators.plan import _get_goal_denotation, _to_input, _get_successor_states, _get_applicable_actions, _spanner_unsolvable, _spanner_solved
