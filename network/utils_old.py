@@ -552,3 +552,37 @@ def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arit
         # print(f'Min test graph size: {min_test_graph_size}')
 
         return action_trace, state_trace, value_trace, reached_goal, num_evaluations
+
+
+from gnns import create_GNN
+from gnns import GraphConvolutionNetwork, GraphConvolutionNetworkV2, GraphAttentionNetwork, GraphAttentionNetworkV2, GraphIsomorphismNetwork
+from gnns import Performer, Transformer, GCNGPS
+from gnns import mse_loss, mae_loss
+from torch_geometric.nn import global_add_pool, global_max_pool
+model_classes = {
+    ("GCN", "ADD", "MSE"): create_GNN(GraphConvolutionNetwork, global_add_pool, mse_loss),
+    ("GCNV2", "ADD", "MSE"): create_GNN(GraphConvolutionNetworkV2, global_add_pool, mse_loss),
+    ("GAT", "ADD", "MSE"): create_GNN(GraphAttentionNetwork, global_add_pool, mse_loss),
+    ("GATV2", "ADD", "MSE"): create_GNN(GraphAttentionNetworkV2, global_add_pool, mse_loss),
+    ("GIN", "ADD", "MSE"): create_GNN(GraphIsomorphismNetwork, global_add_pool, mse_loss),
+
+    ("GCN", "MAX", "MSE"): create_GNN(GraphConvolutionNetwork, global_max_pool, mse_loss),
+    ("GCNV2", "MAX", "MSE"): create_GNN(GraphConvolutionNetworkV2, global_max_pool, mse_loss),
+    ("GAT", "MAX", "MSE"): create_GNN(GraphAttentionNetwork, global_max_pool, mse_loss),
+    ("GATV2", "MAX", "MSE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mse_loss),
+    ("GIN", "MAX", "MSE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mse_loss),
+
+    ("GCN", "MAX", "MAE"): create_GNN(GraphConvolutionNetwork, global_max_pool, mae_loss),
+    ("GCNV2", "MAX", "MAE"): create_GNN(GraphConvolutionNetworkV2, global_max_pool, mae_loss),
+    ("GAT", "MAX", "MAE"): create_GNN(GraphAttentionNetwork, global_max_pool, mae_loss),
+    ("GATV2", "MAX", "MAE"): create_GNN(GraphAttentionNetworkV2, global_max_pool, mae_loss),
+    ("GIN", "MAX", "MAE"): create_GNN(GraphIsomorphismNetwork, global_max_pool, mae_loss),
+
+    ("Performer", "ADD", "MSE"): create_GNN(Performer, global_add_pool, mse_loss),
+    ("GCNGPS", "ADD", "MSE"): create_GNN(GCNGPS, global_add_pool, mse_loss),
+    ("GCNGPS", "ADD", "MAE"): create_GNN(GCNGPS, global_add_pool, mae_loss),
+
+    ("GCNGPS", "MAX", "MSE"): create_GNN(GCNGPS, global_max_pool, mse_loss),
+    ("Performer", "MAX", "MSE"): create_GNN(Performer, global_max_pool, mse_loss),
+    ("Transformer", "MAX", "MSE"): create_GNN(Transformer, global_max_pool, mse_loss)
+}

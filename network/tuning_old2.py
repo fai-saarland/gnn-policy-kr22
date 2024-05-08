@@ -8,7 +8,7 @@ import pandas as pd
 from pathlib import Path
 from torch_geometric.loader import DataLoader as GraphDataLoader
 from training_old2 import load_model, load_trainer
-from utils_old import load_dataset, states_to_graphs, planning
+from utils_old import load_dataset, states_to_graphs, planning, model_classes
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -23,7 +23,7 @@ def _parse_arguments():
     default_max_samples_per_value = 100  # TODO: INCREASE THIS?
     default_max_samples = None
     default_patience = 50
-    default_gradient_clip = 0.1
+    default_gradient_clip = 5
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 5
@@ -47,7 +47,7 @@ def _parse_arguments():
     parser.add_argument('--coverage_validation', action='store_true', help='computes validation loss as coverage')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Transformer', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Performer', 'Transformer', 'GCNGPS'], help=f'aggregation function')
     parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
     parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
 
@@ -272,6 +272,7 @@ def _main(args):
 
                         if val_coverage > best_trained_val_coverage:
                             best_trained_val_coverage = val_coverage
+                            best_trained_val_avg_plan_length = val_avg_plan_length
                             best_trained_val_coverage_policy = checkpoint
                         elif val_coverage == best_trained_val_coverage and val_avg_plan_length < best_trained_val_avg_plan_length:
                             best_trained_val_avg_plan_length = val_avg_plan_length
@@ -285,7 +286,7 @@ def _main(args):
 
         print(f"The best trained policy achieved a validation loss of {best_trained_val_loss}")
         if args.coverage_validation:
-            print(f"The best trained policy achieved a coverage of {best_trained_val_coverage}")
+            print(f"The best trained policy achieved a coverage of {best_trained_val_coverage} and an average plan length of {best_trained_val_avg_plan_length}")
 
         best_trained_policy_dir = train_logdir / 'best'
         best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -309,6 +310,8 @@ def _main(args):
 
             coverage_losses_path = best_trained_val_coverage_policy.parent.parent / "losses.coverage"
             os.system("cp " + str(coverage_losses_path) + " " + str(best_trained_policy_dir / "losses.coverage"))
+            avg_plan_lengths_path = best_trained_val_coverage_policy.parent.parent / "losses.avg_plan_length"
+            os.system("cp " + str(avg_plan_lengths_path) + " " + str(best_trained_policy_dir / "losses.avg_plan_length"))
 
         # TODO: STEP 4: RUN POLICY ON TEST INSTANCES
         print(colored('Running policies on test instances', 'red', attrs=['bold']))

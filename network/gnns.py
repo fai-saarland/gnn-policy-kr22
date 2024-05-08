@@ -39,12 +39,16 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
             self.coverage_validation = True
             self.coverages = []
+            self.avg_plan_lengths = []
             self.best_coverage = 0
             self.best_avg_plan_quality = float('inf')
-            self.policy_quality = 0
+            self.best_policy_quality = 0.0
 
         def configure_optimizers(self):
+            # TODO: USE ADAMW?
+            # optimizer = torch.optim.AdamW(self.parameters(), lr=(self.learning_rate or self.lr))
             optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
+            # TODO: USE COSINE SCHEDULE WITH FIXED NUMBER OF EPOCHS
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25, verbose=True)
 
             optimize = {
@@ -91,19 +95,29 @@ def create_GNN(base: pl.LightningModule, pool, loss):
                         solved.append(0)
 
                 coverage = round(sum(solved) / len(solved), 3)
-                avg_plan_length = round(sum(plan_lenghts) / len(plan_lenghts), 3)
+                if len(plan_lenghts) == 0:
+                    avg_plan_length = 10000.0
+                else:
+                    avg_plan_length = round(sum(plan_lenghts) / len(plan_lenghts), 3)
 
+                # TODO: to have a perfect ranking of ALL policies we would need to store all of them and evaluate them afterward, however
+                # we only care about the best one anyway
+                # policy quality is incremented whenever the policy improves, allowing us to keep track of the best policies
                 if coverage > self.best_coverage:
                     self.best_coverage = coverage
-                    self.policy_quality += 1
+                    self.best_avg_plan_quality = avg_plan_length
+                    self.best_policy_quality += 1.0
+                    quality = self.best_policy_quality
                 elif coverage == self.best_coverage and avg_plan_length < self.best_avg_plan_quality:
                     self.best_avg_plan_quality = avg_plan_length
-                    self.policy_quality += 1
-
-                # policy quality is incremented whenever the policy improves, allowing us to keep track of the best policies
-                quality = self.policy_quality
+                    self.best_policy_quality += 1.0
+                    quality = self.best_policy_quality
+                else:
+                    quality = 0.0
 
                 self.coverages.append(coverage)
+                self.avg_plan_lengths.append(avg_plan_length)
+
                 self.log('coverage', coverage, prog_bar=True, on_step=False, on_epoch=True)
                 self.log('avg_plan_length', avg_plan_length, prog_bar=True, on_step=False, on_epoch=True)
                 self.log('quality', quality, prog_bar=True, on_step=False, on_epoch=True)
@@ -114,9 +128,12 @@ def create_GNN(base: pl.LightningModule, pool, loss):
                 f.write(json.dumps(self.all_train_losses))
             with open(self.checkpoint_path + "losses.val", "w") as f:
                 f.write(json.dumps(self.all_validation_losses))
+
             if self.coverage_validation:
                 with open(self.checkpoint_path + "losses.coverage", "w") as f:
                     f.write(json.dumps(self.coverages))
+                with open(self.checkpoint_path + "losses.avg_plan_length", "w") as f:
+                    f.write(json.dumps(self.avg_plan_lengths))
 
     return GNN
 
@@ -379,10 +396,10 @@ class Transformer2(pl.LightningModule):
         return out
 
 from torch_geometric.transforms import AddLaplacianEigenvectorPE
-class Transformer(pl.LightningModule):
+class Performer(pl.LightningModule):
     def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [hidden_size] * (num_layers)
+        self.hidden_sizes = [hidden_size] * (num_layers+1)
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.pool = pool
@@ -392,12 +409,16 @@ class Transformer(pl.LightningModule):
         self.input_norm = torch.nn.LayerNorm(hidden_size)
         #self.pe_embedding = torch.nn.Linear(5, hidden_size)
         #self.pe_norm = torch.nn.BatchNorm1d(hidden_size)
-        for i in range(len(self.hidden_sizes) - 1):
+        for i in range(len(self.hidden_sizes)-1):
             self.layers.append(GPSConv(self.hidden_sizes[i], None, heads=heads, attn_type='performer', dropout=dropout))
         self.out = torch.nn.Sequential(torch.nn.Linear(self.hidden_sizes[-1], self.hidden_sizes[-1]*2),
                                       torch.nn.ReLU(),
                                       torch.nn.Dropout(dropout),
                                       torch.nn.Linear(self.hidden_sizes[-1]*2, 1))
+
+        print("\n")
+        print("LAYERS: ", len(self.layers))
+        print("\n")
 
     def forward(self, data):
         #data = AddLaplacianEigenvectorPE(k=5, attr_name='pe')(data)
@@ -420,11 +441,10 @@ class Transformer(pl.LightningModule):
         x = self.out(x)
         return x
 
-from torch_geometric.nn import GPSConv
-class GCNGPS(pl.LightningModule):
+class Transformer(pl.LightningModule):
     def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
         super().__init__()
-        self.hidden_sizes = [hidden_size] * (num_layers)
+        self.hidden_sizes = [hidden_size] * (num_layers+1)
         self.dropout = dropout
         self.layers = torch.nn.ModuleList()
         self.pool = pool
@@ -432,7 +452,42 @@ class GCNGPS(pl.LightningModule):
 
         self.node_embedding = torch.nn.Linear(max_arity+3, hidden_size)
         self.input_norm = torch.nn.LayerNorm(hidden_size)
-        for i in range(len(self.hidden_sizes) - 1):
+        for i in range(len(self.hidden_sizes)-1):
+            self.layers.append(GPSConv(self.hidden_sizes[i], None, heads=heads, attn_type='multihead', dropout=dropout))
+        self.out = torch.nn.Sequential(torch.nn.Linear(self.hidden_sizes[-1], self.hidden_sizes[-1]*2),
+                                      torch.nn.ReLU(),
+                                      torch.nn.Dropout(dropout),
+                                      torch.nn.Linear(self.hidden_sizes[-1]*2, 1))
+
+    def forward(self, data):
+        x = data.x.to(self.device)
+        edge_index = data.edge_index.to(self.device)
+        batch = data.batch
+        if batch is not None:
+            batch = batch.to(self.device)
+
+        x = self.node_embedding(x)
+        x = self.input_norm(x)
+        for i in range(len(self.layers)):
+            x = self.layers[i](x=x, edge_index=edge_index, batch=batch)
+
+        x = self.pool(x, batch)
+        x = self.out(x)
+        return x
+
+from torch_geometric.nn import GPSConv
+class GCNGPS(pl.LightningModule):
+    def __init__(self, num_layers: int, hidden_size: int, dropout: int, heads: int, max_arity: int, pool, **kwargs):
+        super().__init__()
+        self.hidden_sizes = [hidden_size] * (num_layers+1)
+        self.dropout = dropout
+        self.layers = torch.nn.ModuleList()
+        self.pool = pool
+        self.training = True
+
+        self.node_embedding = torch.nn.Linear(max_arity+3, hidden_size)
+        self.input_norm = torch.nn.LayerNorm(hidden_size)
+        for i in range(len(self.hidden_sizes)-1):
             conv = GCNConv(self.hidden_sizes[i], self.hidden_sizes[i + 1])
             self.layers.append(GPSConv(self.hidden_sizes[i], conv, heads=heads, attn_type='performer', dropout=dropout))
         self.out = torch.nn.Linear(self.hidden_sizes[-1], 1)
