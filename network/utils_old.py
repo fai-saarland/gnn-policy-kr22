@@ -280,7 +280,7 @@ def states_to_graphs(states, predicate_dict, predicate_ids, max_arity):
             # first feature indicates that this is an object node
             object_node[0] = 0
             # second feature is the id of the object
-            object_node[1] = object_to_id[obj]  # TODO: RANDOMIZE THIS!!!!
+            object_node[1] = object_to_id[obj]
 
             nodes_x.append(object_node)
 

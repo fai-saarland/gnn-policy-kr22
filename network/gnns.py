@@ -46,14 +46,14 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
         def configure_optimizers(self):
             # TODO: USE ADAMW?
-            # optimizer = torch.optim.AdamW(self.parameters(), lr=(self.learning_rate or self.lr))
-            optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
+            # self.optimizer = torch.optim.AdamW(self.parameters(), lr=(self.learning_rate or self.lr))
+            self.optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
             # TODO: USE COSINE SCHEDULE WITH FIXED NUMBER OF EPOCHS
-            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25, verbose=True)
+            self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=0.5, patience=25, verbose=True)
 
             optimize = {
-                'optimizer': optimizer,
-                'lr_scheduler': scheduler,
+                'optimizer': self.optimizer,
+                'lr_scheduler': self.scheduler,
                 'monitor': "validation_loss",
             }
             return optimize
@@ -74,6 +74,9 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             return validation_loss
 
         def on_validation_epoch_end(self):
+            # print("\n")
+            # print("LEARNING RATE:", self.scheduler.optimizer.param_groups[0]['lr'])
+
             avg_train_loss = np.mean(self.train_losses)
             self.all_train_losses.append(avg_train_loss)
             self.train_losses.clear()
@@ -94,7 +97,11 @@ def create_GNN(base: pl.LightningModule, pool, loss):
                     else:
                         solved.append(0)
 
-                coverage = round(sum(solved) / len(solved), 3)
+                if len(solved) == 0:
+                    coverage = 0.0
+                else:
+                    coverage = round(sum(solved) / len(solved), 3)
+
                 if len(plan_lenghts) == 0:
                     avg_plan_length = 10000.0
                 else:
