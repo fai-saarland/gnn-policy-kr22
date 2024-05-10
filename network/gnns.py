@@ -40,7 +40,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
             self.coverage_validation = True
             self.coverages = []
             self.avg_plan_lengths = []
-            self.best_coverage = 0
+            self.best_coverage = -1.0
             self.best_avg_plan_quality = float('inf')
             self.best_policy_quality = 0.0
 
@@ -423,9 +423,6 @@ class Performer(pl.LightningModule):
                                       torch.nn.Dropout(dropout),
                                       torch.nn.Linear(self.hidden_sizes[-1]*2, 1))
 
-        print("\n")
-        print("LAYERS: ", len(self.layers))
-        print("\n")
 
     def forward(self, data):
         #data = AddLaplacianEigenvectorPE(k=5, attr_name='pe')(data)

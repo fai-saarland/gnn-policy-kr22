@@ -52,7 +52,7 @@ def _parse_arguments():
     parser.add_argument('--dropout_range', nargs='+', type=float, help='range of dropout values')
     parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
 
-    parser.add_argument('--coverage_validation', action='store_true', help='computes validation loss as coverage')
+    parser.add_argument('--coverage_validation', action='store_true', help='additionally computes validation loss as coverage')
     parser.add_argument('--new_data', action='store_true', help='uses the datasets from the newer Stahlberg paper')
 
     # arguments for the architecture
@@ -236,6 +236,7 @@ def _main(args):
         "policy_path": [],
         "val_loss": [],
         "val_coverage": [],
+        "val_avg_plan_length": [],
         "instances": [],
         "max_coverage": [],
         "min_coverage": [],
