@@ -7,15 +7,20 @@ import glob
 import pandas as pd
 from pathlib import Path
 from torch_geometric.loader import DataLoader as GraphDataLoader
-from utils_old import planning, model_classes
+from utils_old import planning
 from utils_old import load_dataset as load_dataset_old
 from utils_old import states_to_graphs as states_to_graphs_old
 from utils_new import load_datasets as load_dataset_new
 from utils_new import states_to_graphs as states_to_graphs_new
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
-from pytorch_lightning.loggers import TensorBoardLogger
+from tuning2 import load_model, load_trainer
+
+CONFIGS = {}
+
+BLOCKS_CLEAR_CONFIGS = {}
+BLOCKS_CLEAR_CONFIGS['GCN'] = [(2, 64, 0.1, 1)]
+BLOCKS_CLEAR_CONFIGS['GIN'] = [(2, 64, 0.1, 1)]
+CONFIGS['blocks-clear'] = BLOCKS_CLEAR_CONFIGS
+
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
@@ -25,13 +30,12 @@ def _parse_arguments():
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_learning_rate = 0.001
-    default_weight_decay = 0.0
-    default_gradient_accumulation = 1
+    default_weight_decay = 0.01
     default_max_samples_per_value = 100  # TODO: INCREASE THIS?
     default_max_samples_per_file = 2000
     default_max_samples = None
     default_patience = 50
-    default_gradient_clip = 5
+    default_gradient_clip = 1
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 5
@@ -39,25 +43,24 @@ def _parse_arguments():
     default_train_indices = None
     default_val_indices = None
     default_runs = 1
+    default_readout = 'MAX'
+    default_loss = 'MSE'
 
     # TODO: COMPUTE PATHS AUTOMATICALLY FROM DOMAIN NAME?
     # arguments for training
+    parser.add_argument('--domain', required=True, type=str, help='domain name')
     parser.add_argument('--train', required=True, type=Path, help='path to training dataset')
     parser.add_argument('--validation', required=True, type=Path, help='path to validation dataset')
     parser.add_argument('--seeds', required=True, type=int, help='number of random seeds used for training')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
-
-    parser.add_argument('--num_layers_range', nargs='+', type=int, help='range of number of GNN layers')
-    parser.add_argument('--hidden_size_range', nargs='+', type=int, help='range of hidden size of GNN layers')
-    parser.add_argument('--dropout_range', nargs='+', type=float, help='range of dropout values')
-    parser.add_argument('--heads_range', nargs='+', type=int, help='range of number of attention heads')
+    parser.add_argument('--architectures', required=True, nargs='+', type=str, help='Architectures to train')
 
     parser.add_argument('--new_data', action='store_true', help='uses the datasets from the newer Stahlberg paper')
 
     # arguments for the architecture
-    parser.add_argument('--aggregation', required=True, choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Performer', 'Transformer', 'GCNGPS'], help=f'aggregation function')
-    parser.add_argument('--readout', required=True, choices=['ADD', 'MAX'], help=f'readout function')
-    parser.add_argument('--loss', required=True, choices=['MSE', 'MAE'], help=f'loss function')
+    parser.add_argument('--aggregation', choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Performer', 'Transformer', 'GCNGPS'], help=f'aggregation function')
+    parser.add_argument('--readout', default=default_readout, choices=['ADD', 'MAX'], help=f'readout function')
+    parser.add_argument('--loss', default=default_loss, choices=['MSE', 'MAE'], help=f'loss function')
 
     parser.add_argument('--num_layers', default=2, type=int, help='number of GNN layers')
     parser.add_argument('--hidden_size', default=256, type=int, help='hidden size of GNN layers')
@@ -76,7 +79,6 @@ def _parse_arguments():
     parser.add_argument('--num_workers', default=default_num_workers, type=int, help=f'number of workers for the data loader (use 0 on Windows) (default={default_num_workers})')
     parser.add_argument('--learning_rate', default=default_learning_rate, type=float, help=f'learning rate of training session (default={default_learning_rate})')
     parser.add_argument('--weight_decay', default=default_weight_decay, type=float, help=f'strength of weight decay regularization (default={default_weight_decay})')
-    parser.add_argument('--gradient_accumulation', default=default_gradient_accumulation, type=int, help=f'number of gradients to accumulate before step (default={default_gradient_accumulation})')
     parser.add_argument('--max_samples_per_value', default=default_max_samples_per_value, type=int, help=f'maximum number of states per dataset (default={default_max_samples_per_value})')
     parser.add_argument('--max_samples_per_file', default=default_max_samples_per_file, type=int, help=f'maximum number of states per instance file (default={default_max_samples_per_file})')
     parser.add_argument('--max_samples', default=default_max_samples, type=int, help=f'maximum number of states in total (default={default_max_samples})')
@@ -91,13 +93,12 @@ def _parse_arguments():
     parser.add_argument('--logname', default=None, type=str, help='if provided, versions are stored in folder with this name inside logdir')
     parser.add_argument('--save_top_k', default=default_save_top_k, type=int, help=f'number of top-k models to save (default={default_save_top_k})')
 
+    # needed for planning during coverage validation
     default_debug_level = 0
     default_cycles = 'avoid'
     default_logfile = 'log_plan.txt'
     default_max_length = 500
     default_registry_filename = '../derived_predicates/registry_rules.json'
-
-    parser.add_argument('--domain', required=True, type=str, help='domain name')
 
     # optional arguments
     parser.add_argument('--augment', action='store_true', help='augment states with derived predicates')
@@ -121,82 +122,9 @@ def _parse_arguments():
     args = parser.parse_args()
     return args
 
-def load_model(args, max_arity, path=None):
-    print(colored('Loading model', 'green', attrs = [ 'bold' ]))
-    model_params = {
-        "max_arity": max_arity,
-        "num_layers": args.num_layers,
-        "hidden_size": args.hidden_size,
-        "dropout": args.dropout,
-        "learning_rate": args.learning_rate,
-        "heads": args.heads,
-        "weight_decay": args.weight_decay,
-        # "gradient_accumulation": args.gradient_accumulation,
-        "batch_size": args.batch_size,
-        "max_samples_per_value": args.max_samples_per_value,
-        "max_samples": args.max_samples,
-        "patience": args.patience,
-        "gradient_clip": args.gradient_clip,
-    }
-
-    try:
-        Model = model_classes[(args.aggregation, args.readout, args.loss)]
-    except KeyError:
-        raise NotImplementedError(f"No model found for {(args.aggregation, args.readout, args.loss)} combination")
-
-    device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
-    if path is None:
-        model = Model(**model_params)
-    else:
-        print(f"Loading policy {path}")
-        try:
-            model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False)
-        except:
-            try:
-                model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
-                                                   map_location=torch.device('cuda'))
-            except:
-                model = Model.load_from_checkpoint(checkpoint_path=str(path), strict=False,
-                                                   map_location=torch.device('cpu'))
-
-    model = model.to(device)
-
-    return model
-
-def load_trainer(args, logdir):
-    print(colored('Initializing trainer', 'green', attrs = [ 'bold' ]))
-
-    max_epochs = args.max_epochs
-    patience = args.patience
-
-    callbacks = []
-    callbacks.append(EarlyStopping(monitor='validation_loss', patience=patience))
-    callbacks.append(pl.callbacks.LearningRateMonitor())
-    callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss',
-                                     filename='{epoch}-{validation_loss}-{coverage}-{avg_plan_length}'))
-    callbacks.append(pl.callbacks.ModelCheckpoint(monitor='quality', save_top_k=args.save_top_k, mode='max',
-                                                  filename='{epoch}-{coverage}-{avg_plan_length}-{validation_loss}'))
-
-    trainer_params = {
-        "num_sanity_val_steps": 0,
-        "callbacks": callbacks,
-        "profiler": args.profiler,
-        # "accumulate_grad_batches": args.gradient_accumulation,
-        "gradient_clip_val": args.gradient_clip,
-        "check_val_every_n_epoch": args.validation_frequency,
-        "max_epochs": max_epochs,
-    }
-    if args.gpus == 0:
-        trainer_params["accelerator"] = "cpu"
-    else:
-        trainer_params["accelerator"] = "gpu"
-
-    trainer_params['logger'] = TensorBoardLogger(logdir, name="")
-    trainer = pl.Trainer(**trainer_params)
-    return trainer
-
 # writes results of a planning run ato a csv file
-def save_results(results, policy_type, policy_path, val_loss, val_coverage, val_avg_plan_length, planning_results, num_layers, hidden_size, dropout, heads):
+def save_results(results, architecture, policy_type, policy_path, val_loss, val_coverage, val_avg_plan_length, planning_results, num_layers, hidden_size, dropout, heads):
+    results["architecture"].append(architecture)
     results["type"].append(policy_type)
     results["policy_path"].append(policy_path)
     results["instances"].append(planning_results["instances"])
@@ -213,21 +141,20 @@ def save_results(results, policy_type, policy_path, val_loss, val_coverage, val_
     results["best_plan_quality"].append(planning_results["best_plan_quality"])
     results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
-    results["num_layers_range"] = "".join([x + "," for x in map(str, args.num_layers_range)])
-    results["hidden_size_range"] = "".join([x + "," for x in map(str, args.hidden_size_range)])
-    results["dropout_range"] = "".join([x + "," for x in map(str, args.dropout_range)])
-    results["heads_range"] = "".join([x + "," for x in map(str, args.heads_range)])
+    results["architectures"] = "".join([x + "," for x in args.architectures])
 
 def _main(args):
-    # compute all configurations
+    # get hyperparameter configurations
+    domain_configs = CONFIGS[args.domain]
     configs = []
-    for num_layers in args.num_layers_range:
-        for hidden_size in args.hidden_size_range:
-            for dropout in args.dropout_range:
-                for heads in args.heads_range:
-                    configs.append((num_layers, hidden_size, dropout, heads))
+    for architecture in args.architectures:
+        config = domain_configs[architecture]
+        config = [architecture] + config
+        configs.append(config)
 
+    # initialize results
     results = {
+        "architecture": [],
         "type": [],
         "policy_path": [],
         "val_loss": [],
@@ -245,6 +172,7 @@ def _main(args):
         "plans_directory": [],
     }
 
+    # load dataset
     if args.new_data:
         predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states = load_dataset_new(args)
 
@@ -259,6 +187,12 @@ def _main(args):
                 max_arity = arity
             predicate_ids[predicate] = i
             i += 1
+
+        train_graphs = states_to_graphs_new(train_dataset.get_states(), predicate_dict, predicate_ids, max_arity)
+        validation_graphs = states_to_graphs_new(validation_dataset.get_states(), predicate_dict, predicate_ids, max_arity)
+
+        problem_files = glob.glob(str('data/pddl/' + args.domain + '/validation/' + '*.pddl'))
+        domain_file = Path('data/pddl/' + args.domain + '/validation/domain.pddl')
     else:
         train_dataset, predicates, decoded_predicates = load_dataset_old(args.train, args.max_samples_per_value)
         validation_dataset, _, _ = load_dataset_old(args.validation, args.max_samples_per_value)
@@ -287,21 +221,36 @@ def _main(args):
             decoded_predicate_ids[predicate] = i
             i += 1
 
+        train_samples = [train_dataset[i] for i in range(len(train_dataset))]
+        train_graphs = states_to_graphs_old(train_samples, predicate_dict, predicate_ids, max_arity)
+        validation_samples = [validation_dataset[i] for i in range(len(validation_dataset))]
+        validation_graphs = states_to_graphs_old(validation_samples, predicate_dict, predicate_ids, max_arity)
+
+        problem_files = glob.glob(str('data_old/pddl/' + args.domain + '/validation/' + '*.pddl'))
+        domain_file = Path('data_old/pddl/' + args.domain + '/validation/domain.pddl')
+
+    validation_instances = [instance for instance in problem_files if str(Path(instance).stem) != 'domain']
+
+    train_loader = GraphDataLoader(train_graphs, batch_size=args.batch_size, shuffle=True, drop_last=False,
+                                   num_workers=args.num_workers, pin_memory=True)
+    validation_loader = GraphDataLoader(validation_graphs, batch_size=args.batch_size, shuffle=False,
+                                        drop_last=False, num_workers=args.num_workers, pin_memory=True)
+
+    # begin training
     args.logdir.mkdir(parents=True, exist_ok=True)
-    config_count = 0
     for config in configs:
-        config_dir = args.logdir / f"config_{config_count}"
+        # set hyperparameters
+        args.aggregation = config[0]
+        args.num_layers = config[1][0]
+        args.hidden_size = config[1][1]
+        args.dropout = config[1][2]
+        args.heads = config[1][3]
+
+        config_dir = args.logdir / f"config_{args.aggregation}"
         config_dir.mkdir(parents=True, exist_ok=True)
         print("\n")
         print("CONFIG: ", config)
         print("\n")
-        config_count += 1
-
-        # set hyperparameters
-        args.num_layers = config[0]
-        args.hidden_size = config[1]
-        args.dropout = config[2]
-        args.heads = config[3]
 
 
         # TODO: STEP 1: INITIALIZE
@@ -312,29 +261,6 @@ def _main(args):
         train_logdir = config_dir / f"trained"
         train_logdir.mkdir(parents=True, exist_ok=True)
 
-        if args.new_data:
-            train_graphs = states_to_graphs_new(train_dataset.get_states(), predicate_dict, predicate_ids, max_arity)
-            validation_graphs = states_to_graphs_new(validation_dataset.get_states(), predicate_dict, predicate_ids,
-                                                 max_arity)
-        else:
-            train_samples = [train_dataset[i] for i in range(len(train_dataset))]
-            train_graphs = states_to_graphs_old(train_samples, predicate_dict, predicate_ids, max_arity)
-            validation_samples = [validation_dataset[i] for i in range(len(validation_dataset))]
-            validation_graphs = states_to_graphs_old(validation_samples, predicate_dict, predicate_ids, max_arity)
-
-
-        train_loader = GraphDataLoader(train_graphs, batch_size=args.batch_size, shuffle=True, drop_last=False,
-                                       num_workers=args.num_workers, pin_memory=True)
-        validation_loader = GraphDataLoader(validation_graphs, batch_size=args.batch_size, shuffle=False,
-                                            drop_last=False, num_workers=args.num_workers, pin_memory=True)
-
-        if args.new_data:
-            problem_files = glob.glob(str('data/pddl/' + args.domain + '/validation/' + '*.pddl'))
-            domain_file = Path('data/pddl/' + args.domain + '/validation/domain.pddl')
-        else:
-            problem_files = glob.glob(str('data_old/pddl/' + args.domain + '/validation/' + '*.pddl'))
-            domain_file = Path('data_old/pddl/' + args.domain + '/validation/domain.pddl')
-        validation_instances = [instance for instance in problem_files if str(Path(instance).stem) != 'domain']
 
         # TODO: STEP 2: TRAIN
         print(colored('Training policies from scratch', 'red', attrs=['bold']))
@@ -543,11 +469,11 @@ def _main(args):
 
             # save results of the best run
             if policy_type == "loss_validation":
-                save_results(results, policy_type=policy_type, policy_path=policy, val_loss=loss_validation_best_val_loss,
+                save_results(results, architecture=args.aggregation, policy_type=policy_type, policy_path=policy, val_loss=loss_validation_best_val_loss,
                              val_coverage=loss_validation_best_val_coverage, val_avg_plan_length=loss_validation_best_avg_plan_length,
                              planning_results=planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
             elif policy_type == "coverage_validation":
-                save_results(results, policy_type=policy_type, policy_path=policy, val_loss=coverage_validation_best_val_loss,
+                save_results(results, architecture=args.aggregation, policy_type=policy_type, policy_path=policy, val_loss=coverage_validation_best_val_loss,
                              val_coverage=coverage_validation_best_val_coverage, val_avg_plan_length=coverage_validation_best_avg_plan_length,
                              planning_results=planning_results, num_layers=args.num_layers, hidden_size=args.hidden_size, dropout=args.dropout, heads=args.heads)
 

@@ -154,7 +154,6 @@ def _parse_arguments():
     default_save_top_k = 5
     default_update_interval = -1
     default_loss = "selfsupervised_suboptimal"
-    # default_max_bugs_per_iteration = 9000  # TODO: HOW TO CHOOSE THIS WHEN DOING ITERATIVE DEBUGGING?
     default_max_epochs = None
     default_train_indices = None
     default_val_indices = None
@@ -262,6 +261,7 @@ def _parse_arguments():
     args = parser.parse_args()
     return args
 
+
 def _process_args(args):
     if (not hasattr(args, 'readout')) or (args.readout is None): args.readout = False
     if (not hasattr(args, 'verbose')) or (args.verbose is None): args.verbose = False
@@ -276,6 +276,7 @@ def _process_args(args):
             print(colored(f'WARNING: Invalid constants {loss_constants} for loss function, using default values', 'magenta', attrs = [ 'bold' ]))
         else:
             set_loss_constants(loss_constants)
+
 
 def load_datasets(args):
     print(colored('Loading datasets...', 'green', attrs = [ 'bold' ]))
@@ -308,6 +309,7 @@ def load_datasets(args):
 
     print(f'{len(predicates)} predicate(s) in dataset; predicates=[ {", ".join([ f"{name}/{arity}" for name, arity in predicates ])} ]')
     return predicates, collate, train_dataset, validation_dataset, train_indices_selected_states, validation_indices_selected_states
+
 
 def load_model(args, predicates, path=None, retrain=False):
     print(colored('Loading model', 'green', attrs = [ 'bold' ]))
@@ -374,9 +376,8 @@ def load_trainer(args, logdir, path=None):
     callbacks.append(EarlyStopping(monitor='validation_loss', patience=patience))
     callbacks.append(ModelCheckpoint(save_top_k=args.save_top_k, monitor='validation_loss',
                                      filename='{epoch}-{validation_loss}-{coverage}-{avg_plan_length}'))
-    if args.coverage_validation:
-        callbacks.append(pl.callbacks.ModelCheckpoint(monitor='quality', save_top_k=args.save_top_k, mode='max',
-                                                      filename='{epoch}-{coverage}-{avg_plan_length}-{validation_loss}'))
+    callbacks.append(pl.callbacks.ModelCheckpoint(monitor='quality', save_top_k=args.save_top_k, mode='max',
+                                                  filename='{epoch}-{coverage}-{avg_plan_length}-{validation_loss}'))
 
     trainer_params = {
         "num_sanity_val_steps": 0,
@@ -434,6 +435,7 @@ def _main(args):
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_params)
     validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_params)
 
+    # for coverage validation
     problem_files = glob.glob(str('data/pddl/' + args.domain + '/validation/' + '*.pddl'))
     domain_file = Path('data/pddl/' + args.domain + '/validation/domain.pddl')
     validation_instances = [instance for instance in problem_files if str(Path(instance).stem) != 'domain']
@@ -450,11 +452,11 @@ def _main(args):
     train_model = load_model(args, predicates, path=trained_best_policy, retrain=False)
     trainer = load_trainer(args, logdir=train_logdir)
     # compute validation loss
-    trained_best_val_loss = trainer.validate(train_model, validation_loader)[0]['validation_loss']
+    trained_val_loss = trainer.validate(train_model, validation_loader)[0]['validation_loss']
     trained_best_policy = args.policy
     # compute coverage and average plan length on validation instances
     solved = []
-    plan_lenghts = []
+    plan_lengths = []
     for validation_instance in validation_instances:
         result_string, action_trace, is_solution = planning(args=args, policy="", model=train_model,
                                                             domain_file=domain_file,
@@ -462,21 +464,21 @@ def _main(args):
                                                             device=device)
         if is_solution:
             solved.append(1)
-            plan_lenghts.append(len(action_trace))
+            plan_lengths.append(len(action_trace))
         else:
             solved.append(0)
 
     if len(solved) == 0:
-        trained_policy_coverage = 0.0
+        trained_val_coverage = 0.0
     else:
-        trained_policy_coverage = round(sum(solved) / len(solved), 3)
+        trained_val_coverage = round(sum(solved) / len(solved), 3)
 
-    if len(plan_lenghts) == 0:
-        trained_policy_avg_plan_length = 10000.0
+    if len(plan_lengths) == 0:
+        trained_avg_plan_length = 10000.0
     else:
-        trained_policy_avg_plan_length = round(sum(plan_lenghts) / len(plan_lenghts), 3)
+        trained_avg_plan_length = round(sum(plan_lengths) / len(plan_lengths), 3)
 
-    print(f"The best trained policy achieved a validation loss of {trained_best_val_loss}, a coverage of {trained_policy_coverage}, and an average plan length of {trained_policy_avg_plan_length}")
+    print(f"The best trained policy achieved a validation loss of {trained_val_loss}, a coverage of {trained_val_coverage}, and an average plan length of {trained_avg_plan_length}")
 
     best_trained_policy_dir = train_logdir / 'best'
     best_trained_policy_dir.mkdir(parents=True, exist_ok=True)
@@ -543,7 +545,7 @@ def _main(args):
 
             # checkpoint of loss validation
             else:
-                val_coverage, val_avg_plan_length, val_loss = re.search("validation_loss=(.*?)-coverage=(.*?)-avg_plan_length=(.*?).ckpt", str(checkpoint)).groups()
+                val_loss, val_coverage, val_avg_plan_length = re.search("validation_loss=(.*?)-coverage=(.*?)-avg_plan_length=(.*?).ckpt", str(checkpoint)).groups()
                 val_loss = float(val_loss)
                 val_coverage = float(val_coverage)
                 val_avg_plan_length = float(val_avg_plan_length)
@@ -556,9 +558,10 @@ def _main(args):
 
 
     policy_types_and_paths = [('retrained_loss_validation', retrained_loss_validation_best_policy),
-                              ('coverage_validation', retrained_coverage_validation_best_policy),
+                              ('retrained_coverage_validation', retrained_coverage_validation_best_policy),
                               ('trained', trained_best_policy)]
 
+    # evaluate performance on bugs
     bug_path = args.bugs
     bugs = load_bugs(bug_path)
     all_bug_losses = {}
@@ -573,7 +576,6 @@ def _main(args):
             for bug in bugs:
                 try:
                     labels, collated_states_with_object_counts, solvable_labels, state_counts = collate([bug])
-
                     output = model(collated_states_with_object_counts)
                     loss = selfsupervised_suboptimal_loss_no_solvable_labels(output, labels, state_counts, device)
                     bug_losses.append(loss.item())
@@ -611,7 +613,7 @@ def _main(args):
     os.system("cp " + str(train_weights_path) + " " + str(retrained_loss_validation_best_policy_dir / "weights.train"))
     os.system("cp " + str(bug_weights_path) + " " + str(retrained_loss_validation_best_policy_dir / "weights.bugs"))
     if not args.no_distillation:
-        dist_weights_path = retrained_loss_validation_best_policy_parent_dir.parent.parent / "weights.dist"
+        dist_weights_path = retrained_loss_validation_best_policy_parent_dir / "weights.dist"
         os.system("cp " + str(dist_weights_path) + " " + str(retrained_loss_validation_best_policy_dir / "weights.dist"))
 
 
@@ -641,7 +643,7 @@ def _main(args):
     os.system("cp " + str(train_weights_path) + " " + str(retrained_coverage_validation_best_policy_dir / "weights.train"))
     os.system("cp " + str(bug_weights_path) + " " + str(retrained_coverage_validation_best_policy_dir / "weights.bugs"))
     if not args.no_distillation:
-        dist_weights_path = retrained_coverage_validation_best_policy_parent_dir.parent.parent / "weights.dist"
+        dist_weights_path = retrained_coverage_validation_best_policy_parent_dir / "weights.dist"
         os.system("cp " + str(dist_weights_path) + " " + str(retrained_coverage_validation_best_policy_dir / "weights.dist"))
 
 
@@ -746,20 +748,20 @@ def _main(args):
         planning_results = dict(instances=len(problem_files)-1, max_coverage=max(coverages),
                                              min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
                                              best_plan_quality=best_plan_quality, plans_directory=best_planning_run)
-        print(planning_results)
+        # print(planning_results)
 
         # save results of the best run
         if policy_type == "trained":
             save_results(results_dict=results, args=args, policy_type="trained", policy_path=best_trained_policy_path,
-                         val_loss=trained_best_val_loss, val_coverage=None, val_avg_plan_length=None,
+                         val_loss=trained_val_loss, val_coverage=trained_val_coverage, val_avg_plan_length=trained_avg_plan_length,
                          bug_loss=all_bug_losses["trained"], planning_results=planning_results)
         elif policy_type == "retrained_loss_validation":
             save_results(results_dict=results, args=args, policy_type="retrained_loss_validation", policy_path=retrained_loss_validation_best_policy_path,
-                         val_loss=best_retrained_val_loss, val_coverage=None, val_avg_plan_length=None,
+                         val_loss=retrained_loss_validation_best_val_loss, val_coverage=retrained_loss_validation_best_val_coverage, val_avg_plan_length=retrained_loss_validation_best_avg_plan_length,
                          bug_loss=all_bug_losses['retrained_loss_validation'], planning_results=planning_results)
         elif policy_type == "retrained_coverage_validation":
-            save_results(results_dict=results, args=args, policy_type="retrained_coverage_validation", policy_path=best_retrained_val_coverage_policy_path,
-                         val_loss=None, val_coverage=best_retrained_val_coverage, val_avg_plan_length=best_retrained_val_avg_plan_length,
+            save_results(results_dict=results, args=args, policy_type="retrained_coverage_validation", policy_path=retrained_coverage_validation_best_policy_path,
+                         val_loss=retrained_coverage_validation_best_val_loss, val_coverage=retrained_coverage_validation_best_val_coverage, val_avg_plan_length=retrained_coverage_validation_best_avg_plan_length,
                          bug_loss=all_bug_losses['retrained_coverage_validation'], planning_results=planning_results)
 
         print(results)

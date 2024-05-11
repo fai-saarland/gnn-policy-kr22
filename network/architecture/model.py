@@ -400,6 +400,8 @@ def _create_unsupervised_retrain_model_class(base: pl.LightningModule, loss):
 
     return Model
 
+from softadapt import LossWeightedSoftAdapt
+from utils_retrain import planning
 def _create_distillation_model_class(base: pl.LightningModule, loss):
     """Create a model class for retraining of models using distillation."""
     class Model(base):
@@ -442,38 +444,62 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             self.all_val_bug_losses = []
             self.all_dist_losses = []
             self.all_total_losses = []
-            self.episode_counter = 0
+            self.epoch_counter = 0
+
+            # TODO: SoftAdapt
+            self.softadapt_object = LossWeightedSoftAdapt(beta=0.1)
+            self.epochs_to_make_updates = 5
+            self.train_loss_values = []
+            self.distillation_loss_values = []
+            self.bug_loss_values = []
 
         def configure_optimizers(self):
             print("retrain_weight_decay: ", self.retrain_weight_decay)
-            optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr),
+            self.optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr),
                                          weight_decay=self.retrain_weight_decay)
-            #scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25,
+            # self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=25,
             #                                                       verbose=True)
-            self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=100, eta_min=0.00001)
+            # self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=100, eta_min=0.00001)
 
             optimize = {
-                'optimizer': optimizer,
-                'lr_scheduler': self.scheduler,
+                'optimizer': self.optimizer,
+                # 'lr_scheduler': self.scheduler,
                 'monitor': "validation_loss",
             }
             return optimize
 
-        def initialize(self, distillation_weight, bug_weight, retrain_epochs, retrain_weight_decay, base_policy, oracle, checkpoint_path, update_interval, no_bug_loss_weight, no_bug_counts):
-            self.distillation_weight = distillation_weight
-            self.bug_weight = bug_weight
+        def initialize(self, no_distillation, retrain_epochs, retrain_weight_decay, base_policy, oracle, checkpoint_path):
+            self.no_distillation = no_distillation
             self.retrain_epochs = retrain_epochs
             self.retrain_weight_decay = retrain_weight_decay
             self.oracle = oracle
             self.checkpoint_path = checkpoint_path
-            self.update_interval = update_interval
-            self.no_bug_loss_weight = no_bug_loss_weight
-            self.no_bug_counts = no_bug_counts
 
             # freeze base policy
             self.base_policy = base_policy
             for param in self.base_policy.parameters():
                 param.requires_grad = False
+
+
+            # TODO: SoftAdapt
+            self.train_weights = []
+            self.bug_weights = []
+            if self.no_distillation:
+                self.adapt_weights = torch.tensor([1.0, 1.0])
+            else:
+                self.adapt_weights = torch.tensor([1.0, 1.0, 1.0])
+                self.distillation_weights = []
+
+        def enable_coverage_validation(self, validation_instances, args, domain_file):
+            self.validation_instances = validation_instances
+            self.args = args
+            self.domain_file = domain_file
+
+            self.coverages = []
+            self.avg_plan_lengths = []
+            self.best_coverage = -1.0
+            self.best_avg_plan_quality = float('inf')
+            self.best_policy_quality = 0.0
 
         # map a state to a string such that we can check whether we have seen this state before
         def state_to_string(self, state):
@@ -505,28 +531,6 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
 
             assert len(self.bug_states) == len(self.bug_counts)
 
-        def get_val_bug_states(self):
-            new_val_bug_states = self.oracle.get_val_bug_states()
-
-            for new_val_bug in new_val_bug_states:
-                val_bug_string = self.state_to_string(new_val_bug)
-                if val_bug_string not in self.val_bug_dict:
-                    self.val_bug_states.append(new_val_bug)
-                    self.val_bug_dict[val_bug_string] = len(self.val_bug_states) - 1
-                    self.val_bug_counts = np.append(self.val_bug_counts, 0.0)
-                else:
-                    val_bug_index = self.val_bug_dict[val_bug_string]
-                    old_val_bug_label = self.val_bug_states[val_bug_index][0]
-                    new_val_bug_label = new_val_bug[0]
-                    if new_val_bug_label < old_val_bug_label:
-                        self.bug_states[val_bug_index] = new_val_bug
-                        self.bug_counts[val_bug_index] = 0.0
-
-            self.val_bug_counts += 1.0
-            self.val_bug_ids = np.arange(len(self.val_bug_states))
-
-            assert len(self.val_bug_states) == len(self.val_bug_counts)
-
         def training_step(self, train_batch, batch_index):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = train_batch
 
@@ -538,116 +542,73 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             # train_loss = mean_squared_error_loss(retrain_output, base_output[0], None, state_counts, self.device)
             # train_loss = torch.nn.functional.mse_loss(retrain_output[0], base_output[0])
             # train_loss = torch.nn.functional.l1_loss(retrain_output[0], base_output[0])
-            train_distillation_loss = distillation_loss(retrain_output, base_output, labels, solvable_labels, state_counts, self.device)
             train_original_loss = self.loss(retrain_output, labels, solvable_labels, state_counts, self.device)
+            if not self.no_distillation:
+                train_distillation_loss = distillation_loss(retrain_output, base_output, labels, solvable_labels,
+                                                            state_counts, self.device)
 
-            train_loss = self.distillation_weight * train_distillation_loss + (1-self.distillation_weight) * train_original_loss
-
-            # these values are used for interpolation
-            #with torch.no_grad():
-            #    if train_loss > self.max_train_loss:
-            #        self.max_train_loss = train_loss
-            #    elif train_loss < self.min_train_loss:
-            #        self.min_train_loss = train_loss
-
+            # TODO: SoftAdapt
+            if not self.no_distillation:
+                train_loss = self.adapt_weights[0] * train_original_loss + self.adapt_weights[2] * train_distillation_loss
+            else:
+                train_loss = self.adapt_weights[0] * train_original_loss
 
             #l1 = l1_regularization(self, self.l1_factor)
             #self.log('l1_loss', l1)
             #total = train_loss + l1
 
             self.train_losses.append(train_original_loss)
-            self.dist_losses.append(train_distillation_loss)
+            if not self.no_distillation:
+                self.dist_losses.append(train_distillation_loss)
 
-            if len(self.bug_states) == 0:
-                self.log('train_loss', train_loss, prog_bar=True, on_step=False, on_epoch=True)
-                self.total_losses.append(train_loss)
-                return train_loss
+            bug_scores = np.ones(len(self.bug_counts))  # sample uniformly
+            bug_probs = bug_scores / np.sum(bug_scores)
 
-            else:
-                # define distribution over bug states counts
-                if not self.no_bug_counts:
-                    bug_scores = 1 / self.bug_counts  # prioritize newer bugs
-                else:
-                    bug_scores = np.ones(len(self.bug_counts))  # sample uniformly
+            # sample bug states
+            bug_batch = []
+            for _ in range(len(train_batch)):
+                bug_id = np.random.choice(self.bug_ids, p=bug_probs)
+                bug_batch.append(self.bug_states[bug_id])
 
-                bug_probs = bug_scores / np.sum(bug_scores)
+            labels, collated_states_with_object_counts, solvable_labels, state_counts = self.oracle.collate(bug_batch)
 
+            output = self(collated_states_with_object_counts)
+            bug_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
+            # bug_loss = mean_squared_error_loss(output, labels, solvable_labels, state_counts, self.device)
+            self.log('bug_loss', bug_loss, prog_bar=True, on_step=False, on_epoch=True)
 
-                # sample bug states
-                bug_batch = []
-                for _ in range(len(train_batch)):
-                    bug_id = np.random.choice(self.bug_ids, p=bug_probs)
-                    bug_batch.append(self.bug_states[bug_id])
+            self.bug_losses.append(bug_loss)
 
-                labels, collated_states_with_object_counts, solvable_labels, state_counts = self.oracle.collate(bug_batch)
+            # TODO: SoftAdapt
+            loss = train_loss + self.adapt_weights[1] * bug_loss
+            self.log('train_loss', loss, prog_bar=True, on_step=False, on_epoch=True)
+            self.total_losses.append(loss)
 
-                output = self(collated_states_with_object_counts)
-                bug_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
-                # bug_loss = mean_squared_error_loss(output, labels, solvable_labels, state_counts, self.device)
-                self.log('bug_loss', bug_loss, prog_bar=True, on_step=False, on_epoch=True)
-
-                self.bug_losses.append(bug_loss)
-
-                if not self.no_bug_loss_weight:
-                    # loss = train_loss + self.bug_loss_weight * bug_loss
-                    loss = ((1.0-self.bug_weight) * train_loss) + (self.bug_weight * bug_loss)
-                else:
-                    loss = train_loss + bug_loss
-                self.log('train_loss', loss, prog_bar=True, on_step=False, on_epoch=True)
-                self.total_losses.append(loss)
-                return loss
+            return loss
 
         # when we load bugs only once at the start of the training
         def on_train_start(self):
-            if self.update_interval == -1:
-                self.get_bug_states()
-                if self.oracle.val_bugs is not None:
-                    self.get_val_bug_states()
-
-        # when we iteratively load new bugs during training
-        def on_train_epoch_start(self):
-            if self.update_interval != -1 and self.update_counter % self.update_interval == 0:
-                self.get_bug_states()
-                self.update_counter += 1
+            self.get_bug_states()
 
         def on_validation_epoch_end(self):
             with torch.no_grad():
                 # compute average loss on training samples during the last epoch
                 train_loss = sum(l.mean() for l in self.train_losses) / len(self.train_losses)
                 print(f'epoch train loss: {train_loss}')
-                # print(f'min train loss: {self.min_train_loss}')
-                # print(f'max train loss: {self.max_train_loss}')
                 self.all_train_losses.append(train_loss.item())
                 self.train_losses.clear()
 
-                dist_loss = sum(l.mean() for l in self.dist_losses) / len(self.dist_losses)
-                print(f'epoch distillation loss: {dist_loss}')
-                self.all_dist_losses.append(dist_loss.item())
-                self.dist_losses.clear()
+                if not self.no_distillation:
+                    dist_loss = sum(l.mean() for l in self.dist_losses) / len(self.dist_losses)
+                    print(f'epoch distillation loss: {dist_loss}')
+                    self.all_dist_losses.append(dist_loss.item())
+                    self.dist_losses.clear()
 
-                if len(self.bug_states) != 0:
-                    """
-                    # linearly interpolate between min and max train loss
-                    m = 1.0 / (self.max_train_loss - self.min_train_loss)
-                    b = -self.min_train_loss / (self.max_train_loss - self.min_train_loss)
-                    interpolated = m * train_loss + b
+                bug_loss = sum(l.mean() for l in self.bug_losses) / len(self.bug_losses)
+                print(f'epoch bug loss: {bug_loss}')
 
-                    # update bug loss weight
-                    self.bug_loss_weight = 1.0 - interpolated
-                    print(f'bug loss weight: {self.bug_loss_weight}')
-                    """
-                    # TODO: scale bug loss weight linearly from 0 to 1 over the first half of the retraining epochs
-                    self.episode_counter += 1
-                    # self.bug_loss_weight = min(self.episode_counter / (self.retrain_epochs/2), 1.0)
-                    # TODO: scale bug loss weight linearly from 0 to 1
-                    # self.bug_loss_weight = self.episode_counter / self.retrain_epochs
-                    # print(f'bug loss weight: {self.bug_weight}')
-
-                    bug_loss = sum(l.mean() for l in self.bug_losses) / len(self.bug_losses)
-                    print(f'epoch bug loss: {bug_loss}')
-
-                    self.all_bug_losses.append(bug_loss.item())
-                    self.bug_losses.clear()
+                self.all_bug_losses.append(bug_loss.item())
+                self.bug_losses.clear()
 
                 # compute average validation loss on validation samples during the last epoch
                 val_loss = sum(l.mean() for l in self.val_losses) / len(self.val_losses)
@@ -655,20 +616,93 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
                 self.all_val_losses.append(val_loss.item())
                 self.val_losses.clear()
 
-                if len(self.val_bug_states) != 0:
-                    val_bug_loss = sum(l.mean() for l in self.val_bug_losses) / len(self.val_bug_losses)
-                    print(f'epoch val bug loss: {val_bug_loss}')
-
-                    self.all_val_bug_losses.append(val_bug_loss.item())
-                    self.val_bug_losses.clear()
-
-                # print("learning rate: ", self.scheduler.get_last_lr())
-
                 total_loss = sum(l.mean() for l in self.total_losses) / len(self.total_losses)
                 print(f'epoch total loss: {total_loss}')
 
                 self.all_total_losses.append(total_loss.item())
                 self.total_losses.clear()
+
+                # print("learning rate: ", self.scheduler.get_last_lr())
+
+                # Coverage validation
+                self.eval()
+                solved = []
+                plan_lenghts = []
+                for validation_instance in self.validation_instances:
+                    result_string, action_trace, is_solution = planning(args=self.args, policy="", model=self,
+                                                                        domain_file=self.domain_file,
+                                                                        problem_file=validation_instance,
+                                                                        device=self.device)
+                    if is_solution:
+                        solved.append(1)
+                        plan_lenghts.append(len(action_trace))
+                    else:
+                        solved.append(0)
+                self.train()
+
+                if len(solved) == 0:
+                    coverage = 0.0
+                else:
+                    coverage = round(sum(solved) / len(solved), 3)
+
+                if len(plan_lenghts) == 0:
+                    avg_plan_length = 10000.0
+                else:
+                    avg_plan_length = round(sum(plan_lenghts) / len(plan_lenghts), 3)
+
+                # TODO: to have a perfect ranking of ALL policies we would need to store all of them and evaluate them afterward, however
+                # we only care about the best one anyway
+                # policy quality is incremented whenever the policy improves, allowing us to keep track of the best policies
+                if coverage > self.best_coverage:
+                    self.best_coverage = coverage
+                    self.best_avg_plan_quality = avg_plan_length
+                    self.best_policy_quality += 1.0
+                    quality = self.best_policy_quality
+                elif coverage == self.best_coverage and avg_plan_length < self.best_avg_plan_quality:
+                    self.best_avg_plan_quality = avg_plan_length
+                    self.best_policy_quality += 1.0
+                    quality = self.best_policy_quality
+                else:
+                    quality = 0.0
+
+                self.coverages.append(coverage)
+                self.avg_plan_lengths.append(avg_plan_length)
+
+                self.log('coverage', coverage, prog_bar=True, on_step=False, on_epoch=True)
+                self.log('avg_plan_length', avg_plan_length, prog_bar=True, on_step=False, on_epoch=True)
+                self.log('quality', quality, prog_bar=True, on_step=False, on_epoch=True)
+
+
+                # TODO: SoftAdapt
+                self.train_loss_values.append(train_loss)
+                if not self.no_distillation:
+                    self.distillation_loss_values.append(dist_loss)
+                self.bug_loss_values.append(bug_loss)
+
+                self.epoch_counter += 1
+                if self.epoch_counter % self.epochs_to_make_updates == 0 and self.epoch_counter > 0:
+                    if not self.no_distillation:
+                        self.adapt_weights = self.softadapt_object.get_component_weights(torch.tensor(self.train_loss_values),
+                                                                                         torch.tensor(self.bug_loss_values),
+                                                                                         torch.tensor(self.distillation_loss_values),
+                                                                                         verbose=False)
+                        self.distillation_weights.append(self.adapt_weights[2].item())
+                    else:
+                        self.adapt_weights = self.softadapt_object.get_component_weights(torch.tensor(self.train_loss_values),
+                                                                                         torch.tensor(self.bug_loss_values),
+                                                                                         verbose=False)
+
+                    print(f'New loss weights: {self.adapt_weights}')
+                    self.train_loss_values.clear()
+                    self.bug_loss_values.clear()
+                    if not self.no_distillation:
+                        self.distillation_loss_values.clear()
+
+                self.train_weights.append(self.adapt_weights[0].item())
+                self.bug_weights.append(self.adapt_weights[1].item())
+                if not self.no_distillation:
+                    self.distillation_weights.append(self.adapt_weights[2].item())
+
 
 
         # store information about training, validation, and bug losses
@@ -684,11 +718,25 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
             with open(self.checkpoint_path + "losses.total", "w") as f:
                 f.write(json.dumps(self.all_total_losses))
 
+            with open(self.checkpoint_path + "losses.coverage", "w") as f:
+                f.write(json.dumps(self.coverages))
+            with open(self.checkpoint_path + "losses.avg_plan_length", "w") as f:
+                f.write(json.dumps(self.avg_plan_lengths))
+
+            # TODO: SoftAdapt
+            with open(self.checkpoint_path + "weights.train", "w") as f:
+                f.write(json.dumps(self.train_weights))
+            with open(self.checkpoint_path + "weights.bugs", "w") as f:
+                f.write(json.dumps(self.bug_weights))
+            if not self.no_distillation:
+                with open(self.checkpoint_path + "weights.dist", "w") as f:
+                    f.write(json.dumps(self.distillation_weights))
+
         def validation_step(self, validation_batch, batch_index):
             labels, collated_states_with_object_counts, solvable_labels, state_counts = validation_batch
 
-            with torch.no_grad():
-                base_output = self.base_policy(collated_states_with_object_counts)
+            # with torch.no_grad():
+            #     base_output = self.base_policy(collated_states_with_object_counts)
             retrain_output = self(collated_states_with_object_counts)
 
             # validation_loss = mean_squared_error_loss(retrain_output, base_output, None, state_counts, self.device)
@@ -699,35 +747,8 @@ def _create_distillation_model_class(base: pl.LightningModule, loss):
 
             self.val_losses.append(validation_loss)
 
-            if len(self.val_bug_states) == 0:
-                self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
-                return validation_loss
-
-            else:
-                val_bug_scores = np.ones(len(self.val_bug_counts))  # sample uniformly
-                val_bug_probs = val_bug_scores / np.sum(val_bug_scores)
-
-                # sample bug states
-                val_bug_batch = []
-                for _ in range(len(validation_batch)):
-                    val_bug_id = np.random.choice(self.val_bug_ids, p=val_bug_probs)
-                    val_bug_batch.append(self.val_bug_states[val_bug_id])
-
-                labels, collated_states_with_object_counts, solvable_labels, state_counts = self.oracle.collate(val_bug_batch)
-
-                output = self(collated_states_with_object_counts)
-                # val_bug_loss = self.loss(output, labels, solvable_labels, state_counts, self.device)
-                val_bug_loss = mean_squared_error_loss(output, labels, solvable_labels, state_counts, self.device)
-                self.val_bug_losses.append(val_bug_loss)
-
-                self.log('val_bug_loss', val_bug_loss, prog_bar=True, on_step=False, on_epoch=True)
-
-                # TODO: HOW TO DEFINE A WEIGHTING FOR VALIDATION?
-                # loss = validation_loss + val_bug_loss
-                loss = validation_loss
-                self.log('validation_loss', loss, prog_bar=True, on_step=False, on_epoch=True)
-
-                return loss
+            self.log('validation_loss', validation_loss, prog_bar=True, on_step=False, on_epoch=True)
+            return validation_loss
 
     return Model
 
