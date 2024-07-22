@@ -3,7 +3,7 @@ from .loss import supervised_optimal_loss, unsupervised_optimal_loss
 from .loss import selfsupervised_optimal_loss, selfsupervised_suboptimal_loss, selfsupervised_suboptimal2_loss
 from .loss import unsupervised_suboptimal_loss
 from .loss import selfsupervised_suboptimal_loss_no_solvable_labels
-from .loss import mean_squared_error_loss, distillation_loss
+from .loss import mean_squared_error_loss, distillation_loss, L1_loss, L1_MSE_loss
 
 from .max_base import MaxModelBase, RelationMessagePassingModel as MaxRelationMessagePassingModel
 from .add_base import AddModelBase, RelationMessagePassingModel as AddRelationMessagePassingModel
@@ -31,7 +31,7 @@ from .model import RetrainSelfsupervisedSuboptimalMaxModel, RetrainSelfsupervise
 # PlanFormer models
 from .model import PlanFormer
 
-from .model import MSEMaxModel, RetrainDistillationMaxModel
+from .model import MSEMaxModel, RetrainDistillationMaxModel, L1MaxModel, L1MSEMaxModel
 
 # Settings
 from .model import set_max_trace_length
@@ -98,7 +98,9 @@ g_model_classes = {
     ('retrain_add', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddModel,
     ('retrain_addmax', False, 'selfsupervised_suboptimal'): RetrainSelfsupervisedSuboptimalAddMaxModel,
 
-    ('max', False, 'mean_squared_error'): MSEMaxModel
+    ('max', False, 'L1'): L1MaxModel,
+    ('max', False, 'mean_squared_error'): MSEMaxModel,
+    ('max', False, 'L1_MSE'): L1MSEMaxModel
 }
 
 # can be extended further, but we really only need the selfsupervised suboptimal max model

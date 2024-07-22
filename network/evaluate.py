@@ -115,7 +115,6 @@ def _parse_arguments():
     args = parser.parse_args()
     return args
 
-# TODO: NO CYCLE AVOIDANCE!!!!
 def _main(args):
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
 

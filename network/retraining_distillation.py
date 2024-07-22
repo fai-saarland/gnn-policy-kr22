@@ -542,6 +542,9 @@ def _main(args):
                     retrained_coverage_validation_best_avg_plan_length = val_avg_plan_length
                     retrained_coverage_validation_best_val_loss = val_loss
                     retrained_coverage_validation_best_policy = checkpoint
+                elif val_coverage == retrained_coverage_validation_best_val_coverage and val_avg_plan_length == retrained_coverage_validation_best_avg_plan_length and val_loss < retrained_coverage_validation_best_val_loss:
+                    retrained_coverage_validation_best_val_loss = val_loss
+                    retrained_coverage_validation_best_policy = checkpoint
 
             # checkpoint of loss validation
             else:

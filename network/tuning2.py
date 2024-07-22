@@ -20,7 +20,7 @@ def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # default values for arguments
-    default_batch_size = 64  # 64
+    default_batch_size = 256  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_learning_rate = 0.001
@@ -28,12 +28,12 @@ def _parse_arguments():
     default_max_samples_per_value = 100  # TODO: INCREASE THIS?
     default_max_samples_per_file = 2000
     default_max_samples = None
-    default_patience = 100
+    default_patience = 50
     default_gradient_clip = 1
     default_profiler = None
     default_validation_frequency = 1
     default_save_top_k = 5
-    default_max_epochs = 100
+    default_max_epochs = 75
     default_train_indices = None
     default_val_indices = None
     default_readout = 'MAX'

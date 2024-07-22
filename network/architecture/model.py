@@ -9,7 +9,7 @@ from generators.plan import policy_search
 
 from architecture import selfsupervised_suboptimal_loss_no_solvable_labels
 
-from architecture import mean_squared_error_loss, distillation_loss
+from architecture import mean_squared_error_loss, distillation_loss, L1_loss, L1_MSE_loss
 
 import numpy as np
 
@@ -889,6 +889,8 @@ RetrainSelfsupervisedSuboptimalAttentionModel = _create_unsupervised_retrain_mod
 
 RetrainDistillationMaxModel = _create_distillation_model_class(MaxModelBase, selfsupervised_suboptimal_loss)
 
+L1MaxModel = _create_mse_model_class(MaxModelBase, L1_loss)
 MSEMaxModel = _create_mse_model_class(MaxModelBase, mean_squared_error_loss)
+L1MSEMaxModel = _create_mse_model_class(MaxModelBase, L1_MSE_loss)
 
 

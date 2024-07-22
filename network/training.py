@@ -72,7 +72,7 @@ def _parse_arguments():
     parser.add_argument('--loss', default=default_loss, nargs='?',
                         choices=['supervised_optimal', 'selfsupervised_optimal', 'selfsupervised_suboptimal',
                                  'selfsupervised_suboptimal2', 'unsupervised_optimal', 'unsupervised_suboptimal',
-                                 'online_optimal', "mean_squared_error"])
+                                 'online_optimal', "mean_squared_error", "L1", "L1_MSE"])
     parser.add_argument('--update_interval', default=default_update_interval, type=int,
                         help=f'frequency at which new bugs are collected (default={default_update_interval})')
     parser.add_argument('--aggregation', default=default_aggregation, nargs='?', choices=['add', 'max', 'addmax', 'attention', 'planformer'], help=f'readout aggregation function (default={default_aggregation})')

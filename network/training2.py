@@ -14,19 +14,20 @@ from utils_new import load_datasets as load_dataset_new
 from utils_new import states_to_graphs as states_to_graphs_new
 from tuning2 import load_model, load_trainer
 
-CONFIGS = {}
+CONFIGS_LOSS_VAL = {}
+CONFIGS_COVERAGE_VAL = {}
 
-BLOCKS_CLEAR_CONFIGS = {}
-BLOCKS_CLEAR_CONFIGS['GCN'] = [(2, 64, 0.1, 1)]
-BLOCKS_CLEAR_CONFIGS['GIN'] = [(2, 64, 0.1, 1)]
-CONFIGS['blocks-clear'] = BLOCKS_CLEAR_CONFIGS
+BLOCKS_CLEAR_CONFIGS_LOSS_VAL = {}
+BLOCKS_CLEAR_CONFIGS_LOSS_VAL['GCN'] = [(2, 64, 0.1, 1)]
+BLOCKS_CLEAR_CONFIGS_LOSS_VAL['GIN'] = [(2, 64, 0.1, 1)]
+CONFIGS_LOSS_VAL['blocks-clear'] = BLOCKS_CLEAR_CONFIGS_LOSS_VAL
 
 
 def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # default values for arguments
-    default_batch_size = 64  # 64
+    default_batch_size = 256  # 64
     default_gpus = 0  # No GPU
     default_num_workers = 0
     default_learning_rate = 0.001
@@ -56,6 +57,7 @@ def _parse_arguments():
     parser.add_argument('--architectures', required=True, nargs='+', type=str, help='Architectures to train')
 
     parser.add_argument('--new_data', action='store_true', help='uses the datasets from the newer Stahlberg paper')
+    parser.add_argument('--coverage_val', action='store_true', help='use the hyperparameters that performed best according to coverage validation')
 
     # arguments for the architecture
     parser.add_argument('--aggregation', choices=['GCN', 'GCNV2', 'GAT', 'GATV2', 'GIN', 'Performer', 'Transformer', 'GCNGPS'], help=f'aggregation function')
@@ -134,18 +136,55 @@ def save_results(results, architecture, policy_type, policy_path, val_loss, val_
     results["max_coverage"].append(planning_results["max_coverage"])
     results["min_coverage"].append(planning_results["min_coverage"])
     results["avg_coverage"].append(planning_results["avg_coverage"])
+    results["avg_optimal_coverage"].append(planning_results["avg_optimal_coverage"])
+    results["avg_avg_plan_length"].append(planning_results["avg_avg_plan_length"])
     results["n_layers"].append(num_layers)
     results["h_size"].append(hidden_size)
     results["drop"].append(dropout)
     results["head"].append(heads)
-    results["best_plan_quality"].append(planning_results["best_plan_quality"])
-    results["plans_directory"].append(planning_results["plans_directory"])
     results.update(vars(args))
     results["architectures"] = "".join([x + "," for x in args.architectures])
 
+def parse_optimal_plan_lengths(args):
+    logs_path = ""
+    if args.domain == "blocks-clear":
+        logs_path = "data_old/logs/log_blocks-clear.txt"
+    elif args.domain == "blocks-on":
+        logs_path = "data_old/logs/log_blocks-on.txt"
+    elif args.domain == "gripper":
+        logs_path = "data_old/logs/log_gripper.txt"
+    elif args.domain == "visitall":
+        logs_path = "data_old/logs/log_visitall.txt"
+    elif args.domain == "parking-behind":
+        logs_path = "data_old/logs/log_parking-behind.txt"
+    elif args.domain == "satellite":
+        logs_path = "data_old/logs/log_satellite.txt"
+
+    optimal_plan_lengths = {}
+    with open(logs_path, "r") as f:
+        instance_name = None
+        for line in f.readlines():
+            line = line.strip('\n')
+            if line.find('Input:') > 0:
+                instance_name = line.split(' ')[-1].removesuffix('.pddl')
+                continue
+            if instance_name is not None:
+                if line.find('solves') > 0:
+                    fields = line.split(' ')
+                    for i in range(len(fields)):
+                        if fields[i] == 'cost:':
+                            plan_length = int(fields[i+1].removesuffix(')'))
+                            optimal_plan_lengths[instance_name] = plan_length
+                            instance_name = None
+
+    return optimal_plan_lengths
+
 def _main(args):
     # get hyperparameter configurations
-    domain_configs = CONFIGS[args.domain]
+    if args.coverage_val:
+        domain_configs = CONFIGS_COVERAGE_VAL[args.domain]
+    else:
+        domain_configs = CONFIGS_LOSS_VAL[args.domain]
     configs = []
     for architecture in args.architectures:
         config = domain_configs[architecture]
@@ -164,12 +203,12 @@ def _main(args):
         "max_coverage": [],
         "min_coverage": [],
         "avg_coverage": [],
+        "avg_optimal_coverage": [],
+        "avg_avg_plan_length": [],
         "n_layers": [],
         "h_size": [],
         "drop": [],
         "head": [],
-        "best_plan_quality": [],
-        "plans_directory": [],
     }
 
     # load dataset
@@ -314,6 +353,9 @@ def _main(args):
                         coverage_validation_best_avg_plan_length = val_avg_plan_length
                         coverage_validation_best_val_loss = val_loss
                         coverage_validation_best_policy = checkpoint
+                    elif val_coverage == coverage_validation_best_val_coverage and val_avg_plan_length == coverage_validation_best_avg_plan_length and val_loss < coverage_validation_best_val_loss:
+                        coverage_validation_best_val_loss = val_loss
+                        coverage_validation_best_policy = checkpoint
 
                 # checkpoint of loss validation
                 else:
@@ -378,6 +420,7 @@ def _main(args):
         plans_coverage_validation_path.mkdir(parents=True, exist_ok=True)
         policies_and_directories.append(("coverage_validation", coverage_validation_best_policy_path, plans_coverage_validation_path))
 
+        optimal_plan_lengths = parse_optimal_plan_lengths(args)
         for policy_type, policy, directory in policies_and_directories:
             # load files for planning
             if args.new_data:
@@ -404,10 +447,9 @@ def _main(args):
             model = model.to(device)
 
             # initialize metrics
-            best_coverage = 0
-            best_plan_quality = float('inf')
-            best_planning_run = None
             coverages = []
+            optimal_coverages = []
+            avg_plan_lengths = []
             for i in range(args.runs):
                 # create directory for current run
                 version_path = directory / f"version_{i}"
@@ -415,6 +457,7 @@ def _main(args):
                 # initialize metrics for current run
                 plan_lengths = []
                 is_solutions = []
+                is_optimals = []
                 for problem_file in problem_files:
                     problem_name = str(Path(problem_file).stem)
                     if problem_name == 'domain':
@@ -443,6 +486,7 @@ def _main(args):
                         f.write(result_string)
 
                     is_solutions.append(is_solution)
+                    is_optimals.append(is_solution and len(action_trace) == optimal_plan_lengths[problem_name])
                     if is_solution:
                         plan_lengths.append(len(action_trace))
                         print(f"Solved problem {problem_name} with plan length: {len(action_trace)}")
@@ -454,18 +498,18 @@ def _main(args):
                 # compute coverage of this run and check whether it is the best one yet
                 coverage = sum(is_solutions)
                 coverages.append(coverage)
-                try:
-                    plan_quality = sum(plan_lengths) / coverage
-                except:
-                    continue
-                if coverage > best_coverage or (coverage == best_coverage and plan_quality < best_plan_quality):
-                    best_coverage = coverage
-                    best_plan_quality = plan_quality
-                    best_planning_run = str(version_path)
+                optimal_coverage = sum(is_optimals)
+                optimal_coverages.append(optimal_coverage)
+                if len(plan_lengths) == 0:
+                    avg_plan_length = 10000.0
+                else:
+                    avg_plan_length = round(sum(plan_lengths) / len(plan_lengths), 3)
+                avg_plan_lengths.append(avg_plan_length)
 
             planning_results = dict(instances=len(problem_files)-1, max_coverage=max(coverages),
-                                                 min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
-                                                 best_plan_quality=best_plan_quality, plans_directory=best_planning_run)
+                                    min_coverage=min(coverages), avg_coverage=sum(coverages) / len(coverages),
+                                    avg_optimal_coverage=sum(optimal_coverages) / len(optimal_coverages),
+                                    avg_avg_plan_length=sum(avg_plan_lengths) / len(avg_plan_lengths))
 
             # save results of the best run
             if policy_type == "loss_validation":

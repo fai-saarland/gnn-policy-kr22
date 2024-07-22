@@ -45,7 +45,7 @@ def create_GNN(base: pl.LightningModule, pool, loss):
 
         def configure_optimizers(self):
             # TODO: USE ADAMW?
-            self.optimizer = torch.optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay, amsgrad=True)
+            self.optimizer = torch.optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay, amsgrad=False)
             # self.optimizer = torch.optim.Adam(self.parameters(), lr=(self.learning_rate or self.lr), weight_decay=self.weight_decay)
             # TODO: USE COSINE SCHEDULE WITH FIXED NUMBER OF EPOCHS
             # self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=0.5, patience=25, verbose=True)
