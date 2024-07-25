@@ -554,6 +554,255 @@ def compute_traces_with_augmented_states(predicate_dict, predicate_ids, max_arit
         return action_trace, state_trace, value_trace, reached_goal, num_evaluations
 
 
+
+
+
+
+
+
+# TODO: FOR VERIFICATION:
+def state_to_graph_old(state, predicate_dict, predicate_ids, max_arity):
+    atoms = []
+    max_id = 0
+    # the states only have one entry for each predicate, so to get the individual atoms we need to split according
+    # to the arity of the predicate
+    for predicate in state.keys():
+        arity = predicate_dict[predicate]
+        # some atoms may have no arguments!
+        if arity == 0:
+            atoms.append((predicate, []))
+            continue
+        arguments = state[predicate]
+        # keep track of the object with the highest id such that we now how many objects there are
+        for arg in arguments:
+            if arg > max_id:
+                max_id = arg
+        split_arguments = [arguments[i:i + arity] for i in range(0, len(arguments), arity)]
+        for argument in split_arguments:
+            atoms.append((predicate, argument))
+
+    objects = list(range(max_id + 1))
+
+    nodes_x = []
+    edge_index = [[], []]
+    # create nodes for objects
+    for i in range(len(objects)):
+        obj = objects[i]
+        # create tensor for object node's feature
+        object_node = torch.ones(3 + max_arity) * -1
+        # first feature is the id of the node
+        object_node[0] = i
+        # second feature indicates that this is an object node
+        object_node[1] = 0
+        # third feature is the id of the object
+        object_node[2] = obj
+
+        nodes_x.append(object_node)
+
+    # create nodes for atoms and add edges between objects and atoms
+    for i in range(len(atoms)):
+        predicate, arguments = atoms[i]
+        # create tensor for relation node's feature
+        atom_node = torch.ones(3 + max_arity) * -1
+        # first feature is the id of the node
+        atom_node[0] = i + len(objects)
+        # second feature indicates that this is an atom node
+        atom_node[1] = 1
+        # third feature is the id of the predicate
+        atom_node[2] = predicate_ids[predicate]
+        # next features are the object ids of the arguments
+        for x, argument in enumerate(arguments):
+            atom_node[x + 3] = argument.item()
+
+        nodes_x.append(atom_node)
+
+        # if the atom takes no arguments we connect the atom node to all object nodes
+        if len(arguments) == 0:
+            for x in range(len(objects)):
+                edge_index[0].append(i + len(objects))
+                edge_index[1].append(x)
+                edge_index[0].append(x)
+                edge_index[1].append(i + len(objects))
+        else:
+            # connect atom node to corresponding object nodes
+            for x, argument in enumerate(arguments):
+                edge_index[0].append(i + len(objects))
+                edge_index[1].append(argument.item())
+                edge_index[0].append(argument.item())
+                edge_index[1].append(i + len(objects))
+
+    nodes_x = torch.stack(nodes_x).float()
+    edge_index = torch.tensor(edge_index).long()
+    graph_state = Data(x=nodes_x, edge_index=edge_index, num_nodes=len(objects) + len(atoms))
+    graph_state.validate(raise_on_error=True)
+
+    return graph_state
+
+from timeit import default_timer as timer
+from termcolor import colored
+from generators import load_pddl_problem_with_augmented_states
+def planning_old(predicate_dict, predicate_ids, max_arity, args, policy, model, domain_file, problem_file, device):
+    start_time = timer()
+    result_string = ""
+
+    # deactivate dropout!
+    model.eval()
+    model.training = False
+
+    elapsed_time = timer() - start_time
+
+    result_string = result_string + f"Model '{policy}' loaded in {elapsed_time:.3f} second(s)"
+    result_string = result_string + "\n"
+    result_string = result_string + f"Loading PDDL files: domain='{domain_file}', problem='{problem_file}'"
+    result_string = result_string + "\n"
+
+    registry_filename = args.registry_filename if args.augment else None
+    pddl_problem = load_pddl_problem_with_augmented_states(domain_file, problem_file, registry_filename,
+                                                           args.registry_key, None)
+    del pddl_problem['predicates']  # Why?
+
+    result_string = result_string + f'Executing policy (max_length={args.max_length})'
+    result_string = result_string + "\n"
+    start_time = timer()
+    unsolvable_weight = 0.0 if args.ignore_unsolvable else 100000.0
+    action_trace, state_trace, value_trace, is_solution, num_evaluations = compute_traces_with_augmented_states_old(
+        predicate_dict=predicate_dict, predicate_ids=predicate_ids, max_arity=max_arity,
+        model=model, cycles=args.cycles, max_trace_length=args.max_length,
+        unsolvable_weight=unsolvable_weight, logger=None, **pddl_problem)
+    elapsed_time = timer() - start_time
+    result_string = result_string + f'{len(action_trace)} executed action(s) and {num_evaluations} state evaluations(s) in {elapsed_time:.3f} second(s)'
+    result_string = result_string + "\n"
+
+    if is_solution:
+        result_string = result_string + f'Found valid plan with {len(action_trace)} action(s) for {problem_file}'
+        result_string = result_string + "\n"
+    else:
+        result_string = result_string + f'Failed to find a plan for {problem_file}'
+        result_string = result_string + "\n"
+
+    if args.print_trace:
+        for index, action in enumerate(action_trace):
+            value_from = value_trace[index]
+            value_to = value_trace[index + 1]
+            result_string = result_string + '{}: {} (value change: {:.2f} -> {:.2f} {})'.format(index + 1, action.name, float(value_from), float(value_to), 'D' if float(value_from) > float(value_to) else 'I')
+            result_string = result_string + "\n"
+
+    return result_string, action_trace, is_solution
+
+
+from generators.plan import create_object_encoding
+from generators.plan import _get_goal_denotation, _to_input, _get_successor_states, _get_applicable_actions, _spanner_unsolvable, _spanner_solved
+def compute_traces_with_augmented_states_old(predicate_dict, predicate_ids, max_arity, actions, initial, goal, language, model: pl.LightningModule, augment_fn = None, cycles: str = 'avoid', max_trace_length: int = 500, unsolvable_weight: float = 100000.0, logger = None):
+    max_test_graph_size = 0
+    min_test_graph_size = 1000000000
+    logger = False
+
+    objects = language.constants()
+    obj_encoding = create_object_encoding(objects)
+    if logger: logger.info(f'{len(objects)} object(s), obj_encoding={obj_encoding}')
+
+    with torch.no_grad():
+        device = model.device
+        closed_states = set()
+        action_trace = []
+
+        # calculate denotation of goal atoms that is equal for every state
+        if logger: logger.info(f'goals={goal}')
+        goal_denotation = _get_goal_denotation(goal, obj_encoding)
+
+        # set initial state and value trace
+        current_state = initial
+        collated_input, encoded_states = _to_input([current_state], goal_denotation, obj_encoding, augment_fn, language,
+                                                   device, logger)
+        print(f"Collated input: {collated_input}")
+        state_trace = [encoded_states[0]]
+        state_graph = state_to_graph_old(encoded_states[0], predicate_dict, predicate_ids, max_arity)
+        initial_values = model(state_graph)
+        value_trace = [initial_values[0]]
+        if logger: logger.debug(f'initial_state={current_state}')
+
+        # calculate greedy trace
+        step, num_evaluations = 1, 1
+        while (not current_state[goal]) and (len(state_trace) < max_trace_length):
+            if cycles == 'detect' and current_state in closed_states:
+                if logger:
+                    logger.info(colored(f"Cycle detected after last action '{action_trace[-1]}'", 'magenta'))
+                break
+            closed_states.add(current_state)
+            if logger: logger.debug(f'**** STEP {step + 1}')
+            step += 1
+
+            # explore current state (avoid loops by removing already visited successors)
+            successor_candidates = [transition for transition in _get_successor_states(current_state, actions)]
+            if cycles == 'avoid':
+                successor_candidates = [transition for transition in successor_candidates if
+                                        transition[1] not in closed_states]
+
+            if len(successor_candidates) == 0:
+                if logger: logger.info(
+                    f'No applicable action that yields unvisited state for current_state={current_state}')
+                if logger: logger.info(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+                # print(f'No applicable action that yields unvisited state for current_state')
+                # print(f'Applicable actions = {_get_applicable_actions(current_state, actions)}')
+                break
+
+            successor_actions = [candidate[0] for candidate in successor_candidates]
+            successor_states = [candidate[1] for candidate in successor_candidates]
+            if logger: logger.debug(f'#actions={len(successor_actions)}, actions={successor_actions}')
+
+            # calculate values for successors and best successor
+            collated_input, encoded_states = _to_input(successor_states, goal_denotation, obj_encoding, augment_fn,
+                                                       language, device, logger)
+            state_graphs = [state_to_graph_old(encoded_state, predicate_dict, predicate_ids, max_arity) for encoded_state in encoded_states]
+            state_graphs_batch = Batch.from_data_list(state_graphs)  # TODO: DEVICE????
+
+            if state_graphs[0].num_nodes > max_test_graph_size:
+                max_test_graph_size = state_graphs[0].num_nodes
+            if state_graphs[0].num_nodes < min_test_graph_size:
+                min_test_graph_size = state_graphs[0].num_nodes
+
+            assert model.training == False
+
+            output_values = model(state_graphs_batch)
+            best_successor_index = torch.argmin(output_values)
+            num_evaluations += len(successor_actions)
+            if logger:
+                logger.debug(f'     values=[' + ", ".join([f'{x[0]:.3f}' for x in output_values]) + ']')
+                logger.debug(f'best_action={successor_actions[best_successor_index]} (index={best_successor_index})\n')
+
+            # extend traces and set next current state
+            value_trace.append(output_values[best_successor_index])
+            state_trace.append(encoded_states[best_successor_index])
+            action_trace.append(successor_actions[best_successor_index])
+            current_state = successor_states[best_successor_index]
+
+            if logger:
+                logger.debug(f'current_state={current_state}')
+                logger.debug('')
+
+        reached_goal = current_state[goal]
+        if logger: logger.debug(f'status={1 if reached_goal else 0}')
+
+        # print(f'Max test graph size: {max_test_graph_size}')
+        # print(f'Min test graph size: {min_test_graph_size}')
+
+        return action_trace, state_trace, value_trace, reached_goal, num_evaluations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from gnns import create_GNN
 from gnns import GraphConvolutionNetwork, GraphConvolutionNetworkV2, GraphAttentionNetwork, GraphAttentionNetworkV2, GraphIsomorphismNetwork
 from gnns import Performer, Transformer, GCNGPS

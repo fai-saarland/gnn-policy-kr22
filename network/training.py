@@ -381,6 +381,7 @@ def _main(args):
         for _ in range(args.seeds):
             model = load_model(args, predicates)
             trainer = load_trainer(args, logdir=round_dir)
+            model.set_checkpoint_path(f"{train_logdir}/round_{round}/version_{trainer.logger.version}/")
             print(colored('Training model...', 'green', attrs = [ 'bold' ]))
             print(type(model).__name__)
             #if args.aggregation == 'planformer':
@@ -421,6 +422,8 @@ def _main(args):
     # copy train_indices_selected_states.json and validation_indices_selected_states.json to the new directory
     os.system("cp " + str(best_trained_policy.parent.parent.parent / "train_indices_selected_states.json") + " " + str(best_trained_policy_dir))
     os.system("cp " + str(best_trained_policy.parent.parent.parent / "validation_indices_selected_states.json") + " " + str(best_trained_policy_dir))
+    os.system("cp " + str(best_trained_policy.parent.parent / "losses.train") + " " + str(best_trained_policy_dir))
+    os.system("cp " + str(best_trained_policy.parent.parent / "losses.val") + " " + str(best_trained_policy_dir))
 
     # TODO: STEP 9: PLANNING
     print(colored('Running policies on test instances', 'red', attrs=['bold']))

@@ -100,7 +100,7 @@ g_model_classes = {
 
     ('max', False, 'L1'): L1MaxModel,
     ('max', False, 'mean_squared_error'): MSEMaxModel,
-    ('max', False, 'L1_MSE'): L1MSEMaxModel
+    ('max', False, 'L1_MSE'): L1MSEMaxModel,
 }
 
 # can be extended further, but we really only need the selfsupervised suboptimal max model

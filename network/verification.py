@@ -1,11 +1,9 @@
 import argparse
 from termcolor import colored
 import torch
+import random
 import pandas as pd
-import glob
 from pathlib import Path
-#from training_old import load_dataset, planning
-# from training_new import model_classes
 from utils_old import planning_old
 from utils_old import load_dataset
 
@@ -69,40 +67,6 @@ def load_predicates(args):
 
     return decoded_predicate_dict, decoded_predicate_ids, max_arity
 
-def parse_optimal_plan_lengths(args):
-    logs_path = ""
-    if args.domain == "blocks-clear":
-        logs_path = "data_old/logs/log_blocks-clear.txt"
-    elif args.domain == "blocks-on":
-        logs_path = "data_old/logs/log_blocks-on.txt"
-    elif args.domain == "gripper":
-        logs_path = "data_old/logs/log_gripper.txt"
-    elif args.domain == "visitall":
-        logs_path = "data_old/logs/log_visitall.txt"
-    elif args.domain == "parking-behind":
-        logs_path = "data_old/logs/log_parking-behind.txt"
-    elif args.domain == "satellite":
-        logs_path = "data_old/logs/log_satellite.txt"
-
-    optimal_plan_lengths = {}
-    with open(logs_path, "r") as f:
-        instance_name = None
-        for line in f.readlines():
-            line = line.strip('\n')
-            if line.find('Input:') > 0:
-                instance_name = line.split(' ')[-1].removesuffix('.pddl')
-                continue
-            if instance_name is not None:
-                if line.find('solves') > 0:
-                    fields = line.split(' ')
-                    for i in range(len(fields)):
-                        if fields[i] == 'cost:':
-                            plan_length = int(fields[i+1].removesuffix(')'))
-                            optimal_plan_lengths[instance_name] = plan_length
-                            instance_name = None
-
-    return optimal_plan_lengths
-
 def _parse_arguments():
     parser = argparse.ArgumentParser()
 
@@ -113,15 +77,16 @@ def _parse_arguments():
     parser.add_argument('--policy', required=True, type=Path, help='path to policy (.ckpt)')
     parser.add_argument('--type', required=True, type=str, help='type of network')
     parser.add_argument('--logdir', required=True, type=Path, help='directory where policies are saved')
+    parser.add_argument('--min_size', required=True, type=int, help='minimum size of the generated instances')
+    parser.add_argument('--max_size', required=True, type=int, help='maximum size of the generated instances')
 
     # arguments with meaningful default values
-    parser.add_argument('--runs', type=int, default=1, help='number of policy runs per instance')
     parser.add_argument('--gpus', default=default_gpus, type=int, help=f'number of GPUs to use (default={default_gpus})')
 
     default_debug_level = 0
     default_cycles = 'avoid'
     default_logfile = 'log_plan.txt'
-    default_max_length = 500
+    default_max_length = 500  # TODO: CHOOSE DIFFERENT MAX LENGTH OR USE A TIME LIMIT?
     default_registry_filename = '../derived_predicates/registry_rules.json'
 
     parser.add_argument('--domain', required=True, type=str, help='domain name')
@@ -148,17 +113,53 @@ def _parse_arguments():
     args = parser.parse_args()
     return args
 
+# activate the dropout
+def enable_dropout(mod: torch.nn.Module):
+    if isinstance(mod, torch.nn.Dropout):
+        mod.train()
+
+def generate_instance_gripper_atomic(num_balls):
+    instance = ""
+    instance += f"(define (problem gripper-{num_balls})"
+    instance += f"\n(:domain gripper-strips)"
+    instance += f"\n(:objects "
+    instance += f"rooma roomb "
+    for i in reversed(range(num_balls)):
+        instance += f"ball{i+1} "
+    instance += " left right)"
+    instance += f"\n(:init"
+    instance += f"\n(room rooma)"
+    instance += f"\n(room roomb)"
+    for i in reversed(range(num_balls)):
+        instance += f"\n(ball ball{i+1})"
+    instance += f"\n(at-robby rooma)"
+    instance += f"\n(free left)"
+    instance += f"\n(free right)"
+    # place all balls in room a
+    for i in reversed(range(num_balls)):
+        instance += f"\n(at ball{i+1} rooma)"
+    instance += f"\n(gripper left)"
+    instance += f"\n(gripper right)"
+    instance += f"\n)"
+    instance += f"\n(:goal"
+    instance += f"\n(and"
+    # randomly sample one of the balls from room a and place it in room b
+    ball_to_move = random.choice(range(num_balls))
+    #ball_to_move = list(range(num_balls))[-1]
+    instance += f"\n(at ball{ball_to_move+1} roomb)"
+    instance += f"\n)"
+    instance += f"\n)"
+    instance += f"\n)"
+    return instance
+
 def _main(args):
     device = torch.device("cuda") if args.gpus > 0 else torch.device("cpu")
-
-    # load optimal plan lengths
-    optimal_plan_lengths = parse_optimal_plan_lengths(args)
 
 
     # load model
     decoded_predicate_dict, decoded_predicate_ids, max_arity = load_predicates(args)
     # load model
-    Model = model_classes[(args.type, "ADD", "MSE")]
+    Model = model_classes[(args.type, "ADD", "MSE")]  # TODO: USE MAX AGGREGATION?
     try:
         model = Model.load_from_checkpoint(checkpoint_path=str(args.policy), strict=False).to(device)
     except:
@@ -169,114 +170,58 @@ def _main(args):
             model = Model.load_from_checkpoint(checkpoint_path=str(args.policy), strict=False,
                                                map_location=torch.device('cpu')).to(device)
     model = model.to(device)
-    # deactivate dropout!
+    # TODO: KEEP DROPOUT ACTIVATED FOR PROBABILISTIC POLICIES?
     model.training = False
     model.eval()
+    #model.apply(enable_dropout)
 
     domain_file = Path('data_old/pddl/' + args.domain + '/test/domain.pddl')
-    problem_files = glob.glob(str('data_old/pddl/' + args.domain + '/test/' + '*.pddl'))
 
-    problem_dict = {}
-    for problem_file in problem_files:
-        problem_name = str(Path(problem_file).stem)
-        if problem_name == 'domain':
-            continue
-        else:
-            problem_dict[problem_name] = []
-
-    # create directory for current run
-    version_path = args.logdir / f"version_{0}"
-    version_path.mkdir(parents=True, exist_ok=True)
-
-    # initialize metrics for current run
-    plan_lengths = []
-    is_solutions = []
-    for problem_file in problem_files:
-        problem_name = str(Path(problem_file).stem)
-        if problem_name == 'domain':
-            continue
-        problem_dict[problem_name].append(optimal_plan_lengths[problem_name])
-
-        if args.cycles == 'detect':
-            logfile_name = problem_name + ".markovian"
-        else:
-            logfile_name = problem_name + ".policy"
-        log_file = version_path / logfile_name
-
-        # run planning
-        result_string, action_trace, is_solution = planning_old(decoded_predicate_dict, decoded_predicate_ids,
-                                                                max_arity, args, args.policy, model, domain_file,
-                                                                problem_file, device)
-
-        # store results
-        with open(log_file, "w") as f:
-            f.write(result_string)
-
-        if is_solution:
-            problem_dict[problem_name].append(len(action_trace))
-            problem_dict[problem_name].append(len(action_trace)/optimal_plan_lengths[problem_name])
-            print(f"Solved problem {problem_name} with plan length: {len(action_trace)}")
-        else:
-            problem_dict[problem_name].append(-1)
-            problem_dict[problem_name].append(-1)
-            print(f"Failed to solve problem {problem_name}")
-
+    # TODO: TRACK AVERAGE PLAN LENGTH?
     results = {
-        "instance": [],
-        "num_instances": [],
-        "coverage": [],
-        "coverage_optimal": [],
-        "coverage_suboptimal": [],
-        "optimal_plan_length": [],
-        "policy_plan_length": [],
-        "optimal_plan_length_avg": [],
-        "policy_plan_length_avg": [],
-        "length_factor": [],
+        "size": [],
+        "avg_coverage": [],
+        "avg_plan_length": []
     }
-    solved_optimal_plan_lengths = []
-    solved_policy_plan_lengths = []
-    for problem_name in problem_dict.keys():
-        results["instance"].append(problem_name)
-        results["num_instances"].append(1)
-        results["coverage"].append(problem_dict[problem_name][1] != -1)
-        results["coverage_optimal"].append(problem_dict[problem_name][0] == problem_dict[problem_name][1])
-        results["coverage_suboptimal"].append(problem_dict[problem_name][1] != -1 and problem_dict[problem_name][0] != problem_dict[problem_name][1])
-        results["optimal_plan_length"].append(problem_dict[problem_name][0])
-        results["optimal_plan_length_avg"].append(problem_dict[problem_name][0])
-        results["policy_plan_length"].append(problem_dict[problem_name][1])
-        results["policy_plan_length_avg"].append(problem_dict[problem_name][1])
-        results["length_factor"].append(0 if problem_dict[problem_name][1] != -1 else problem_dict[problem_name][2])
+    for size in range(args.min_size, args.max_size + 1):
+        results["size"].append(size)
+        coverages = []
+        plan_lengths = []
+        # create directory for storing generated instance files
+        instance_directory = args.logdir / f"generated_instances/size_{size}"
+        instance_directory.mkdir(parents=True, exist_ok=True)
 
-        if problem_dict[problem_name][1] != -1:
-            solved_optimal_plan_lengths.append(problem_dict[problem_name][0])
-            solved_policy_plan_lengths.append(problem_dict[problem_name][1])
+        num_instances_per_size = 1
+        num_runs_per_instance = 1
+        for i in range(num_instances_per_size):
+            instance_string = generate_instance_gripper_atomic(size)
+            instance_file = instance_directory / f"instance_size_{size}_num_{i}.pddl"
+            with open(instance_file, 'w') as f:
+                f.write(instance_string)
 
+            for _ in range(num_runs_per_instance):
+                result_string, action_trace, is_solution = planning_old(decoded_predicate_dict, decoded_predicate_ids,
+                                                                        max_arity, args, args.policy, model, domain_file,
+                                                                        instance_file, device)
+                if is_solution:
+                    coverages.append(1)
+                    plan_lengths.append(len(action_trace))
+                    print(colored(f"Instance size {size} num {i} solved after {len(action_trace)} steps!", 'green', attrs=['bold']))
+                else:
+                    coverages.append(0)
+                    print(colored(f"Instance size {size} num {i} not solved!", 'red', attrs=['bold']))
 
-    total_num_instances = sum(results["num_instances"])
-    total_coverage = sum(results["coverage"])
-    total_coverage_optimal = sum(results["coverage_optimal"])
-    total_coverage_suboptimal = sum(results["coverage_suboptimal"])
-    total_optimal_plan_length = sum(solved_optimal_plan_lengths)
-    total_optimal_plan_length_avg = total_optimal_plan_length / total_coverage
-    total_policy_plan_length = sum(solved_policy_plan_lengths)
-    total_policy_plan_length_avg = total_policy_plan_length / total_coverage
-    total_length_factor = total_policy_plan_length / total_optimal_plan_length
-    results["instance"] = ["total"] + results["instance"]
-    results["num_instances"] = [total_num_instances] + results["num_instances"]
-    results["coverage"] = [total_coverage] + results["coverage"]
-    results["coverage_optimal"] = [total_coverage_optimal] + results["coverage_optimal"]
-    results["coverage_suboptimal"] = [total_coverage_suboptimal] + results["coverage_suboptimal"]
-    results["optimal_plan_length"] = [total_optimal_plan_length] + results["optimal_plan_length"]
-    results["optimal_plan_length_avg"] = [total_optimal_plan_length_avg] + results["optimal_plan_length_avg"]
-    results["policy_plan_length"] = [total_policy_plan_length] + results["policy_plan_length"]
-    results["policy_plan_length_avg"] = [total_policy_plan_length_avg] + results["policy_plan_length_avg"]
-    results["length_factor"] = [total_length_factor] + results["length_factor"]
+        avg_coverage = sum(coverages) / len(coverages)
+        if len(plan_lengths) == 0:
+            avg_plan_length = 0
+        else:
+            avg_plan_length = sum(plan_lengths) / len(plan_lengths)
+        results[f"avg_coverage"].append(avg_coverage)
+        results[f"avg_plan_length"].append(avg_plan_length)
 
-    print(results)
+        results_data_frame = pd.DataFrame(results)
+        results_data_frame.to_csv(args.logdir / "results.csv")
 
-    print(colored('Storing results', 'red', attrs=['bold']))
-    results = pd.DataFrame(results)
-    results.to_csv(args.logdir / "results.csv")
 
 if __name__ == "__main__":
     args = _parse_arguments()

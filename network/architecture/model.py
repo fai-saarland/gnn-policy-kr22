@@ -66,6 +66,11 @@ def _create_unsupervised_model_class(base: pl.LightningModule, loss):
             self.l1_factor = l1_factor
             self.weight_decay = weight_decay
 
+            self.train_losses = []
+            self.all_train_losses = []
+            self.validation_losses = []
+            self.all_validation_losses = []
+
         def configure_optimizers(self):
             return _create_optimizer(self, self.learning_rate, self.weight_decay)
 
@@ -78,6 +83,7 @@ def _create_unsupervised_model_class(base: pl.LightningModule, loss):
             self.log('l1_loss', l1)
             total = train + l1
             self.log('total_loss', total)
+            self.train_losses.append(total.item())
             return total
 
         def validation_step(self, validation_batch, batch_index):
@@ -85,6 +91,22 @@ def _create_unsupervised_model_class(base: pl.LightningModule, loss):
             output = self(collated_states_with_object_counts)
             validation = loss(output, labels, solvable_labels, state_counts, self.device)
             self.log('validation_loss', validation, on_step=False, on_epoch=True)
+            self.validation_losses.append(validation.item())
+
+        def on_validation_epoch_end(self):
+            self.all_train_losses.append(np.mean(self.train_losses))
+            self.all_validation_losses.append(np.mean(self.validation_losses))
+            self.train_losses = []
+            self.validation_losses = []
+
+        def on_train_end(self):
+            with open(self.checkpoint_path + "losses.train", "w") as f:
+                f.write(json.dumps(self.all_train_losses))
+            with open(self.checkpoint_path + "losses.val", "w") as f:
+                f.write(json.dumps(self.all_validation_losses))
+
+        def set_checkpoint_path(self, checkpoint_path):
+            self.checkpoint_path = checkpoint_path
 
     return Model
 
@@ -889,8 +911,7 @@ RetrainSelfsupervisedSuboptimalAttentionModel = _create_unsupervised_retrain_mod
 
 RetrainDistillationMaxModel = _create_distillation_model_class(MaxModelBase, selfsupervised_suboptimal_loss)
 
-L1MaxModel = _create_mse_model_class(MaxModelBase, L1_loss)
-MSEMaxModel = _create_mse_model_class(MaxModelBase, mean_squared_error_loss)
-L1MSEMaxModel = _create_mse_model_class(MaxModelBase, L1_MSE_loss)
-
+L1MaxModel = _create_unsupervised_model_class(MaxModelBase, L1_loss)
+MSEMaxModel = _create_unsupervised_model_class(MaxModelBase, mean_squared_error_loss)
+L1MSEMaxModel = _create_unsupervised_model_class(MaxModelBase, L1_MSE_loss)
 
